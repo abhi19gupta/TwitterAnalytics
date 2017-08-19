@@ -1,0 +1,218 @@
+Links
+=====
+Tutorial
+--------
+	http://socialmedia-class.org/twittertutorial.html
+data analysis on twitter
+	- https://sproutsocial.com/insights/twitter-data/ (NOT USEFUL)
+	- http://tweettracker.fulton.asu.edu/tda/TwitterDataAnalytics.pdf
+	- https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/
+predicting events from twitter data
+	- http://web.iitd.ac.in/~sumeet/G20.pdf
+	- http://ieeexplore.ieee.org/document/7404680/
+twitter api links:
+	- https://dev.twitter.com/rest/reference
+	- https://dev.twitter.com/rest/reference/get/statuses/user_timeline
+	- https://dev.twitter.com/overview/api/tweets
+	- https://dev.twitter.com/overview/api/users
+	- https://tweeterid.com/
+analyzing fake news in twitter
+	- http://blogs.mathworks.com/loren/2017/02/07/analyzing-fake-news-with-twitter/
+
+Information in a tweet
+=======================
+https://dev.twitter.com/overview/api/tweets
+	- coordinates
+	- created_at
+	- entities (parsed out of the text of the Tweet) (https://dev.twitter.com/overview/api/entities)
+	- favorite_count (how many users have liked)
+	- id_str (id of the tweet, not of user)
+	- place (When present, indicates that the tweet is associated (but not necessarily originating from) a Place - like city, country)
+	- possibly_sensitive (This field only surfaces when a Tweet contains a link. The meaning of the field doesn’t pertain to the Tweet content itself, but instead it is an indicator that the URL contained in the Tweet may contain content or media identified as sensitive content.)
+	- retweet_count (Number of times this Tweet has been retweeted.)
+	- retweeted_status (Users can amplify the broadcast of Tweets authored by other users by retweeting . Retweets can be distinguished from typical Tweets by the existence of a retweeted_status attribute. This attribute contains a representation of the original Tweet that was retweeted. Note that retweets of retweets do not show representations of the intermediary retweet, but only the original Tweet. (Users can also unretweet a retweet they created by deleting their retweet.))
+	- text (The actual UTF-8 text of the status update.)
+	- user (contains lot of information like screen-name, likes, /follower count, entities, location)
+
+	If this tweet is a reply to a tweet:
+	- in_reply_to_screen_name (If the represented Tweet is a reply, this will contain the screen name of the original Tweet’s author)
+	- in_reply_to_status_id_str (id of original tweet)
+	- in_reply_to_user_id_str
+
+	Withelding:
+	- withheld_copyright (When present and set to “true”, it indicates that this piece of content has been withheld due to a DMCA complaint)
+	- withheld_in_countries (When present, indicates a list of uppercase two-letter country codes this content is withheld from.)
+	- withheld_scope (When present, indicates whether the content being withheld is the “status” or a “user.”)
+
+	Not so useful:
+	- contributors
+	- current_user_retweet
+	- favorited
+	- filter_level
+	- geo
+	- id
+	- lang
+	- quoted_status_id_str (This field only surfaces when the Tweet is a quote Tweet. This is the string representation Tweet ID of the quoted Tweet.)
+	- quoted_status (This field only surfaces when the Tweet is a quote Tweet. This attribute contains the Tweet object of the original Tweet that was quoted.)
+	- scopes (A set of key-value pairs indicating the intended contextual delivery of the containing Tweet. Currently used by Twitter’s Promoted Products. Example: "scopes":{"followers":false})
+	- retweeted (Indicates whether this Tweet has been retweeted by the authenticating user.)
+	- source
+	- truncated (Indicates whether the value of the text parameter was truncated, for example, as a result of a retweet exceeding the 140 character Tweet length. Truncated text will end in ellipsis, like this ... Since Twitter now rejects long Tweets vs truncating them, the large majority of Tweets will have this set to false . Note that while native retweets may have their toplevel text property shortened, the original text will be available under the retweeted_status object and the truncated parameter will be set to the value of the original status (in most cases, false ).)
+	
+Entities in tweets
+==================
+Entities provide metadata and additional contextual information about content posted on Twitter. Entities are returned wherever Tweets are found in the API. Entities are instrumental in resolving URLs.
+https://dev.twitter.com/overview/api/entities
+- hashtags
+- media
+- urls
+- user_mentions
+
+Users
+======
+https://dev.twitter.com/overview/api/users
+	- created_at
+	- description
+	- entities
+	- favourites_count (The number of Tweets this user has liked in the account’s lifetime)
+	- followers_count (The number of followers this account currently has. Under certain conditions of duress, this field will temporarily indicate “0”.)
+	- friends_count (The number of users this account is following (AKA their “followings”). Under certain conditions of duress, this field will temporarily indicate “0”.)
+	- id_str
+	- listed_count (The number of public lists that this user is a member of.)
+	- location (Nullable . The user-defined location for this account’s profile. Not necessarily a location, nor machine-parseable. This field will occasionally be fuzzily interpreted by the Search service. )
+	- name
+	- profile_image_url
+	- protected (When true, indicates that this user has chosen to protect their Tweets.)
+	- screen_name (The screen name, handle, or alias that this user identifies themselves with. screen_names are unique but subject to change.)
+	- statuses_count (The number of Tweets (including retweets) issued by the user.)
+	- time_zone (Nullable . A string describing the Time Zone this user declares themselves within.)
+	- url (Nullable . A URL provided by the user in association with their profile.)
+	- verified (When true, indicates that the user has a verified account.)
+	- withheld_in_countries (When present, indicates a textual representation of the two-letter country codes this user is withheld from.)
+	- withheld_scope (When present, indicates whether the content being withheld is the “status” or a “user.”)
+
+
+
+Not useful
+	- follow_request_sent
+	- following
+	- geo_enabled
+	- is_translator
+	- lang
+	- utc_offset
+	- profile_background_image_url
+	- status (Nullable . If possible, the user’s most recent Tweet or retweet. In some circumstances, this data cannot be provided and this field will be omitted, null, or empty. Perspectival attributes within Tweets embedded within users cannot always be relied upon.)
+
+Quoting a tweet
+===============
+This functionality is currently available on mobile but not desktop. When you select Retweet for a given tweet on the Twitter iPhone app or on mobile.twitter.com, you have the option of either posting a "Retweet" (posts the tweet directly onto your Twitter profile page and the Twitter feeds of your followers without commentary) or posting a "Quote Tweet" (posts the tweet within quotation marks and allows you to manually add commentary, all of which posts on your Twitter profile page and the Twitter feeds of your followers).
+
+t.co
+==============
+Due to the 140 character limit in Twitter, users have long used URL shortening services so they can still say something when sharing a long URL. For example, the post your are reading has this URL:
+http://www.webconnoisseur.com/blog/twitter/wondering-what-t-co-is/
+If I tweet about it, I’m already using up 66 characters, meaning I only have 74 left to comment on the topic & if anyone retweets me, they’ll lose another 19 character, including spaces by including: RT@webconnoisseur, leaving them with only 55 characters to work with. Instead, I used bit.ly and only used 20 characters: http://bit.ly/tdotco
+
+Many different URL shortening services sprung up, but Twitter did choose URL shortening services automatically for anyone using long URLs. They started with one of the oldest ones: tinyurl, then eventually defaulted to bit.ly. Both services were provided by other companies. Hence why it makes sense that Twitter finally created their own: t.co. Right now, t.co is live for direct messages (they used twt.tl for a few months), but will be rolled out for all tweets soon.
+
+Twitter lists
+===============
+http://nicklewiscommunications.com/what-is-a-twitter-list-or-a-list-on-twitter/
+
+
+APIs
+===============
+GET favorites/list
+	Returns (upto 200 at a time) most recent Tweets favorited by the authenticating or specified user.
+
+GET followers/ids
+	Returns a cursored collection of user IDs for every user following the specified user. See https://dev.twitter.com/overview/api/cursoring
+	This method is especially powerful when used in conjunction with GET users / lookup, a method that allows you to convert user IDs into full user objects in bulk.
+
+GET followers/list
+	Returns a cursored collection of user objects for users following the specified user.
+	At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change.
+	Results are given in groups of (atmost 200) users and multiple “pages” of results can be navigated through using the next_cursor value in subsequent requests.
+
+GET friends/ids
+	Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their “friends”).
+	(upto 5000 at a time)
+
+GET friends/list
+	upto 200 at a time
+
+GET lists/members
+	of public list
+
+GET lists/members/show
+	Check if the specified user is a member of the specified list.
+
+GET lists/memberships
+	Returns the lists the specified user has been added to.
+
+GET lists/ownerships
+	Returns the lists (public) owned by the specified Twitter user.
+
+GET lists/show
+	Returns the specified list.
+
+GET lists/statuses
+	Returns a timeline of tweets authored by members of the specified list.
+
+GET lists/subscribers
+	Returns the subscribers of the specified list.
+
+GET lists/subscribers/show
+GET lists/subscriptions
+	Obtain a collection of the lists the specified user is subscribed to. Does not include the user’s own lists.
+
+GET search/tweets
+	Returns a collection of relevant Tweets matching a specified query.
+	Please note that Twitter’s search service and, by extension, the Search API is not meant to be an exhaustive source of Tweets. Not all Tweets will be indexed or made available via the search interface.
+
+GET statuses/lookup
+
+GET statuses/retweeters/ids
+	Returns a collection of up to 100 user IDs belonging to users who have retweeted the Tweet specified by the id parameter.
+	This method offers similar data to GET statuses / retweets / :id.
+
+GET statuses/retweets/:id
+	Returns a collection of the 100 most recent retweets of the Tweet specified by the id parameter.
+
+GET statuses/show/:id
+	Returns a single Tweet, specified by the id parameter. The Tweet’s author will also be embedded within the Tweet.
+	See GET statuses / lookup for getting Tweets in bulk (up to 100 per call).
+
+GET statuses/user_timeline
+	Returns a collection of the most recent Tweets posted by the user indicated by the screen_name or user_id parameters.
+	This method can only return up to 3,200 of a user’s most recent Tweets. Native retweets of other statuses by the user is included in this total, regardless of whether include_rts is set to false when requesting this resource.
+
+GET trends/available
+	Returns the locations that Twitter has trending topic information for.
+
+GET trends/closest
+	Returns the locations that Twitter has trending topic information for, closest to a specified location.
+
+GET trends/place
+	Returns the top 50 trending topics for a specific WOEID, if trending information is available for it.
+	The response is an array of trend objects that encode the name of the trending topic.
+
+GET users/lookup
+	Returns fully-hydrated user objects for up to 100 users per request, as specified by comma-separated values passed to the user_id and/or screen_name parameters.
+
+GET users / show
+	is used to retrieve a single user object.
+
+GET users/search
+	Provides a simple, relevance-based search interface to public user accounts on Twitter. Try querying by topical interest, full name, company name, location, or other criteria.
+
+
+
+GET geo/id/:place_id
+	Returns all the information about a known place.
+
+
+KINDS OF QUERIES
+================
+1. Where are my followers located (geography) - can plot it on a map
+2. Use NLPTK, LDA from Scikit-learn to find out how many have tweeted something positive or negative about Kejriwal
