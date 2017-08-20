@@ -32,7 +32,8 @@
 #### Indexing ####
 # db.profiles.create_index([('user_id', pymongo.ASCENDING)], unique=True)
 
-import json, datetime, os, shutil
+import json, datetime, os, shutil, pymongo, operator
+import matplotlib.pyplot as plt
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from pymongo import MongoClient
 
@@ -66,12 +67,16 @@ class DateTimeEncoder(json.JSONEncoder):
 
         return json.JSONEncoder.default(self, o)
 
+################### TWITTER API FUNCTIONS HERE ####################
+
 # FETCH AND PERSIST USER INFORMATION (calling this multiple times will keep adding new entries so that you can compare over time)
 def fetch_persist_users(user_screen_names):
 
 	def get_data_to_persist(user_info,time):
 		ret = {k:user_info.get(k,None) for k in user_fields}
 		ret['record_creation_date'] = time
+		if 'created_at' in user_fields:
+			ret['created_at'] = datetime.datetime.strptime(ret['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
 		return ret
 
 	users_info = twitter.users.lookup(screen_name=user_screen_names)
@@ -97,6 +102,8 @@ def fetch_persist_tweets(user_screen_names):
 		for tweet in tweets:
 			tweet_ = {k:tweet.get(k,None) for k in tweet_fields}
 			tweet_['record_creation_date'] = time
+			if 'created_at' in tweet_fields:
+				tweet_['created_at'] = datetime.datetime.strptime(tweet_['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
 			ret.append(tweet_)
 		return ret
 
@@ -140,11 +147,50 @@ def clear_everyting():
 		
 	db.users.drop()
 	db.tweets.drop()
+	db.max_ids.drop()
 	for folder_name in ['user_info','user_info_persisted','tweets','tweets_persisted']:
 		clear_folder(folder_name)
 
 
+################### ANALYTICS PART BEGINS HERE ####################
+def plot_user_field(screen_name,date_start,date_end,field_names):
+	results = list(db.users.find(filter={'screen_name':screen_name, 'record_creation_date':{'$gt':date_start,'$lt':date_end}},
+		projection=field_names+['record_creation_date'],sort=[('record_creation_date', pymongo.ASCENDING)]))
+	xVals = [x['record_creation_date'] for x in results]
+	print(xVals)
+	for field_name in field_names:
+		yVals = [x[field_name] for x in results]
+		print(yVals)
+		plt.plot(xVals,yVals,'bo-')
+		plt.xlabel('DateTime')
+		plt.ylabel(field_name)
+		plt.title(date_start.strftime("%d-%m-%Y %H:%M:%S")+' to '+date_end.strftime("%d-%m-%Y %H:%M:%S"))
+		plt.margins(0.1) # Pad margins so that markers don't get clipped by the axes
+		plt.subplots_adjust(bottom=0.15) # Tweak spacing to prevent clipping of tick-labels
+		# plt.xticks(xVals,xVals,rotation=30)
+		# plt.savefig('plots/'+screen_name+'_'+field_name+'.png')
+		plt.show()
+		plt.clf()
+
+def extract_hash_tags(screen_name,date_start,date_end):
+	id_ = db.users.find_one({'screen_name':screen_name})['id']
+	query_result = list(db.tweets.find(filter={'user.id':id_, 'created_at':{'$gt':date_start,'$lt':date_end}},
+		projection=['entities.hashtags']))
+	hashtag_counts = {}
+	for tweet in query_result:
+		for hashtag in tweet['entities']['hashtags']:
+			hashtag = hashtag['text']
+			hashtag_counts[hashtag] = hashtag_counts.get(hashtag,0) + 1
+	print('Hashtags used by '+screen_name)
+	print(sorted(hashtag_counts.items(), key=operator.itemgetter(1), reverse=True))
+
+################### MAIN FUNCTION BEGINS HERE ####################
+
 # clear_everyting()
+now = datetime.datetime.now()
 user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
 # fetch_persist_users(','.join(user_screen_names))
-fetch_persist_tweets(user_screen_names)
+# fetch_persist_tweets(user_screen_names)
+# plot_user_field('elonmusk',now-datetime.timedelta(days=1),now,
+	# ['favourites_count','followers_count','friends_count','statuses_count'])
+extract_hash_tags('iamsrk',now-datetime.timedelta(days=100),now)
