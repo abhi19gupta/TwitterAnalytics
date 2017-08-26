@@ -1,3 +1,7 @@
+# Before running on windows, run the following:
+# set http_proxy=proxy62.iitd.ac.in:3128
+# set https_proxy=proxy62.iitd.ac.in:3128
+
 # Starting mongo process
 # 	mongod --dbpath "C:\mymongodata"
 
@@ -168,8 +172,8 @@ def plot_user_field(screen_name,date_start,date_end,field_names):
 		plt.margins(0.1) # Pad margins so that markers don't get clipped by the axes
 		plt.subplots_adjust(bottom=0.15) # Tweak spacing to prevent clipping of tick-labels
 		# plt.xticks(xVals,xVals,rotation=30)
-		# plt.savefig('plots/'+screen_name+'_'+field_name+'.png')
-		plt.show()
+		plt.savefig('plots/'+screen_name+'_'+field_name+'.png')
+		# plt.show()
 		plt.clf()
 
 def extract_hash_tags(screen_name,date_start,date_end):
@@ -191,6 +195,6 @@ now = datetime.datetime.now()
 user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
 # fetch_persist_users(','.join(user_screen_names))
 # fetch_persist_tweets(user_screen_names)
-# plot_user_field('elonmusk',now-datetime.timedelta(days=1),now,
-	# ['favourites_count','followers_count','friends_count','statuses_count'])
+plot_user_field('narendramodi',now-datetime.timedelta(days=1),now,
+	['favourites_count','followers_count','friends_count','statuses_count'])
 extract_hash_tags('iamsrk',now-datetime.timedelta(days=100),now)
