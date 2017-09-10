@@ -1,23 +1,23 @@
 Links
 =====
-Tutorial
---------
 	http://socialmedia-class.org/twittertutorial.html
-data analysis on twitter
-	- https://sproutsocial.com/insights/twitter-data/ (NOT USEFUL)
-	- http://tweettracker.fulton.asu.edu/tda/TwitterDataAnalytics.pdf
-	- https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/
-predicting events from twitter data
-	- http://web.iitd.ac.in/~sumeet/G20.pdf
-	- http://ieeexplore.ieee.org/document/7404680/
-twitter api links:
-	- https://dev.twitter.com/rest/reference
-	- https://dev.twitter.com/rest/reference/get/statuses/user_timeline
-	- https://dev.twitter.com/overview/api/tweets
-	- https://dev.twitter.com/overview/api/users
-	- https://tweeterid.com/
-analyzing fake news in twitter
-	- http://blogs.mathworks.com/loren/2017/02/07/analyzing-fake-news-with-twitter/
+	data analysis on twitter
+		- https://sproutsocial.com/insights/twitter-data/ (NOT USEFUL)
+		- http://tweettracker.fulton.asu.edu/tda/TwitterDataAnalytics.pdf
+			-> section 3.7 indexing - you also need index on fields on which you perform sort, ow it will be slow
+			-> section 3.1 - using MapReduce to find the counts etc. in large db
+		- https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/
+	predicting events from twitter data
+		- http://web.iitd.ac.in/~sumeet/G20.pdf
+		- http://ieeexplore.ieee.org/document/7404680/
+	twitter api links:
+		- https://dev.twitter.com/rest/reference
+		- https://dev.twitter.com/rest/reference/get/statuses/user_timeline
+		- https://dev.twitter.com/overview/api/tweets
+		- https://dev.twitter.com/overview/api/users
+		- https://tweeterid.com/
+	analyzing fake news in twitter
+		- http://blogs.mathworks.com/loren/2017/02/07/analyzing-fake-news-with-twitter/
 
 Information in a tweet
 =======================
@@ -61,12 +61,12 @@ https://dev.twitter.com/overview/api/tweets
 	
 Entities in tweets
 ==================
-Entities provide metadata and additional contextual information about content posted on Twitter. Entities are returned wherever Tweets are found in the API. Entities are instrumental in resolving URLs.
-https://dev.twitter.com/overview/api/entities
-- hashtags
-- media
-- urls
-- user_mentions
+	Entities provide metadata and additional contextual information about content posted on Twitter. Entities are returned wherever Tweets are found in the API. Entities are instrumental in resolving URLs.
+	https://dev.twitter.com/overview/api/entities
+	- hashtags
+	- media
+	- urls
+	- user_mentions
 
 Users
 ======
@@ -91,9 +91,7 @@ https://dev.twitter.com/overview/api/users
 	- withheld_in_countries (When present, indicates a textual representation of the two-letter country codes this user is withheld from.)
 	- withheld_scope (When present, indicates whether the content being withheld is the “status” or a “user.”)
 
-
-
-Not useful
+	Not useful:
 	- follow_request_sent
 	- following
 	- geo_enabled
@@ -109,11 +107,11 @@ This functionality is currently available on mobile but not desktop. When you se
 
 t.co
 ==============
-Due to the 140 character limit in Twitter, users have long used URL shortening services so they can still say something when sharing a long URL. For example, the post your are reading has this URL:
-http://www.webconnoisseur.com/blog/twitter/wondering-what-t-co-is/
-If I tweet about it, I’m already using up 66 characters, meaning I only have 74 left to comment on the topic & if anyone retweets me, they’ll lose another 19 character, including spaces by including: RT@webconnoisseur, leaving them with only 55 characters to work with. Instead, I used bit.ly and only used 20 characters: http://bit.ly/tdotco
+	Due to the 140 character limit in Twitter, users have long used URL shortening services so they can still say something when sharing a long URL. For example, the post your are reading has this URL:
+	http://www.webconnoisseur.com/blog/twitter/wondering-what-t-co-is/
+	If I tweet about it, I’m already using up 66 characters, meaning I only have 74 left to comment on the topic & if anyone retweets me, they’ll lose another 19 character, including spaces by including: RT@webconnoisseur, leaving them with only 55 characters to work with. Instead, I used bit.ly and only used 20 characters: http://bit.ly/tdotco
 
-Many different URL shortening services sprung up, but Twitter did choose URL shortening services automatically for anyone using long URLs. They started with one of the oldest ones: tinyurl, then eventually defaulted to bit.ly. Both services were provided by other companies. Hence why it makes sense that Twitter finally created their own: t.co. Right now, t.co is live for direct messages (they used twt.tl for a few months), but will be rolled out for all tweets soon.
+	Many different URL shortening services sprung up, but Twitter did choose URL shortening services automatically for anyone using long URLs. They started with one of the oldest ones: tinyurl, then eventually defaulted to bit.ly. Both services were provided by other companies. Hence why it makes sense that Twitter finally created their own: t.co. Right now, t.co is live for direct messages (they used twt.tl for a few months), but will be rolled out for all tweets soon.
 
 Twitter lists
 ===============
@@ -122,97 +120,276 @@ http://nicklewiscommunications.com/what-is-a-twitter-list-or-a-list-on-twitter/
 
 APIs
 ===============
-GET favorites/list
-	Returns (upto 200 at a time) most recent Tweets favorited by the authenticating or specified user.
+	GET favorites/list
+		Returns (upto 200 at a time) most recent Tweets favorited by the authenticating or specified user.
 
-GET followers/ids
-	Returns a cursored collection of user IDs for every user following the specified user. See https://dev.twitter.com/overview/api/cursoring
-	This method is especially powerful when used in conjunction with GET users / lookup, a method that allows you to convert user IDs into full user objects in bulk.
+	GET followers/ids
+		Returns a cursored collection of user IDs for every user following the specified user. See https://dev.twitter.com/overview/api/cursoring
+		This method is especially powerful when used in conjunction with GET users / lookup, a method that allows you to convert user IDs into full user objects in bulk.
 
-GET followers/list
-	Returns a cursored collection of user objects for users following the specified user.
-	At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change.
-	Results are given in groups of (atmost 200) users and multiple “pages” of results can be navigated through using the next_cursor value in subsequent requests.
+	GET followers/list
+		Returns a cursored collection of user objects for users following the specified user.
+		At this time, results are ordered with the most recent following first — however, this ordering is subject to unannounced change.
+		Results are given in groups of (atmost 200) users and multiple “pages” of results can be navigated through using the next_cursor value in subsequent requests.
 
-GET friends/ids
-	Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their “friends”).
-	(upto 5000 at a time)
+	GET friends/ids
+		Returns a cursored collection of user IDs for every user the specified user is following (otherwise known as their “friends”).
+		(upto 5000 at a time)
 
-GET friends/list
-	upto 200 at a time
+	GET friends/list
+		upto 200 at a time
 
-GET lists/members
-	of public list
+	GET lists/members
+		of public list
 
-GET lists/members/show
-	Check if the specified user is a member of the specified list.
+	GET lists/members/show
+		Check if the specified user is a member of the specified list.
 
-GET lists/memberships
-	Returns the lists the specified user has been added to.
+	GET lists/memberships
+		Returns the lists the specified user has been added to.
 
-GET lists/ownerships
-	Returns the lists (public) owned by the specified Twitter user.
+	GET lists/ownerships
+		Returns the lists (public) owned by the specified Twitter user.
 
-GET lists/show
-	Returns the specified list.
+	GET lists/show
+		Returns the specified list.
 
-GET lists/statuses
-	Returns a timeline of tweets authored by members of the specified list.
+	GET lists/statuses
+		Returns a timeline of tweets authored by members of the specified list.
 
-GET lists/subscribers
-	Returns the subscribers of the specified list.
+	GET lists/subscribers
+		Returns the subscribers of the specified list.
 
-GET lists/subscribers/show
-GET lists/subscriptions
-	Obtain a collection of the lists the specified user is subscribed to. Does not include the user’s own lists.
+	GET lists/subscribers/show
+	GET lists/subscriptions
+		Obtain a collection of the lists the specified user is subscribed to. Does not include the user’s own lists.
 
-GET search/tweets
-	Returns a collection of relevant Tweets matching a specified query.
-	Please note that Twitter’s search service and, by extension, the Search API is not meant to be an exhaustive source of Tweets. Not all Tweets will be indexed or made available via the search interface.
+	GET search/tweets
+		Returns a collection of relevant Tweets matching a specified query.
+		Please note that Twitter’s search service and, by extension, the Search API is not meant to be an exhaustive source of Tweets. Not all Tweets will be indexed or made available via the search interface.
 
-GET statuses/lookup
+	GET statuses/lookup
 
-GET statuses/retweeters/ids
-	Returns a collection of up to 100 user IDs belonging to users who have retweeted the Tweet specified by the id parameter.
-	This method offers similar data to GET statuses / retweets / :id.
+	GET statuses/retweeters/ids
+		Returns a collection of up to 100 user IDs belonging to users who have retweeted the Tweet specified by the id parameter.
+		This method offers similar data to GET statuses / retweets / :id.
 
-GET statuses/retweets/:id
-	Returns a collection of the 100 most recent retweets of the Tweet specified by the id parameter.
+	GET statuses/retweets/:id
+		Returns a collection of the 100 most recent retweets of the Tweet specified by the id parameter.
 
-GET statuses/show/:id
-	Returns a single Tweet, specified by the id parameter. The Tweet’s author will also be embedded within the Tweet.
-	See GET statuses / lookup for getting Tweets in bulk (up to 100 per call).
+	GET statuses/show/:id
+		Returns a single Tweet, specified by the id parameter. The Tweet’s author will also be embedded within the Tweet.
+		See GET statuses / lookup for getting Tweets in bulk (up to 100 per call).
 
-GET statuses/user_timeline
-	Returns a collection of the most recent Tweets posted by the user indicated by the screen_name or user_id parameters.
-	This method can only return up to 3,200 of a user’s most recent Tweets. Native retweets of other statuses by the user is included in this total, regardless of whether include_rts is set to false when requesting this resource.
+	GET statuses/user_timeline
+		Returns a collection of the most recent Tweets posted by the user indicated by the screen_name or user_id parameters.
+		This method can only return up to 3,200 of a user’s most recent Tweets. Native retweets of other statuses by the user is included in this total, regardless of whether include_rts is set to false when requesting this resource.
 
-GET trends/available
-	Returns the locations that Twitter has trending topic information for.
+	GET trends/available
+		Returns the locations that Twitter has trending topic information for.
 
-GET trends/closest
-	Returns the locations that Twitter has trending topic information for, closest to a specified location.
+	GET trends/closest
+		Returns the locations that Twitter has trending topic information for, closest to a specified location.
 
-GET trends/place
-	Returns the top 50 trending topics for a specific WOEID, if trending information is available for it.
-	The response is an array of trend objects that encode the name of the trending topic.
+	GET trends/place
+		Returns the top 50 trending topics for a specific WOEID, if trending information is available for it.
+		The response is an array of trend objects that encode the name of the trending topic.
 
-GET users/lookup
-	Returns fully-hydrated user objects for up to 100 users per request, as specified by comma-separated values passed to the user_id and/or screen_name parameters.
+	GET users/lookup
+		Returns fully-hydrated user objects for up to 100 users per request, as specified by comma-separated values passed to the user_id and/or screen_name parameters.
 
-GET users / show
-	is used to retrieve a single user object.
+	GET users / show
+		is used to retrieve a single user object.
 
-GET users/search
-	Provides a simple, relevance-based search interface to public user accounts on Twitter. Try querying by topical interest, full name, company name, location, or other criteria.
+	GET users/search
+		Provides a simple, relevance-based search interface to public user accounts on Twitter. Try querying by topical interest, full name, company name, location, or other criteria.
 
 
+	GET geo/id/:place_id
+		Returns all the information about a known place.
 
-GET geo/id/:place_id
-	Returns all the information about a known place.
 
+SNAP (Stanford Network Analysis Project)
+========================================
+	- library to create (in-memory) and analyze graphs (like networkx I think but more advanced)
+	-> Offers functions like:
+		 Quick summary of network properties
+		 Global connectivity: connected components
+		 Local connectivity: node degrees
+		 Key nodes in the network: node centrality
+		 Neighborhood connectivity: triads, clustering coefficient
+		 Graph traversal: breadth and depth first search
+		 Groups of nodes: community detection
+		 Global graph properties: spectral graph analysis
+		 Core nodes: K-core decomposition
+	-> http://snap.stanford.edu/proj/snap-www/
+	-> http://snap.stanford.edu/snappy/doc/tutorial/tutorial.html
+	-> written in c++ so should be faster than networkx for example
+	-> NetworkX is written in Python and implements a large number of network analysis methods. In terms of the speed vs. flexibility trade-off, NetworkX offers maximum flexibility at the expense of performance. Nodes, edges and attributes in NetworkX are represented by hash tables, called dictionaries in Python. Using hash tables for all graph elements allows for maximum flexibility, but imposes performance overhead in terms of a slower speed and a larger memory footprint than alternative representations. Additionally, since Python programs are interpreted, most operations in NetworkX take significantly longer time and require more memory than alternatives in compiled languages. Overall, we find SNAP to be one to two orders of magnitude faster than NetworkX, while also using around 50 times less memory. This means that, using the same hardware, SNAP can process networks that are 50 times larger or networks of the same size 100 times faster.
+	(https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5361061/)
 
 KINDS OF QUERIES
 ================
-1. Where are my followers located (geography) - can plot it on a map
-2. Use NLPTK, LDA from Scikit-learn to find out how many have tweeted something positive or negative about Kejriwal
+	SIMPLE (1 node based)
+	--------
+	Talking about just numbers
+	1. Graph of number of followers, following, likes, tweets in a interval
+	Talking about actual (of the above parameters)
+	2. Diff of followers, following in a given time period
+	3. Hashtags, mentions, links, tweets used in a given time period
+	2. Where are my followers located (geography) - can plot it on a map
+	
+	NETWORK BASED
+	-------------
+	1. Everything (Timeline of relationship) between A and B
+		-> An event could be "following","unfollowing","retweeting, liking, commenting, mention on status","common hashtags"
+	2. A's relation pattern with neighbors
+		-> How many follow/mention/retweet A but A doesn't follow/mention/retweet them and vice-versa
+		-> How many follow A and A also follows them. Out of them how many mentioned each other.
+		-> How many once followed A but then unfollowed and for reverse for A. (BRINGING OUT TIME EVOLVING PROPERTY)
+		-> How many using same hashtags.
+
+	WAY TO ORGANIZE THINGS OF INTEREST: 
+		-> Directional - follow, unfollow, mention, like, retweet
+		-> Non-Directional - hashtags, links, tweets
+		So in essence things we want to find out are:
+		* Things of a single user in a GIVEN TIME PERIOD
+		* Directional things between 2 users and common Non-Directional things between 2 users
+		* Find a set of users around A, with a given set of directional things or common non-directional things.
+		- So two things are important - time series and relationships.
+
+	NOTE: For a user, keep 2 nodes, 1 contains just his ids/screen_name and it points to another node containing all the details. The id node can then point to all other tweet nodes etc. This will be efficient because while traversing, the details will be fetched only if required, else you do simple traversal using ids. This is similar to what we were thinking of creating documents in Mongo and then linking ids.
+
+	NLP BASED
+	---------
+	Use NLPTK, LDA from Scikit-learn to find out how many have tweeted something positive or negative about Kejriwal
+
+
+Database/Graph engine choice
+============================
+
+	Using hadoop mapreduce applications
+	------------------------------------
+		http://www.ijcee.org/vol8/931-IT015.pdf
+			Datasets section:
+				Using Hadoop to store such huge data.
+				Filtering out spam tweets and automatic tweeters before analysis 
+		Twitter Analytics: A Big Data Management Perspective - http://delivery.acm.org/10.1145/2680000/2674029/p11-goonetilleke.pdf?ip=103.27.8.44&id=2674029&acc=ACTIVE%20SERVICE&key=045416EF4DDA69D9%2EF8E7F338DF557316%2E4D4702B0C3E38B35%2E4D4702B0C3E38B35&CFID=975281799&CFTOKEN=69250140&__acm__=1503395895_1fce972eda44252b5b0c4f9c6820a61c
+
+		https://ifarm.nl/erikt/papers/clin2013.pdf
+			3.3 Searching billions of tweets
+			We want to search in our tweet collection and retrieve relevant tweets quickly. This task presents
+			three challenges:
+			1. There is a lot of data: billions of tweets;
+			2. New tweets are constantly being added to the collection;
+			3. We want to be able to search in both tweet text and metadata.
+			Challenge 1 can be met by standard information retrieval systems. However, we do not know
+			how these systems would cope with challenge 2 and challenge 3. We expected that the two remaining
+			challenges would be hard for information retrieval systems and therefore we examined an alternative
+			solution.
+			We chose the parallel Apache Hadoop environment3
+			for searching in our tweet collection. By
+			searching in different parts of the data in parallel, we could process large volumes of data in a
+			reasonable time (challenge 1). Adding new tweets to the collection requires adding a new data
+			file but no global index needs to be updated (challenge 2). Finally, the general architecture of
+			Hadoop allowed for ad hoc search software being used, which enabled simultaneous search in text
+			and metadata (challenge 3)
+			We implemented search software in the programming language Java. The software searches
+			through one file (one hour of tweets) and returns tweets of which the text contains the required
+			keywords or of which the metadata satisfies the provided metadata requirements (see Table 2). The
+			Hadoop environment takes care of the parallelization if the user requires searching through more
+			than one hour of data. Searching is not fast: searching for a word in a day of tweets requires about
+			four minutes to complete. On the other hand, due to the parallelization, searching in larger time
+			frames takes less than a factor of four minutes per se: about six minutes for a month of data and
+			about half an hour for a year of data. We use a cache for retrieving searches which have been made
+			earlier.
+
+		http://www.ijrcar.com/Volume_2_Issue_5/v2i540.pdf
+			3.1.2 Map Reduce Analysis of Twitter Data –
+			a) Trending – By analysing individual tweets and looking for certain words amongst them and using mapreduce
+			we can filter out key words that are trending (or being used by a lot of users on twitters). It
+			gives view of what are the key topics.
+			b) Sentiment Analysis – looking for keywords about brands and analysing them to compute a score of
+			sentiment for that brand.
+
+			Key Features of Twitter Analytics Tools
+				1) Basic Stats – Number of Tweets, Followers etc.
+				2) Historical Data – Ability to provide historical information about various statistics.
+				3) Exporting Excel / PDF – Ability to export information on search results / user statistics to
+				excel or PDF for further analysis.
+				4) Additional Stats – Number of Mentions, Re tweets, Influence categories – which tell how
+				much impact a user’s tweet having on his network.
+				5) Follower Retention / Churn – Tool allows one to become aware of the followers who are no
+				longer following a user. It lists new followers added / left during the week.
+				6) Prediction – Certain tools allow prediction – what will the number of followers for a
+				particular user based on his tweeting history / some other metric.
+				7) Comparison – Allow comparison of twitter statics like tweets / followers / retweets between
+				two different users ids.
+				8) Ability to add other users / lists tracking – Allows users to add other users / lists of users /
+				communities for further tracking.
+				9) Geospatial visualization – Whether the tool provides map based information. Tweets shown
+				by location on a map to see a visual appeal of influence / other metrics.
+				10) Best Time to Tweet – Certain tools predict what will be the best time to tweet based on
+				history of user’s tweets and responses received on them.
+				11) Conversation Analysis – Semantic analysis on tweets.
+				12) Real-time Analytics – providing statics based on real-time data – tweets posted by followers
+				/ followed and their impact.
+				13) Schedule time to share Content – certain tools provide an option to send content at
+				predefined scheduled time or based on analytics release it to the followers for maximum
+				impact. 
+
+		MapReduce on MongoDb - http://api.mongodb.com/python/current/examples/aggregation.html?highlight=map%20reduce
+
+	
+	--------
+	MongoDB supports MapReduce, Neo4j doesn't (though can integrate with Spark)
+	Temporal database - only NoSQL supported is MarkLogic and even that is not open source. Support only for SQL.
+
+	Use hadoop for parallel processing like looking at all the tweets together to find something.
+	If we don't want to do too deep traversals on the network like shortest path from A to B, then document based structure would suffice (also you can do MapReduce on it)
+
+	As such, graph db can be emulated by document store or key-value store and vice-versa.https://neo4j.com/developer/graph-db-vs-nosql/
+	But While other databases compute relationships expensively at query time (using JOINS), a graph database stores connections as first class citizens, readily available for any “join-like” navigation operation.
+
+	Graph db are not fast for document-style lookups. Hence polyglot approaches have come up where people combine multiple dbs, each for a specific task. However this adds some complexity of consistency etc. (Example: Keeping edge relations in neo4j and actual documents in Mongo) There are dbs designed for polyglot approaches - ArangoDb.
+	https://stackoverflow.com/questions/37210765/neo4j-backed-by-mongodb-or-just-neo4j
+
+	OUR CASE: Use Neo4j as it is easier to model and query relationships. Capture time-evolving things using temporal indexing. For distributed computing integrate with GraphX. For node-specific queries continue to use Neo4j.
+
+
+Time evolving graphs
+=====================
+	In RDBMS:
+		https://en.wikipedia.org/wiki/Temporal_database
+		-> 2nd answer - need for validity intervals over snapshotting
+		https://softwareengineering.stackexchange.com/questions/323444/graph-database-keeping-historical-relationships
+
+	In Graphs:
+		1. Snapshotting
+		2. Time based versioning 
+			- http://iansrobinson.com/2014/05/13/time-based-versioned-graphs/
+			- Separate structure from state and keep "from" and "to" on edges between the structure and state nodes.
+		3. Multi-level indexing
+			- https://neo4j.com/blog/modeling-a-multilevel-index-in-neoj4/
+			- https://graphaware.com/neo4j/2014/08/20/graphaware-neo4j-timetree.html
+			- https://pdfs.semanticscholar.org/5b73/136ee6bdc55301f65bfd32d082e1ab501a5c.pdf
+
+
+	-> Snapshotting in MongoDB http://software.danielwatrous.com/representing-revision-data-in-mongodb/
+
+	-> Time based versioning in Neo4j http://iansrobinson.com/2014/05/13/time-based-versioned-graphs/
+
+
+	Papers:
+		-> https://pdfs.semanticscholar.org/9ceb/ad51323c1353a1a6c09f6346157decf8152d.pdf
+			Can't understand that well. But maintains the current graph and delta graphs (I think, depening on time, it chooses the appropriate delta)
+		-> https://event.cwi.nl/grades/2016/05-Iyer.pdf
+			The main idea in GraphTau is to treat time-evolving graphs as a series of consistent graph snapshots, and dynamic graph computations as a series of deterministic batch computations on discrete time intervals.
+			Computational model - Pause-Shift-Resume and Online Rectification. These seem to be algorithm specific (not for analytics as such)
+		-> http://delivery.acm.org/10.1145/2490000/2484442/a11-cattuto.pdf?ip=103.27.8.44&id=2484442&acc=OA&key=045416EF4DDA69D9%2EF8E7F338DF557316%2E4D4702B0C3E38B35%2E3D59905203607B9E&CFID=975281799&CFTOKEN=69250140&__acm__=1503593945_5fdf5358446e5e39f1023794131f4630
+			???
+
+	CURRENTLY DECIDED
+	-----------------
+	1. Time based versioning using our schema
+	2. Multi-level indexing to store the events so that range queries can be done efficiently.
