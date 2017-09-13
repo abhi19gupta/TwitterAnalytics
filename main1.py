@@ -43,8 +43,8 @@ def create_user(id, screen_name, user_info_dict, timestamp):
 		"(user) -[:INITIAL_STATE {on:{now}}]-> (state) "
 		"RETURN user,state",
 		{"id":id, "screen_name":screen_name, "user_info_dict":user_info_dict, "now":timestamp})
-	for result in results:
-		print(result["user"])
+	# for result in results:
+	# 	print(result["user"])
 
 def add_user_info_to_linked_list(user_id, user_info_dict, timestamp):
 	session.run(
@@ -161,17 +161,44 @@ def create_tweet(tweet):
 			"in_reply_to_status_id": in_reply_to_status_id})
 		# Can remove quoted_tweet field from tweet
 
+def clear_db():
+	session.run("MATCH (n) DETACH DELETE n")
+	for index in session.run("CALL db.indexes()"):
+		session.run("DROP "+index["description"])
+
+def create_indexes():
+	session.run("CREATE INDEX ON :USER(id)")
+	session.run("CREATE INDEX ON :TWEET(id)")
+	session.run("CREATE INDEX ON :HAHSTAG(text)")
+	session.run("CREATE INDEX ON :URL(url)")
+
 
 
 timestamp = datetime.now().timestamp()
+clear_db()
+create_indexes()
+
+start_time = datetime.now().timestamp()
+
+print(datetime.now().timestamp())
 create_user(1,"Abhishek",{"m1":"d1","m2":"d2"},timestamp)
+print(datetime.now().timestamp())
+create_user(10,"Abhishek",{"m1":"d1","m2":"d2"},timestamp)
+print(datetime.now().timestamp())
 add_user_info_to_linked_list(1,{"m1":"d3","m2":"d4"},timestamp+1)
+print(datetime.now().timestamp())
 add_user_info_to_linked_list(1,{"m1":"d5","m2":"d6"},timestamp+2)
+print(datetime.now().timestamp())
 update_followers(1, ["f1","f2"], timestamp+3)
+print(datetime.now().timestamp())
 update_followers(1, ["f2","f3"], timestamp+4)
+print(datetime.now().timestamp())
 update_followers(1, ["f1","f2"], timestamp+5)
+print(datetime.now().timestamp())
 update_followers(1, [], timestamp+6)
+print(datetime.now().timestamp())
 update_followers(1, ["f1","f4"], timestamp+7)
+print(datetime.now().timestamp())
 
 tweet1 = {"id":"tweet1",
 		"created_at":"Sun Aug 13 15:44:16 +0000 2017",
@@ -221,7 +248,10 @@ tweet5 = {"id":"tweet5",
 		"user":{"id":2},
 		"quoted_status":tweet3,
 		"in_reply_to_status_id":tweet1["id"]}
-create_tweet(tweet5) # testing retweet + another user (id=2)
+create_tweet(tweet5) # testing quoted_status + reply
+
+end_time = datetime.now().timestamp()
+print("Time taken: ", str(end_time-start_time))
 
 session.close()
 
