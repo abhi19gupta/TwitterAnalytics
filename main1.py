@@ -19,7 +19,7 @@ USER NETWORK
 	Relationships - CURR_STATE(from), INTITIAL_STATE(on), PREV(from,to)
 
 FOLLOWER NETWORK
-	Node labels - 
+	Node labels -
 	Relationships - FOLLOWS(from,to), FOLLOWED(from,to) // FOLLOWS.to will always be the last time data was collected
 
 TWEET NETWORK
@@ -38,7 +38,7 @@ def create_user(id, screen_name, user_info_dict, timestamp):
 		return
 	results = session.run(
 		"MERGE (user:USER {id:{id}}) " # not creating directly in case node already exists because of tweet network
-		"SET user.screen_name = {screen_name} " 
+		"SET user.screen_name = {screen_name} "
 		"CREATE (user) -[:CURR_STATE {from:{now}}]-> (state:USER_INFO {user_info_dict}), "
 		"(user) -[:INITIAL_STATE {on:{now}}]-> (state) "
 		"RETURN user,state",
@@ -96,14 +96,14 @@ def create_tweet(tweet):
 	if len(list(alreadyExists)) > 0:
 		print("create_tweet: Tweet [id:", tweet["id"], "] already exists! Aborting.")
 		return
-	
+
 	user_id = tweet["user"]["id"]
 	tweet['created_at'] = datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timestamp()
 
 	retweeted_status      = tweet.get("retweeted_status",None)
 	quoted_status         = tweet.get("quoted_status",None)
 	in_reply_to_status_id = tweet.get("in_reply_to_status_id",None)
-	
+
 	if retweeted_status is not None: # in case of retweet, it is better to rely on entities extracted from original tweet
 		create_tweet(retweeted_status)
 		flatten_tweet(tweet)
@@ -112,7 +112,7 @@ def create_tweet(tweet):
 			"MERGE (user:USER {id:{user_id}}) " # Following line will make the query slow, find an alternative
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because of some other tweet
 			"ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
-			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}) " 
+			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}) "
 			# Find node of original tweet and link
 			"WITH tweet "
 			"MATCH (original_tweet:TWEET {id:{original_tweet_id}}) "
@@ -157,7 +157,7 @@ def create_tweet(tweet):
 			"  CREATE (tweet) -[:REPLY_TO {on:{created_at}}]-> (in_reply_to_tweet) )",
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
 			"hashtags":hashtags, "mention_ids":mention_ids, "urls":urls,
-			"quoted_status":quoted_status, "quoted_status_id":quoted_status_id, 
+			"quoted_status":quoted_status, "quoted_status_id":quoted_status_id,
 			"in_reply_to_status_id": in_reply_to_status_id})
 		# Can remove quoted_tweet field from tweet
 
@@ -258,7 +258,7 @@ session.close()
 # DEAL WITH TRUNCATION
 
 '''
-TO DISCUSS: 
+TO DISCUSS:
 1. Not keeping a separate media node, because it is going to be separate for each tweet (represented by a url to the image source, so if 2 people upload same photo it will be 2 different links). Can only be reused in case of retweet in which we are anyways creating a pointer to the original tweet.
 2. In case of retweet, not directly linking to hashtags etc. Instead just linking to the retweet. If you want popularity of a hashtag, you can simply count number of incoming links to this retweeted tweet.
 3. Number of likes of a tweet will keep varying. Can't query all tweets now and then. Probably ignore this favorite count.

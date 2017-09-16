@@ -30,7 +30,7 @@ RUN : is the main node(root) under which the complete graph resides
 RUN has LAST_FRAME HAS_FRAME PREV to FRAME node
 '''
 delta = 5
-initial_time = 2
+# initial_time = 2
 
 def create_user(id, screen_name, user_info_dict, timestamp):
     alreadyExists = session.run(
@@ -49,33 +49,37 @@ def create_user(id, screen_name, user_info_dict, timestamp):
         {"id":id, "screen_name":screen_name, "user_info_dict":user_info_dict, "now":timestamp})
 
 
-def create_tweet_event(user_id, time_of_creation, tweet_id):
-    frame_start_time = (time_of_creation-initial_time)//delta;
+def create_tweet_event(user_id, timestamp, tweet_id):
+    frame_start_time = delta*(timestamp//delta);
+    frame_end_time = frame_start_time + delta -1;
     results = session.run(
         "MERGE (run :RUN)"
+        'ON CREATE SET run.label = "RUN" '
         "MERGE (run) -[edge :HAS_FRAME {start_time:{frame_start_time}}]-> (frame :FRAME)"
-        'ON CREATE SET run.label = "RUN", edge.label = "HAS_EDGE", frame.label = "FRAME"'
+        'ON CREATE SET edge.label = "HAS_FRAME", frame.label = "FRAME", frame.start = {frame_start_time}, frame.end = {frame_end_time}'
         "CREATE (frame) -[:TE_EDGE {time_stamp:{now}}]-> (te :TWEET_EVENT),"
         "(te) -[:TE_USER]-> (u :USER {id:{user_id}}),"
         "(te) -[:TE_TWEET]-> (t:TWEET {id:{tweet_id}})"
         'SET te.label = "TWEET_EVENT"'
         "RETURN u.id,t.id",
-        {"frame_start_time":frame_start_time,"user_id":user_id,"tweet_id":tweet_id,"now":time_of_creation}
+        {"frame_start_time":frame_start_time,"user_id":user_id,"tweet_id":tweet_id,"now":timestamp, "frame_end_time":frame_end_time}
     )
     for result in results:
         print(result)
 def update_followers(user_id, follower_ids, timestamp):
-    frame_start_time = (timestamp-initial_time)//delta;
+    frame_start_time = delta*(timestamp//delta);
+    frame_end_time = frame_start_time + delta-1;
     # First, for all followers in argument, either create FOLLOWS or update the "to" field of FOLLOWS to current timestamp
     session.run(
         "MATCH (user:USER {id:{user_id}}) "
         "UNWIND {follower_ids} AS follower_id "
         "MERGE (run :RUN) "
+        'ON CREATE SET run.label = "RUN"'
         "MERGE (run) -[edge :HAS_FRAME {start_time:{frame_start_time}}]-> (frame :FRAME) "
-        'ON CREATE SET run.label = "RUN", edge.label = "HAS_EDGE", frame.label = "FRAME" '
+        'ON CREATE SET edge.label = "HAS_FRAME", frame.label = "FRAME", frame.start = {frame_start_time}, frame.end = {frame_end_time} '
         "MERGE (follower:USER {id:follower_id}) " # keep this merge separate from below o/w multiple nodes can be created
         "MERGE (user) <-[follows_rel:FOLLOWS]- (follower) "
-        "ON CREATE SET follows_rel.made = 1 "
+        "ON CREATE SET follows_rel.made = 1 " # necessary to create this dummy property as cypher presently doesn't support ON CREATE CREATE.
         "ON MATCH SET follows_rel.to = {now} "
         "FOREACH (x IN CASE WHEN follows_rel.made=1 THEN [1] ELSE [] END | "
         "SET follows_rel.from = {now}, follows_rel.to = {now}) "
@@ -83,14 +87,21 @@ def update_followers(user_id, follower_ids, timestamp):
         "(fe) -[:FE_FOLLOWED]-> (user), "
         '(fe) -[:FE_FOLLOWS]-> (follower)) '
         "REMOVE follows_rel.made ",
-        {"user_id":user_id, "follower_ids":follower_ids, "now":timestamp, "frame_start_time":frame_start_time})
+        {"user_id":user_id, "follower_ids":follower_ids, "now":timestamp, "frame_start_time":frame_start_time, "frame_end_time":frame_end_time})
     # Now, for all FOLLOWS whose "to" field is not current timestamp, make them FOLLOWED
     session.run(
         "MATCH (user:USER {id:{user_id}}) <-[follows_rel:FOLLOWS]- (follower:USER) "
         "WHERE follows_rel.to <> {now} "
         "CREATE (user) <-[:FOLLOWED {from:follows_rel.from, to:follows_rel.to}]- (follower) "
-        "DELETE follows_rel", # Can change these 2 statements to a single SET statement
-        {"user_id":user_id, "now":timestamp})
+        "MERGE (run :RUN) "
+        'ON CREATE SET run.label = "RUN" '
+        "MERGE (run) -[edge :HAS_FRAME {start_time:{frame_start_time}}]-> (frame :FRAME) "
+        'ON CREATE SET edge.label = "HAS_FRAME", frame.label = "FRAME", frame.start = {frame_start_time}, frame.end = {frame_end_time} '
+        'CREATE (frame) -[:UFE_EDGE {time_stamp:{now}}]-> (ufe :UNFOLLOW_EVENT {label:"UNFOLLOW_EVENT"}),'
+        "(ufe) -[:UFE_UNFOLLOWED]-> (user),"
+        "(ufe) -[:UFE_UNFOLLOWS]-> (follower)"
+        "DELETE follows_rel",
+        {"user_id":user_id, "now":timestamp, "frame_start_time":frame_start_time, "frame_end_time":frame_end_time})
 
 
 def clear_db():
@@ -107,6 +118,8 @@ create_user(4,"Manoj",{"m1":"d1","m2":"d2"},2)
 update_followers(1,[3],5)
 update_followers(1,[3],8)
 update_followers(1,[3,4],9)
+update_followers(1,[3],13)
+
 
 session.close()
 
