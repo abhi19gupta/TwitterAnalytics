@@ -27,36 +27,45 @@ TWEET NETWORK
 	Relationships - TWEETED(on), INFO, REPLY_TO(on), RETWEET_OF(on), QUOTED(on), HAS_MENTION(on), HAS_HASHTAG(on), //HAS_MEDIA(on)//, HAS_URL(on), HAS_PLACE(on)
 '''
 
+# Modify json fields as neo4j doesn't allow nested property types i.e. only primitive
+# types and their arrays are allowed to be stored as a property on a node
+def flatten_json(json_obj):
+	json_fields = []
+	for key in json_obj:
+		if type(json_obj[key]) is dict:
+			json_obj[key] = json.dumps(json_obj[key])
+			json_fields.append(key)
+	json_obj["json_fields"] = json_fields # while fetching convert these fields back to jsons
+
+################################################################
+
 # CAN MAKE THE FOLLOWING CHANGE - For user_info no need of TO and FROM, just keep ON because we create a new node everytime and we have information only of that timestamp.
-def create_user(id, screen_name, user_info_dict, timestamp):
+def update_user(id, user_info_dict, timestamp):
 	alreadyExists = session.run(
 		"MATCH (user:USER {id:{id}}) -[:CURR_STATE]-> () "
 		"RETURN user",
 		{"id":id})
-	if len(list(alreadyExists)) > 0:
-		print("create_user: User [id:", id,"] already exists! Aborting.")
-		return
-	results = session.run(
-		"MERGE (user:USER {id:{id}}) " # not creating directly in case node already exists because of tweet network
-		"SET user.screen_name = {screen_name} "
-		"CREATE (user) -[:CURR_STATE {from:{now}}]-> (state:USER_INFO {user_info_dict}), "
-		"(user) -[:INITIAL_STATE {on:{now}}]-> (state) "
-		"RETURN user,state",
-		{"id":id, "screen_name":screen_name, "user_info_dict":user_info_dict, "now":timestamp})
-	# for result in results:
-	# 	print(result["user"])
-
-def add_user_info_to_linked_list(user_id, user_info_dict, timestamp):
-	session.run(
+	flatten_json(user_info_dict)
+	if len(list(alreadyExists)) > 0: # if user already exists then add info to linked list
+		session.run(
 		# Don't do the following, it will match nothing if there is no current state
 		# "MATCH (user:User {id:{user_id}}) -[curr_state:CURR_STATE]-> (prev_user_info:USER_INFO) "
-		"MATCH (user:USER {id:{user_id}})"
+		"MATCH (user:USER {id:{user_id}}) "
 		"CREATE (user) -[:CURR_STATE {from:{now}}]-> (curr_user_info:USER_INFO {user_info_dict}) "
 		"WITH user, curr_user_info "
 		"MATCH (curr_user_info) <-[:CURR_STATE]- (user) -[prev_state_rel:CURR_STATE]-> (prev_user_info) "
-		"CREATE (curr_user_info) -[:PREV {from:prev_state_rel.from, to:{now}}]-> (prev_user_info)"
+		"CREATE (curr_user_info) -[:PREV {from:prev_state_rel.from, to:{now}}]-> (prev_user_info) "
 		"DELETE prev_state_rel ",
-		{"user_id":user_id, "user_info_dict":user_info_dict, "now":timestamp})
+		{"user_id":id, "user_info_dict":user_info_dict, "now":timestamp})
+	else:
+		session.run(
+		"MERGE (user:USER {id:{id}}) " # not creating directly in case node already exists because of tweet network
+		"CREATE (user) -[:CURR_STATE {from:{now}}]-> (state:USER_INFO {user_info_dict}), "
+		"  (user) -[:INITIAL_STATE {on:{now}}]-> (state) "
+		"RETURN user,state",
+		{"id":id, "user_info_dict":user_info_dict, "now":timestamp})
+		# for result in results:
+		# 	print(result["user"])
 
 def update_followers(user_id, follower_ids, timestamp):
 	# First, for all followers in argument, either create FOLLOWS or update the "to" field of FOLLOWS to current timestamp
@@ -78,17 +87,6 @@ def update_followers(user_id, follower_ids, timestamp):
 
 def create_tweet(tweet):
 
-	# Modify tweet fields as neo4j doesn't allow nested property types i.e. only primitive
-	# types and their arrays are allowed to be stored as a property on a node
-	def flatten_tweet(tweet):
-		json_fields = []
-		for key in tweet:
-			if type(tweet[key]) is dict:
-				tweet[key] = json.dumps(tweet[key])
-				json_fields.append(key)
-		tweet["json_fields"] = json_fields # while fetching convert these fields back to jsons
-
-
 	alreadyExists = session.run(
 		"MATCH (tweet:TWEET {id:{tweet_id}}) -[:INFO]-> () "
 		"RETURN tweet",
@@ -106,7 +104,7 @@ def create_tweet(tweet):
 
 	if retweeted_status is not None: # in case of retweet, it is better to rely on entities extracted from original tweet
 		create_tweet(retweeted_status)
-		flatten_tweet(tweet)
+		flatten_json(tweet)
 		session.run(
 			# Create node for this tweet
 			"MERGE (user:USER {id:{user_id}}) " # Following line will make the query slow, find an alternative
@@ -130,7 +128,7 @@ def create_tweet(tweet):
 			create_tweet(tweet["quoted_status"])
 
 		quoted_status_id = None if quoted_status is None else quoted_status["id"]
-		flatten_tweet(tweet)
+		flatten_json(tweet)
 		session.run(
 			# Create node for this tweet
 			"MERGE (user:USER {id:{user_id}}) " # Following line will make the query slow, find an alternative
@@ -161,6 +159,7 @@ def create_tweet(tweet):
 			"in_reply_to_status_id": in_reply_to_status_id})
 		# Can remove quoted_tweet field from tweet
 
+################################################################
 def clear_db():
 	session.run("MATCH (n) DETACH DELETE n")
 	for index in session.run("CALL db.indexes()"):
@@ -171,23 +170,24 @@ def create_indexes():
 	session.run("CREATE INDEX ON :TWEET(id)")
 	session.run("CREATE INDEX ON :HASHTAG(text)")
 	session.run("CREATE INDEX ON :URL(url)")
+################################################################
+
+def getDateFromTimestamp(timestamp):
+	return datetime.fromtimestamp(timestamp).strftime('%a %b %d %H:%M:%S +0000 %Y')
 
 
-
-timestamp = datetime.now().timestamp()
+timestamp = 0
 clear_db()
 create_indexes()
 
 start_time = datetime.now().timestamp()
 
 print(datetime.now().timestamp())
-create_user(1,"Abhishek",{"m1":"d1","m2":"d2"},timestamp)
+update_user(1,{"m1":"d1","m2":"d2"},timestamp)
 print(datetime.now().timestamp())
-create_user(10,"Abhishek",{"m1":"d1","m2":"d2"},timestamp)
+update_user(1,{"m1":"d3","m2":"d4"},timestamp+1)
 print(datetime.now().timestamp())
-add_user_info_to_linked_list(1,{"m1":"d3","m2":"d4"},timestamp+1)
-print(datetime.now().timestamp())
-add_user_info_to_linked_list(1,{"m1":"d5","m2":"d6"},timestamp+2)
+update_user(1,{"m1":"d5","m2":"d6"},timestamp+2)
 print(datetime.now().timestamp())
 update_followers(1, ["f1","f2"], timestamp+3)
 print(datetime.now().timestamp())
@@ -201,7 +201,7 @@ update_followers(1, ["f1","f4"], timestamp+7)
 print(datetime.now().timestamp())
 
 tweet1 = {"id":"tweet1",
-		"created_at":"Sun Aug 13 15:44:16 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+8),
 		"details":"details1",
 		"entities":{
 			"hashtags":[{"text":"hash1"},{"text":"hash2"}],
@@ -211,7 +211,7 @@ tweet1 = {"id":"tweet1",
 create_tweet(tweet1) # basic creation test
 
 tweet2 = {"id":"tweet2",
-		"created_at":"Sun Aug 13 15:44:18 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+9),
 		"details":"details2",
 		"entities":{
 			"hashtags":[{"text":"hash1"},{"text":"hash3"}],
@@ -221,7 +221,7 @@ tweet2 = {"id":"tweet2",
 create_tweet(tweet2) # testing creation of new and reuse of old
 
 tweet3 = {"id":"tweet3",
-		"created_at":"Sun Aug 13 15:44:20 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+10),
 		"details":"details3",
 		"entities":{
 			"hashtags":[],
@@ -231,7 +231,7 @@ tweet3 = {"id":"tweet3",
 # create_tweet(tweet3) # testing empty list
 
 tweet4 = {"id":"tweet4",
-		"created_at":"Sun Aug 13 15:44:22 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+11),
 		"details":"details4",
 		"entities":tweet3["entities"],
 		"user":{"id":2},
@@ -239,7 +239,7 @@ tweet4 = {"id":"tweet4",
 create_tweet(tweet4) # testing retweet + another user (id=2)
 
 tweet5 = {"id":"tweet5",
-		"created_at":"Sun Aug 13 15:44:24 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+12),
 		"details":"details5",
 		"entities":{
 			"hashtags":[],
@@ -252,8 +252,6 @@ create_tweet(tweet5) # testing quoted_status + reply
 
 end_time = datetime.now().timestamp()
 print("Time taken: ", str(end_time-start_time))
-
-session.close()
 
 # DEAL WITH TRUNCATION
 

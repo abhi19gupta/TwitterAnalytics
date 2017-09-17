@@ -87,7 +87,7 @@ def fetch_persist_users(user_screen_names, time):
 	time_str = str(time).replace(":","-")
 	for user_info in users_info:
 		screen_name = user_info['screen_name']
-		f = open('user_info/'+screen_name+"_"+time_str+'.txt', 'w')
+		f = open('data/user_info/'+screen_name+"_"+time_str+'.txt', 'w')
 		f.write(json.dumps(user_info,indent=4,cls=DateTimeEncoder))
 		f.close()
 		# user_info_to_persist = get_data_to_persist(user_info,time)
@@ -114,22 +114,23 @@ def fetch_persist_tweets(user_screen_names,time):
 		# since_id_query = db.max_ids.find_one({'screen_name':screen_name})
 		# since_id = 1 if since_id_query is None else since_id_query['max_id']
 		since_id = 1
-		if (os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/max_ids/' + screen_name + ".txt")):
-			f_max_id = open('max_ids/' + screen_name + ".txt", 'r')
+		if (os.path.exists(os.path.dirname(os.path.realpath(__file__)) + '/data/max_ids/' + screen_name + ".txt")):
+			f_max_id = open('data/max_ids/' + screen_name + ".txt", 'r')
 			since_id = int(f_max_id.read())
 			f_max_id.close()
 		return since_id
 
 	def persistMaxId(screen_name,max_id):
 		# db.max_ids.update_one({'screen_name':screen_name},{'$set':{'max_id':next_since_id}},upsert=True)
-		f_max_id = open('max_ids/' + screen_name + ".txt", 'w')
+		f_max_id = open('data/max_ids/' + screen_name + ".txt", 'w')
 		f_max_id.write(str(max_id))
 		f_max_id.close()
 
 	for screen_name in user_screen_names:
 		print('Fetching tweets for '+screen_name)
 		time_str = str(time).replace(":","-")
-		f = open('tweets/'+screen_name+"_"+time_str+".txt", 'w')
+		f = open('data/tweets/'+screen_name+"_"+time_str+".txt", 'w')
+		f.write('[\n') # creating a list of list
 		# f1 = open('tweets_persisted/'+screen_name+"_"+time_str+".txt", 'w')
 		# Find the tweet id beyond which to fetch new tweets
 		since_id = getMaxId(screen_name)
@@ -140,7 +141,7 @@ def fetch_persist_tweets(user_screen_names,time):
 		while(len(tweets)!=0):
 			print('\tFetched '+str(len(tweets)))
 			f.write(json.dumps(tweets,indent=4,cls=DateTimeEncoder))
-			f.write('\n')
+			f.write(',\n')
 			# tweets_to_persist = get_data_to_persist(tweets,time)
 			# f1.write(json.dumps(tweets_to_persist,indent=4,cls=DateTimeEncoder))
 			# f1.write('\n')
@@ -148,6 +149,7 @@ def fetch_persist_tweets(user_screen_names,time):
 			tweets = twitter.statuses.user_timeline(screen_name=screen_name,count=200,trim_user='true',
 				include_rts='true',exclude_replies='false',max_id=min_id-1,since_id=since_id)
 			# db.tweets.insert_many(tweets_to_persist)
+		f.write('[]]') # adding an empty list at the end because of the last comma
 		f.close()
 		# f1.close()
 	print("Done with tweets")
@@ -159,10 +161,10 @@ def fetch_persist_friends_and_followers(user_screen_names,time):
 		follower_ids = twitter.followers.ids(screen_name=screen_name)
 		friends_ids = twitter.friends.ids(screen_name=screen_name)
 		print('\t'+str(len(follower_ids['ids'])), str(len(friends_ids['ids'])))
-		f = open('user_followers/'+screen_name+"_"+time_str+'.txt', 'w')
+		f = open('data/user_followers/'+screen_name+"_"+time_str+'.txt', 'w')
 		f.write(json.dumps(follower_ids['ids']))
 		f.close()
-		f = open('user_friends/'+screen_name+"_"+time_str+'.txt', 'w')
+		f = open('data/user_friends/'+screen_name+"_"+time_str+'.txt', 'w')
 		f.write(json.dumps(friends_ids['ids']))
 		f.close()
 	print('Done with followers/friends')
@@ -180,7 +182,9 @@ def clear_everyting():
 	db.users.drop()
 	db.tweets.drop()
 	db.max_ids.drop()
-	for folder_name in ['user_info','user_info_persisted','tweets','tweets_persisted']:
+	folders = ['data/max_ids','data/tweets','data/tweets_persisted','data/user_followers','data/user_friends',
+	'data/user_info','data/user_info_persisted',]
+	for folder_name in folders:
 		clear_folder(folder_name)
 
 
@@ -220,11 +224,14 @@ def extract_hash_tags(screen_name,date_start,date_end):
 
 # clear_everyting()
 now = datetime.datetime.now()
+with open('data/timestamps.txt','a') as f:
+	f.write(str(now).replace(":","-")+'\n')
+
 user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
 fetch_persist_users(','.join(user_screen_names),now)
 fetch_persist_tweets(user_screen_names,now)
+fetch_persist_friends_and_followers(user_screen_names,now)
+
 # plot_user_field('narendramodi',now-datetime.timedelta(days=1),now,
 # 	['favourites_count','followers_count','friends_count','statuses_count'])
 # extract_hash_tags('iamsrk',now-datetime.timedelta(days=100),now)
-
-fetch_persist_friends_and_followers(user_screen_names,now)
