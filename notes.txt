@@ -27,7 +27,7 @@ https://dev.twitter.com/overview/api/tweets
 	- entities (parsed out of the text of the Tweet) (https://dev.twitter.com/overview/api/entities)
 	- favorite_count (how many users have liked)
 	- id_str (id of the tweet, not of user)
-	- place (When present, indicates that the tweet is associated (but not necessarily originating from) a Place - like city, country)
+	- place (When present, indicates that the tweet is associated (but not necessarily originating from) a Place - like city, country) (They can be attached to Tweets by specifying a place_id when tweeting. Tweets associated with places are not necessarily issued from that location but could also potentially be about that location.)
 	- possibly_sensitive (This field only surfaces when a Tweet contains a link. The meaning of the field doesn’t pertain to the Tweet content itself, but instead it is an indicator that the URL contained in the Tweet may contain content or media identified as sensitive content.)
 	- retweet_count (Number of times this Tweet has been retweeted.)
 	- retweeted_status (Users can amplify the broadcast of Tweets authored by other users by retweeting . Retweets can be distinguished from typical Tweets by the existence of a retweeted_status attribute. This attribute contains a representation of the original Tweet that was retweeted. Note that retweets of retweets do not show representations of the intermediary retweet, but only the original Tweet. (Users can also unretweet a retweet they created by deleting their retweet.))
@@ -393,3 +393,9 @@ Time evolving graphs
 	-----------------
 	1. Time based versioning using our schema
 	2. Multi-level indexing to store the events so that range queries can be done efficiently.
+
+
+	Twitter analytics
+	=================
+	Having follows relationship in the network will slow it down.
+		Pg. 5 http://www.pewinternet.org/files/2014/02/How-we-analyzed-Twitter-social-media-networks.pdf

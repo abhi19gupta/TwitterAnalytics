@@ -25,7 +25,19 @@ FOLLOWER NETWORK
 TWEET NETWORK
 	Node labels - TWEET(id,created_at,is_active), TWEET_INFO(dict), HASHTAG(text), URL(url,expanded_url), //MEDIA(url, media_url)//, PLACE(id,name,country) -> This is not the location of tweet but the location with which the tweet is tagged (could be about it)
 	Relationships - TWEETED(on), INFO, REPLY_TO(on), RETWEET_OF(on), QUOTED(on), HAS_MENTION(on), HAS_HASHTAG(on), //HAS_MEDIA(on)//, HAS_URL(on), HAS_PLACE(on)
+
+FRAME NETWORK
+	Node labels - RUN, FRAME(start_t,end_t), TWEET_EVENT(timestamp), FOLLOW_EVENT(timestamp), UNFOLLOW_EVENT(timestamp)
+	Relationships - HAS_FRAME, HAS_TWEET, TE_USER, TE_TWEET, HAS_FOLLOW, FE_FOLLOWED, FE_FOLLOWS, HAS_UNFOLLOW, UFE_UNFOLLOWED, UFE_UNFOLLOWS
 '''
+
+FRAME_DELTA_T = 5
+
+def getFrameStartEndTime(timestamp):
+	start = FRAME_DELTA_T*(timestamp//FRAME_DELTA_T)
+	end = start + FRAME_DELTA_T - 1
+	return (start,end)
+
 
 # CAN MAKE THE FOLLOWING CHANGE - For user_info no need of TO and FROM, just keep ON because we create a new node everytime and we have information only of that timestamp.
 def create_user(id, screen_name, user_info_dict, timestamp):
@@ -40,7 +52,7 @@ def create_user(id, screen_name, user_info_dict, timestamp):
 		"MERGE (user:USER {id:{id}}) " # not creating directly in case node already exists because of tweet network
 		"SET user.screen_name = {screen_name} "
 		"CREATE (user) -[:CURR_STATE {from:{now}}]-> (state:USER_INFO {user_info_dict}), "
-		"(user) -[:INITIAL_STATE {on:{now}}]-> (state) "
+		"  (user) -[:INITIAL_STATE {on:{now}}]-> (state) "
 		"RETURN user,state",
 		{"id":id, "screen_name":screen_name, "user_info_dict":user_info_dict, "now":timestamp})
 	# for result in results:
@@ -59,22 +71,35 @@ def add_user_info_to_linked_list(user_id, user_info_dict, timestamp):
 		{"user_id":user_id, "user_info_dict":user_info_dict, "now":timestamp})
 
 def update_followers(user_id, follower_ids, timestamp):
+	(frame_start_t, frame_end_t) = getFrameStartEndTime(timestamp)
 	# First, for all followers in argument, either create FOLLOWS or update the "to" field of FOLLOWS to current timestamp
 	session.run(
 		"MATCH (user:USER {id:{user_id}}) "
 		"UNWIND {follower_ids} AS follower_id "
 		"MERGE (follower:USER {id:follower_id}) " # keep this merge separate from below o/w multiple nodes can be created
 		"MERGE (user) <-[follows_rel:FOLLOWS]- (follower) "
-		"ON CREATE SET follows_rel.from = {now}, follows_rel.to = {now} "
-		"ON MATCH SET follows_rel.to = {now}",
-		{"user_id":user_id, "follower_ids":follower_ids, "now":timestamp})
+		"  ON CREATE SET follows_rel.from = {now}, follows_rel.to = {now} "
+		"  ON MATCH SET follows_rel.to = {now} "
+		"FOREACH (x IN CASE WHEN follows_rel.from <> {now} THEN [] ELSE [1] END | "
+		"  MERGE (run:RUN) "
+		"  MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
+		"  CREATE (frame) -[:HAS_FOLLOW]-> (fe:FOLLOW_EVENT {timestamp:{now}}), "
+        "    (fe) -[:FE_FOLLOWED]-> (user), "
+        "    (fe) -[:FE_FOLLOWS]-> (follower)) ",
+		{"user_id":user_id, "follower_ids":follower_ids, "now":timestamp, "frame_start_t":frame_start_t, "frame_end_t":frame_end_t})
 	# Now, for all FOLLOWS whose "to" field is not current timestamp, make them FOLLOWED
 	session.run(
+		"MERGE (run:RUN) "
+		"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
+		"WITH run, frame "
 		"MATCH (user:USER {id:{user_id}}) <-[follows_rel:FOLLOWS]- (follower:USER) "
-		"WHERE follows_rel.to <> {now} "
-		"CREATE (user) <-[:FOLLOWED {from:follows_rel.from, to:follows_rel.to}]- (follower) "
-		"DELETE follows_rel", # Can change these 2 statements to a single SET statement
-		{"user_id":user_id, "now":timestamp})
+		"  WHERE follows_rel.to <> {now} "
+		"CREATE (user) <-[:FOLLOWED {from:follows_rel.from, to:follows_rel.to}]- (follower), "
+		"  (frame) -[:HAS_UNFOLLOW]-> (ufe:UNFOLLOW_EVENT {timestamp:{now}}), "
+        "  (ufe) -[:UFE_UNFOLLOWED]-> (user), "
+        "  (ufe) -[:UFE_UNFOLLOWS]-> (follower) "
+		"DELETE follows_rel ", # Can change these 2 statements to a single SET statement
+		{"user_id":user_id, "now":timestamp, "frame_start_t":frame_start_t, "frame_end_t":frame_end_t})
 
 def create_tweet(tweet):
 
@@ -100,6 +125,8 @@ def create_tweet(tweet):
 	user_id = tweet["user"]["id"]
 	tweet['created_at'] = datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timestamp()
 
+	(frame_start_t, frame_end_t) = getFrameStartEndTime(tweet['created_at'])
+	
 	retweeted_status      = tweet.get("retweeted_status",None)
 	quoted_status         = tweet.get("quoted_status",None)
 	in_reply_to_status_id = tweet.get("in_reply_to_status_id",None)
@@ -108,17 +135,22 @@ def create_tweet(tweet):
 		create_tweet(retweeted_status)
 		flatten_tweet(tweet)
 		session.run(
-			# Create node for this tweet
+			# Create node for this tweet and frames
+			"MERGE (run:RUN) "
+			"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
 			"MERGE (user:USER {id:{user_id}}) " # Following line will make the query slow, find an alternative
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because of some other tweet
-			"ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
-			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}) "
+			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
+			"  (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}),"
+			"  (te) -[:TE_USER]-> (user),"
+			"  (te) -[:TE_TWEET]-> (tweet) "
 			# Find node of original tweet and link
 			"WITH tweet "
 			"MATCH (original_tweet:TWEET {id:{original_tweet_id}}) "
 			"CREATE (tweet) -[:RETWEET_OF {on:{created_at}}]-> (original_tweet) ",
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
-			"original_tweet_id":retweeted_status["id"]})
+			"original_tweet_id":retweeted_status["id"], "frame_start_t":frame_start_t, "frame_end_t":frame_end_t})
 			# Can remove the retweeted_status field from tweet
 	else:
 		# Extract all requited information before flattening
@@ -132,11 +164,16 @@ def create_tweet(tweet):
 		quoted_status_id = None if quoted_status is None else quoted_status["id"]
 		flatten_tweet(tweet)
 		session.run(
-			# Create node for this tweet
+			# Create node for this tweet and frames
+			"MERGE (run:RUN) "
+			"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
 			"MERGE (user:USER {id:{user_id}}) " # Following line will make the query slow, find an alternative
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already exists because of some other tweet
-			"ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
-			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}) "
+			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
+			"  (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}), "
+			"  (te) -[:TE_USER]-> (user),"
+			"  (te) -[:TE_TWEET]-> (tweet) "
 			# Create links to hashtags, mentions, urls
 			"FOREACH ( hashtag in {hashtags} | "
 			"  MERGE (hashtag_node:HASHTAG {text:hashtag}) "
@@ -158,9 +195,10 @@ def create_tweet(tweet):
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
 			"hashtags":hashtags, "mention_ids":mention_ids, "urls":urls,
 			"quoted_status":quoted_status, "quoted_status_id":quoted_status_id,
-			"in_reply_to_status_id": in_reply_to_status_id})
+			"in_reply_to_status_id": in_reply_to_status_id, "frame_start_t":frame_start_t, "frame_end_t":frame_end_t})
 		# Can remove quoted_tweet field from tweet
 
+################################################################
 def clear_db():
 	session.run("MATCH (n) DETACH DELETE n")
 	for index in session.run("CALL db.indexes()"):
@@ -171,10 +209,13 @@ def create_indexes():
 	session.run("CREATE INDEX ON :TWEET(id)")
 	session.run("CREATE INDEX ON :HASHTAG(text)")
 	session.run("CREATE INDEX ON :URL(url)")
+################################################################
+
+def getDateFromTimestamp(timestamp):
+	return datetime.fromtimestamp(timestamp).strftime('%a %b %d %H:%M:%S +0000 %Y')
 
 
-
-timestamp = datetime.now().timestamp()
+timestamp = 0
 clear_db()
 create_indexes()
 
@@ -201,7 +242,7 @@ update_followers(1, ["f1","f4"], timestamp+7)
 print(datetime.now().timestamp())
 
 tweet1 = {"id":"tweet1",
-		"created_at":"Sun Aug 13 15:44:16 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+8),
 		"details":"details1",
 		"entities":{
 			"hashtags":[{"text":"hash1"},{"text":"hash2"}],
@@ -211,7 +252,7 @@ tweet1 = {"id":"tweet1",
 create_tweet(tweet1) # basic creation test
 
 tweet2 = {"id":"tweet2",
-		"created_at":"Sun Aug 13 15:44:18 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+9),
 		"details":"details2",
 		"entities":{
 			"hashtags":[{"text":"hash1"},{"text":"hash3"}],
@@ -221,7 +262,7 @@ tweet2 = {"id":"tweet2",
 create_tweet(tweet2) # testing creation of new and reuse of old
 
 tweet3 = {"id":"tweet3",
-		"created_at":"Sun Aug 13 15:44:20 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+10),
 		"details":"details3",
 		"entities":{
 			"hashtags":[],
@@ -231,7 +272,7 @@ tweet3 = {"id":"tweet3",
 # create_tweet(tweet3) # testing empty list
 
 tweet4 = {"id":"tweet4",
-		"created_at":"Sun Aug 13 15:44:22 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+11),
 		"details":"details4",
 		"entities":tweet3["entities"],
 		"user":{"id":2},
@@ -239,7 +280,7 @@ tweet4 = {"id":"tweet4",
 create_tweet(tweet4) # testing retweet + another user (id=2)
 
 tweet5 = {"id":"tweet5",
-		"created_at":"Sun Aug 13 15:44:24 +0000 2017",
+		"created_at":getDateFromTimestamp(timestamp+12),
 		"details":"details5",
 		"entities":{
 			"hashtags":[],
@@ -262,4 +303,17 @@ TO DISCUSS:
 1. Not keeping a separate media node, because it is going to be separate for each tweet (represented by a url to the image source, so if 2 people upload same photo it will be 2 different links). Can only be reused in case of retweet in which we are anyways creating a pointer to the original tweet.
 2. In case of retweet, not directly linking to hashtags etc. Instead just linking to the retweet. If you want popularity of a hashtag, you can simply count number of incoming links to this retweeted tweet.
 3. Number of likes of a tweet will keep varying. Can't query all tweets now and then. Probably ignore this favorite count.
+'''
+
+'''
+QUERIES
+=======
+All events between t1 and t2
+----------------------------
+WITH 1 AS t1, 4 AS t2 
+MATCH (run:RUN) -[:HAS_FRAME]-> (frame:FRAME)
+WHERE frame.end_t >= t1 AND frame.start_t <= t2 
+MATCH (frame) -[]-> (event) -[]-> (actor)
+WHERE event.timestamp <= t2 AND event.timestamp >= t1
+RETURN frame,event,actor
 '''
