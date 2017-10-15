@@ -36,7 +36,7 @@
 #### Indexing ####
 # db.profiles.create_index([('user_id', pymongo.ASCENDING)], unique=True)
 
-import json, datetime, os, shutil, pymongo, operator
+import json, datetime, os, shutil, pymongo, operator, time
 import matplotlib.pyplot as plt
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from pymongo import MongoClient
@@ -53,7 +53,7 @@ CONSUMER_KEY = 'QC5nVHYoVYdNbl0oQeGExCmWW'
 CONSUMER_SECRET = 'e5EUAXqpYSjBZbhEpnqVCMd66WlSJTUJSCUdtQ5dIBmVlWYTIL'
 oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
 twitter = Twitter(auth=oauth)
-
+'''
 # DATABASE SCHEMA
 user_fields = ['created_at','description','entities','favourites_count','followers_count','friends_count','id','id_str',
 'listed_count','location','name','profile_image_url','protected','screen_name','statuses_count','time_zone','url',
@@ -62,25 +62,66 @@ user_fields = ['created_at','description','entities','favourites_count','followe
 tweet_fields = ['coordinates','created_at','entities','favorite_count','id','id_str','place','possibly_sensitive',
 'retweet_count','retweeted_status','text','user','in_reply_to_screen_name','in_reply_to_status_id_str',
 'in_reply_to_user_id_str','withheld_copyright','withheld_in_countries','withheld_scope']
-
+'''
 # Default json encoder is not able to serialize datetime
 class DateTimeEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, datetime.datetime):
-            return o.isoformat()
+	def default(self, o):
+		if isinstance(o, datetime.datetime):
+			return o.isoformat()
 
-        return json.JSONEncoder.default(self, o)
+		return json.JSONEncoder.default(self, o)
 
 ################### TWITTER API FUNCTIONS HERE ####################
 
+WINDOW_LEN = 17
+# each element of list is a pair containing (number of requests made in that 1-minute window, xth minute)
+COUNTS_DICT = {'USERS_LOOKUP':[], 'TWEETS':[], 'FOLLOWERS':[], 'FRIENDS':[]}
+COUNTS_LIMIT = {'USERS_LOOKUP':300, 'TWEETS':1500, 'FOLLOWERS':15, 'FRIENDS':15}
+
+def wait_for_rate_limit(type_):
+	COUNTS = COUNTS_DICT[type_]
+	LIMIT = COUNTS_LIMIT[type_]
+	while(True):
+		curr_minute = int(datetime.datetime.now().timestamp())//60
+		while (len(COUNTS)>0 and COUNTS[0][1] < curr_minute-WINDOW_LEN ):
+			del(COUNTS[0])
+		cnts = sum([x[0] for x in COUNTS])
+		if(cnts < LIMIT):
+			break
+		time.sleep(10) # sleep for 10 seconds
+	if(COUNTS[-1][1] == curr_minute):
+		COUNTS[-1][1] += 1
+	else:
+		COUNTS.append((curr_minute, 1))
+
+def my_user_fetcher(**kwargs):
+	wait_for_rate_limit('USERS_LOOKUP')
+	return twitter.users.lookup(**kwargs)
+
+def my_tweet_fetcher(**kwargs):
+	wait_for_rate_limit('TWEETS')
+	return twitter.statuses.user_timeline(**kwargs)
+
+def my_followers_fetcher(**kwargs):
+	wait_for_rate_limit('FOLLOWERS')
+	return twitter.followers.ids(**kwargs)
+
+def my_friends_fetcher(**kwargs):
+	wait_for_rate_limit('FRIENDS')
+	return twitter.friends.ids(**kwargs)
+	
+# ************************************************
+
 # FETCH AND PERSIST USER INFORMATION (calling this multiple times will keep adding new entries so that you can compare over time)
-def fetch_persist_users(user_screen_names, time):
+# 300 requests per 15 min, 100 users per request = 30,000 per 15 min
+def fetch_persist_users(user_screen_names, time): 
 
 	def get_data_to_persist(user_info,time):
-		ret = {k:user_info.get(k,None) for k in user_fields}
+		ret = user_info
+		# ret = {k:user_info.get(k,None) for k in user_fields}
 		ret['record_creation_date'] = time
-		if 'created_at' in user_fields:
-			ret['created_at'] = datetime.datetime.strptime(ret['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
+		# if 'created_at' in user_fields:
+		ret['created_at'] = datetime.datetime.strptime(ret['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
 		return ret
 
 	users_info = twitter.users.lookup(screen_name=user_screen_names)
@@ -98,15 +139,17 @@ def fetch_persist_users(user_screen_names, time):
 	print("Done with user info")
 
 # FETCH AND PERSIST TWEET INFORMATION (EXCLUDING TWEETS ALREADY PERSISTED)
-def fetch_persist_tweets(user_screen_names,time):
+# 1500 requests per 15 min, 200 tweets returned per request = 3,00,000 per 15 min, 3200 per user
+def fetch_persist_tweets(user_screen_names,time): 
 
 	def get_data_to_persist(tweets,time):
 		ret = []
 		for tweet in tweets:
-			tweet_ = {k:tweet.get(k,None) for k in tweet_fields}
+			tweet_ = tweet
+			# tweet_ = {k:tweet.get(k,None) for k in tweet_fields}
 			tweet_['record_creation_date'] = time
-			if 'created_at' in tweet_fields:
-				tweet_['created_at'] = datetime.datetime.strptime(tweet_['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
+			# if 'created_at' in tweet_fields:
+			tweet_['created_at'] = datetime.datetime.strptime(tweet_['created_at'],'%a %b %d %H:%M:%S +0000 %Y')
 			ret.append(tweet_)
 		return ret
 
@@ -154,30 +197,80 @@ def fetch_persist_tweets(user_screen_names,time):
 		# f1.close()
 	print("Done with tweets")
 
+# followers: 15 requests per 15 min, 5000 followers returned per request (same for friends); 75000 per 15 min
 def fetch_persist_friends_and_followers(user_screen_names,time):
+
+	def get_existing(screen_name, type_):
+		assert(type_=='followers' or type_=='friends')
+		folder_name = 'data/user_followers' if type_=='followers' else 'data/user_friends'
+		ret = {}
+		for the_file in os.listdir(folder_name):
+			if(the_file.startswith(screen_name)):
+				file_path = os.path.join(folder_name, the_file)
+				f = open(file_path,'r')
+				ls = json.loads(f.read())
+				for x in ls:
+					ret[x] = True
+				f.close()
+		return ret
+
+	# return -1 if not to stop, else returns the number of new followers/friends in this batch
+	def to_stop(existing, current_batch):
+		if (current_batch[-1] in existing):
+			if (current_batch[0] in existing):
+				return 0
+			# do binary search (first not in existing, last in existing, point of transition in between)
+			first = 0
+			last = len(current_batch)-1
+			while (first < last): # (= shall never happen)
+				mid = (first+last)//2
+				if (mid==first): # first=last-1
+					return first+1
+				elif (current_batch[mid] in existing):
+					last = mid
+				else:
+					first = mid
+			print("Should not reach here")
+		else:
+			return -1
+
+	def fetch_and_store(screen_name, type_):
+		print('Fetching %s for %s'%(type_, screen_name))
+		existing = get_existing(screen_name, type_)
+		new = []
+		cursor = -1
+		func = twitter.followers.ids if type_=='followers' else twitter.friends.ids
+		while (True):
+			api_res = func(screen_name=screen_name, cursor=cursor)
+			batch = api_res['ids']
+			print('\t', str(len(batch)), str(batch[:1]))
+			cursor = api_res['next_cursor']
+			to_stop_res = to_stop(existing, batch)
+			if(to_stop != -1 or cursor == 0):
+				new.extend(batch[:to_stop_res])
+				break
+			new.extend(batch)
+		print('\t'+str(len(new)))
+		folder_name = 'data/user_followers/' if type_=='followers' else 'data/user_friends/'
+		f = open(folder_name+screen_name+"_"+time_str+'.txt', 'w')
+		f.write(json.dumps(new))
+		f.close()
+
 	time_str = str(time).replace(":","-")
 	for screen_name in user_screen_names:
-		print('Fetching followers/friends for ' + screen_name)
-		follower_ids = twitter.followers.ids(screen_name=screen_name)
-		friends_ids = twitter.friends.ids(screen_name=screen_name)
-		print('\t'+str(len(follower_ids['ids'])), str(len(friends_ids['ids'])))
-		f = open('data/user_followers/'+screen_name+"_"+time_str+'.txt', 'w')
-		f.write(json.dumps(follower_ids['ids']))
-		f.close()
-		f = open('data/user_friends/'+screen_name+"_"+time_str+'.txt', 'w')
-		f.write(json.dumps(friends_ids['ids']))
-		f.close()
+		fetch_and_store(screen_name, 'followers')
+		fetch_and_store(screen_name, 'friends')
 	print('Done with followers/friends')
 
 def clear_everyting():
 	def clear_folder(folder_name):
 		for the_file in os.listdir(folder_name):
-		    file_path = os.path.join(folder_name, the_file)
-		    try:
-		        if os.path.isfile(file_path):
-		            os.unlink(file_path)
-		    except Exception as e:
-		        print(e)
+			file_path = os.path.join(folder_name, the_file)
+			try:
+				if os.path.isfile(file_path):
+					os.unlink(file_path)
+			except Exception as e:
+				print(e)
 		
 	db.users.drop()
 	db.tweets.drop()
@@ -222,8 +315,8 @@ def extract_hash_tags(screen_name,date_start,date_end):
 
 ################### MAIN FUNCTION BEGINS HERE ####################
 
-# clear_everyting()
 now = datetime.datetime.now()
+# clear_everyting()
 with open('data/timestamps.txt','a') as f:
 	f.write(str(now).replace(":","-")+'\n')
 
