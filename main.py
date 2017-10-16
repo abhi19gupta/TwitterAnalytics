@@ -47,10 +47,13 @@ from pymongo import MongoClient
 # db=client.twitter # db name
 
 # TWITTER API RELATED SETUP
-ACCESS_TOKEN = '894945534410080256-ty8NTmEAUzzwJQTjSAfbmGp81HSVcZb'
-ACCESS_SECRET = 'plMGYeenmCZNs7gIDWrO17vEYFrm6GzgZ7BaJdPbMQYuL'
-CONSUMER_KEY = 'QC5nVHYoVYdNbl0oQeGExCmWW'
-CONSUMER_SECRET = 'e5EUAXqpYSjBZbhEpnqVCMd66WlSJTUJSCUdtQ5dIBmVlWYTIL'
+f = open('SECRETS','r')
+secrets = f.read().split()
+f.close()
+ACCESS_TOKEN = secrets[0]
+ACCESS_SECRET = secrets[1]
+CONSUMER_KEY = secrets[2]
+CONSUMER_SECRET = secrets[3]
 oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
 twitter = Twitter(auth=oauth)
 '''
@@ -350,7 +353,11 @@ now = datetime.datetime.now()
 with open('data/timestamps.txt','a') as f:
 	f.write(str(now).replace(":","-")+'\n')
 
-user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
+# user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
+user_screen_names = ['shannonseek','ScotMcKay','rockingjude','CraigTeich','mattbacak','perrybelcher',
+'mark33','DaveDube','ShamelessShamus','RedStatePower','kmesiab','TheDigitalLife','howard74','simonwhite',
+'MarcoSantarelli','DuncanWierman','Jeffknowshouses','DC_Fawcett','nathanjurewicz','DanetteFitness',
+'DanielKlatt','MarcDeCaria','coffeemaverick','chronictacospnw','thinkreferrals']
 fetch_persist_users(user_screen_names,now)
 fetch_persist_tweets(user_screen_names,now,'tweets')
 fetch_persist_tweets(user_screen_names,now,'favourites')
