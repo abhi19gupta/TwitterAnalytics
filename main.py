@@ -81,6 +81,13 @@ def init():
 		if (not os.path.exists(prefix+dir_)):
 			os.makedirs(prefix+dir_)
 
+def get_user_screen_names(filename):
+	f = open(filename,'r')
+	ret = []
+	for name in f:
+		ret.append(name.strip())
+	return ret
+
 ################### TWITTER API FUNCTIONS HERE ####################
 
 WINDOW_LEN = 17
@@ -104,25 +111,60 @@ def wait_for_rate_limit(type_):
 	else:
 		COUNTS.append((1,curr_minute))
 
-def my_user_fetcher(**kwargs):
+def my_user_fetcher(retry_no=0, **kwargs):
 	wait_for_rate_limit('USERS_LOOKUP')
-	return twitter.users.lookup(**kwargs)
+	try:
+		return twitter.users.lookup(**kwargs)
+	except Exception as e:
+		print(type(e), e)
+		if(retry_no>=3):
+			raise e
+		else:
+			return my_user_fetcher(retry_no+1,**kwargs)
 
-def my_tweet_fetcher(**kwargs):
+def my_tweet_fetcher(retry_no=0, **kwargs):
 	wait_for_rate_limit('TWEETS')
-	return twitter.statuses.user_timeline(**kwargs)
+	try:
+		return twitter.statuses.user_timeline(**kwargs)
+	except Exception as e:
+		print(type(e), e)
+		if(retry_no>=3):
+			raise e
+		else:
+			return my_tweet_fetcher(retry_no+1,**kwargs)
 
-def my_followers_fetcher(**kwargs):
+def my_followers_fetcher(retry_no=0, **kwargs):
 	wait_for_rate_limit('FOLLOWERS')
-	return twitter.followers.ids(**kwargs)
+	try:
+		return twitter.followers.ids(**kwargs)
+	except Exception as e:
+		print(type(e), e)
+		if(retry_no>=3):
+			raise e
+		else:
+			return my_followers_fetcher(retry_no+1,**kwargs)
 
-def my_friends_fetcher(**kwargs):
+def my_friends_fetcher(retry_no=0, **kwargs):
 	wait_for_rate_limit('FRIENDS')
-	return twitter.friends.ids(**kwargs)
+	try:
+		return twitter.friends.ids(**kwargs)
+	except Exception as e:
+		print(type(e), e)
+		if(retry_no>=3):
+			raise e
+		else:
+			return my_friends_fetcher(retry_no+1,**kwargs)
 
-def my_favourites_fetcher(**kwargs):
+def my_favourites_fetcher(retry_no=0, **kwargs):
 	wait_for_rate_limit('FAVOURITES')
-	return twitter.favorites.list(**kwargs)
+	try:
+		return twitter.favorites.list(**kwargs)
+	except Exception as e:
+		print(type(e), e)
+		if(retry_no>=3):
+			raise e
+		else:
+			return my_favourites_fetcher(retry_no+1,**kwargs)
 	
 # ************************************************
 
@@ -354,10 +396,7 @@ with open('data/timestamps.txt','a') as f:
 	f.write(str(now).replace(":","-")+'\n')
 
 # user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
-user_screen_names = ['shannonseek','ScotMcKay','rockingjude','CraigTeich','mattbacak','perrybelcher',
-'mark33','DaveDube','ShamelessShamus','RedStatePower','kmesiab','TheDigitalLife','howard74','simonwhite',
-'MarcoSantarelli','DuncanWierman','Jeffknowshouses','DC_Fawcett','nathanjurewicz','DanetteFitness',
-'DanielKlatt','MarcDeCaria','coffeemaverick','chronictacospnw','thinkreferrals']
+user_screen_names = get_user_screen_names('users1.txt')
 fetch_persist_users(user_screen_names,now)
 fetch_persist_tweets(user_screen_names,now,'tweets')
 fetch_persist_tweets(user_screen_names,now,'favourites')
