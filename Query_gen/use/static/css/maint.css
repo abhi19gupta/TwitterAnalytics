@@ -1,0 +1,22 @@
+h1 a {
+    /*color: #FCA205;*/
+    color: #ffffff;
+}
+body {
+    padding-left: 30px;
+}
+.form-login {
+    padding-left: 60px;
+    padding-top: 60px;
+    background-color: #ff9400;
+}
+.options-list {
+    padding-left: 60px;
+    padding-top: 60px;
+    background-color: #ff9400;
+}
+.page-header {
+    background-color: #ff9400;
+    margin-top: 0;
+    padding: 20px 20px 20px 40px;
+}
