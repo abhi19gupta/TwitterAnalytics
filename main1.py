@@ -6,7 +6,7 @@
 
 from neo4j.v1 import GraphDatabase, basic_auth
 from datetime import datetime
-import json
+import json, copy
 
 driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
 session = driver.session()
@@ -41,31 +41,20 @@ def flatten_json(json_obj):
 
 # CAN MAKE THE FOLLOWING CHANGE - For user_info no need of TO and FROM, just keep ON because we create a new node everytime and we have information only of that timestamp.
 def update_user(id, user_info_dict, timestamp):
-	alreadyExists = session.run(
-		"MATCH (user:USER {id:{id}}) -[:CURR_STATE]-> () "
-		"RETURN user",
-		{"id":id})
 	flatten_json(user_info_dict)
-	if len(list(alreadyExists)) > 0: # if user already exists then add info to linked list
-		session.run(
-		# Don't do the following, it will match nothing if there is no current state
-		# "MATCH (user:User {id:{user_id}}) -[curr_state:CURR_STATE]-> (prev_user_info:USER_INFO) "
-		"MATCH (user:USER {id:{user_id}}) "
-		"CREATE (user) -[:CURR_STATE {from:{now}}]-> (curr_user_info:USER_INFO {user_info_dict}) "
-		"WITH user, curr_user_info "
-		"MATCH (curr_user_info) <-[:CURR_STATE]- (user) -[prev_state_rel:CURR_STATE]-> (prev_user_info) "
-		"CREATE (curr_user_info) -[:PREV {from:prev_state_rel.from, to:{now}}]-> (prev_user_info) "
-		"DELETE prev_state_rel ",
+	session.run(
+		"MERGE (user:USER {id:{user_id}}) WITH user " # not creating directly in case node already exists because of tweet network
+		"OPTIONAL MATCH (user) -[prev_state_rel:CURR_STATE]-> (prev_user_info:USER_INFO) "
+		# If prev_state_rel is null then this is a new user
+		"FOREACH (x IN CASE WHEN prev_state_rel IS NULL THEN [1] ELSE [] END | "
+		"  CREATE (user) -[:CURR_STATE {from:{now}}]-> (state:USER_INFO {user_info_dict}),  "
+		"     (user) -[:INITIAL_STATE {on:{now}}]-> (state) ) "
+		# Else this is an existing user
+		"FOREACH (x IN CASE WHEN prev_state_rel IS NULL THEN [] ELSE [1] END | "
+		"  CREATE (user) -[:CURR_STATE {from:{now}}]-> (:USER_INFO {user_info_dict}) "
+		"    -[:PREV {from:prev_state_rel.from, to:{now}}]-> (prev_user_info) "
+		"  DELETE prev_state_rel )",
 		{"user_id":id, "user_info_dict":user_info_dict, "now":timestamp})
-	else:
-		session.run(
-		"MERGE (user:USER {id:{id}}) " # not creating directly in case node already exists because of tweet network
-		"CREATE (user) -[:CURR_STATE {from:{now}}]-> (state:USER_INFO {user_info_dict}), "
-		"  (user) -[:INITIAL_STATE {on:{now}}]-> (state) "
-		"RETURN user,state",
-		{"id":id, "user_info_dict":user_info_dict, "now":timestamp})
-		# for result in results:
-		# 	print(result["user"])
 
 def update_followers(user_id, follower_ids, timestamp):
 	# First, for all followers in argument, either create FOLLOWS or update the "to" field of FOLLOWS to current timestamp
@@ -78,22 +67,36 @@ def update_followers(user_id, follower_ids, timestamp):
 		"ON MATCH SET follows_rel.to = {now}",
 		{"user_id":user_id, "follower_ids":follower_ids, "now":timestamp})
 	# Now, for all FOLLOWS whose "to" field is not current timestamp, make them FOLLOWED
+	'''
 	session.run(
 		"MATCH (user:USER {id:{user_id}}) <-[follows_rel:FOLLOWS]- (follower:USER) "
 		"WHERE follows_rel.to <> {now} "
 		"CREATE (user) <-[:FOLLOWED {from:follows_rel.from, to:follows_rel.to}]- (follower) "
 		"DELETE follows_rel", # Can change these 2 statements to a single SET statement
 		{"user_id":user_id, "now":timestamp})
+	'''
+
+def update_friends(user_id, friend_ids, timestamp):
+	# First, for all friends in argument, either create FOLLOWS or update the "to" field of FOLLOWS to current timestamp
+	session.run(
+		"MATCH (user:USER {id:{user_id}}) "
+		"UNWIND {friend_ids} AS friend_id "
+		"MERGE (friend:USER {id:friend_id}) " # keep this merge separate from below o/w multiple nodes can be created
+		"MERGE (user) -[follows_rel:FOLLOWS]-> (friend) "
+		"  ON CREATE SET follows_rel.from = {now}, follows_rel.to = {now} "
+		"  ON MATCH SET follows_rel.to = {now} ",
+		{"user_id":user_id, "friend_ids":friend_ids, "now":timestamp})
+	# Now, for all FOLLOWS whose "to" field is not current timestamp, make them FOLLOWED
+	'''
+	session.run(
+		"MATCH (user:USER {id:{user_id}}) -[follows_rel:FOLLOWS]-> (friend:USER) "
+		"  WHERE follows_rel.to <> {now} "
+		"CREATE (user) -[:FOLLOWED {from:follows_rel.from, to:follows_rel.to}]-> (friend) "
+		"DELETE follows_rel ", # Can change these 2 statements to a single SET statement
+		{"user_id":user_id, "now":timestamp})
+	'''
 
 def create_tweet(tweet):
-
-	alreadyExists = session.run(
-		"MATCH (tweet:TWEET {id:{tweet_id}}) -[:INFO]-> () "
-		"RETURN tweet",
-		{"tweet_id":tweet["id"]})
-	if len(list(alreadyExists)) > 0:
-		print("create_tweet: Tweet [id:", tweet["id"], "] already exists! Aborting.")
-		return
 
 	user_id = tweet["user"]["id"]
 	tweet['created_at'] = datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timestamp()
@@ -107,9 +110,13 @@ def create_tweet(tweet):
 		flatten_json(tweet)
 		session.run(
 			# Create node for this tweet
+			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
+			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			"WITH tweet "
+			# Proceed only if the tweet was not already created
+			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
+			# Create user and relationships
 			"MERGE (user:USER {id:{user_id}}) " # Following line will make the query slow, find an alternative
-			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because of some other tweet
-			"ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
 			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}) "
 			# Find node of original tweet and link
 			"WITH tweet "
@@ -131,9 +138,13 @@ def create_tweet(tweet):
 		flatten_json(tweet)
 		session.run(
 			# Create node for this tweet
+			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
+			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			"WITH tweet "
+			# Proceed only if the tweet was not already created
+			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
+			# Create user and relationships
 			"MERGE (user:USER {id:{user_id}}) " # Following line will make the query slow, find an alternative
-			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already exists because of some other tweet
-			"ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
 			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}) "
 			# Create links to hashtags, mentions, urls
 			"FOREACH ( hashtag in {hashtags} | "
@@ -182,24 +193,23 @@ create_indexes()
 
 start_time = datetime.now().timestamp()
 
+timestamp = 0
 print(datetime.now().timestamp())
-update_user(1,{"m1":"d1","m2":"d2"},timestamp)
-print(datetime.now().timestamp())
-update_user(1,{"m1":"d3","m2":"d4"},timestamp+1)
-print(datetime.now().timestamp())
-update_user(1,{"m1":"d5","m2":"d6"},timestamp+2)
-print(datetime.now().timestamp())
-update_followers(1, ["f1","f2"], timestamp+3)
-print(datetime.now().timestamp())
-update_followers(1, ["f2","f3"], timestamp+4)
-print(datetime.now().timestamp())
-update_followers(1, ["f1","f2"], timestamp+5)
-print(datetime.now().timestamp())
-update_followers(1, [], timestamp+6)
-print(datetime.now().timestamp())
-update_followers(1, ["f1","f4"], timestamp+7)
-print(datetime.now().timestamp())
+update_user(1,{"m1":"d1","m2":"d2"},timestamp); print(datetime.now().timestamp())
+update_user(1,{"m1":"d3","m2":"d4"},timestamp+1); print(datetime.now().timestamp())
+update_user(1,{"m1":"d5","m2":"d6"},timestamp+2); print(datetime.now().timestamp())
+update_followers(1, ["f1","f2"], timestamp+3); print(datetime.now().timestamp())
+update_followers(1, ["f2","f3"], timestamp+4); print(datetime.now().timestamp())
+update_followers(1, ["f1","f2"], timestamp+5); print(datetime.now().timestamp())
+update_followers(1, [],          timestamp+6); print(datetime.now().timestamp())
+update_followers(1, ["f1","f4"], timestamp+7); print(datetime.now().timestamp())
+update_friends(1, ["g1","g2"], timestamp+3); print(datetime.now().timestamp())
+update_friends(1, ["g2","g3"], timestamp+4); print(datetime.now().timestamp())
+update_friends(1, ["g1","g2"], timestamp+5); print(datetime.now().timestamp())
+update_friends(1, [],          timestamp+6); print(datetime.now().timestamp())
+update_friends(1, ["g1","g4"], timestamp+7); print(datetime.now().timestamp())
 
+# basic creation test
 tweet1 = {"id":"tweet1",
 		"created_at":getDateFromTimestamp(timestamp+8),
 		"details":"details1",
@@ -208,8 +218,8 @@ tweet1 = {"id":"tweet1",
 			"user_mentions":[{"id":2},{"id":3}],
 			"urls":[{"url":"url1","expanded_url":"eurl1"}, {"url":"url2","expanded_url":"eurl2"}]},
 		"user":{"id":1}}
-create_tweet(tweet1) # basic creation test
 
+# testing creation of new and reuse of old
 tweet2 = {"id":"tweet2",
 		"created_at":getDateFromTimestamp(timestamp+9),
 		"details":"details2",
@@ -218,8 +228,8 @@ tweet2 = {"id":"tweet2",
 			"user_mentions":[{"id":2},{"id":1}],
 			"urls":[{"url":"url1","expanded_url":"eurl1"}, {"url":"url3","expanded_url":"eurl3"}]},
 		"user":{"id":1}}
-create_tweet(tweet2) # testing creation of new and reuse of old
 
+# testing empty list
 tweet3 = {"id":"tweet3",
 		"created_at":getDateFromTimestamp(timestamp+10),
 		"details":"details3",
@@ -228,16 +238,16 @@ tweet3 = {"id":"tweet3",
 			"user_mentions":[{"id":2}],
 			"urls":[{"url":"url1","expanded_url":"eurl1"}]},
 		"user":{"id":1}}
-# create_tweet(tweet3) # testing empty list
 
+# testing retweet + another user (id=2)
 tweet4 = {"id":"tweet4",
 		"created_at":getDateFromTimestamp(timestamp+11),
 		"details":"details4",
 		"entities":tweet3["entities"],
 		"user":{"id":2},
-		"retweeted_status":tweet3}
-create_tweet(tweet4) # testing retweet + another user (id=2)
+		"retweeted_status":copy.deepcopy(tweet3)}
 
+# testing quoted_status + reply
 tweet5 = {"id":"tweet5",
 		"created_at":getDateFromTimestamp(timestamp+12),
 		"details":"details5",
@@ -246,9 +256,16 @@ tweet5 = {"id":"tweet5",
 			"user_mentions":[],
 			"urls":[]},
 		"user":{"id":2},
-		"quoted_status":tweet3,
+		"quoted_status":copy.deepcopy(tweet3),
 		"in_reply_to_status_id":tweet1["id"]}
-create_tweet(tweet5) # testing quoted_status + reply
+
+create_tweet(tweet1)
+create_tweet(tweet2)
+create_tweet(tweet3)
+create_tweet(tweet4)
+create_tweet(tweet5)
+
+session.close()
 
 end_time = datetime.now().timestamp()
 print("Time taken: ", str(end_time-start_time))
