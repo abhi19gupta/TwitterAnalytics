@@ -120,6 +120,7 @@ def my_user_fetcher(retry_no=0, **kwargs):
 		if(retry_no>=3):
 			raise e
 		else:
+			time.sleep(1)
 			return my_user_fetcher(retry_no+1,**kwargs)
 
 def my_tweet_fetcher(retry_no=0, **kwargs):
@@ -131,6 +132,7 @@ def my_tweet_fetcher(retry_no=0, **kwargs):
 		if(retry_no>=3):
 			raise e
 		else:
+			time.sleep(1)
 			return my_tweet_fetcher(retry_no+1,**kwargs)
 
 def my_followers_fetcher(retry_no=0, **kwargs):
@@ -142,6 +144,7 @@ def my_followers_fetcher(retry_no=0, **kwargs):
 		if(retry_no>=3):
 			raise e
 		else:
+			time.sleep(1)
 			return my_followers_fetcher(retry_no+1,**kwargs)
 
 def my_friends_fetcher(retry_no=0, **kwargs):
@@ -153,6 +156,7 @@ def my_friends_fetcher(retry_no=0, **kwargs):
 		if(retry_no>=3):
 			raise e
 		else:
+			time.sleep(1)
 			return my_friends_fetcher(retry_no+1,**kwargs)
 
 def my_favourites_fetcher(retry_no=0, **kwargs):
@@ -164,6 +168,7 @@ def my_favourites_fetcher(retry_no=0, **kwargs):
 		if(retry_no>=3):
 			raise e
 		else:
+			time.sleep(1)
 			return my_favourites_fetcher(retry_no+1,**kwargs)
 	
 # ************************************************
@@ -245,11 +250,17 @@ def fetch_persist_tweets(user_screen_names,time,type_):
 		# f1 = open('tweets_persisted/'+screen_name+"_"+time_str+".txt", 'w')
 		# Find the tweet id beyond which to fetch new tweets
 		since_id = getMaxId(screen_name)
-		if(type_=='tweets'):
-			tweets = my_tweet_fetcher(screen_name=screen_name,count=200,trim_user='true',
-				include_rts='true',exclude_replies='false',since_id=since_id)
-		else:
-			tweets = my_favourites_fetcher(screen_name=screen_name,count=200,since_id=since_id)
+		try:
+			if(type_=='tweets'):
+				tweets = my_tweet_fetcher(screen_name=screen_name,count=200,trim_user='true',
+					include_rts='true',exclude_replies='false',since_id=since_id)
+			else:
+				tweets = my_favourites_fetcher(screen_name=screen_name,count=200,since_id=since_id)
+		except Exception as e:
+			f = open('data/failed_users.txt','a')
+			f.write('%s : %s : %s'%(screen_name,str(type(e)),str(e)))
+			f.close()
+			continue
 		next_since_id = since_id if len(tweets)==0 else max([tweet['id'] for tweet in tweets])
 		persistMaxId(screen_name,next_since_id)
 		while(len(tweets)!=0):
@@ -260,11 +271,17 @@ def fetch_persist_tweets(user_screen_names,time,type_):
 			# f1.write(json.dumps(tweets_to_persist,indent=4,cls=DateTimeEncoder))
 			# f1.write('\n')
 			min_id = min([tweet['id'] for tweet in tweets])
-			if(type_=='tweets'):
-				tweets = my_tweet_fetcher(screen_name=screen_name,count=200,trim_user='true',
-					include_rts='true',exclude_replies='false',max_id=min_id-1,since_id=since_id)
-			else:
-				tweets = my_favourites_fetcher(screen_name=screen_name,count=200,max_id=min_id-1,since_id=since_id)
+			try:
+				if(type_=='tweets'):
+					tweets = my_tweet_fetcher(screen_name=screen_name,count=200,trim_user='true',
+						include_rts='true',exclude_replies='false',max_id=min_id-1,since_id=since_id)
+				else:
+					tweets = my_favourites_fetcher(screen_name=screen_name,count=200,max_id=min_id-1,since_id=since_id)
+			except Exception as e:
+				f = open('data/failed_users.txt','a')
+				f.write('%s : %s : %s'%(screen_name,str(type(e)),str(e)))
+				f.close()
+				continue
 			# db.tweets.insert_many(tweets_to_persist)
 		f.write('[]]') # adding an empty list at the end because of the last comma
 		f.close()
@@ -290,6 +307,7 @@ def fetch_persist_friends_and_followers(user_screen_names,time):
 
 	# returns the number of new followers/friends in this batch
 	def get_new_count(existing, current_batch):
+		if(len(current_batch)==0): return 0
 		if (current_batch[-1] in existing):
 			if (current_batch[0] in existing):
 				return 0
@@ -316,7 +334,13 @@ def fetch_persist_friends_and_followers(user_screen_names,time):
 		cursor = -1
 		func = my_followers_fetcher if type_=='followers' else my_friends_fetcher
 		while (True):
-			api_res = func(screen_name=screen_name, cursor=cursor)
+			try:
+				api_res = func(screen_name=screen_name, cursor=cursor)
+			except Exception as e:
+				f = open('data/failed_users.txt','a')
+				f.write('%s : %s : %s'%(screen_name,str(type(e)),str(e)))
+				f.close()
+				break
 			batch = api_res['ids']
 			print('\tBatch:', str(len(batch)), str(batch[:1]))
 			cursor = api_res['next_cursor']
