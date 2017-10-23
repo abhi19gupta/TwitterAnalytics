@@ -277,39 +277,58 @@ def readDataAndCreateGraph(user_screen_names):
 			favorite_file  = 'data/favourites/'+screen_name+"_"+time_str+'.txt'
 			follower_file  = 'data/user_followers/'+screen_name+"_"+time_str+'.txt'
 			friends_file   = 'data/user_friends/'+screen_name+"_"+time_str+'.txt'
-			with open(user_info_file, 'r') as f:
-				user_info = json.loads(f.read())
-				user_id = user_info['id']
-				update_user(user_id,user_info,timestamp)
-				print('\t\tUser profile done')
-			with open(tweet_file, 'r') as f:
-				count = 0
-				tweets_list_list = json.loads(f.read())
-				for tweet_list in tweets_list_list:
-					for tweet in tweet_list:
-						create_tweet(tweet=tweet)
-						count += 1
-						if(count % 100 == 0):
-							print(str(count)," ")
-				print('\t\tTweets done')
-			with open(favorite_file, 'r') as f:
-				count = 0
-				tweets_list_list = json.loads(f.read())
-				for tweet_list in tweets_list_list:
-					for tweet in tweet_list:
-						create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
-						count += 1
-						if(count % 100 == 0):
-							print(str(count)," ")
-				print('\t\tFavourites done')
-			with open(follower_file, 'r') as f:
-				followers = json.loads(f.read())
-				update_followers(user_id, followers, timestamp)
-				print('\t\tFollowers done')
-			with open(friends_file, 'r') as f:
-				friends = json.loads(f.read())
-				update_friends(user_id, followers, timestamp)
-				print('\t\tFriends done')
+			try:
+				with open(user_info_file, 'r') as f:
+					user_info = json.loads(f.read())
+					user_id = user_info['id']
+					update_user(user_id,user_info,timestamp)
+					print('\t\tUser profile done')
+			except FileNotFoundError:
+				pass
+
+			try:
+				with open(tweet_file, 'r') as f:
+					count = 0
+					tweets_list_list = json.loads(f.read())
+					for tweet_list in tweets_list_list:
+						for tweet in tweet_list:
+							create_tweet(tweet=tweet)
+							count += 1
+							if(count % 100 == 0):
+								print(str(count)," ")
+					print('\t\tTweets done')
+			except FileNotFoundError:
+				pass
+
+			try:
+				with open(favorite_file, 'r') as f:
+					count = 0
+					tweets_list_list = json.loads(f.read())
+					for tweet_list in tweets_list_list:
+						for tweet in tweet_list:
+							create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
+							count += 1
+							if(count % 100 == 0):
+								print(str(count)," ")
+					print('\t\tFavourites done')
+			except FileNotFoundError:
+				pass
+				
+			try:
+				with open(follower_file, 'r') as f:
+					followers = json.loads(f.read())
+					update_followers(user_id, followers, timestamp)
+					print('\t\tFollowers done')
+			except FileNotFoundError:
+				pass
+
+			try:
+				with open(friends_file, 'r') as f:
+					friends = json.loads(f.read())
+					update_friends(user_id, followers, timestamp)
+					print('\t\tFriends done')
+			except FileNotFoundError:
+				pass
 
 
 clear_db()
