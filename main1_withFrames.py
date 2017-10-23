@@ -24,11 +24,11 @@ FOLLOWER NETWORK
 
 TWEET NETWORK
 	Node labels - TWEET(id,created_at,is_active), TWEET_INFO(dict), HASHTAG(text), URL(url,expanded_url), //MEDIA(url, media_url)//, PLACE(id,name,country) -> This is not the location of tweet but the location with which the tweet is tagged (could be about it)
-	Relationships - TWEETED(on), INFO, REPLY_TO(on), RETWEET_OF(on), QUOTED(on), HAS_MENTION(on), HAS_HASHTAG(on), //HAS_MEDIA(on)//, HAS_URL(on), HAS_PLACE(on)
+	Relationships - TWEETED(on), LIKES(on), INFO, REPLY_TO(on), RETWEET_OF(on), QUOTED(on), HAS_MENTION(on), HAS_HASHTAG(on), //HAS_MEDIA(on)//, HAS_URL(on), HAS_PLACE(on)
 
 FRAME NETWORK
-	Node labels - RUN, FRAME(start_t,end_t), TWEET_EVENT(timestamp), FOLLOW_EVENT(timestamp), UNFOLLOW_EVENT(timestamp)
-	Relationships - HAS_FRAME, HAS_TWEET, TE_USER, TE_TWEET, HAS_FOLLOW, FE_FOLLOWED, FE_FOLLOWS, HAS_UNFOLLOW, UFE_UNFOLLOWED, UFE_UNFOLLOWS
+	Node labels - RUN, FRAME(start_t,end_t), TWEET_EVENT(timestamp), FOLLOW_EVENT(timestamp), UNFOLLOW_EVENT(timestamp), FAV_EVENT(timestamp)
+	Relationships - HAS_FRAME, HAS_TWEET, TE_USER, TE_TWEET, HAS_FOLLOW, FE_FOLLOWED, FE_FOLLOWS, HAS_UNFOLLOW, UFE_UNFOLLOWED, UFE_UNFOLLOWS, HAS_FAV, FAV_USER, FAV_TWEET
 '''
 
 FRAME_DELTA_T = 5
@@ -140,12 +140,13 @@ def update_friends(user_id, friend_ids, timestamp):
 		{"user_id":user_id, "now":timestamp, "frame_start_t":frame_start_t, "frame_end_t":frame_end_t})
 	'''
 
-def create_tweet(tweet):
+def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 	
 	user_id = tweet["user"]["id"]
 	tweet['created_at'] = datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timestamp()
 
 	(frame_start_t, frame_end_t) = getFrameStartEndTime(tweet['created_at'])
+	(fav_frame_start_t, fav_frame_end_t) = (None,None) if fav_timestamp is None else getFrameStartEndTime(fav_timestamp)
 	
 	retweeted_status      = tweet.get("retweeted_status",None)
 	quoted_status         = tweet.get("quoted_status",None)
@@ -155,15 +156,23 @@ def create_tweet(tweet):
 		create_tweet(retweeted_status)
 		flatten_json(tweet)
 		session.run(
+			"MERGE (run:RUN) "
+			"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
 			# Create node for this tweet
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
 			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			# Create favorite relation if needed
+			"FOREACH (x IN CASE WHEN {favourited_by} IS NULL THEN [] ELSE [1] END | "
+			"  MERGE (run) -[:HAS_FRAME]-> (frame_fav:FRAME {start_t:{fav_frame_start_t},end_t:{fav_frame_end_t}}) "
+			"  MERGE (fav_user:USER {id:{favourited_by}}) "
+			"  CREATE (fav_user)-[:LIKES {on:{fav_timestamp}}]->(tweet), "
+			"    (frame_fav) -[:HAS_FAV]-> (fe:FAV_EVENT {timestamp:{fav_timestamp}}),"
+			"    (fe) -[:FAV_USER]-> (fav_user),"
+			"    (fe) -[:FAV_TWEET]-> (tweet) )"
 			"WITH tweet "
 			# Proceed only if the tweet was not already created
 			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
-			# Create frames and user and then the relationships
-			"MERGE (run:RUN) "
-			"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
+			# Create user and then the relationships
 			"MERGE (user:USER {id:{user_id}}) "
 			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
 			"  (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}),"
@@ -174,7 +183,9 @@ def create_tweet(tweet):
 			"MATCH (original_tweet:TWEET {id:{original_tweet_id}}) "
 			"CREATE (tweet) -[:RETWEET_OF {on:{created_at}}]-> (original_tweet) ",
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
-			"original_tweet_id":retweeted_status["id"], "frame_start_t":frame_start_t, "frame_end_t":frame_end_t})
+			"original_tweet_id":retweeted_status["id"], "frame_start_t":frame_start_t, "frame_end_t":frame_end_t,
+			"favourited_by":favourited_by, "fav_timestamp":fav_timestamp, "fav_frame_start_t":fav_frame_start_t,
+			"fav_frame_end_t":fav_frame_end_t})
 			# Can remove the retweeted_status field from tweet
 	else:
 		# Extract all requited information before flattening
@@ -188,15 +199,23 @@ def create_tweet(tweet):
 		quoted_status_id = None if quoted_status is None else quoted_status["id"]
 		flatten_json(tweet)
 		session.run(
+			"MERGE (run:RUN) "
+			"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
 			# Create node for this tweet and frames
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
 			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			# Create favorite relation if needed
+			"FOREACH (x IN CASE WHEN {favourited_by} IS NULL THEN [] ELSE [1] END | "
+			"  MERGE (run) -[:HAS_FRAME]-> (frame_fav:FRAME {start_t:{fav_frame_start_t},end_t:{fav_frame_end_t}}) "
+			"  MERGE (fav_user:USER {id:{favourited_by}}) "
+			"  CREATE (fav_user)-[:LIKES {on:{fav_timestamp}}]->(tweet), "
+			"    (frame_fav) -[:HAS_FAV]-> (fe:FAV_EVENT {timestamp:{fav_timestamp}}),"
+			"    (fe) -[:FAV_USER]-> (fav_user),"
+			"    (fe) -[:FAV_TWEET]-> (tweet) )"
 			"WITH tweet "
 			# Proceed only if the tweet was not already created
 			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
-			# Create frames and user and then the relationships
-			"MERGE (run:RUN) "
-			"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
+			# Create user and then the relationships
 			"MERGE (user:USER {id:{user_id}}) "
 			"CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
 			"  (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}), "
@@ -223,7 +242,9 @@ def create_tweet(tweet):
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
 			"hashtags":hashtags, "mention_ids":mention_ids, "urls":urls,
 			"quoted_status":quoted_status, "quoted_status_id":quoted_status_id,
-			"in_reply_to_status_id": in_reply_to_status_id, "frame_start_t":frame_start_t, "frame_end_t":frame_end_t})
+			"in_reply_to_status_id": in_reply_to_status_id, "frame_start_t":frame_start_t, "frame_end_t":frame_end_t,
+			"favourited_by":favourited_by, "fav_timestamp":fav_timestamp, "fav_frame_start_t":fav_frame_start_t,
+			"fav_frame_end_t":fav_frame_end_t})
 		# Can remove quoted_tweet field from tweet
 
 ################################################################
@@ -271,6 +292,16 @@ def readDataAndCreateGraph(user_screen_names):
 						if(count % 100 == 0):
 							print(str(count)," ")
 				print('\t\tTweets done')
+			with open(favorite_file, 'r') as f:
+				count = 0
+				tweets_list_list = json.loads(f.read())
+				for tweet_list in tweets_list_list:
+					for tweet in tweet_list:
+						create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
+						count += 1
+						if(count % 100 == 0):
+							print(str(count)," ")
+				print('\t\tFavourites done')
 			with open(follower_file, 'r') as f:
 				followers = json.loads(f.read())
 				update_followers(user_id, followers, timestamp)
@@ -352,9 +383,9 @@ tweet5 = {"id":"tweet5",
 		"quoted_status":copy.deepcopy(tweet3),
 		"in_reply_to_status_id":tweet1["id"]}
 
-create_tweet(tweet1)
+create_tweet(tweet=tweet1, favourited_by=2, fav_timestamp=20)
 create_tweet(tweet2)
-create_tweet(tweet3)
+create_tweet(tweet3, favourited_by=5, fav_timestamp=20)
 create_tweet(tweet4)
 create_tweet(tweet5)
 '''

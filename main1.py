@@ -24,7 +24,7 @@ FOLLOWER NETWORK
 
 TWEET NETWORK
 	Node labels - TWEET(id,created_at,is_active), TWEET_INFO(dict), HASHTAG(text), URL(url,expanded_url), //MEDIA(url, media_url)//, PLACE(id,name,country) -> This is not the location of tweet but the location with which the tweet is tagged (could be about it)
-	Relationships - TWEETED(on), INFO, REPLY_TO(on), RETWEET_OF(on), QUOTED(on), HAS_MENTION(on), HAS_HASHTAG(on), //HAS_MEDIA(on)//, HAS_URL(on), HAS_PLACE(on)
+	Relationships - TWEETED(on), LIKES(on), INFO, REPLY_TO(on), RETWEET_OF(on), QUOTED(on), HAS_MENTION(on), HAS_HASHTAG(on), //HAS_MEDIA(on)//, HAS_URL(on), HAS_PLACE(on)
 '''
 
 # Modify json fields as neo4j doesn't allow nested property types i.e. only primitive
@@ -36,6 +36,13 @@ def flatten_json(json_obj):
 			json_obj[key] = json.dumps(json_obj[key])
 			json_fields.append(key)
 	json_obj["json_fields"] = json_fields # while fetching convert these fields back to jsons
+
+def get_user_screen_names(filename):
+	f = open(filename,'r')
+	ret = []
+	for name in f:
+		ret.append(name.strip())
+	return ret
 
 ################################################################
 
@@ -96,7 +103,7 @@ def update_friends(user_id, friend_ids, timestamp):
 		{"user_id":user_id, "now":timestamp})
 	'''
 
-def create_tweet(tweet):
+def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 
 	user_id = tweet["user"]["id"]
 	tweet['created_at'] = datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timestamp()
@@ -112,6 +119,10 @@ def create_tweet(tweet):
 			# Create node for this tweet
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
 			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			# Create favorite relation if needed
+			"FOREACH (x IN CASE WHEN {favourited_by} IS NULL THEN [] ELSE [1] END | "
+			"  MERGE (fav_user:USER {id:{favourited_by}}) "
+			"  CREATE (fav_user)-[:LIKES {on:{fav_timestamp}}]->(tweet) ) "
 			"WITH tweet "
 			# Proceed only if the tweet was not already created
 			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
@@ -123,7 +134,7 @@ def create_tweet(tweet):
 			"MATCH (original_tweet:TWEET {id:{original_tweet_id}}) "
 			"CREATE (tweet) -[:RETWEET_OF {on:{created_at}}]-> (original_tweet) ",
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
-			"original_tweet_id":retweeted_status["id"]})
+			"original_tweet_id":retweeted_status["id"], "favourited_by":favourited_by, "fav_timestamp":fav_timestamp})
 			# Can remove the retweeted_status field from tweet
 	else:
 		# Extract all requited information before flattening
@@ -140,6 +151,10 @@ def create_tweet(tweet):
 			# Create node for this tweet
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
 			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			# Create favorite relation if needed
+			"FOREACH (x IN CASE WHEN {favourited_by} IS NULL THEN [] ELSE [1] END | "
+			"  MERGE (fav_user:USER {id:{favourited_by}}) "
+			"  CREATE (fav_user)-[:LIKES {on:{fav_timestamp}}]->(tweet) ) "
 			"WITH tweet "
 			# Proceed only if the tweet was not already created
 			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
@@ -167,7 +182,7 @@ def create_tweet(tweet):
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
 			"hashtags":hashtags, "mention_ids":mention_ids, "urls":urls,
 			"quoted_status":quoted_status, "quoted_status_id":quoted_status_id,
-			"in_reply_to_status_id": in_reply_to_status_id})
+			"in_reply_to_status_id": in_reply_to_status_id, "favourited_by":favourited_by, "fav_timestamp":fav_timestamp})
 		# Can remove quoted_tweet field from tweet
 
 ################################################################
@@ -186,13 +201,58 @@ def create_indexes():
 def getDateFromTimestamp(timestamp):
 	return datetime.fromtimestamp(timestamp).strftime('%a %b %d %H:%M:%S +0000 %Y')
 
+def readDataAndCreateGraph(user_screen_names):
+	with open("data/timestamps.txt","r") as f:
+		timestamps = [x.rstrip() for x in f.readlines()]
+	for time_str in timestamps:
+		print("Starting for ",time_str)
+		timestamp = datetime.strptime(time_str,'%Y-%m-%d %H-%M-%S.%f').timestamp()
+		for screen_name in user_screen_names:
+			print("\tStarting with ",screen_name)
+			user_info_file = 'data/user_info/'+screen_name+"_"+time_str+'.txt'
+			tweet_file     = 'data/tweets/'+screen_name+"_"+time_str+".txt"
+			favorite_file  = 'data/favourites/'+screen_name+"_"+time_str+'.txt'
+			follower_file  = 'data/user_followers/'+screen_name+"_"+time_str+'.txt'
+			friends_file   = 'data/user_friends/'+screen_name+"_"+time_str+'.txt'
+			with open(user_info_file, 'r') as f:
+				user_info = json.loads(f.read())
+				user_id = user_info['id']
+				update_user(user_id,user_info,timestamp)
+				print('\t\tUser profile done')
+			with open(tweet_file, 'r') as f:
+				count = 0
+				tweets_list_list = json.loads(f.read())
+				for tweet_list in tweets_list_list:
+					for tweet in tweet_list:
+						create_tweet(tweet=tweet)
+						count += 1
+						if(count % 100 == 0):
+							print(str(count)," ")
+				print('\t\tTweets done')
+			with open(favorite_file, 'r') as f:
+				count = 0
+				tweets_list_list = json.loads(f.read())
+				for tweet_list in tweets_list_list:
+					for tweet in tweet_list:
+						create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
+						count += 1
+						if(count % 100 == 0):
+							print(str(count)," ")
+				print('\t\tFavourites done')
+			with open(follower_file, 'r') as f:
+				followers = json.loads(f.read())
+				update_followers(user_id, followers, timestamp)
+				print('\t\tFollowers done')
+			with open(friends_file, 'r') as f:
+				friends = json.loads(f.read())
+				update_friends(user_id, followers, timestamp)
+				print('\t\tFriends done')
 
-timestamp = 0
 clear_db()
 create_indexes()
 
 start_time = datetime.now().timestamp()
-
+'''
 timestamp = 0
 print(datetime.now().timestamp())
 update_user(1,{"m1":"d1","m2":"d2"},timestamp); print(datetime.now().timestamp())
@@ -259,11 +319,14 @@ tweet5 = {"id":"tweet5",
 		"quoted_status":copy.deepcopy(tweet3),
 		"in_reply_to_status_id":tweet1["id"]}
 
-create_tweet(tweet1)
+create_tweet(tweet=tweet1, favourited_by=2, fav_timestamp=20)
 create_tweet(tweet2)
-create_tweet(tweet3)
+create_tweet(tweet3, favourited_by=5, fav_timestamp=20)
 create_tweet(tweet4)
 create_tweet(tweet5)
+'''
+
+readDataAndCreateGraph(get_user_screen_names('users1.txt'))
 
 session.close()
 
