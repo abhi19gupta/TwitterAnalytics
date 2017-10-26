@@ -36,10 +36,11 @@
 #### Indexing ####
 # db.profiles.create_index([('user_id', pymongo.ASCENDING)], unique=True)
 
-import json, datetime, os, shutil, pymongo, operator, time
+import json, datetime, os, shutil, operator, time
 import matplotlib.pyplot as plt
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
-from pymongo import MongoClient
+# import pymongo
+# from pymongo import MongoClient
 
 
 # DATABASE RELATED SETUP
@@ -258,7 +259,7 @@ def fetch_persist_tweets(user_screen_names,time,type_):
 				tweets = my_favourites_fetcher(screen_name=screen_name,count=200,since_id=since_id)
 		except Exception as e:
 			f = open('data/failed_users.txt','a')
-			f.write('%s : %s : %s'%(screen_name,str(type(e)),str(e)))
+			f.write('%s : %s : %s\n'%(screen_name,str(type(e)),str(e)))
 			f.close()
 			continue
 		next_since_id = since_id if len(tweets)==0 else max([tweet['id'] for tweet in tweets])
@@ -279,7 +280,7 @@ def fetch_persist_tweets(user_screen_names,time,type_):
 					tweets = my_favourites_fetcher(screen_name=screen_name,count=200,max_id=min_id-1,since_id=since_id)
 			except Exception as e:
 				f = open('data/failed_users.txt','a')
-				f.write('%s : %s : %s'%(screen_name,str(type(e)),str(e)))
+				f.write('%s : %s : %s\n'%(screen_name,str(type(e)),str(e)))
 				f.close()
 				continue
 			# db.tweets.insert_many(tweets_to_persist)
@@ -338,7 +339,7 @@ def fetch_persist_friends_and_followers(user_screen_names,time):
 				api_res = func(screen_name=screen_name, cursor=cursor)
 			except Exception as e:
 				f = open('data/failed_users.txt','a')
-				f.write('%s : %s : %s'%(screen_name,str(type(e)),str(e)))
+				f.write('%s : %s : %s\n'%(screen_name,str(type(e)),str(e)))
 				f.close()
 				break
 			batch = api_res['ids']
