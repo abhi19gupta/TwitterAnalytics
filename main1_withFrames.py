@@ -31,7 +31,7 @@ FRAME NETWORK
 	Relationships - HAS_FRAME, HAS_TWEET, TE_USER, TE_TWEET, HAS_FOLLOW, FE_FOLLOWED, FE_FOLLOWS, HAS_UNFOLLOW, UFE_UNFOLLOWED, UFE_UNFOLLOWS, HAS_FAV, FAV_USER, FAV_TWEET
 '''
 
-FRAME_DELTA_T = 5
+FRAME_DELTA_T = 60*60*24*7
 
 def getFrameStartEndTime(timestamp):
 	start = FRAME_DELTA_T*(timestamp//FRAME_DELTA_T)
@@ -264,7 +264,27 @@ def create_indexes():
 def getDateFromTimestamp(timestamp):
 	return datetime.fromtimestamp(timestamp).strftime('%a %b %d %H:%M:%S +0000 %Y')
 
+def getScreenNameToUserIdMap(user_screen_names):
+	ret = {}
+	with open("data/timestamps.txt","r") as f:
+		timestamps = [x.rstrip() for x in f.readlines()]
+	for time_str in timestamps:
+		# print("Starting for ",time_str)
+		timestamp = datetime.strptime(time_str,'%Y-%m-%d %H-%M-%S.%f').timestamp()
+		for screen_name in user_screen_names:
+			if(screen_name not in ret):
+				user_info_file = 'data/user_info/'+screen_name+"_"+time_str+'.txt'
+				try:
+					with open(user_info_file, 'r') as f:
+						# print("\t",screen_name)
+						ret[screen_name] = json.loads(f.read())['id']
+				except FileNotFoundError:
+					pass
+	return ret
+
 def readDataAndCreateGraph(user_screen_names):
+	screenNameToUserId = getScreenNameToUserIdMap(user_screen_names)
+	print("Size of map",str(len(screenNameToUserId)))
 	with open("data/timestamps.txt","r") as f:
 		timestamps = [x.rstrip() for x in f.readlines()]
 	for time_str in timestamps:
@@ -277,12 +297,29 @@ def readDataAndCreateGraph(user_screen_names):
 			favorite_file  = 'data/favourites/'+screen_name+"_"+time_str+'.txt'
 			follower_file  = 'data/user_followers/'+screen_name+"_"+time_str+'.txt'
 			friends_file   = 'data/user_friends/'+screen_name+"_"+time_str+'.txt'
+			user_id = screenNameToUserId[screen_name]
+			
 			try:
 				with open(user_info_file, 'r') as f:
 					user_info = json.loads(f.read())
-					user_id = user_info['id']
 					update_user(user_id,user_info,timestamp)
 					print('\t\tUser profile done')
+			except FileNotFoundError:
+				pass
+				
+			try:
+				with open(follower_file, 'r') as f:
+					followers = json.loads(f.read())
+					update_followers(user_id, followers, timestamp)
+					print('\t\tFollowers done')
+			except FileNotFoundError:
+				pass
+
+			try:
+				with open(friends_file, 'r') as f:
+					friends = json.loads(f.read())
+					update_friends(user_id, followers, timestamp)
+					print('\t\tFriends done')
 			except FileNotFoundError:
 				pass
 
@@ -311,22 +348,6 @@ def readDataAndCreateGraph(user_screen_names):
 							if(count % 100 == 0):
 								print(str(count)," ")
 					print('\t\tFavourites done')
-			except FileNotFoundError:
-				pass
-				
-			try:
-				with open(follower_file, 'r') as f:
-					followers = json.loads(f.read())
-					update_followers(user_id, followers, timestamp)
-					print('\t\tFollowers done')
-			except FileNotFoundError:
-				pass
-
-			try:
-				with open(friends_file, 'r') as f:
-					friends = json.loads(f.read())
-					update_friends(user_id, followers, timestamp)
-					print('\t\tFriends done')
 			except FileNotFoundError:
 				pass
 
@@ -409,7 +430,7 @@ create_tweet(tweet4)
 create_tweet(tweet5)
 '''
 
-readDataAndCreateGraph(get_user_screen_names('users1.txt'))
+readDataAndCreateGraph(get_user_screen_names('users2_filtered.txt'))
 
 session.close()
 
