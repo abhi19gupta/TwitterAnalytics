@@ -31,7 +31,7 @@ FRAME NETWORK
 	Relationships - HAS_FRAME, HAS_TWEET, TE_USER, TE_TWEET, HAS_FOLLOW, FE_FOLLOWED, FE_FOLLOWS, HAS_UNFOLLOW, UFE_UNFOLLOWED, UFE_UNFOLLOWS, HAS_FAV, FAV_USER, FAV_TWEET
 '''
 
-FRAME_DELTA_T = 60*60*24*7
+FRAME_DELTA_T = 60*60*24
 
 def getFrameStartEndTime(timestamp):
 	start = FRAME_DELTA_T*(timestamp//FRAME_DELTA_T)
@@ -78,6 +78,9 @@ def update_followers(user_id, follower_ids, timestamp):
 	(frame_start_t, frame_end_t) = getFrameStartEndTime(timestamp)
 	# First, for all followers in argument, either create FOLLOWS or update the "to" field of FOLLOWS to current timestamp
 	session.run(
+		"MERGE (run:RUN) "
+		"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
+		"WITH run, frame "
 		"MATCH (user:USER {id:{user_id}}) "
 		"UNWIND {follower_ids} AS follower_id "
 		"MERGE (follower:USER {id:follower_id}) " # keep this merge separate from below o/w multiple nodes can be created
@@ -85,8 +88,6 @@ def update_followers(user_id, follower_ids, timestamp):
 		"  ON CREATE SET follows_rel.from = {now}, follows_rel.to = {now} "
 		"  ON MATCH SET follows_rel.to = {now} "
 		"FOREACH (x IN CASE WHEN follows_rel.from <> {now} THEN [] ELSE [1] END | "
-		"  MERGE (run:RUN) "
-		"  MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
 		"  CREATE (frame) -[:HAS_FOLLOW]-> (fe:FOLLOW_EVENT {timestamp:{now}}), "
         "    (fe) -[:FE_FOLLOWED]-> (user), "
         "    (fe) -[:FE_FOLLOWS]-> (follower)) ",
@@ -111,6 +112,9 @@ def update_friends(user_id, friend_ids, timestamp):
 	(frame_start_t, frame_end_t) = getFrameStartEndTime(timestamp)
 	# First, for all friends in argument, either create FOLLOWS or update the "to" field of FOLLOWS to current timestamp
 	session.run(
+		"MERGE (run:RUN) "
+		"MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
+		"WITH run, frame "
 		"MATCH (user:USER {id:{user_id}}) "
 		"UNWIND {friend_ids} AS friend_id "
 		"MERGE (friend:USER {id:friend_id}) " # keep this merge separate from below o/w multiple nodes can be created
@@ -118,8 +122,6 @@ def update_friends(user_id, friend_ids, timestamp):
 		"  ON CREATE SET follows_rel.from = {now}, follows_rel.to = {now} "
 		"  ON MATCH SET follows_rel.to = {now} "
 		"FOREACH (x IN CASE WHEN follows_rel.from <> {now} THEN [] ELSE [1] END | "
-		"  MERGE (run:RUN) "
-		"  MERGE (run) -[:HAS_FRAME]-> (frame:FRAME {start_t:{frame_start_t},end_t:{frame_end_t}}) "
 		"  CREATE (frame) -[:HAS_FOLLOW]-> (fe:FOLLOW_EVENT {timestamp:{now}}), "
         "    (fe) -[:FE_FOLLOWED]-> (friend), "
         "    (fe) -[:FE_FOLLOWS]-> (user)) ",
@@ -291,7 +293,7 @@ def readDataAndCreateGraph(user_screen_names):
 		print("Starting for ",time_str)
 		timestamp = datetime.strptime(time_str,'%Y-%m-%d %H-%M-%S.%f').timestamp()
 		for screen_name in user_screen_names:
-			print("\tStarting with ",screen_name)
+			to_print = "\t" + screen_name + " :"
 			user_info_file = 'data/user_info/'+screen_name+"_"+time_str+'.txt'
 			tweet_file     = 'data/tweets/'+screen_name+"_"+time_str+".txt"
 			favorite_file  = 'data/favourites/'+screen_name+"_"+time_str+'.txt'
@@ -302,24 +304,27 @@ def readDataAndCreateGraph(user_screen_names):
 			try:
 				with open(user_info_file, 'r') as f:
 					user_info = json.loads(f.read())
+					t = datetime.now().timestamp()
 					update_user(user_id,user_info,timestamp)
-					print('\t\tUser profile done')
+					to_print += " Profile %f"%(datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
 				
 			try:
 				with open(follower_file, 'r') as f:
 					followers = json.loads(f.read())
+					t = datetime.now().timestamp()
 					update_followers(user_id, followers, timestamp)
-					print('\t\tFollowers done')
+					to_print += " Followers (%d) %f"%(len(followers),datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
 
 			try:
 				with open(friends_file, 'r') as f:
 					friends = json.loads(f.read())
+					t = datetime.now().timestamp()
 					update_friends(user_id, followers, timestamp)
-					print('\t\tFriends done')
+					to_print += " Friends (%d) %f"%(len(friends),datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
 
@@ -327,13 +332,12 @@ def readDataAndCreateGraph(user_screen_names):
 				with open(tweet_file, 'r') as f:
 					count = 0
 					tweets_list_list = json.loads(f.read())
+					t = datetime.now().timestamp()
 					for tweet_list in tweets_list_list:
 						for tweet in tweet_list:
 							create_tweet(tweet=tweet)
 							count += 1
-							if(count % 100 == 0):
-								print(str(count)," ")
-					print('\t\tTweets done')
+					to_print += " Tweets (%d) %f"%(count,datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
 
@@ -341,19 +345,21 @@ def readDataAndCreateGraph(user_screen_names):
 				with open(favorite_file, 'r') as f:
 					count = 0
 					tweets_list_list = json.loads(f.read())
+					t = datetime.now().timestamp()
 					for tweet_list in tweets_list_list:
 						for tweet in tweet_list:
 							create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
 							count += 1
-							if(count % 100 == 0):
-								print(str(count)," ")
-					print('\t\tFavourites done')
+					to_print += " Favorites (%d) %f"%(count,datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
 
+			if (to_print != ("\t" + screen_name + " :")):
+				print(to_print)
 
-clear_db()
-create_indexes()
+
+# clear_db()
+# create_indexes()
 
 start_time = datetime.now().timestamp()
 '''
