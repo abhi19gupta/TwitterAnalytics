@@ -55,6 +55,9 @@ def get_user_screen_names(filename):
 		ret.append(name.strip())
 	return ret
 
+def sync_session():
+	session.sync()
+
 ################################################################
 
 # CAN MAKE THE FOLLOWING CHANGE - For user_info no need of TO and FROM, just keep ON because we create a new node everytime and we have information only of that timestamp.
@@ -306,6 +309,7 @@ def readDataAndCreateGraph(user_screen_names):
 					user_info = json.loads(f.read())
 					t = datetime.now().timestamp()
 					update_user(user_id,user_info,timestamp)
+					sync_session(); 
 					to_print += " Profile %f"%(datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
@@ -315,6 +319,7 @@ def readDataAndCreateGraph(user_screen_names):
 					followers = json.loads(f.read())
 					t = datetime.now().timestamp()
 					update_followers(user_id, followers, timestamp)
+					sync_session(); 
 					to_print += " Followers (%d) %f"%(len(followers),datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
@@ -324,10 +329,11 @@ def readDataAndCreateGraph(user_screen_names):
 					friends = json.loads(f.read())
 					t = datetime.now().timestamp()
 					update_friends(user_id, followers, timestamp)
+					sync_session(); 
 					to_print += " Friends (%d) %f"%(len(friends),datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
-
+			
 			try:
 				with open(tweet_file, 'r') as f:
 					count = 0
@@ -337,6 +343,7 @@ def readDataAndCreateGraph(user_screen_names):
 						for tweet in tweet_list:
 							create_tweet(tweet=tweet)
 							count += 1
+					sync_session(); 
 					to_print += " Tweets (%d) %f"%(count,datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
@@ -350,34 +357,35 @@ def readDataAndCreateGraph(user_screen_names):
 						for tweet in tweet_list:
 							create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
 							count += 1
+					sync_session(); 
 					to_print += " Favorites (%d) %f"%(count,datetime.now().timestamp()-t)
 			except FileNotFoundError:
 				pass
-
+			
 			if (to_print != ("\t" + screen_name + " :")):
 				print(to_print)
 
 
-# clear_db()
-# create_indexes()
+clear_db()
+create_indexes()
 
 start_time = datetime.now().timestamp()
-'''
+
 timestamp = 0
 print(datetime.now().timestamp())
-update_user(1,{"m1":"d1","m2":"d2"},timestamp); print(datetime.now().timestamp())
-update_user(1,{"m1":"d3","m2":"d4"},timestamp+1); print(datetime.now().timestamp())
-update_user(1,{"m1":"d5","m2":"d6"},timestamp+2); print(datetime.now().timestamp())
-update_followers(1, ["f1","f2"], timestamp+3); print(datetime.now().timestamp())
-update_followers(1, ["f2","f3"], timestamp+4); print(datetime.now().timestamp())
-update_followers(1, ["f1","f2"], timestamp+5); print(datetime.now().timestamp())
-update_followers(1, [],          timestamp+6); print(datetime.now().timestamp())
-update_followers(1, ["f1","f4"], timestamp+7); print(datetime.now().timestamp())
-update_friends(1, ["g1","g2"], timestamp+3); print(datetime.now().timestamp())
-update_friends(1, ["g2","g3"], timestamp+4); print(datetime.now().timestamp())
-update_friends(1, ["g1","g2"], timestamp+5); print(datetime.now().timestamp())
-update_friends(1, [],          timestamp+6); print(datetime.now().timestamp())
-update_friends(1, ["g1","g4"], timestamp+7); print(datetime.now().timestamp())
+update_user(1,{"m1":"d1","m2":"d2"},timestamp); sync_session(); print("User: ", datetime.now().timestamp())
+update_user(1,{"m1":"d3","m2":"d4"},timestamp+1); sync_session(); print("User: ", datetime.now().timestamp())
+update_user(1,{"m1":"d5","m2":"d6"},timestamp+2); sync_session(); print("User: ", datetime.now().timestamp())
+update_followers(1, ["f1","f2"], timestamp+3); sync_session(); print("Followers: ", datetime.now().timestamp())
+update_followers(1, ["f2","f3"], timestamp+4); sync_session(); print("Followers: ", datetime.now().timestamp())
+update_followers(1, ["f1","f2"], timestamp+5); sync_session(); print("Followers: ", datetime.now().timestamp())
+update_followers(1, [],          timestamp+6); sync_session(); print("Followers: ", datetime.now().timestamp())
+update_followers(1, ["f1","f4"], timestamp+7); sync_session(); print("Followers: ", datetime.now().timestamp())
+update_friends(1, ["g1","g2"], timestamp+3); sync_session(); print("Friends: ", datetime.now().timestamp())
+update_friends(1, ["g2","g3"], timestamp+4); sync_session(); print("Friends: ", datetime.now().timestamp())
+update_friends(1, ["g1","g2"], timestamp+5); sync_session(); print("Friends: ", datetime.now().timestamp())
+update_friends(1, [],          timestamp+6); sync_session(); print("Friends: ", datetime.now().timestamp())
+update_friends(1, ["g1","g4"], timestamp+7); sync_session(); print("Friends: ", datetime.now().timestamp())
 
 # basic creation test
 tweet1 = {"id":"tweet1",
@@ -429,16 +437,18 @@ tweet5 = {"id":"tweet5",
 		"quoted_status":copy.deepcopy(tweet3),
 		"in_reply_to_status_id":tweet1["id"]}
 
-create_tweet(tweet=tweet1, favourited_by=2, fav_timestamp=20)
-create_tweet(tweet2)
-create_tweet(tweet3, favourited_by=5, fav_timestamp=20)
-create_tweet(tweet4)
-create_tweet(tweet5)
-'''
+create_tweet(tweet=tweet1, favourited_by=2, fav_timestamp=20); sync_session(); print("Tweet: ", datetime.now().timestamp())
+create_tweet(tweet2); sync_session(); print("Tweet: ", datetime.now().timestamp())
+create_tweet(tweet3, favourited_by=5, fav_timestamp=20); sync_session(); print("Tweet: ", datetime.now().timestamp())
+create_tweet(tweet4); sync_session(); print("Tweet: ", datetime.now().timestamp())
+create_tweet(tweet5); sync_session(); print("Tweet: ", datetime.now().timestamp())
 
-readDataAndCreateGraph(get_user_screen_names('users2_filtered.txt'))
 
-session.close()
+# readDataAndCreateGraph(get_user_screen_names('users2_filtered.txt'))
+
+session_close_start_t = datetime.now().timestamp()
+session.close(); print("Closing: ", datetime.now().timestamp())
+print("Closing session took: ", datetime.now().timestamp()-session_close_start_t)
 
 end_time = datetime.now().timestamp()
 print("Time taken: ", str(end_time-start_time))
