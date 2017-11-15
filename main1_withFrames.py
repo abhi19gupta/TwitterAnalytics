@@ -4,15 +4,6 @@
 # TO CLEAR THE DATABSE:
 # MATCH (n) DETACH DELETE n
 
-from neo4j.v1 import GraphDatabase, basic_auth
-from datetime import datetime
-import json, copy
-
-driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
-session = driver.session()
-
-INFI_TIME = 1000000000000
-
 '''
 USER NETWORK
 	Node labels - USER(id), USER_INFO(dict)
@@ -31,13 +22,23 @@ FRAME NETWORK
 	Relationships - HAS_FRAME, HAS_TWEET, TE_USER, TE_TWEET, HAS_FOLLOW, FE_FOLLOWED, FE_FOLLOWS, HAS_UNFOLLOW, UFE_UNFOLLOWED, UFE_UNFOLLOWS, HAS_FAV, FAV_USER, FAV_TWEET
 '''
 
-FRAME_DELTA_T = 60*60*24
+from neo4j.v1 import GraphDatabase, basic_auth
+from datetime import datetime
+import json, copy
 
-TO_LOG_FILE = True 
+driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
+session = driver.session()
+
+INFI_TIME = 1000000000000
+FRAME_DELTA_T = 60*60*24
+IS_REAL_DATA = {'value':True} 
+NUM_TWEETS_BUFFERED = {'value':0}
+TWEET_SYNC_RATE = 10000
+
 log_file = 'log_%s.txt'%(str(datetime.now()))
 def log(text):
 	print(text);
-	if TO_LOG_FILE:
+	if IS_REAL_DATA['value']:
 		f = open(log_file,'a')
 		f.write(text)
 		f.write('\n')
@@ -58,8 +59,18 @@ def flatten_json(json_obj):
 			json_fields.append(key)
 	json_obj["json_fields"] = json_fields # while fetching convert these fields back to jsons
 
-def sync_session():
-	session.sync()
+def sync_session(type_=None):
+	if (type_ == 'TWEET'):
+		if (NUM_TWEETS_BUFFERED['value'] > TWEET_SYNC_RATE):
+			sync_start_t = datetime.now().timestamp()
+			session.sync()
+			ret = ' Synced (%d) %f'%(NUM_TWEETS_BUFFERED['value'], datetime.now().timestamp()-sync_start_t) 
+			NUM_TWEETS_BUFFERED['value'] = 0
+			return ret
+		else:
+			return ''
+	else:
+		session.sync()
 
 ################################################################
 
@@ -149,6 +160,8 @@ def update_friends(user_id, friend_ids, timestamp):
 	'''
 
 def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
+
+	NUM_TWEETS_BUFFERED['value'] += 1
 	
 	user_id = tweet["user"]["id"]
 	tweet['created_at'] = datetime.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y').timestamp()
@@ -297,89 +310,102 @@ def getScreenNameToUserIdMap(user_screen_names):
 					pass
 	return ret
 
-def readDataAndCreateGraph(filename_screen_names):
+def readDataAndCreateGraph(filename_screen_names, STAGE_BY_STAGE):
 	user_screen_names = get_user_screen_names(filename_screen_names)
 	screenNameToUserId = getScreenNameToUserIdMap(user_screen_names)
+	log('Starting: %s'%(str(datetime.now().timestamp())))
 	log("Size of map %s"%(str(len(screenNameToUserId))))
 	with open("data/timestamps.txt","r") as f:
 		timestamps = [x.rstrip() for x in f.readlines()]
-	for time_str in timestamps:
-		log("Starting for %s"%(time_str))
-		timestamp = datetime.strptime(time_str,'%Y-%m-%d %H-%M-%S.%f').timestamp()
-		for screen_name in user_screen_names:
-			to_print = "\t" + screen_name + " :"
-			user_info_file = 'data/user_info/'+screen_name+"_"+time_str+'.txt'
-			tweet_file     = 'data/tweets/'+screen_name+"_"+time_str+".txt"
-			favorite_file  = 'data/favourites/'+screen_name+"_"+time_str+'.txt'
-			follower_file  = 'data/user_followers/'+screen_name+"_"+time_str+'.txt'
-			friends_file   = 'data/user_friends/'+screen_name+"_"+time_str+'.txt'
-			user_id = screenNameToUserId[screen_name]
-			
-			try:
-				with open(user_info_file, 'r') as f:
-					user_info = json.loads(f.read())
-					t = datetime.now().timestamp()
-					update_user(user_id,user_info,timestamp)
-					sync_session(); 
-					to_print += " Profile %f"%(datetime.now().timestamp()-t)
-			except FileNotFoundError:
-				pass
+
+	stages_left = 5
+	if (not STAGE_BY_STAGE):
+		stages_left = 1
+
+	while (stages_left > 0):
+		stages_left -= 1
+		for time_str in timestamps:
+			log("Starting for %s"%(time_str))
+			timestamp = datetime.strptime(time_str,'%Y-%m-%d %H-%M-%S.%f').timestamp()
+			for screen_name in user_screen_names:
+				to_print = "\t" + screen_name + " :"
+				user_info_file = 'data/user_info/'+screen_name+"_"+time_str+'.txt'
+				tweet_file     = 'data/tweets/'+screen_name+"_"+time_str+".txt"
+				favorite_file  = 'data/favourites/'+screen_name+"_"+time_str+'.txt'
+				follower_file  = 'data/user_followers/'+screen_name+"_"+time_str+'.txt'
+				friends_file   = 'data/user_friends/'+screen_name+"_"+time_str+'.txt'
+				user_id = screenNameToUserId[screen_name]
 				
-			try:
-				with open(follower_file, 'r') as f:
-					followers = json.loads(f.read())
-					t = datetime.now().timestamp()
-					update_followers(user_id, followers, timestamp)
-					sync_session(); 
-					to_print += " Followers (%d) %f"%(len(followers),datetime.now().timestamp()-t)
-			except FileNotFoundError:
-				pass
+				if ((STAGE_BY_STAGE and stages_left == 4) or (not STAGE_BY_STAGE)):
+					try:
+						with open(user_info_file, 'r') as f:
+							user_info = json.loads(f.read())
+							t = datetime.now().timestamp()
+							update_user(user_id,user_info,timestamp)
+							sync_session(); 
+							to_print += " Profile %f"%(datetime.now().timestamp()-t)
+					except FileNotFoundError:
+						pass
+				
+				if ((STAGE_BY_STAGE and stages_left == 3) or (not STAGE_BY_STAGE)):
+					try:
+						with open(tweet_file, 'r') as f:
+							count = 0
+							tweets_list_list = json.loads(f.read())
+							t = datetime.now().timestamp()
+							for tweet_list in tweets_list_list:
+								for tweet in tweet_list:
+									create_tweet(tweet=tweet)
+									count += 1
+							to_print += " Tweets (%d) %f"%(count,datetime.now().timestamp()-t)
+							to_print += sync_session('TWEET'); 
+					except FileNotFoundError:
+						pass
 
-			try:
-				with open(friends_file, 'r') as f:
-					friends = json.loads(f.read())
-					t = datetime.now().timestamp()
-					update_friends(user_id, followers, timestamp)
-					sync_session(); 
-					to_print += " Friends (%d) %f"%(len(friends),datetime.now().timestamp()-t)
-			except FileNotFoundError:
-				pass
-			
-			try:
-				with open(tweet_file, 'r') as f:
-					count = 0
-					tweets_list_list = json.loads(f.read())
-					t = datetime.now().timestamp()
-					for tweet_list in tweets_list_list:
-						for tweet in tweet_list:
-							create_tweet(tweet=tweet)
-							count += 1
-					sync_session(); 
-					to_print += " Tweets (%d) %f"%(count,datetime.now().timestamp()-t)
-			except FileNotFoundError:
-				pass
+				if ((STAGE_BY_STAGE and stages_left == 2) or (not STAGE_BY_STAGE)):
+					try:
+						with open(favorite_file, 'r') as f:
+							count = 0
+							tweets_list_list = json.loads(f.read())
+							t = datetime.now().timestamp()
+							for tweet_list in tweets_list_list:
+								for tweet in tweet_list:
+									create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
+									count += 1
+							to_print += " Favorites (%d) %f"%(count,datetime.now().timestamp()-t)
+							to_print += sync_session('TWEET'); 
+					except FileNotFoundError:
+						pass
 
-			try:
-				with open(favorite_file, 'r') as f:
-					count = 0
-					tweets_list_list = json.loads(f.read())
-					t = datetime.now().timestamp()
-					for tweet_list in tweets_list_list:
-						for tweet in tweet_list:
-							create_tweet(tweet=tweet, favourited_by=user_id, fav_timestamp=timestamp)
-							count += 1
-					sync_session(); 
-					to_print += " Favorites (%d) %f"%(count,datetime.now().timestamp()-t)
-			except FileNotFoundError:
-				pass
-			
-			if (to_print != ("\t" + screen_name + " :")):
-				log(to_print)
+				if ((STAGE_BY_STAGE and stages_left == 1) or (not STAGE_BY_STAGE)):
+					try:
+						with open(follower_file, 'r') as f:
+							followers = json.loads(f.read())
+							t = datetime.now().timestamp()
+							update_followers(user_id, followers, timestamp)
+							sync_session(); 
+							to_print += " Followers (%d) %f"%(len(followers),datetime.now().timestamp()-t)
+					except FileNotFoundError:
+						pass
+
+				if ((STAGE_BY_STAGE and stages_left == 0) or (not STAGE_BY_STAGE)):
+					try:
+						with open(friends_file, 'r') as f:
+							friends = json.loads(f.read())
+							t = datetime.now().timestamp()
+							update_friends(user_id, followers, timestamp)
+							sync_session(); 
+							to_print += " Friends (%d) %f"%(len(friends),datetime.now().timestamp()-t)
+					except FileNotFoundError:
+						pass
+				
+				if (to_print != ("\t" + screen_name + " :")):
+					log(to_print)
 
 def simulateExample():
-	TO_LOG_FILE = False
+	IS_REAL_DATA['value'] = False
 	timestamp = 0
-	print(datetime.now().timestamp())
+	print('Starting: %s'%(str(datetime.now().timestamp())))
 	update_user(1,{"m1":"d1","m2":"d2"},timestamp); sync_session(); print("User: ", datetime.now().timestamp())
 	update_user(1,{"m1":"d3","m2":"d4"},timestamp+1); sync_session(); print("User: ", datetime.now().timestamp())
 	update_user(1,{"m1":"d5","m2":"d6"},timestamp+2); sync_session(); print("User: ", datetime.now().timestamp())
@@ -458,11 +484,13 @@ create_indexes()
 start_time = datetime.now().timestamp()
 
 # simulateExample()
-readDataAndCreateGraph('users2_filtered.txt')
+readDataAndCreateGraph('users2_filtered.txt', STAGE_BY_STAGE=True)
 
 session_close_start_t = datetime.now().timestamp()
-session.close(); log("Closing: %s"%(str(datetime.now().timestamp())))
+session.close()
 log("Closing session took: %f"%(datetime.now().timestamp()-session_close_start_t))
+
+log("Closing: %s"%(str(datetime.now().timestamp())))
 
 end_time = datetime.now().timestamp()
 log("Time taken: %s"%(str(end_time-start_time)))
