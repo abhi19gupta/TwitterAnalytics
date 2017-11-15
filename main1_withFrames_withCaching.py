@@ -109,26 +109,40 @@ class LRU:
 		self.hits = 0
 		self.misses = 0
 
-	# returns true if element was already in lru
-	def update(self, element, add_to_lru_list, evict_from_lru_list):
-		if (element is None):
-			return False
-		inserted_el = None if element in self.lru else element
-		evicted_el = None
-		self.lru[element] = datetime.now().timestamp()
-		if (len(self.lru) > self.capacity):
-			oldest_time = INFI_TIME
-			for x in self.lru:
-				if (self.lru[x] < oldest_time ):
-					oldest_time = self.lru[x]
-					evicted_el = x
-			del self.lru[evicted_el]
-		if inserted_el != None: add_to_lru_list.append(inserted_el)
-		if evicted_el != None: evict_from_lru_list.append(evicted_el)
-		alreadyExists = True if inserted_el == None else False
-		self.hits += int(alreadyExists)
-		self.misses += (1-int(alreadyExists))
-		return alreadyExists
+	def update(self, elements):
+		added = []
+		evicted = []
+		for element in elements:
+			if (element is None): continue
+			inserted_el = None if element in self.lru else element
+			evicted_el = None
+			self.lru[element] = datetime.now().timestamp()
+			if (len(self.lru) > self.capacity):
+				oldest_time = INFI_TIME
+				for x in self.lru:
+					if (self.lru[x] < oldest_time ):
+						oldest_time = self.lru[x]
+						evicted_el = x
+				del self.lru[evicted_el]
+
+			if inserted_el != None: 
+				self.misses += 1
+				if inserted_el in evicted:
+					del evicted[evicted.index(inserted_el)]
+				else:
+					added.append(inserted_el)
+			else:
+				self.hits += 1
+			if evicted_el != None: 
+				if evicted_el in added:
+					del added[added.index(evicted_el)]
+				else:
+					evicted.append(evicted_el)
+
+		return (added,evicted)
+
+	def contains(self, element):
+		return element in self.lru
 
 	def printState(self):
 		log("LRU: hits:%d misses:%d size:%d"%(self.hits,self.misses,len(self.lru)))
@@ -245,10 +259,9 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 		create_tweet(retweeted_status)
 		flatten_json(tweet)
 
-		lru_evict_users = []
-		lru_add_users = []
-		fav_by_in_lru = user_lru.update(favourited_by, lru_add_users, lru_evict_users)
-		user_in_lru = user_lru.update(user_id, lru_add_users, lru_evict_users)
+		(lru_add_users,lru_evict_users) = user_lru.update([favourited_by,user_id])
+		fav_by_in_lru = user_lru.contains(favourited_by)
+		user_in_lru = user_lru.contains(user_id)
 
 		session.run(
 			"MERGE (run:RUN) "
@@ -256,6 +269,9 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 			# Create node for this tweet
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
 			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			# Update the LRU
+			"FOREACH (x IN {lru_evict_users} | MERGE (u:USER_LRU {id:x}) REMOVE u:USER_LRU) "
+			"FOREACH (x IN {lru_add_users} | MERGE (u:USER {id:x}) SET u:USER_LRU) "
 			# Create favorite relation if needed
 			"FOREACH (x IN CASE WHEN {favourited_by} IS NULL THEN [] ELSE [1] END | "
 			"  MERGE (run) -[:HAS_FRAME]-> (frame_fav:FRAME {start_t:{fav_frame_start_t},end_t:{fav_frame_end_t}}) "
@@ -276,13 +292,13 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 			# Proceed only if the tweet was not already created
 			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
 			# Create user and then the relationships
-			"FOREACH (x IN CASE WHEN {user_in_lru} = TRUE THEN [1] ELSE [0] END | "
+			"FOREACH (x IN CASE WHEN {user_in_lru} = TRUE THEN [1] ELSE [] END | "
 			"  MERGE (user_lru:USER_LRU {id:{user_id}}) "
 			"  CREATE (user_lru) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
 			"    (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}),"
 			"    (te) -[:TE_USER]-> (user_lru),"
 			"    (te) -[:TE_TWEET]-> (tweet) ) "
-			"FOREACH (x IN CASE WHEN {user_in_lru} = FALSE THEN [1] ELSE [0] END | "
+			"FOREACH (x IN CASE WHEN {user_in_lru} = FALSE THEN [1] ELSE [] END | "
 			"  MERGE (user:USER {id:{user_id}}) "
 			"  CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
 			"    (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}),"
@@ -291,10 +307,7 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 			# Find node of original tweet and link
 			"WITH tweet "
 			"MATCH (original_tweet:TWEET {id:{original_tweet_id}}) "
-			"CREATE (tweet) -[:RETWEET_OF {on:{created_at}}]-> (original_tweet) "
-			# Update the LRU
-			"FOREACH (x IN {lru_evict_users} | MERGE (u:USER_LRU {id:x}) REMOVE u:USER_LRU) "
-			"FOREACH (x IN {lru_add_users} | MERGE (u:USER {id:x}) SET u:USER_LRU) ",
+			"CREATE (tweet) -[:RETWEET_OF {on:{created_at}}]-> (original_tweet) ",
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
 			"original_tweet_id":retweeted_status["id"], "frame_start_t":frame_start_t, "frame_end_t":frame_end_t,
 			"favourited_by":favourited_by, "fav_timestamp":fav_timestamp, "fav_frame_start_t":fav_frame_start_t,
@@ -313,14 +326,13 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 		quoted_status_id = None if quoted_status is None else quoted_status["id"]
 		flatten_json(tweet)
 
-		lru_evict_users = []
-		lru_add_users = []
+		(lru_add_users,lru_evict_users) = user_lru.update([favourited_by, user_id]+mention_ids)
+		fav_by_in_lru = user_lru.contains(favourited_by)
+		user_in_lru = user_lru.contains(user_id)
 		mention_ids_lru = []
 		mention_ids_non_lru = []
-		fav_by_in_lru = user_lru.update(favourited_by, lru_add_users, lru_evict_users)
-		user_in_lru = user_lru.update(user_id, lru_add_users, lru_evict_users)
 		for mention_id in mention_ids:
-			if (user_lru.update(mention_id,lru_add_users,lru_evict_users)): 
+			if (user_lru.contains(mention_id)): 
 				mention_ids_lru.append(mention_id)
 			else:
 				mention_ids_non_lru.append(mention_id)
@@ -331,6 +343,9 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 			# Create node for this tweet and frames
 			"MERGE (tweet:TWEET {id:{tweet_id}}) " # Maybe the tweet node already partially exists because some other tweet is its reply
 			"  ON CREATE SET tweet.created_at = {created_at}, tweet.is_active = true "
+			# Update the LRU
+			"FOREACH (x IN {lru_evict_users} | MERGE (u:USER_LRU {id:x}) REMOVE u:USER_LRU) "
+			"FOREACH (x IN {lru_add_users} | MERGE (u:USER {id:x}) SET u:USER_LRU) "
 			# Create favorite relation if needed
 			"FOREACH (x IN CASE WHEN {favourited_by} IS NULL THEN [] ELSE [1] END | "
 			"  MERGE (run) -[:HAS_FRAME]-> (frame_fav:FRAME {start_t:{fav_frame_start_t},end_t:{fav_frame_end_t}}) "
@@ -351,13 +366,13 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 			# Proceed only if the tweet was not already created
 			"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
 			# Create user and then the relationships
-			"FOREACH (x IN CASE WHEN {user_in_lru} = TRUE THEN [1] ELSE [0] END | "
+			"FOREACH (x IN CASE WHEN {user_in_lru} = TRUE THEN [1] ELSE [] END | "
 			"  MERGE (user_lru:USER_LRU {id:{user_id}}) "
 			"  CREATE (user_lru) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
 			"    (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}),"
 			"    (te) -[:TE_USER]-> (user_lru),"
 			"    (te) -[:TE_TWEET]-> (tweet) ) "
-			"FOREACH (x IN CASE WHEN {user_in_lru} = FALSE THEN [1] ELSE [0] END | "
+			"FOREACH (x IN CASE WHEN {user_in_lru} = FALSE THEN [1] ELSE [] END | "
 			"  MERGE (user:USER {id:{user_id}}) "
 			"  CREATE (user) -[:TWEETED {on:{created_at}}]-> (tweet) -[:INFO]-> (:TWEET_INFO {tweet}), "
 			"    (frame) -[:HAS_TWEET]-> (te:TWEET_EVENT {timestamp:{created_at}}),"
@@ -383,10 +398,7 @@ def create_tweet(tweet, favourited_by=None, fav_timestamp=None):
 			# Create link to original tweet in case this is a reply tweet
 			"FOREACH (x IN CASE WHEN {in_reply_to_status_id} IS NULL THEN [] ELSE [1] END | "
 			"  MERGE (in_reply_to_tweet:TWEET {id:{in_reply_to_status_id}}) "
-			"  CREATE (tweet) -[:REPLY_TO {on:{created_at}}]-> (in_reply_to_tweet) )"
-			# Update the LRU
-			"FOREACH (x IN {lru_evict_users} | MERGE (u:USER_LRU {id:x}) REMOVE u:USER_LRU) "
-			"FOREACH (x IN {lru_add_users} | MERGE (u:USER {id:x}) SET u:USER_LRU) ",
+			"  CREATE (tweet) -[:REPLY_TO {on:{created_at}}]-> (in_reply_to_tweet) )",
 			{"user_id":user_id, "tweet_id":tweet["id"], "created_at":tweet["created_at"] ,"tweet":tweet,
 			"hashtags":hashtags, "mention_ids_lru":mention_ids_lru, "mention_ids_non_lru":mention_ids_non_lru, "urls":urls,
 			"quoted_status":quoted_status, "quoted_status_id":quoted_status_id,
