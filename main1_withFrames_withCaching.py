@@ -124,10 +124,10 @@ class LRU:
 					evicted_el = x
 			del self.lru[evicted_el]
 		if inserted_el != None: add_to_lru_list.append(inserted_el)
-		if evicted_el != None: evict_from_lru_list.append(oldest_el)
+		if evicted_el != None: evict_from_lru_list.append(evicted_el)
 		alreadyExists = True if inserted_el == None else False
 		self.hits += int(alreadyExists)
-		self.misses += 1-int(alreadyExists)
+		self.misses += (1-int(alreadyExists))
 		return alreadyExists
 
 	def printState(self):
