@@ -33,6 +33,16 @@ FRAME NETWORK
 
 FRAME_DELTA_T = 60*60*24
 
+TO_LOG_FILE = True 
+log_file = 'log_%s.txt'%(str(datetime.now()))
+def log(text):
+	print(text);
+	if TO_LOG_FILE:
+		f = open(log_file,'a')
+		f.write(text)
+		f.write('\n')
+		f.close()
+
 def getFrameStartEndTime(timestamp):
 	start = FRAME_DELTA_T*(timestamp//FRAME_DELTA_T)
 	end = start + FRAME_DELTA_T - 1
@@ -47,13 +57,6 @@ def flatten_json(json_obj):
 			json_obj[key] = json.dumps(json_obj[key])
 			json_fields.append(key)
 	json_obj["json_fields"] = json_fields # while fetching convert these fields back to jsons
-
-def get_user_screen_names(filename):
-	f = open(filename,'r')
-	ret = []
-	for name in f:
-		ret.append(name.strip())
-	return ret
 
 def sync_session():
 	session.sync()
@@ -269,31 +272,39 @@ def create_indexes():
 def getDateFromTimestamp(timestamp):
 	return datetime.fromtimestamp(timestamp).strftime('%a %b %d %H:%M:%S +0000 %Y')
 
+def get_user_screen_names(filename):
+	f = open(filename,'r')
+	ret = []
+	for name in f:
+		ret.append(name.strip())
+	return ret
+
 def getScreenNameToUserIdMap(user_screen_names):
 	ret = {}
 	with open("data/timestamps.txt","r") as f:
 		timestamps = [x.rstrip() for x in f.readlines()]
 	for time_str in timestamps:
-		# print("Starting for ",time_str)
+		# log("Starting for %s"%(time_str))
 		timestamp = datetime.strptime(time_str,'%Y-%m-%d %H-%M-%S.%f').timestamp()
 		for screen_name in user_screen_names:
 			if(screen_name not in ret):
 				user_info_file = 'data/user_info/'+screen_name+"_"+time_str+'.txt'
 				try:
 					with open(user_info_file, 'r') as f:
-						# print("\t",screen_name)
+						# log("\t%s"%(screen_name))
 						ret[screen_name] = json.loads(f.read())['id']
 				except FileNotFoundError:
 					pass
 	return ret
 
-def readDataAndCreateGraph(user_screen_names):
+def readDataAndCreateGraph(filename_screen_names):
+	user_screen_names = get_user_screen_names(filename_screen_names)
 	screenNameToUserId = getScreenNameToUserIdMap(user_screen_names)
-	print("Size of map",str(len(screenNameToUserId)))
+	log("Size of map %s"%(str(len(screenNameToUserId))))
 	with open("data/timestamps.txt","r") as f:
 		timestamps = [x.rstrip() for x in f.readlines()]
 	for time_str in timestamps:
-		print("Starting for ",time_str)
+		log("Starting for %s"%(time_str))
 		timestamp = datetime.strptime(time_str,'%Y-%m-%d %H-%M-%S.%f').timestamp()
 		for screen_name in user_screen_names:
 			to_print = "\t" + screen_name + " :"
@@ -363,105 +374,99 @@ def readDataAndCreateGraph(user_screen_names):
 				pass
 			
 			if (to_print != ("\t" + screen_name + " :")):
-				print(to_print)
+				log(to_print)
 
+def simulateExample():
+	TO_LOG_FILE = False
+	timestamp = 0
+	print(datetime.now().timestamp())
+	update_user(1,{"m1":"d1","m2":"d2"},timestamp); sync_session(); print("User: ", datetime.now().timestamp())
+	update_user(1,{"m1":"d3","m2":"d4"},timestamp+1); sync_session(); print("User: ", datetime.now().timestamp())
+	update_user(1,{"m1":"d5","m2":"d6"},timestamp+2); sync_session(); print("User: ", datetime.now().timestamp())
+	update_followers(1, ["f1","f2"], timestamp+3); sync_session(); print("Followers: ", datetime.now().timestamp())
+	update_followers(1, ["f2","f3"], timestamp+4); sync_session(); print("Followers: ", datetime.now().timestamp())
+	update_followers(1, ["f1","f2"], timestamp+5); sync_session(); print("Followers: ", datetime.now().timestamp())
+	update_followers(1, [],          timestamp+6); sync_session(); print("Followers: ", datetime.now().timestamp())
+	update_followers(1, ["f1","f4"], timestamp+7); sync_session(); print("Followers: ", datetime.now().timestamp())
+	update_friends(1, ["g1","g2"], timestamp+3); sync_session(); print("Friends: ", datetime.now().timestamp())
+	update_friends(1, ["g2","g3"], timestamp+4); sync_session(); print("Friends: ", datetime.now().timestamp())
+	update_friends(1, ["g1","g2"], timestamp+5); sync_session(); print("Friends: ", datetime.now().timestamp())
+	update_friends(1, [],          timestamp+6); sync_session(); print("Friends: ", datetime.now().timestamp())
+	update_friends(1, ["g1","g4"], timestamp+7); sync_session(); print("Friends: ", datetime.now().timestamp())
+
+	# basic creation test
+	tweet1 = {"id":"tweet1",
+			"created_at":getDateFromTimestamp(timestamp+8),
+			"details":"details1",
+			"entities":{
+				"hashtags":[{"text":"hash1"},{"text":"hash2"}],
+				"user_mentions":[{"id":2},{"id":3}],
+				"urls":[{"url":"url1","expanded_url":"eurl1"}, {"url":"url2","expanded_url":"eurl2"}]},
+			"user":{"id":1}}
+
+	# testing creation of new and reuse of old
+	tweet2 = {"id":"tweet2",
+			"created_at":getDateFromTimestamp(timestamp+9),
+			"details":"details2",
+			"entities":{
+				"hashtags":[{"text":"hash1"},{"text":"hash3"}],
+				"user_mentions":[{"id":2},{"id":1}],
+				"urls":[{"url":"url1","expanded_url":"eurl1"}, {"url":"url3","expanded_url":"eurl3"}]},
+			"user":{"id":1}}
+
+	# testing empty list
+	tweet3 = {"id":"tweet3",
+			"created_at":getDateFromTimestamp(timestamp+10),
+			"details":"details3",
+			"entities":{
+				"hashtags":[],
+				"user_mentions":[{"id":2}],
+				"urls":[{"url":"url1","expanded_url":"eurl1"}]},
+			"user":{"id":1}}
+
+	# testing retweet + another user (id=2)
+	tweet4 = {"id":"tweet4",
+			"created_at":getDateFromTimestamp(timestamp+11),
+			"details":"details4",
+			"entities":tweet3["entities"],
+			"user":{"id":2},
+			"retweeted_status":copy.deepcopy(tweet3)}
+
+	# testing quoted_status + reply
+	tweet5 = {"id":"tweet5",
+			"created_at":getDateFromTimestamp(timestamp+12),
+			"details":"details5",
+			"entities":{
+				"hashtags":[],
+				"user_mentions":[],
+				"urls":[]},
+			"user":{"id":2},
+			"quoted_status":copy.deepcopy(tweet3),
+			"in_reply_to_status_id":tweet1["id"]}
+
+	create_tweet(tweet=tweet1, favourited_by=2, fav_timestamp=20); sync_session(); print("Tweet: ", datetime.now().timestamp())
+	create_tweet(tweet2); sync_session(); print("Tweet: ", datetime.now().timestamp())
+	create_tweet(tweet3, favourited_by=5, fav_timestamp=20); sync_session(); print("Tweet: ", datetime.now().timestamp())
+	create_tweet(tweet4); sync_session(); print("Tweet: ", datetime.now().timestamp())
+	create_tweet(tweet5); sync_session(); print("Tweet: ", datetime.now().timestamp())
+
+################################################################
 
 clear_db()
 create_indexes()
 
 start_time = datetime.now().timestamp()
 
-timestamp = 0
-print(datetime.now().timestamp())
-update_user(1,{"m1":"d1","m2":"d2"},timestamp); sync_session(); print("User: ", datetime.now().timestamp())
-update_user(1,{"m1":"d3","m2":"d4"},timestamp+1); sync_session(); print("User: ", datetime.now().timestamp())
-update_user(1,{"m1":"d5","m2":"d6"},timestamp+2); sync_session(); print("User: ", datetime.now().timestamp())
-update_followers(1, ["f1","f2"], timestamp+3); sync_session(); print("Followers: ", datetime.now().timestamp())
-update_followers(1, ["f2","f3"], timestamp+4); sync_session(); print("Followers: ", datetime.now().timestamp())
-update_followers(1, ["f1","f2"], timestamp+5); sync_session(); print("Followers: ", datetime.now().timestamp())
-update_followers(1, [],          timestamp+6); sync_session(); print("Followers: ", datetime.now().timestamp())
-update_followers(1, ["f1","f4"], timestamp+7); sync_session(); print("Followers: ", datetime.now().timestamp())
-update_friends(1, ["g1","g2"], timestamp+3); sync_session(); print("Friends: ", datetime.now().timestamp())
-update_friends(1, ["g2","g3"], timestamp+4); sync_session(); print("Friends: ", datetime.now().timestamp())
-update_friends(1, ["g1","g2"], timestamp+5); sync_session(); print("Friends: ", datetime.now().timestamp())
-update_friends(1, [],          timestamp+6); sync_session(); print("Friends: ", datetime.now().timestamp())
-update_friends(1, ["g1","g4"], timestamp+7); sync_session(); print("Friends: ", datetime.now().timestamp())
-
-# basic creation test
-tweet1 = {"id":"tweet1",
-		"created_at":getDateFromTimestamp(timestamp+8),
-		"details":"details1",
-		"entities":{
-			"hashtags":[{"text":"hash1"},{"text":"hash2"}],
-			"user_mentions":[{"id":2},{"id":3}],
-			"urls":[{"url":"url1","expanded_url":"eurl1"}, {"url":"url2","expanded_url":"eurl2"}]},
-		"user":{"id":1}}
-
-# testing creation of new and reuse of old
-tweet2 = {"id":"tweet2",
-		"created_at":getDateFromTimestamp(timestamp+9),
-		"details":"details2",
-		"entities":{
-			"hashtags":[{"text":"hash1"},{"text":"hash3"}],
-			"user_mentions":[{"id":2},{"id":1}],
-			"urls":[{"url":"url1","expanded_url":"eurl1"}, {"url":"url3","expanded_url":"eurl3"}]},
-		"user":{"id":1}}
-
-# testing empty list
-tweet3 = {"id":"tweet3",
-		"created_at":getDateFromTimestamp(timestamp+10),
-		"details":"details3",
-		"entities":{
-			"hashtags":[],
-			"user_mentions":[{"id":2}],
-			"urls":[{"url":"url1","expanded_url":"eurl1"}]},
-		"user":{"id":1}}
-
-# testing retweet + another user (id=2)
-tweet4 = {"id":"tweet4",
-		"created_at":getDateFromTimestamp(timestamp+11),
-		"details":"details4",
-		"entities":tweet3["entities"],
-		"user":{"id":2},
-		"retweeted_status":copy.deepcopy(tweet3)}
-
-# testing quoted_status + reply
-tweet5 = {"id":"tweet5",
-		"created_at":getDateFromTimestamp(timestamp+12),
-		"details":"details5",
-		"entities":{
-			"hashtags":[],
-			"user_mentions":[],
-			"urls":[]},
-		"user":{"id":2},
-		"quoted_status":copy.deepcopy(tweet3),
-		"in_reply_to_status_id":tweet1["id"]}
-
-create_tweet(tweet=tweet1, favourited_by=2, fav_timestamp=20); sync_session(); print("Tweet: ", datetime.now().timestamp())
-create_tweet(tweet2); sync_session(); print("Tweet: ", datetime.now().timestamp())
-create_tweet(tweet3, favourited_by=5, fav_timestamp=20); sync_session(); print("Tweet: ", datetime.now().timestamp())
-create_tweet(tweet4); sync_session(); print("Tweet: ", datetime.now().timestamp())
-create_tweet(tweet5); sync_session(); print("Tweet: ", datetime.now().timestamp())
-
-
-# readDataAndCreateGraph(get_user_screen_names('users2_filtered.txt'))
+# simulateExample()
+readDataAndCreateGraph('users2_filtered.txt')
 
 session_close_start_t = datetime.now().timestamp()
-session.close(); print("Closing: ", datetime.now().timestamp())
-print("Closing session took: ", datetime.now().timestamp()-session_close_start_t)
+session.close(); log("Closing: %s"%(str(datetime.now().timestamp())))
+log("Closing session took: %f"%(datetime.now().timestamp()-session_close_start_t))
 
 end_time = datetime.now().timestamp()
-print("Time taken: ", str(end_time-start_time))
+log("Time taken: %s"%(str(end_time-start_time)))
 
-
-# DEAL WITH TRUNCATION
-
-'''
-TO DISCUSS:
-1. Not keeping a separate media node, because it is going to be separate for each tweet (represented by a url to the image source, so if 2 people upload same photo it will be 2 different links). Can only be reused in case of retweet in which we are anyways creating a pointer to the original tweet.
-2. In case of retweet, not directly linking to hashtags etc. Instead just linking to the retweet. If you want popularity of a hashtag, you can simply count number of incoming links to this retweeted tweet.
-3. Number of likes of a tweet will keep varying. Can't query all tweets now and then. Probably ignore this favorite count.
-'''
 
 '''
 QUERIES
