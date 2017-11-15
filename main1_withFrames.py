@@ -33,7 +33,7 @@ INFI_TIME = 1000000000000
 FRAME_DELTA_T = 60*60*24
 IS_REAL_DATA = {'value':True} 
 NUM_TWEETS_BUFFERED = {'value':0}
-TWEET_SYNC_RATE = 10000
+TWEET_SYNC_RATE = 25000
 
 log_file = 'log_%s.txt'%(str(datetime.now()))
 def log(text):

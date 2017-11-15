@@ -33,7 +33,7 @@ INFI_TIME = 1000000000000
 FRAME_DELTA_T = 60*60*24
 IS_REAL_DATA = {'value':True}
 NUM_TWEETS_BUFFERED = {'value':0}
-TWEET_SYNC_RATE = 10000
+TWEET_SYNC_RATE = 25000
 
 log_file = 'log_%s.txt'%(str(datetime.now()))
 def log(text):
@@ -490,6 +490,7 @@ def readDataAndCreateGraph(filename_screen_names, STAGE_BY_STAGE):
 									count += 1
 							to_print += " Tweets (%d) %f"%(count,datetime.now().timestamp()-t)
 							to_print += sync_session('TWEET'); 
+							user_lru.printState()
 					except FileNotFoundError:
 						pass
 
@@ -505,6 +506,7 @@ def readDataAndCreateGraph(filename_screen_names, STAGE_BY_STAGE):
 									count += 1
 							to_print += " Favorites (%d) %f"%(count,datetime.now().timestamp()-t)
 							to_print += sync_session('TWEET'); 
+							user_lru.printState()
 					except FileNotFoundError:
 						pass
 
