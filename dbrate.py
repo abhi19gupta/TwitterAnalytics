@@ -33,7 +33,7 @@ def plot_rate_of_field(field_names, window):
 	plt.plot(counts, rates)
 	plt.show()
 
-def plot_tweet_rate(filename):
+def plot_tweet_rate(filename, field_name):
 
 	cumm_counts = []
 	rates = []
@@ -45,15 +45,15 @@ def plot_tweet_rate(filename):
 	for line in f:
 		if line.startswith('\t'):
 			words = line.split(' ')
-			if words[2] == 'Tweets':
+			if words[2] == field_name:
 				cumm_time += float(words[4])
-			if len(words) > 5 and words[5] == 'Synced':
-				cumm_time += float(words[7])
-				curr_cnt = int(words[6][1:-1])
-				rates.append(curr_cnt/cumm_time)
-				cumm_cnt += curr_cnt
-				cumm_counts.append(cumm_cnt)
-				cumm_time = 0
+				if len(words) > 5 and words[5] == 'Synced':
+					cumm_time += float(words[7])
+					curr_cnt = int(words[6][1:-1])
+					rates.append(curr_cnt/cumm_time)
+					cumm_cnt += curr_cnt
+					cumm_counts.append(cumm_cnt)
+					cumm_time = 0
 
 	f.close()
 
@@ -69,4 +69,5 @@ def plot_tweet_rate(filename):
 # plot_rate_of_field(['Favorites'],100000)
 # plot_rate_of_field(['Followers','Friends'],500000)
 
-plot_tweet_rate('log_2017-11-15 19:01:03.148204.txt')
+plot_tweet_rate('log_2017-11-16 01:31:36.618973.txt','Tweets')
+plot_tweet_rate('log_2017-11-16 01:31:36.618973.txt','Favorites')
