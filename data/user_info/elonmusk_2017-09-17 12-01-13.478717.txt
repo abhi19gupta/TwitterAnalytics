@@ -1,0 +1,88 @@
+{
+    "name": "Elon Musk",
+    "translator_type": "none",
+    "followers_count": 12752463,
+    "notifications": false,
+    "is_translator": false,
+    "is_translation_enabled": false,
+    "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/399721902/fusion.jpg",
+    "profile_background_color": "C0DEED",
+    "utc_offset": -25200,
+    "statuses_count": 3501,
+    "id_str": "44196397",
+    "contributors_enabled": false,
+    "screen_name": "elonmusk",
+    "protected": false,
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_use_background_image": true,
+    "id": 44196397,
+    "geo_enabled": false,
+    "friends_count": 47,
+    "profile_sidebar_border_color": "C0DEED",
+    "status": {
+        "place": null,
+        "in_reply_to_screen_name": "Richwsadler",
+        "is_quote_status": false,
+        "favorite_count": 8925,
+        "in_reply_to_status_id_str": "908924768635768832",
+        "contributors": null,
+        "retweeted": false,
+        "coordinates": null,
+        "id": 908937508884332544,
+        "lang": "en",
+        "in_reply_to_status_id": 908924768635768832,
+        "text": "@Richwsadler Does my hivemind count as me?",
+        "id_str": "908937508884332544",
+        "retweet_count": 392,
+        "truncated": false,
+        "favorited": false,
+        "created_at": "Sat Sep 16 06:16:04 +0000 2017",
+        "in_reply_to_user_id": 1650356846,
+        "in_reply_to_user_id_str": "1650356846",
+        "entities": {
+            "symbols": [],
+            "hashtags": [],
+            "user_mentions": [
+                {
+                    "name": "Richard Sadler",
+                    "id": 1650356846,
+                    "indices": [
+                        0,
+                        12
+                    ],
+                    "screen_name": "Richwsadler",
+                    "id_str": "1650356846"
+                }
+            ],
+            "urls": []
+        },
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "geo": null
+    },
+    "favourites_count": 616,
+    "created_at": "Tue Jun 02 20:12:29 +0000 2009",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_normal.jpg",
+    "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/399721902/fusion.jpg",
+    "url": null,
+    "has_extended_profile": false,
+    "default_profile": false,
+    "profile_text_color": "333333",
+    "listed_count": 37777,
+    "profile_background_tile": false,
+    "lang": "en",
+    "time_zone": "Pacific Time (US & Canada)",
+    "profile_banner_url": "https://pbs.twimg.com/profile_banners/44196397/1354486475",
+    "entities": {
+        "description": {
+            "urls": []
+        }
+    },
+    "verified": true,
+    "location": "Boring",
+    "profile_image_url": "http://pbs.twimg.com/profile_images/782474226020200448/zDo-gAo0_normal.jpg",
+    "default_profile_image": false,
+    "following": true,
+    "description": "Tesla, SpaceX, OpenAI & Neuralink",
+    "follow_request_sent": false,
+    "profile_link_color": "0084B4"
+}

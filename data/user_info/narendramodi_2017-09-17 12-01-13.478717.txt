@@ -1,0 +1,90 @@
+{
+    "name": "Narendra Modi",
+    "translator_type": "regular",
+    "followers_count": 34232562,
+    "notifications": false,
+    "is_translator": false,
+    "is_translation_enabled": false,
+    "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/562185004696875009/DiiHx54g.jpeg",
+    "profile_background_color": "F4EDD4",
+    "utc_offset": 19800,
+    "statuses_count": 16466,
+    "id_str": "18839785",
+    "contributors_enabled": false,
+    "screen_name": "narendramodi",
+    "protected": false,
+    "profile_sidebar_fill_color": "D5DFED",
+    "profile_use_background_image": true,
+    "id": 18839785,
+    "geo_enabled": false,
+    "friends_count": 1779,
+    "profile_sidebar_border_color": "FFFFFF",
+    "status": {
+        "place": null,
+        "in_reply_to_screen_name": null,
+        "is_quote_status": false,
+        "favorite_count": 22683,
+        "in_reply_to_status_id_str": null,
+        "contributors": null,
+        "retweeted": false,
+        "coordinates": null,
+        "id": 909083910893486081,
+        "lang": "en",
+        "in_reply_to_status_id": null,
+        "text": "My thoughts are with his family &amp; those mourning the demise of a distinguished air warrior &amp; fine human, Marshal of the IAF Arjan Singh. RIP",
+        "id_str": "909083910893486081",
+        "retweet_count": 5400,
+        "truncated": false,
+        "favorited": false,
+        "created_at": "Sat Sep 16 15:57:48 +0000 2017",
+        "in_reply_to_user_id": null,
+        "in_reply_to_user_id_str": null,
+        "entities": {
+            "symbols": [],
+            "hashtags": [],
+            "user_mentions": [],
+            "urls": []
+        },
+        "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+        "geo": null
+    },
+    "favourites_count": 0,
+    "created_at": "Sat Jan 10 17:18:56 +0000 2009",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/718314968102367232/ypY1GPCQ_normal.jpg",
+    "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/562185004696875009/DiiHx54g.jpeg",
+    "url": "http://t.co/i7NW4Bof2G",
+    "has_extended_profile": true,
+    "default_profile": false,
+    "profile_text_color": "233863",
+    "listed_count": 21214,
+    "profile_background_tile": false,
+    "lang": "en",
+    "time_zone": "New Delhi",
+    "profile_banner_url": "https://pbs.twimg.com/profile_banners/18839785/1502777627",
+    "entities": {
+        "url": {
+            "urls": [
+                {
+                    "display_url": "narendramodi.in",
+                    "url": "http://t.co/i7NW4Bof2G",
+                    "indices": [
+                        0,
+                        22
+                    ],
+                    "expanded_url": "http://www.narendramodi.in"
+                }
+            ]
+        },
+        "description": {
+            "urls": []
+        }
+    },
+    "verified": true,
+    "location": "India",
+    "profile_image_url": "http://pbs.twimg.com/profile_images/718314968102367232/ypY1GPCQ_normal.jpg",
+    "default_profile_image": false,
+    "following": true,
+    "description": "Prime Minister of India",
+    "follow_request_sent": false,
+    "profile_link_color": "4E7096"
+}

@@ -1,0 +1,101 @@
+{
+    "followers_count": 34266786,
+    "translator_type": "regular",
+    "contributors_enabled": false,
+    "default_profile_image": false,
+    "profile_text_color": "233863",
+    "utc_offset": 19800,
+    "id_str": "18839785",
+    "created_at": "Sat Jan 10 17:18:56 +0000 2009",
+    "profile_sidebar_border_color": "FFFFFF",
+    "has_extended_profile": true,
+    "following": true,
+    "url": "http://t.co/i7NW4Bof2G",
+    "profile_image_url": "http://pbs.twimg.com/profile_images/718314968102367232/ypY1GPCQ_normal.jpg",
+    "lang": "en",
+    "id": 18839785,
+    "profile_background_tile": false,
+    "description": "Prime Minister of India",
+    "screen_name": "narendramodi",
+    "favourites_count": 0,
+    "status": {
+        "in_reply_to_status_id_str": "909489771981893632",
+        "is_quote_status": false,
+        "coordinates": null,
+        "source": "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+        "id_str": "909489957366063104",
+        "created_at": "Sun Sep 17 18:51:17 +0000 2017",
+        "truncated": false,
+        "retweet_count": 4,
+        "favorited": false,
+        "lang": "en",
+        "id": 909489957366063104,
+        "in_reply_to_status_id": 909489771981893632,
+        "place": null,
+        "text": "@manojsirsa Thank you Manoj for your wishes.",
+        "entities": {
+            "urls": [],
+            "hashtags": [],
+            "user_mentions": [
+                {
+                    "id": 122263846,
+                    "name": "\u092e\u0928\u094b\u091c - Manoj",
+                    "id_str": "122263846",
+                    "screen_name": "manojsirsa",
+                    "indices": [
+                        0,
+                        11
+                    ]
+                }
+            ],
+            "symbols": []
+        },
+        "geo": null,
+        "retweeted": false,
+        "in_reply_to_screen_name": "manojsirsa",
+        "in_reply_to_user_id": 122263846,
+        "in_reply_to_user_id_str": "122263846",
+        "favorite_count": 13,
+        "contributors": null
+    },
+    "is_translation_enabled": false,
+    "profile_banner_url": "https://pbs.twimg.com/profile_banners/18839785/1502777627",
+    "default_profile": false,
+    "profile_use_background_image": true,
+    "protected": false,
+    "listed_count": 21208,
+    "entities": {
+        "url": {
+            "urls": [
+                {
+                    "display_url": "narendramodi.in",
+                    "url": "http://t.co/i7NW4Bof2G",
+                    "expanded_url": "http://www.narendramodi.in",
+                    "indices": [
+                        0,
+                        22
+                    ]
+                }
+            ]
+        },
+        "description": {
+            "urls": []
+        }
+    },
+    "profile_sidebar_fill_color": "D5DFED",
+    "friends_count": 1822,
+    "name": "Narendra Modi",
+    "verified": true,
+    "profile_background_color": "F4EDD4",
+    "profile_link_color": "4E7096",
+    "geo_enabled": false,
+    "location": "India",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/718314968102367232/ypY1GPCQ_normal.jpg",
+    "time_zone": "New Delhi",
+    "follow_request_sent": false,
+    "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/562185004696875009/DiiHx54g.jpeg",
+    "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/562185004696875009/DiiHx54g.jpeg",
+    "notifications": false,
+    "is_translator": false,
+    "statuses_count": 16556
+}

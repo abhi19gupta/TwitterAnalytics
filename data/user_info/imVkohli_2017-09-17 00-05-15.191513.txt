@@ -1,0 +1,204 @@
+{
+    "profile_background_color": "022330",
+    "favourites_count": 72,
+    "utc_offset": 19800,
+    "id_str": "71201743",
+    "profile_text_color": "333333",
+    "geo_enabled": true,
+    "statuses_count": 1229,
+    "time_zone": "New Delhi",
+    "contributors_enabled": false,
+    "friends_count": 47,
+    "id": 71201743,
+    "url": "https://t.co/OhSih7EL7w",
+    "is_translator": false,
+    "profile_use_background_image": true,
+    "status": {
+        "id_str": "909055820922478592",
+        "id": 909055820922478592,
+        "retweeted": false,
+        "in_reply_to_screen_name": null,
+        "truncated": false,
+        "is_quote_status": false,
+        "in_reply_to_user_id_str": null,
+        "coordinates": null,
+        "geo": null,
+        "in_reply_to_status_id_str": null,
+        "text": "How many one handed push ups can you do? \ud83d\ude0e #TrainToLive #LiveToTrain \ud83e\udd19 https://t.co/gnQEk7cdiE",
+        "created_at": "Sat Sep 16 14:06:11 +0000 2017",
+        "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+        "favorite_count": 14380,
+        "in_reply_to_status_id": null,
+        "extended_entities": {
+            "media": [
+                {
+                    "media_url": "http://pbs.twimg.com/ext_tw_video_thumb/909055711920799746/pu/img/rreY7A6JIZOhVC3e.jpg",
+                    "video_info": {
+                        "variants": [
+                            {
+                                "content_type": "video/mp4",
+                                "bitrate": 320000,
+                                "url": "https://video.twimg.com/ext_tw_video/909055711920799746/pu/vid/326x180/CGmBxx8rpjkNQyam.mp4"
+                            },
+                            {
+                                "content_type": "application/x-mpegURL",
+                                "url": "https://video.twimg.com/ext_tw_video/909055711920799746/pu/pl/R2yWcUSJZcjD5x4P.m3u8"
+                            }
+                        ],
+                        "duration_millis": 5068,
+                        "aspect_ratio": [
+                            20,
+                            11
+                        ]
+                    },
+                    "sizes": {
+                        "small": {
+                            "resize": "fit",
+                            "w": 340,
+                            "h": 187
+                        },
+                        "thumb": {
+                            "resize": "crop",
+                            "w": 150,
+                            "h": 150
+                        },
+                        "large": {
+                            "resize": "fit",
+                            "w": 640,
+                            "h": 352
+                        },
+                        "medium": {
+                            "resize": "fit",
+                            "w": 600,
+                            "h": 330
+                        }
+                    },
+                    "id_str": "909055711920799746",
+                    "type": "video",
+                    "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/909055711920799746/pu/img/rreY7A6JIZOhVC3e.jpg",
+                    "expanded_url": "https://twitter.com/imVkohli/status/909055820922478592/video/1",
+                    "id": 909055711920799746,
+                    "url": "https://t.co/gnQEk7cdiE",
+                    "indices": [
+                        71,
+                        94
+                    ],
+                    "display_url": "pic.twitter.com/gnQEk7cdiE",
+                    "additional_media_info": {
+                        "monetizable": false
+                    }
+                }
+            ]
+        },
+        "in_reply_to_user_id": null,
+        "entities": {
+            "symbols": [],
+            "user_mentions": [],
+            "media": [
+                {
+                    "media_url": "http://pbs.twimg.com/ext_tw_video_thumb/909055711920799746/pu/img/rreY7A6JIZOhVC3e.jpg",
+                    "indices": [
+                        71,
+                        94
+                    ],
+                    "display_url": "pic.twitter.com/gnQEk7cdiE",
+                    "id_str": "909055711920799746",
+                    "type": "photo",
+                    "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/909055711920799746/pu/img/rreY7A6JIZOhVC3e.jpg",
+                    "expanded_url": "https://twitter.com/imVkohli/status/909055820922478592/video/1",
+                    "id": 909055711920799746,
+                    "url": "https://t.co/gnQEk7cdiE",
+                    "sizes": {
+                        "small": {
+                            "resize": "fit",
+                            "w": 340,
+                            "h": 187
+                        },
+                        "thumb": {
+                            "resize": "crop",
+                            "w": 150,
+                            "h": 150
+                        },
+                        "large": {
+                            "resize": "fit",
+                            "w": 640,
+                            "h": 352
+                        },
+                        "medium": {
+                            "resize": "fit",
+                            "w": 600,
+                            "h": 330
+                        }
+                    }
+                }
+            ],
+            "hashtags": [
+                {
+                    "text": "TrainToLive",
+                    "indices": [
+                        43,
+                        55
+                    ]
+                },
+                {
+                    "text": "LiveToTrain",
+                    "indices": [
+                        56,
+                        68
+                    ]
+                }
+            ],
+            "urls": []
+        },
+        "contributors": null,
+        "place": null,
+        "lang": "en",
+        "favorited": false,
+        "possibly_sensitive": false,
+        "retweet_count": 1712
+    },
+    "following": true,
+    "follow_request_sent": false,
+    "profile_sidebar_fill_color": "C0DFEC",
+    "description": "The Official twitter account of Virat Kohli, Indian cricketer, gamer, car lover, loves soccer and an enthusiast.",
+    "verified": true,
+    "screen_name": "imVkohli",
+    "location": "",
+    "entities": {
+        "url": {
+            "urls": [
+                {
+                    "indices": [
+                        0,
+                        23
+                    ],
+                    "display_url": "instagram.com/virat.kohli",
+                    "url": "https://t.co/OhSih7EL7w",
+                    "expanded_url": "https://instagram.com/virat.kohli"
+                }
+            ]
+        },
+        "description": {
+            "urls": []
+        }
+    },
+    "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/873242610/e63420b9349e382c2901494f05b211e2.jpeg",
+    "protected": false,
+    "profile_image_url": "http://pbs.twimg.com/profile_images/789817267567472640/BlpcUEvx_normal.jpg",
+    "has_extended_profile": true,
+    "created_at": "Thu Sep 03 07:57:30 +0000 2009",
+    "listed_count": 6641,
+    "notifications": false,
+    "followers_count": 18177540,
+    "translator_type": "regular",
+    "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/873242610/e63420b9349e382c2901494f05b211e2.jpeg",
+    "profile_sidebar_border_color": "FFFFFF",
+    "name": "Virat Kohli",
+    "default_profile": false,
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/789817267567472640/BlpcUEvx_normal.jpg",
+    "lang": "en",
+    "profile_background_tile": true,
+    "default_profile_image": false,
+    "is_translation_enabled": false,
+    "profile_link_color": "0084B4"
+}

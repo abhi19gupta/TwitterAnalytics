@@ -1,0 +1,169 @@
+{
+    "followers_count": 28153599,
+    "translator_type": "regular",
+    "contributors_enabled": false,
+    "default_profile_image": false,
+    "profile_text_color": "333333",
+    "utc_offset": -28800,
+    "id_str": "101311381",
+    "created_at": "Sat Jan 02 20:55:43 +0000 2010",
+    "profile_sidebar_border_color": "A8C7F7",
+    "has_extended_profile": false,
+    "following": true,
+    "url": "http://t.co/rgTV59DRJ7",
+    "profile_image_url": "http://pbs.twimg.com/profile_images/661679664/keep_it_onn_normal.jpg",
+    "lang": "en",
+    "id": 101311381,
+    "profile_background_tile": true,
+    "description": "",
+    "screen_name": "iamsrk",
+    "favourites_count": 17,
+    "status": {
+        "in_reply_to_status_id_str": null,
+        "retweeted": false,
+        "is_quote_status": false,
+        "extended_entities": {
+            "media": [
+                {
+                    "sizes": {
+                        "large": {
+                            "resize": "fit",
+                            "w": 768,
+                            "h": 1024
+                        },
+                        "small": {
+                            "resize": "fit",
+                            "w": 510,
+                            "h": 680
+                        },
+                        "thumb": {
+                            "resize": "crop",
+                            "w": 150,
+                            "h": 150
+                        },
+                        "medium": {
+                            "resize": "fit",
+                            "w": 768,
+                            "h": 1024
+                        }
+                    },
+                    "expanded_url": "https://twitter.com/iamsrk/status/909319762420756480/photo/1",
+                    "url": "https://t.co/2G1P35edtC",
+                    "media_url": "http://pbs.twimg.com/media/DJ6Nf8WVwAA1WCK.jpg",
+                    "id": 909319754690707456,
+                    "id_str": "909319754690707456",
+                    "type": "photo",
+                    "display_url": "pic.twitter.com/2G1P35edtC",
+                    "media_url_https": "https://pbs.twimg.com/media/DJ6Nf8WVwAA1WCK.jpg",
+                    "indices": [
+                        120,
+                        143
+                    ]
+                }
+            ]
+        },
+        "source": "<a href=\"http://tapbots.com/tweetbot\" rel=\"nofollow\">Tweetbot for i\u039fS</a>",
+        "possibly_sensitive": false,
+        "id_str": "909319762420756480",
+        "created_at": "Sun Sep 17 07:35:00 +0000 2017",
+        "truncated": false,
+        "retweet_count": 3923,
+        "favorited": false,
+        "lang": "en",
+        "id": 909319762420756480,
+        "in_reply_to_status_id": null,
+        "place": null,
+        "text": "Loving the rains\u2026.&amp; all the 28 Million of you! Thx for the love, suggestions, hugs &amp; ur tenacity. Be Happy All. https://t.co/2G1P35edtC",
+        "entities": {
+            "urls": [],
+            "hashtags": [],
+            "user_mentions": [],
+            "media": [
+                {
+                    "sizes": {
+                        "large": {
+                            "resize": "fit",
+                            "w": 768,
+                            "h": 1024
+                        },
+                        "small": {
+                            "resize": "fit",
+                            "w": 510,
+                            "h": 680
+                        },
+                        "thumb": {
+                            "resize": "crop",
+                            "w": 150,
+                            "h": 150
+                        },
+                        "medium": {
+                            "resize": "fit",
+                            "w": 768,
+                            "h": 1024
+                        }
+                    },
+                    "expanded_url": "https://twitter.com/iamsrk/status/909319762420756480/photo/1",
+                    "url": "https://t.co/2G1P35edtC",
+                    "media_url": "http://pbs.twimg.com/media/DJ6Nf8WVwAA1WCK.jpg",
+                    "id": 909319754690707456,
+                    "id_str": "909319754690707456",
+                    "type": "photo",
+                    "display_url": "pic.twitter.com/2G1P35edtC",
+                    "media_url_https": "https://pbs.twimg.com/media/DJ6Nf8WVwAA1WCK.jpg",
+                    "indices": [
+                        120,
+                        143
+                    ]
+                }
+            ],
+            "symbols": []
+        },
+        "geo": null,
+        "coordinates": null,
+        "in_reply_to_screen_name": null,
+        "in_reply_to_user_id": null,
+        "in_reply_to_user_id_str": null,
+        "favorite_count": 23042,
+        "contributors": null
+    },
+    "is_translation_enabled": false,
+    "profile_banner_url": "https://pbs.twimg.com/profile_banners/101311381/1454256204",
+    "default_profile": false,
+    "profile_use_background_image": true,
+    "protected": false,
+    "listed_count": 29357,
+    "entities": {
+        "url": {
+            "urls": [
+                {
+                    "display_url": "twitter.com/iamsrk",
+                    "url": "http://t.co/rgTV59DRJ7",
+                    "expanded_url": "https://twitter.com/iamsrk",
+                    "indices": [
+                        0,
+                        22
+                    ]
+                }
+            ]
+        },
+        "description": {
+            "urls": []
+        }
+    },
+    "profile_sidebar_fill_color": "C0DFEC",
+    "friends_count": 81,
+    "name": "Shah Rukh Khan",
+    "verified": true,
+    "profile_background_color": "022330",
+    "profile_link_color": "0084B4",
+    "geo_enabled": true,
+    "location": "",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/661679664/keep_it_onn_normal.jpg",
+    "time_zone": "Alaska",
+    "follow_request_sent": false,
+    "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/137435577/new1.jpg",
+    "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/137435577/new1.jpg",
+    "notifications": false,
+    "is_translator": false,
+    "statuses_count": 56776
+}
