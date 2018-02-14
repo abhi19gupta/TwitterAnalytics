@@ -1,0 +1,167 @@
+{% extends "myapp/theme.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>Page1</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a data-toggle="tab" href="#usageplot">Usage Plot</a></li>
+	  <li><a data-toggle="tab" href="#top10">Top 10</a></li>
+	  <li><a data-toggle="tab" href="#sentiment">Sentiment Analysis</a></li>
+	</ul>
+
+	<div class="tab-content">
+
+		<div id="usageplot" class="tab-pane fade in active">
+			<h3>Analyze a hashtag's usage history</h3>
+			<form id="usageform" method="post" action="hashtag_usage_getter/">{% csrf_token %}
+			    {{ usage_form | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Plot!</button>
+			</form>
+			<div id="usage_plot">
+				<!-- Plotly chart will be drawn inside this DIV -->
+			</div>
+		</div>
+
+		<div id="top10" class="tab-pane fade">
+			<h3>View top 10 hashtags in history</h3>
+			<form id="top10form" method="post" action="hashtag_top10_getter/">{% csrf_token %}
+				{{ top10_form | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+			<br>
+			<div class="row">
+				<div id="top10list" class="col-sm-4">
+					<!-- Top 10 hashtags list will be drawn inside this DIV -->
+				</div>
+			</div>
+		</div>
+
+		<div id="sentiment" class="tab-pane fade">
+			<h3>Analyze a hashtag's sentiment history</h3>
+			<form id="sentimentform" method="post" action="hashtag_sentiment_getter/">{% csrf_token %}
+			    {{ sentiment_form | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Plot!</button>
+			</form>
+			<div id="sentiment_plot">
+				<!-- Plotly chart will be drawn inside this DIV -->
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+<script type="text/javascript">
+	$(function(){
+	    $("#hashtags_tab").addClass("active");
+	    $("#mentions_tab").removeClass("active");
+	    $("#urls_tab").removeClass("active");
+	});
+</script>
+
+<script type="text/javascript">
+	function plot(x_, y_,title_,x_label,y_label,div_id) {
+		var data = [{
+			x: x_,
+			y: y_,
+			type: 'line'
+		}];
+		var layout = {
+			title: title_,
+			xaxis: {
+				title: x_label,
+				// showgrid: false,
+				zeroline: false
+			},
+			yaxis: {
+				title: y_label,
+				// showline: false
+			}
+		};
+
+		Plotly.newPlot(div_id, data, layout);	
+	}
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	    var frm = $('#usageform');
+	    frm.submit(function() {
+	        $.ajax({
+	            type: frm.attr('method'),
+	            url: frm.attr('action'),
+	            data: frm.serialize(),
+	            success: function (data) {
+	            	var hashtag_name = frm.find('input[name="hashtag"]').val();
+	            	console.log(data);
+	            	plot(data.x, data.y,'Usage vs Time for hashtag: '+hashtag_name,'Time','Count','usage_plot');
+	            },
+	            error: function(data) {
+	                $("#usage_plot").html("Something went wrong!");
+	            }
+	        });
+	        return false;
+	    });
+    });
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	    var frm = $('#top10form');
+	    frm.submit(function() {
+	        $.ajax({
+	            type: frm.attr('method'),
+	            url: frm.attr('action'),
+	            data: frm.serialize(),
+	            success: function (data) {
+	            	trHTML = '<ul class="list-group">';
+	            	$.each(data, function (i, item) {
+			            trHTML += '<li class="list-group-item">' + item.hashtag + '<span class="badge">' + item.count.toString() + '</span></li>';
+			        });
+	            	trHTML += '</ul>'
+	            	console.log(data);
+	            	console.log(trHTML);
+	            	$('#top10list').html(trHTML);
+	            },
+	            error: function(data) {
+	                $("#top10list").html("Something went wrong!");
+	            }
+	        });
+	        return false;
+	    });
+    });
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+	    var frm = $('#sentimentform');
+	    frm.submit(function() {
+	        $.ajax({
+	            type: frm.attr('method'),
+	            url: frm.attr('action'),
+	            data: frm.serialize(),
+	            success: function (data) {
+	            	var hashtag_name = frm.find('input[name="hashtag"]').val();
+	            	console.log(data);
+	            	plot(data.x, data.y,'Sentiment vs Time for hashtag: '+hashtag_name,'Time','Sentiment','sentiment_plot');
+	            },
+	            error: function(data) {
+	                $("#sentiment_plot").html("Something went wrong!");
+	            }
+	        });
+	        return false;
+	    });
+    });
+</script>
+
+{% endblock %}
