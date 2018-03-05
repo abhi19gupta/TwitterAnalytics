@@ -1,0 +1,70 @@
+{% extends "myapp/theme.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+
+{% block head %}
+<title>Custom Metrics</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a data-toggle="tab" href="#create_query">Create Query</a></li>
+	  <li><a data-toggle="tab" href="#create_postprocessing">Create Post-Processing Function</a></li>
+	  <li><a data-toggle="tab" href="#create_metric">Create Custom Metric</a></li>
+	  <li><a data-toggle="tab" href="#view_metric">View Custom Metrics</a></li>
+	</ul>
+
+	<div class="tab-content">
+
+		<div id="create_query" class="tab-pane fade in active">
+			<h3>Create custom query</h3>
+			{% include "myapp/query.html" %}
+		</div>
+
+		<div id="create_postprocessing" class="tab-pane fade">
+			<h3>Create custom post-processing function</h3>
+			<form id="uploadfileform" method="post" action="/create_postprocessing_handler/" enctype="multipart/form-data">{% csrf_token %}
+			    {{ uploadfileform | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+		</div>
+
+		<div id="create_metric" class="tab-pane fade">
+			<h3>Create custom metric</h3>
+			<form id="custommetricid" method="post" action="/create_custom_metric_handler/"">{% csrf_token %}
+			    {{ create_custom_metric_form | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+		</div>
+
+		<div id="view_metric" class="tab-pane fade">
+			<h3>View custom metrics</h3>
+			<form id="custom_metrics" method="post" action="/view_custom_metric_handler/"">{% csrf_token %}
+			    {{ custom_metrics_form | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+		</div>
+
+	</div>
+
+</div>
+
+
+
+<script type="text/javascript">
+	$(function(){
+	    $("#hashtags_tab").removeClass("active");
+	    $("#mentions_tab").removeClass("active");
+	    $("#urls_tab").removeClass("active");
+	    $("#custom_metrics_tab").addClass("active");
+	});
+</script>
+
+
+{% endblock %}
