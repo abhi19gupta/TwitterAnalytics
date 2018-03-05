@@ -1,6 +1,26 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from myapp.forms import HashtagForm,Top10Form
+from myapp.ingest_raw import Query
+from datetime import datetime
+
+q = Query()
+
+def binning(vals, num_bins):
+	vals.sort(key=lambda x:x[0])
+	print(vals)
+	a,b = zip(*vals)
+	length = max(a)+1-min(a)
+	bin_length = length/num_bins
+	print(bin_length)
+	x = [min(a)+bin_length*i+bin_length/2 for i in range(num_bins)]
+	x = [datetime.fromtimestamp(x1) for x1 in x]
+	y = [0]*num_bins
+	mappings = [int((val-min(a))/bin_length) for val in a]
+	print(mappings)
+	for i,m in enumerate(mappings):
+		y[m]+=b[i]
+	return (x,y)
 
 def home(request):
    return redirect("hashtags")
@@ -22,10 +42,13 @@ def hashtag_usage_getter(request):
 		start_time = form.cleaned_data['start_time']
 		end_time = form.cleaned_data['end_time']
 		print(hashtag, start_time, end_time)
+		data = q.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag)
+		(x,y) = binning([(x,1) for x in data],60)
+		data = {"x":x,"y":y}
 	else:
 		print(form['hashtag'].errors, form['start_time'].errors, form['end_time'].errors)
 	
-	data = {"x":[1,2,3,4], "y":[6,2,5,2]}
+	# data = {"x":[1,2,3,4], "y":[6,2,5,2]}
 	return JsonResponse(data)
 
 def hashtag_top10_getter(request):
@@ -38,10 +61,12 @@ def hashtag_top10_getter(request):
 		start_time = form.cleaned_data['start_time']
 		end_time = form.cleaned_data['end_time']
 		print(start_time, end_time)
+		data = q.mp_ht_in_interval(start_time.timestamp(), end_time.timestamp())
+		data = [{"hashtag":x["_id"],"count":x["count"]} for x in data]
 	else:
 		print(form['start_time'].errors, form['end_time'].errors)
 	
-	data = [{"hashtag":"Sports","count":132}, {"hashtag":"Politics","count":95}, {"hashtag":"Health","count":55}, {"hashtag":"Cricket","count":34}]
+	# data = [{"hashtag":"Sports","count":132}, {"hashtag":"Politics","count":95}, {"hashtag":"Health","count":55}, {"hashtag":"Cricket","count":34}]
 	return JsonResponse(data,safe=False)
 
 def hashtag_sentiment_getter(request):
@@ -55,8 +80,11 @@ def hashtag_sentiment_getter(request):
 		start_time = form.cleaned_data['start_time']
 		end_time = form.cleaned_data['end_time']
 		print(hashtag, start_time, end_time)
+		data = q.ht_with_sentiment(start_time.timestamp(), end_time.timestamp(), hashtag)
+		(x,y) = binning([(x[0],x[1]) for x in data],60)
+		data = {"x":x,"y":y}
 	else:
 		print(form['hashtag'].errors, form['start_time'].errors, form['end_time'].errors)
 	
-	data = {"x":[1,2,3,4], "y":[6,2,5,2]}
+	# data = {"x":[1,2,3,4], "y":[6,2,5,2]}
 	return JsonResponse(data)

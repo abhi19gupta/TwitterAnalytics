@@ -1,0 +1,94 @@
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 38, in hashtag_usage_getter
+    data = binning(q.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag),60)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 15, in binning
+    y[m]+=1
+IndexError: list index out of range
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 40, in hashtag_usage_getter
+    data = binning(q.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag),60)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 17, in binning
+    y[m]+=1
+IndexError: list index out of range
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 40, in hashtag_usage_getter
+    data = binning(q.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag),60)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 17, in binning
+    y[m]+=1
+IndexError: list index out of range
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 41, in hashtag_usage_getter
+    data = binning(q.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag),60)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 18, in binning
+    y[m]+=1
+IndexError: list index out of range
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 42, in hashtag_usage_getter
+    data = binning(q.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag),60)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 19, in binning
+    y[m]+=1
+IndexError: list index out of range
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 47, in hashtag_usage_getter
+    return JsonResponse(data)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/http/response.py", line 514, in __init__
+    'In order to allow non-dict objects to be serialized set the '
+TypeError: In order to allow non-dict objects to be serialized set the safe parameter to False.
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 46, in hashtag_usage_getter
+    (x,y) = binning([(x,1) for x in data],60)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 12, in binning
+    a,b = unzip(vals)
+NameError: name 'unzip' is not defined
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
