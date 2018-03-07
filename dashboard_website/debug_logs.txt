@@ -1378,3 +1378,1151 @@ INFO:neo4j.bolt:S: RECORD * 23
 INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 3, 'type': 'r'})
 INFO:neo4j.bolt:~~ [CLOSE]
 INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 2, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 3, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 72, in hashtag_usage_getter
+    data = q.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag)
+AttributeError: 'Query' object has no attribute 'ht_in_interval'
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 4, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 4, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 3, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 3, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 3, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 2, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 2, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 4, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 2, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 2, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 3, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER {id:891895302491226113}) -[:TWEETED]-> (t :TWEET)\nRETURN u,t\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['u', 't']})
+INFO:neo4j.bolt:S: RECORD * 89
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 90
+INFO:neo4j.bolt:S: RECORD * 23
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 4, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 146, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 32, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 125, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 32, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 126, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 51, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 127, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 38, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 118, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 32, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 117, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 33, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 125, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 37, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 118, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 35, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 132, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 33, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET)\nRETURN u,count(t)\n', {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 125, 'fields': ['u', 'count(t)']})
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 259
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 253
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 258
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 252
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 256
+INFO:neo4j.bolt:S: RECORD * 254
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 255
+INFO:neo4j.bolt:S: RECORD * 257
+INFO:neo4j.bolt:S: RECORD * 53
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 49, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico

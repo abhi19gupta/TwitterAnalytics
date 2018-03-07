@@ -349,8 +349,13 @@ def view_custom_metric_handler(request):
             print("Post-Proc: ", post_proc)
             query_result = run_query(query)
             # print(query_result)
+            (x_values,y_values) = ([],[])
             try:
-                exec(post_proc,{"result":query_result})
+                code = compile(post_proc,'','exec')
+                exec(code)
+                exec("(x_values,y_values) = func(query_result)")
+                print(x_values,y_values)
             except Exception as e:
                 print("Error: ", e)
-            return redirect("/create_metric")
+            data = {"x":x_values,"y":y_values}
+            return JsonResponse(data)
