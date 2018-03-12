@@ -4,6 +4,8 @@ from myapp.forms import *
 from myapp.ingest_raw import Query
 from datetime import datetime
 from myapp.tables import *
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages 
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -252,49 +254,54 @@ def create_query_handler(request):
         if eform.is_valid():
             ret_vars = eform.cleaned_data['Return_Variables']
             query_name = eform.cleaned_data['Query_Name']
-        for u in User.objects.all():
-            users.append((u.uname,"USER"))
-            up = []
-            if u.userid!="":
-                up.append(("id",u.userid))
-            uprops.append(up)
-        for t in Tweet.objects.all():
-            tweets.append((t.tname,"TWEET"))
-            tp = []
-            if t.hashtag!="":
-                tp.append(("hashtag",t.hashtag))
-            if t.retweet_of!="":
-                tp.append(("retweet_of",t.retweet_of))
-            if t.reply_of!="":
-                tp.append(("reply_of",t.reply_of))
-            if t.quoted!="":
-                tp.append(("quoted",t.quoted))
-            if t.has_mention!="":
-                tp.append(("has_mention",t.has_mention))
-            tprops.append(tp)
-        for r in Relation.objects.all():
-            relations.append((r.source,r.relation,r.destn,r.bt,r.et))
-        pprint(users)
-        pprint(uprops)
-        pprint(tweets)
-        pprint(tprops)
-        pprint(relations)
-        sq = create_query(actors=users+tweets,attributes=uprops+tprops,relations=relations,return_values=ret_vars)
-        print("the query is ",sq)
+        
+        if (len(Query.objects.filter(name=query_name)) > 0):
+            print("Error: Query Name already exists!")
+            messages.error(request, "Error: Query name already exists! Use a unique query name.")
+        else:
+            for u in User.objects.all():
+                users.append((u.uname,"USER"))
+                up = []
+                if u.userid!="":
+                    up.append(("id",u.userid))
+                uprops.append(up)
+            for t in Tweet.objects.all():
+                tweets.append((t.tname,"TWEET"))
+                tp = []
+                if t.hashtag!="":
+                    tp.append(("hashtag",t.hashtag))
+                if t.retweet_of!="":
+                    tp.append(("retweet_of",t.retweet_of))
+                if t.reply_of!="":
+                    tp.append(("reply_of",t.reply_of))
+                if t.quoted!="":
+                    tp.append(("quoted",t.quoted))
+                if t.has_mention!="":
+                    tp.append(("has_mention",t.has_mention))
+                tprops.append(tp)
+            for r in Relation.objects.all():
+                relations.append((r.source,r.relation,r.destn,r.bt,r.et))
+            pprint(users)
+            pprint(uprops)
+            pprint(tweets)
+            pprint(tprops)
+            pprint(relations)
+            sq = create_query(actors=users+tweets,attributes=uprops+tprops,relations=relations,return_values=ret_vars)
+            print("the query is ",sq)
 
-        Query.objects.create(name=query_name, query=sq)        
-        
-        # driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
-        # session = driver.session()
-        # result = session.run(sq,{})
-        # for r in result:
-        #     print(r)
-        #     output_s += str(r)
-        # session.close()
-        
-        User.objects.all().delete()
-        Tweet.objects.all().delete()
-        Relation.objects.all().delete()
+            Query.objects.create(name=query_name, query=sq)        
+            
+            # driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
+            # session = driver.session()
+            # result = session.run(sq,{})
+            # for r in result:
+            #     print(r)
+            #     output_s += str(r)
+            # session.close()
+            
+            User.objects.all().delete()
+            Tweet.objects.all().delete()
+            Relation.objects.all().delete()
 
     return redirect("/create_metric/?query_s=%s"%sq)
 
@@ -351,11 +358,42 @@ def view_custom_metric_handler(request):
             # print(query_result)
             (x_values,y_values) = ([],[])
             try:
-                code = compile(post_proc,'','exec')
-                exec(code)
-                exec("(x_values,y_values) = func(query_result)")
-                print(x_values,y_values)
+                compile(post_proc,'','exec')
+                context = {"query_result":query_result}
+                exec(post_proc + "\n" + "(x_values,y_values) = func(query_result)", context)
+                (x_values,y_values) = (context["x_values"],context["y_values"])
+                # print(context["x_values"],context["y_values"])
             except Exception as e:
                 print("Error: ", e)
             data = {"x":x_values,"y":y_values}
             return JsonResponse(data)
+
+@csrf_exempt
+def view_query_handler(request):
+    if request.method == 'POST':
+        query = request.POST["query"]
+        query = Query.objects.get(name=query)
+        return JsonResponse({"query":query.query})
+
+@csrf_exempt
+def delete_query_handler(request):
+    if request.method == 'POST':
+        query = request.POST["query"]
+        query = Query.objects.get(name=query)
+        query.delete()
+        return JsonResponse({"url":"/create_metric"})
+
+@csrf_exempt
+def view_post_proc_handler(request):
+    if request.method == 'POST':
+        post_proc = request.POST["post_proc"]
+        post_proc = PostProcFunc.objects.get(name=post_proc)
+        return JsonResponse({"post_proc":post_proc.code})
+
+@csrf_exempt
+def delete_post_proc_handler(request):
+    if request.method == 'POST':
+        post_proc = request.POST["post_proc"]
+        post_proc = PostProcFunc.objects.get(name=post_proc)
+        post_proc.delete()
+        return JsonResponse({"url":"/create_metric"})

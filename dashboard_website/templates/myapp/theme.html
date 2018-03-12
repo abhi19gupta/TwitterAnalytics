@@ -18,6 +18,13 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<!-- Plotly.js -->
   	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  	<script>
+        {% if messages %}
+            {% for message in messages %}
+                alert("{{message}}");
+            {% endfor %}
+        {% endif %}
+    </script>
 	{% block head %}{% endblock %}
 	
 </head>
@@ -26,7 +33,7 @@
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Twitter Analytics</a>
+				<a class="navbar-brand" href="/">Twitter Analytics</a>
 				<!-- Toggler/collapsibe Button -->
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
 					<span class="icon-bar"></span>

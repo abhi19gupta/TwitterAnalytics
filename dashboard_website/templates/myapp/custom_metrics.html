@@ -35,16 +35,21 @@
 
 		<div id="create_metric" class="tab-pane fade">
 			<h3>Create custom metric</h3>
-			<form id="custommetricid" method="post" action="/create_custom_metric_handler/"">{% csrf_token %}
+			<form id="custommetricid" method="post" action="/create_custom_metric_handler/">{% csrf_token %}
 			    {{ create_custom_metric_form | crispy }}
 			    <br>
 			    <button type="submit" class="btn btn-primary">Submit!</button>
 			</form>
+			<br><br>
+			<a id="view_query_link" href="#">View selected query</a><br>
+			<a id="delete_query_link" href="#">Delete selected query</a><br><br>
+			<a id="view_post_proc_link" href="#">View selected post-processing function</a><br>
+			<a id="delete_post_proc_link" href="#">Delete selected post-processing function</a>
 		</div>
 
 		<div id="view_metric" class="tab-pane fade">
 			<h3>View custom metrics</h3>
-			<form id="custom_metrics_form_id" method="post" action="/view_custom_metric_handler/"">{% csrf_token %}
+			<form id="custom_metrics_form_id" method="post" action="/view_custom_metric_handler/">{% csrf_token %}
 			    {{ custom_metrics_form | crispy }}
 			    <br>
 			    <button type="submit" class="btn btn-primary">Submit!</button>
@@ -62,7 +67,7 @@
 </div>
 
 
-
+<!-- Basic setup -->
 <script type="text/javascript">
 	$(function(){
 	    $("#hashtags_tab").removeClass("active");
@@ -75,6 +80,7 @@
 	var metric_name = "";
 </script>
 
+<!-- Plotting and creating table -->
 <script type="text/javascript">
 	function plot(x_, y_,title_,x_label,y_label,div_id) {
 		var data = [{
@@ -100,17 +106,19 @@
 	}
 
 	function create_table(x_,y_,div_id) {
-		trHTML = '<ul class="list-group">';
+		trHTML = '<div class="col-sm-4"><ul class="list-group">';
     	$.each(x_, function (i, item) {
             trHTML += '<li class="list-group-item">' + x_[i] + '<span class="badge">' + y_[i].toString() + '</span></li>';
         });
-    	trHTML += '</ul>';
+    	trHTML += '</ul></div>';
     	$("#"+div_id).html(trHTML);
 	}
 </script>
 
+<!-- On click kind of functions -->
 <script type="text/javascript">
 	$(document).ready(function() {
+
 	    var frm = $('#custom_metrics_form_id');
 	    frm.submit(function() {
 	        $.ajax({
@@ -130,12 +138,74 @@
 	        });
 	        return false;
 	    });
+
 	    $("#plot_graph").click(function(){
 	        plot(x_vals, y_vals,'Result for metric: '+metric_name,'','','custom_metric_space');
 	    });
+
 	    $("#create_table").click(function(){
 	        create_table(x_vals, y_vals,'custom_metric_space');
 	    });
+
+	    $("#view_query_link").on('click', function(){
+	    	var newWindow = window.open();
+	    	query_ = $("#id_query :selected").text();
+	    	$.ajax({
+	            type: "post",
+	            url: "/view_query_handler/",
+	            data: {query:query_},
+	            success: function (data) {
+	            	console.log(data);
+	            	newWindow.document.write("<pre>"+data.query+"</pre>");
+	            },
+	            error: function(data) {
+	            	newWindow.document.write("Something went wrong!");
+	            }
+	        });
+	    	return true;
+	    });
+
+	    $("#delete_query_link").on('click', function(){
+	    	query_ = $("#id_query :selected").text();
+	    	$.post("/delete_query_handler/",
+	            {query:query_},
+	            function(data) {
+	            	console.log(data);
+	            	window.location.replace(data.url);
+	            }
+	        );
+	    	return true;
+	    });
+
+	    $("#view_post_proc_link").on('click', function(){
+	    	var newWindow = window.open();
+	    	post_proc_ = $("#id_post_processing_function :selected").text();
+	    	$.ajax({
+	            type: "post",
+	            url: "/view_post_proc_handler/",
+	            data: {post_proc:post_proc_},
+	            success: function (data) {
+	            	console.log(data);
+	            	newWindow.document.write("<pre>"+data.post_proc+"</pre>");
+	            },
+	            error: function(data) {
+	            	newWindow.document.write("Something went wrong!");
+	            }
+	        });
+	    	return true;
+	    });
+
+	    $("#delete_post_proc_link").on('click', function(){
+	    	post_proc_ = $("#id_post_processing_function :selected").text();
+	    	$.post("/delete_post_proc_handler/",
+	            {post_proc:post_proc_},
+	            function(data) {
+	            	console.log(data);
+	            	window.location.replace(data.url);
+	            });
+	    	return true;
+	    });
+	   
     });
 </script>
 

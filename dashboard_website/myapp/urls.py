@@ -11,5 +11,9 @@ urlpatterns = [
     url(r"^create_query_handler/$",views.create_query_handler,name="create_query_handler"),
     url(r"^create_postprocessing_handler/$",views.create_postprocessing_handler,name="create_postprocessing_handler"),
     url(r"^create_custom_metric_handler/$", views.create_custom_metric_handler, name="create_custom_metric_handler"),
-    url(r"^view_custom_metric_handler/$", views.view_custom_metric_handler, name="view_custom_metric_handler")
+    url(r"^view_custom_metric_handler/$", views.view_custom_metric_handler, name="view_custom_metric_handler"),
+    url(r"^view_query_handler/$", views.view_query_handler, name="view_query_handler"),
+    url(r"^delete_query_handler/$", views.delete_query_handler, name="delete_query_handler"),
+    url(r"^view_post_proc_handler/$", views.view_post_proc_handler, name="view_post_proc_handler"),
+    url(r"^delete_post_proc_handler/$", views.delete_post_proc_handler, name="delete_post_proc_handler"),
 ]
