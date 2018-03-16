@@ -5,6 +5,7 @@ except ImportError:
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 import signal, sys
 from datetime import datetime
+import time
 
 now = str(datetime.now())
 tweet_file = ('stream_out_'+now+'.txt').replace(':','-')
@@ -56,4 +57,5 @@ for tweet in iterator:
             log("Number of tweets read = %s"%str(num_read))
     except Exception as e:
         log("Exception occured: %s"%str(e))
+        time.sleep(5)
         continue
