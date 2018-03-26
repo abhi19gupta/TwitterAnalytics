@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from myapp.forms import *
-from myapp.ingest_raw import Query
+from myapp.ingest_raw import MongoQuery
 from datetime import datetime
 from myapp.tables import *
 from django.views.decorators.csrf import csrf_exempt
@@ -33,7 +33,7 @@ import json
 import os
 import time
 
-q = Query()
+q = MongoQuery()
 
 def binning(vals, num_bins):
     vals.sort(key=lambda x:x[0])

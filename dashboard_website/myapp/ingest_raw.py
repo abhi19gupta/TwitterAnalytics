@@ -182,7 +182,7 @@ class Ingest():
 
     
 
-class Query():
+class MongoQuery():
     def __init__(self):
         self.client = MongoClient('mongodb://localhost:27017/')
         self.db = self.client['regular_interval']
@@ -262,7 +262,7 @@ def read_tweets(path):
 # time.sleep(12)
 # i.insert_tweet(tweet1)
 
-# q = Query()
+# q = MongoQuery()
 # q.clear_db()
 # read_tweets("/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets")
 # print(q.mp_ht_in_total())
