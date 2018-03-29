@@ -36,6 +36,8 @@ import time
 q = MongoQuery()
 
 def binning(vals, num_bins):
+    if len(vals) == 0:
+        return ([],[])
     vals.sort(key=lambda x:x[0])
     print(vals)
     a,b = zip(*vals)
