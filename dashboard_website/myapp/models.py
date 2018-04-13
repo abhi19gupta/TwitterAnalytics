@@ -31,6 +31,7 @@ class Relation(models.Model):
 class Query(models.Model):
     name = models.CharField(max_length=50)
     query = models.TextField()
+    type = models.CharField(max_length=50, choices=[(x,x) for x in ['neo4j','mongoDB','PostProcesing']])
 
     def __str__(self):
         return self.name
@@ -49,3 +50,17 @@ class CustomMetric(models.Model):
 
     def __str__(self):
         return self.name
+
+class QueryInput(models.Model):
+    query = models.ForeignKey(Query)
+    input_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.input_name
+
+class QueryOutput(models.Model):
+    query = models.ForeignKey(Query)
+    output_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.output_name

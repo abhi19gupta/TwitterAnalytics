@@ -1,0 +1,89 @@
+{% extends "myapp/theme.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>Alerts</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a data-toggle="tab" href="#createTab">Create Alert</a></li>
+	  <li><a data-toggle="tab" href="#manageTab">Manage Alerts</a></li>
+	  <li><a data-toggle="tab" href="#liveTab">Live Alerts</a></li>
+	</ul>
+
+	<div class="tab-content">
+
+		<div id="createTab" class="tab-pane fade in active">
+			<h3>Create a new alert</h3>
+			<form id="createAlertForm" method="post" action="alerts_create_handler/">{% csrf_token %}
+			    {{ create_alert_form | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Create Alert!</button>
+			</form>
+		</div>
+
+		<div id="manageTab" class="tab-pane fade">
+			<h3>View/Delete/Deactivate/Reactivate an existing alert</h3>
+			<!-- <form id="top10form" method="post" action="hashtag_top10_getter/">{% csrf_token %}
+				{{ top10_form | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+			<br>
+			<div class="row">
+				<div id="top10list" class="col-sm-4"> -->
+					<!-- Top 10 hashtags list will be drawn inside this DIV -->
+				<!-- </div>
+			</div> -->
+		</div>
+
+		<div id="liveTab" class="tab-pane fade">
+			<h3>Live alerts</h3>
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+					    <th rowspan="2" style="text-align: center;">Alert Name</th>
+					    <th colspan="3" style="text-align: center;">Window Description</th>
+					    <th rowspan="2" style="text-align: center;">Delete Alert</th>
+					  </tr>
+					  <tr style="background: #2C2B2A; color: white">
+					    <th style="text-align: center;">Start Time</th>
+					    <th style="text-align: center;">End Time</th>
+					    <th style="text-align: center;">Current Tweet Count</th>
+					  </tr>
+					</thead>
+					<tbody>
+						{% for alert in alerts %}
+						<tr>
+							<td style="text-align: center;">{{alert.alert_name}}</td>
+							<td style="text-align: center;">{{alert.window_start}}</td>
+							<td style="text-align: center;">{{alert.window_end}}</td>
+							<td style="text-align: center;"><a href="alerts_tweets?alert_id={{alert.id}}" target="_blank">{{alert.tweet_count}}</a></td>
+							<td style="text-align: center;"><a class="btn btn-danger" href="alerts_delete?alert_id={{alert.id}}">Delete</a></td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$(function(){
+	    $("#hashtags_tab").removeClass("active");
+	    $("#mentions_tab").removeClass("active");
+	    $("#urls_tab").removeClass("active");
+	    $("#custom_metrics_tab").removeClass("active");
+	    $("#alerts_tab").addClass("active");
+	    $("#create_query_tab").removeClass("active");
+	});
+</script>
+
+{% endblock %}

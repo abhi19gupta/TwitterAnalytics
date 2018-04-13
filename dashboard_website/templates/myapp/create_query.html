@@ -1,0 +1,43 @@
+{% extends "myapp/theme.html" %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>Create Query</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a data-toggle="tab" href="#createDAGTab">Create DAG</a></li>
+	</ul>
+
+	<div class="tab-content">
+
+		<div id="createDAGTab" class="tab-pane fade in active">
+			<h3>Create a new DAG</h3>
+			<form id="uploadfileform" method="post" action="create_dag_handler/" enctype="multipart/form-data">{% csrf_token %}
+			    {{ uploadfileform | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+		</div>
+
+		
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$(function(){
+	    $("#hashtags_tab").removeClass("active");
+	    $("#mentions_tab").removeClass("active");
+	    $("#urls_tab").removeClass("active");
+	    $("#custom_metrics_tab").removeClass("active");
+	    $("#alerts_tab").removeClass("active");
+	    $("#create_query_tab").addClass("active");
+	});
+</script>
+
+{% endblock %}

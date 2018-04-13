@@ -11,7 +11,8 @@
 
 <div class="container-fluid">
 	<ul class="nav nav-tabs">
-	  <li class="active"><a data-toggle="tab" href="#create_query">Create Query</a></li>
+	  <li class="active"><a data-toggle="tab" href="#create_neo4j_query">Create Neo4j Query</a></li>
+	  <li><a data-toggle="tab" href="#create_mongo_query">Create MongoDB Query</a></li>
 	  <li><a data-toggle="tab" href="#create_postprocessing">Create Post-Processing Function</a></li>
 	  <li><a data-toggle="tab" href="#create_metric">Create Custom Metric</a></li>
 	  <li><a data-toggle="tab" href="#view_metric">View Custom Metrics</a></li>
@@ -19,9 +20,14 @@
 
 	<div class="tab-content">
 
-		<div id="create_query" class="tab-pane fade in active">
-			<h3>Create custom query</h3>
-			{% include "myapp/query.html" %}
+		<div id="create_neo4j_query" class="tab-pane fade in active">
+			<h3>Create Neo4j custom query</h3>
+			{% include "myapp/neo4j_query.html" %}
+		</div>
+
+		<div id="create_mongo_query" class="tab-pane fade in active">
+			<h3>Create MongoDB custom query</h3>
+			{% include "myapp/mongo_query.html" %}
 		</div>
 
 		<div id="create_postprocessing" class="tab-pane fade">
@@ -74,6 +80,8 @@
 	    $("#mentions_tab").removeClass("active");
 	    $("#urls_tab").removeClass("active");
 	    $("#custom_metrics_tab").addClass("active");
+	    $("#alerts_tab").removeClass("active");
+	    $("#create_query_tab").removeClass("active");
 	});
 	var x_vals = [];
 	var y_vals = [];

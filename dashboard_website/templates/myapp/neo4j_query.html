@@ -49,7 +49,7 @@ h4 span {
 <div class="row">
 <div class="jumbotron">
 
-<form  method='post' action="/create_query_handler/">{% csrf_token %}
+<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
     <h4><span>Users</span></h4>
     {{ uform|crispy }}
     <p class="bs-component">
@@ -60,7 +60,7 @@ h4 span {
 </form>
 <p>&nbsp;</p>
 
-<form  method='post' action="/create_query_handler/">{% csrf_token %}
+<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
     <h4><span>Tweets</span></h4>
     {{ tform|crispy }}
     <p class="bs-component">
@@ -71,7 +71,7 @@ h4 span {
 </form>
 <p>&nbsp;</p>
 
-<form  method='post' action="/create_query_handler/">{% csrf_token %}
+<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
     <h4><span>Relations</span></h4>
     <!-- {% crispy rform %} -->
     <div class="container">
@@ -145,7 +145,7 @@ h4 span {
 </form>
 <p>&nbsp;</p>
 
-<form  method='post' action="/create_query_handler/">{% csrf_token %}
+<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
     <h4><span>Evaluate Query</span></h4>
     {{ eform|crispy }}
     <p class="bs-component">

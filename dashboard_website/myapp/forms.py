@@ -76,3 +76,34 @@ class CreateCustomMetricForm(forms.Form):
 
 class CustomMetricForm(forms.Form):
     metric = forms.ModelChoiceField(queryset=CustomMetric.objects.all())
+
+class CreateAlertForm(forms.Form):
+    alert_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder':'No spaces allowed. Eg. viral_tweets'}))
+    filter = forms.CharField(max_length=200,  widget=forms.TextInput(attrs=
+        {'placeholder':'Eg. user_id.equals("i") && (hashtags.contains("h") || urls.contains("u") || user_mentions.contains("m"))'}))
+    keys = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, 
+        choices=[(x,x) for x in ['user_id','hashtag','url','user_mention']])
+    window_length = forms.CharField(widget=forms.NumberInput(attrs={'placeholder':'Window length in seconds'}))
+    window_slide = forms.CharField(widget=forms.NumberInput(attrs={'placeholder':'Window slide in seconds'}))
+    count_threshold = forms.CharField(widget=forms.NumberInput(attrs={'placeholder':'Alert threshold of tweets in above window'}))
+
+
+class PopularHash(forms.Form):
+    query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+
+class PopularHashInInterval(forms.Form):
+    Begin_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
+    End_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+    query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+
+class HashUsageInInterval(forms.Form):
+    Hashtag  = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+    Begin_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
+    End_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+    query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+    
+class HashSentimentInInterval(forms.Form):
+    Hashtag  = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+    Begin_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
+    End_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+    query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
