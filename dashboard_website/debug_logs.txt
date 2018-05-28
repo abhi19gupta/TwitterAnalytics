@@ -4314,3 +4314,2055 @@ Traceback (most recent call last):
   File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
     return Database.Cursor.execute(self, query, params)
 django.db.utils.OperationalError: no such column: myapp_query.type
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Forbidden (CSRF token missing or incorrect.): /create_neo4j_query_handler/
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 513, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 33, in __init__
+    self.graph.add_node(node_name,type=self.types[query_name],
+KeyError: b'q4'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 514, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 57, in __init__
+    self.inputs[node_name][var_name] = eval(l[1])
+  File "<string>", line 1
+    =
+    ^
+SyntaxError: unexpected EOF while parsing
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view myapp.views.create_dag_handler didn't return an HttpResponse object. It returned None instead.
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 73, in feed_forward
+    for node in t:
+NameError: name 't' is not defined
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 74, in feed_forward
+    query_name = G.nodes[node]["query_name"]
+NameError: name 'G' is not defined
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 74, in feed_forward
+    query_name = self.graph.nodes[node]["query_name"]
+TypeError: 'method' object is not subscriptable
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 74, in feed_forward
+    query_name = self.graph.nodes[node]["query_name"]
+TypeError: 'method' object is not subscriptable
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 75, in feed_forward
+    query_name = self.graph.nodes()[node]["query_name"]
+TypeError: list indices must be integers or slices, not str
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 76, in feed_forward
+    query_name = self.graph.nodes(data=True)[node]["query_name"]
+TypeError: list indices must be integers or slices, not str
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 77, in feed_forward
+    inputs = self.inputs[query_name]
+KeyError: 'q4'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 81, in feed_forward
+    inputs = self.inputs[query_name]
+KeyError: 'q4'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 514, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 61, in __init__
+    self.inputs[self.graph.node[node_name]["query_name"]][var_name] = eval(l[1])
+KeyError: 'q4'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 514, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 62, in __init__
+    self.inputs[self.graph.node[node_name]["query_name"]][var_name] = eval(l[1])
+KeyError: 'q4'
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('"""\r\nUNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)\r\n"""', {'hash': ['MPN', 'bookmeter', 'GOT7']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: FAILURE ({'code': 'Neo.ClientError.Statement.SyntaxError', 'message': 'Invalid input \'"\': expected <init> (line 1, column 1 (offset: 0))\n"""""\n ^'})
+INFO:neo4j.bolt:C: ACK_FAILURE ()
+INFO:neo4j.bolt:S: IGNORED (None)
+INFO:neo4j.bolt:S: SUCCESS ({})
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 87, in feed_forward
+    outputs = execute(query_name,inputs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 477, in execute
+    result = session.run(q.query,inputs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/neo4j/v1/api.py", line 303, in run
+    self._connection.fetch()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/neo4j/bolt/connection.py", line 279, in fetch
+    response.on_failure(summary_metadata or {})
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/neo4j/v1/result.py", line 69, in on_failure
+    raise CypherError.hydrate(**metadata)
+neo4j.exceptions.CypherSyntaxError: Invalid input '"': expected <init> (line 1, column 1 (offset: 0))
+"""""
+ ^
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'GOT7']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 78, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 330
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 515, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 94, in feed_forward
+    rets[ret] = outputs_dict[ret[0]][ret[1]]
+KeyError: 'hash'
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'GOT7']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 93, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 330
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_mongo_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 312, in create_mongo_query_handler
+    name = phform.cleaned_data['Name']
+KeyError: 'Name'
+ERROR:django.request:Internal Server Error: /create_mongo_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 315, in create_mongo_query_handler
+    QueryOutput.create(query=q,output_name="_id")
+AttributeError: type object 'QueryOutput' has no attribute 'create'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 526, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 89, in feed_forward
+    outputs = execute(query_name,inputs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 498, in execute
+    ret = MongoQuery.mp_ht_in_total(inputs["num"])
+TypeError: mp_ht_in_total() missing 1 required positional argument: 'limit'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 527, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 89, in feed_forward
+    outputs = execute(query_name,inputs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 499, in execute
+    ret = MongoQuery.mp_ht_in_total(inputs["num"])
+TypeError: mp_ht_in_total() missing 1 required positional argument: 'limit'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 527, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 89, in feed_forward
+    outputs = execute(query_name,inputs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 499, in execute
+    ret = MongoQuery.mp_ht_in_total(limit=inputs["num"])
+TypeError: mp_ht_in_total() missing 1 required positional argument: 'self'
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 526, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 65, in __init__
+    ind = s.index(".")
+ValueError: substring not found
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 527, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 93, in feed_forward
+    outp, inp = self.graph.edge[node][nbr]
+ValueError: not enough values to unpack (expected 2, got 1)
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 527, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 94, in feed_forward
+    self.inputs[nbr][inp] = outputs[outp]
+KeyError: 'n2'
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 96, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'GOT7']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 66, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 330
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'GOT7']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 62, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 330
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 88, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 90, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 528, in create_dag_handler
+    dag.plot_dag()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 135, in plot_dag
+    G ,rect= self.get_drawable_dag(self.graph,self.queries,self.types,self.connections)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 121, in get_drawable_dag
+    inputs_y = np.linspace(0,length,len(inputs))
+NameError: name 'np' is not defined
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 92, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 528, in create_dag_handler
+    dag.plot_dag()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 137, in plot_dag
+    edge_trace = Scatter(
+NameError: name 'Scatter' is not defined
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 88, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 88, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 527, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 116, in feed_forward
+    rets[ret] = outputs_dict[ret[0]][ret[1]]
+NameError: name 'outputs_dict' is not defined
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 89, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 528, in create_dag_handler
+    dag.plot_dag()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 176, in plot_dag
+    node_trace["text"].append(node+">>"+self.taking_inputs[node])
+TypeError: must be str, not int
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 84, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 528, in create_dag_handler
+    dag.plot_dag()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 173, in plot_dag
+    node_trace["text"].append(node+"<<"+self.outputs_dict[node])
+KeyError: 'q4.count(t1)'
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 96, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 528, in create_dag_handler
+    dag.plot_dag()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 175, in plot_dag
+    node_trace["text"].append(node+"<<"+self.outputs_dict[q][val])
+TypeError: must be str, not list
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 87, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 91, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 526, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 76, in __init__
+    self.taking_inputs[self.graph.node[node_name]["query_name"]+"."+var_name] = eval(l[1])
+KeyError: 'n1.num'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 526, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 73, in __init__
+    self.connections.append((self.graph.node[u]["query_name"]+"."+outp,self.graph.node[v]["query_name"]+"."+inp))
+KeyError: 'query_name'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 526, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 73, in __init__
+    self.connections.append((self.graph.node[u]["query_name"]+"."+outp,self.graph.node[v]["query_name"]+"."+inp))
+KeyError: 'query_name'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 526, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 74, in __init__
+    self.connections.append((self.graph.node[u]["query_name"]+"."+outp,self.graph.node[v]["query_name"]+"."+inp))
+KeyError: 'query_name'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 526, in create_dag_handler
+    dag = DAG(file_handler, queries, types)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 74, in __init__
+    self.connections.append((self.graph.node[u]["query_name"]+"."+outp,self.graph.node[v]["query_name"]+"."+inp))
+KeyError: 'query_name'
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 89, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {xid} as id_value\r\nMATCH (u :USER {id:id_value})-[:TWEETED]->(t :TWEET)-[:HAS_HASHTAG]->(h :HASHTAG)\r\nWITH DISTINCT h\r\nRETURN h', {'xid': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360]})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 15, 'fields': ['h']})
+INFO:neo4j.bolt:S: RECORD * 161
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 82, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 87, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {xid} as id_value\r\nMATCH (u :USER {id:id_value})-[:TWEETED]->(t :TWEET)-[:HAS_HASHTAG]->(h :HASHTAG)\r\nWITH DISTINCT h\r\nRETURN h.text', {'xid': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360]})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 13, 'fields': ['h.text']})
+INFO:neo4j.bolt:S: RECORD * 161
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 63, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 527, in create_dag_handler
+    dag.feed_forward(execute)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 120, in feed_forward
+    rets[ret] = self.outputs_dict[ret[0]][ret[1]]
+KeyError: 'h'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/datastructures.py", line 83, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 523, in create_dag_handler
+    file_handler = request.FILES['file']
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/datastructures.py", line 85, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'file'"
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/datastructures.py", line 83, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 523, in create_dag_handler
+    file_handler = request.FILES['file']
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/datastructures.py", line 85, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'file'"
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 88, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {xid} as id_value\r\nMATCH (u :USER {id:id_value})-[:TWEETED]->(t :TWEET)-[:HAS_HASHTAG]->(h :HASHTAG)\r\nWITH DISTINCT h\r\nRETURN h.text', {'xid': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360]})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 0, 'fields': ['h.text']})
+INFO:neo4j.bolt:S: RECORD * 161
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 63, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /view_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 409, in view_query_handler
+    query = Query.objects.get(name=query)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: Query matching query does not exist.
+ERROR:django.request:Internal Server Error: /view_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 409, in view_query_handler
+    query = Query.objects.get(name=query)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: Query matching query does not exist.
+ERROR:django.request:Internal Server Error: /delete_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 416, in delete_query_handler
+    query = Query.objects.get(name=query)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: Query matching query does not exist.
+ERROR:django.request:Internal Server Error: /delete_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 416, in delete_query_handler
+    query = Query.objects.get(name=query)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: Query matching query does not exist.
+ERROR:django.request:Internal Server Error: /view_post_proc_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/views/decorators/csrf.py", line 58, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 424, in view_post_proc_handler
+    post_proc = PostProcFunc.objects.get(name=post_proc)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: PostProcFunc matching query does not exist.
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 86, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 529, in create_dag_handler
+    div = dag.plot_dag()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/dag.py", line 207, in plot_dag
+    div = plot(figure, auto_open=False, output_type='div')
+NameError: name 'figure' is not defined
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 88, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 90, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 89, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 88, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 90, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 101, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 89, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 88, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+WARNING:django.request:Not Found: /favicon.ico
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 90, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 90, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 93, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 92, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 86, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 98, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 93, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 533, in create_dag_handler
+    dag_div = dag.get_dag()
+AttributeError: 'DAG' object has no attribute 'get_dag'
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 90, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 89, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 96, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 97, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 92, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 93, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 92, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {xid} as id_value\r\nMATCH (u :USER {id:id_value})-[:TWEETED]->(t :TWEET)-[:HAS_HASHTAG]->(h :HASHTAG)\r\nWITH DISTINCT h\r\nRETURN h.text', {'xid': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360]})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 0, 'fields': ['h.text']})
+INFO:neo4j.bolt:S: RECORD * 161
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 73, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 95, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 102, 'fields': ['u.id', 'count(t1)']})
+INFO:neo4j.bolt:S: RECORD * 177
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ('UNWIND {xid} as id_value\r\nMATCH (u :USER {id:id_value})-[:TWEETED]->(t :TWEET)-[:HAS_HASHTAG]->(h :HASHTAG)\r\nWITH DISTINCT h\r\nRETURN h.text', {'xid': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360]})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 1, 'fields': ['h.text']})
+INFO:neo4j.bolt:S: RECORD * 161
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 71, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 470, in alerts_create_handler
+    if AlertSpecification.objects.get(alert_name=data['alert_name']) is not None:
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 471, in alerts_create_handler
+    alert = AlertSpecification.objects.get(alert_name=data['alert_name'])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 138, in write_code
+    shutil.copytree(template_base_path, alert_base_path)
+  File "/home/db1/anaconda3/lib/python3.6/shutil.py", line 315, in copytree
+    os.makedirs(dst)
+  File "/home/db1/anaconda3/lib/python3.6/os.py", line 220, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 480, in alerts_create_handler
+    data['window_slide'],data['count_threshold'])
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 150, in write_code
+    raise Exception('Failed to write code. Error: %s, %s'%(str(type(e)),str(e)))
+Exception: Failed to write code. Error: <class 'FileExistsError'>, [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 491, in alerts_create_handler
+    messages.error(request, "Alert creation failed. Error: %s, %s"%(str(type(e),str(e))))
+TypeError: decoding to str: need a bytes-like object, type found
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 471, in alerts_create_handler
+    alert = AlertSpecification.objects.get(alert_name=data['alert_name'])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 476, in alerts_create_handler
+    except myapp.models.DoesNotExist:
+NameError: name 'myapp' is not defined
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 471, in alerts_create_handler
+    alert = AlertSpecification.objects.get(alert_name=data['alert_name'])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 478, in alerts_create_handler
+    except DoesNotExist:
+NameError: name 'DoesNotExist' is not defined
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 472, in alerts_create_handler
+    alert = AlertSpecification.objects.get(alert_name=data['alert_name'])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 138, in write_code
+    shutil.copytree(template_base_path, alert_base_path)
+  File "/home/db1/anaconda3/lib/python3.6/shutil.py", line 315, in copytree
+    os.makedirs(dst)
+  File "/home/db1/anaconda3/lib/python3.6/os.py", line 220, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 483, in alerts_create_handler
+    data['window_slide'],data['count_threshold'])
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 150, in write_code
+    raise Exception('Failed to write code. Error: %s, %s'%(str(type(e)),str(e)))
+Exception: Failed to write code. Error: <class 'FileExistsError'>, [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 494, in alerts_create_handler
+    messages.error(request, "Alert creation failed. Error: %s, %s"%(str(type(e),str(e))))
+TypeError: decoding to str: need a bytes-like object, type found
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 472, in alerts_create_handler
+    alert = AlertSpecification.objects.get(alert_name=data['alert_name'])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 138, in write_code
+    shutil.copytree(template_base_path, alert_base_path)
+  File "/home/db1/anaconda3/lib/python3.6/shutil.py", line 315, in copytree
+    os.makedirs(dst)
+  File "/home/db1/anaconda3/lib/python3.6/os.py", line 220, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 483, in alerts_create_handler
+    data['window_slide'],data['count_threshold'])
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 150, in write_code
+    raise Exception('Failed to write code. Error: %s, %s'%(str(type(e)),str(e)))
+Exception: Failed to write code. Error: <class 'FileExistsError'>, [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 494, in alerts_create_handler
+    messages.error(request, "Alert creation failed. Error: %s, %s"%(str(type(e),str(e))))
+TypeError: decoding to str: need a bytes-like object, type found
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 472, in alerts_create_handler
+    alert = AlertSpecification.objects.get(alert_name=data['alert_name'])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 138, in write_code
+    shutil.copytree(template_base_path, alert_base_path)
+  File "/home/db1/anaconda3/lib/python3.6/shutil.py", line 315, in copytree
+    os.makedirs(dst)
+  File "/home/db1/anaconda3/lib/python3.6/os.py", line 220, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 483, in alerts_create_handler
+    data['window_slide'],data['count_threshold'])
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_code_gen.py", line 150, in write_code
+    raise Exception('Failed to write code. Error: %s, %s'%(str(type(e)),str(e)))
+Exception: Failed to write code. Error: <class 'FileExistsError'>, [Errno 17] File exists: '/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/all_alerts/alert1'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 495, in alerts_create_handler
+    flinkCodeGenerator.delete_code(data['alert'])
+KeyError: 'alert'
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/alert1.jar/run HTTP/1.1" 500 1636
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1.jar HTTP/1.1" 500 1636
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1.jar HTTP/1.1" 500 1636
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/133dbabb-4441-4c0d-b72c-a6bba9eb5860_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/f1f5c816-6f3f-42c9-9c21-7896a00351e4_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /alerts/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 457, in alerts
+    get_alert_specs()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 453, in get_alert_specs
+    alertSpecs = AlertSpecification.objects.find()
+AttributeError: 'Manager' object has no attribute 'find'
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /jobs HTTP/1.1" 200 75
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/80c98e0b-171c-45d6-978f-993f35b075af_alert2.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert2 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /jobs HTTP/1.1" 200 109
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 351
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /jobs HTTP/1.1" 200 109
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 362
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/ec4337f7-9605-4502-9926-412e99858297_alert3.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert3 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /jobs HTTP/1.1" 200 143
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 667
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /jobs HTTP/1.1" 200 144
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+ERROR:django.request:Internal Server Error: /alerts/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 465, in alerts
+    get_alert_specs()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 456, in get_alert_specs
+    print(a.keys())
+TypeError: 'str' object is not callable
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+ERROR:django.request:Internal Server Error: /alerts/alerts_view
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 468, in alerts_view
+    AlertSpecification.get(id="sdasd")
+AttributeError: type object 'AlertSpecification' has no attribute 'get'
+ERROR:django.request:Internal Server Error: /alerts/alerts_view
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 468, in alerts_view
+    AlertSpecification.objects.get(id="sdasd")
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 376, in get
+    clone = self.filter(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 794, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 812, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1227, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1253, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1187, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1083, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/lookups.py", line 19, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/lookups.py", line 59, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/fields/__init__.py", line 946, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'sdasd'
+ERROR:django.request:Internal Server Error: /alerts/alerts_view
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 468, in alerts_view
+    AlertSpecification.objects.get(id=123124)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 376, in get
+    clone = self.filter(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 794, in filter
+    return self._filter_or_exclude(False, *args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 812, in _filter_or_exclude
+    clone.query.add_q(Q(*args, **kwargs))
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1227, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1253, in _add_q
+    allow_joins=allow_joins, split_subq=split_subq,
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1187, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/query.py", line 1083, in build_lookup
+    return final_lookup(lhs, rhs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/lookups.py", line 19, in __init__
+    self.rhs = self.get_prep_lookup()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/lookups.py", line 59, in get_prep_lookup
+    return self.lhs.output_field.get_prep_value(self.rhs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/fields/__init__.py", line 946, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'sdasd'
+ERROR:django.request:Internal Server Error: /alerts/alerts_view
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 468, in alerts_view
+    AlertSpecification.objects.get(id=123124)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 385, in get
+    self.model._meta.object_name
+myapp.models.DoesNotExist: AlertSpecification matching query does not exist.
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+ERROR:django.request:Internal Server Error: /alerts/alerts_create_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such column: myapp_alertspecification.jar_path
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 542, in alerts_create_handler
+    if AlertSpecification.objects.get(alert_name=data['alert_name']) is not None:
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 379, in get
+    num = len(clone)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 238, in __len__
+    self._fetch_all()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 1085, in _fetch_all
+    self._result_cache = list(self.iterator())
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/compiler.py", line 835, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such column: myapp_alertspecification.jar_path
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 679
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/6c68b6be-522c-4577-9cf0-05c9eae6fd25_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 984
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/a2d51cc9f1d16ce6d2db7ecbfefa6ab7/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 996
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/6c68b6be-522c-4577-9cf0-05c9eae6fd25_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1301
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1313
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1313

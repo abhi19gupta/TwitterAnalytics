@@ -21,10 +21,14 @@ urlpatterns = [
     url(r"^delete_post_proc_handler/$", views.delete_post_proc_handler, name="delete_post_proc_handler"),
 
     url(r"^alerts/$", views.alerts, name="alerts"),
-    url(r"^alerts/alerts_tweets", views.alerts_tweets, name="alerts_tweets"),
+    url(r"^alerts/alerts_view", views.alerts_view, name="alerts_view"),
     url(r"^alerts/alerts_delete", views.alerts_delete, name="alerts_delete"),
+    url(r"^alerts/alerts_activate", views.alerts_activate, name="alerts_activate"),
+    url(r"^alerts/alerts_deactivate", views.alerts_deactivate, name="alerts_deactivate"),
+    url(r"^alerts/alerts_tweets", views.alerts_tweets, name="alerts_tweets"),
+    url(r"^alerts/alerts_dismiss", views.alerts_dismiss, name="alerts_dismiss"),
     url(r"^alerts/alerts_create_handler", views.alerts_create_handler, name="alerts_create_handler"),
 
-    url(r"^create_query/", views.create_query, name="create_query"),
+    url(r"^create_query/$", views.create_query, name="create_query"),
     url(r"^create_query/create_dag_handler", views.create_dag_handler, name ="create_dag_handler"),
 ]

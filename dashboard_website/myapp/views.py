@@ -1,26 +1,35 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages 
+from django.contrib import messages
 import django_tables2 as tables
+from django.core.exceptions import ObjectDoesNotExist
+from django.forms.models import model_to_dict
 
 from myapp.forms import *
 from myapp.models import *
 from myapp.tables import *
 from myapp.dag import DAG
+from myapp.flink.flink_code_gen import FlinkCodeGenerator
+from myapp.flink.flink_api import FlinkAPI
 from myapp.generate_queries import *
 from myapp.ingest_raw import MongoQuery
 from myapp.mongo_alert import MongoAlert
 
 from datetime import datetime
 from pprint import *
+import json
 
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
 mongoQuery = MongoQuery()
 mongoAlert = MongoAlert()
 neo4jCreator = CreateQuery()
+flinkCodeGenerator = FlinkCodeGenerator()
+flink_api = FlinkAPI()
 
+dag_div = ""
+query_output  = ""
 def binning(vals, num_bins):
 	if len(vals) == 0:
 		return ([],[])
@@ -64,7 +73,7 @@ def hashtag_usage_getter(request):
 		data = {"x":x,"y":y}
 	else:
 		print(form['hashtag'].errors, form['start_time'].errors, form['end_time'].errors)
-	
+
 	# data = {"x":[1,2,3,4], "y":[6,2,5,2]}
 	return JsonResponse(data)
 
@@ -82,7 +91,7 @@ def hashtag_top10_getter(request):
 		data = [{"hashtag":x["_id"],"count":x["count"]} for x in data]
 	else:
 		print(form['start_time'].errors, form['end_time'].errors)
-	
+
 	# data = [{"hashtag":"Sports","count":132}, {"hashtag":"Politics","count":95}, {"hashtag":"Health","count":55}, {"hashtag":"Cricket","count":34}]
 	return JsonResponse(data,safe=False)
 
@@ -102,7 +111,7 @@ def hashtag_sentiment_getter(request):
 		data = {"x":x,"y":y}
 	else:
 		print(form['hashtag'].errors, form['start_time'].errors, form['end_time'].errors)
-	
+
 	# data = {"x":[1,2,3,4], "y":[6,2,5,2]}
 	return JsonResponse(data)
 
@@ -127,7 +136,7 @@ def query_creator(request):
 		tables.RequestConfig(request).configure(ttable)
 		tables.RequestConfig(request).configure(rtable)
 
-		return {'uform': UserForm(),'tform': TweetForm(),'rform': RelationForm(), 'eform' : EvaluateForm(), 
+		return {'uform': UserForm(),'tform': TweetForm(),'rform': RelationForm(), 'eform' : EvaluateForm(),
 		'user_list':utable,'tweet_list':ttable,'relation_list':rtable}
 
 
@@ -135,7 +144,7 @@ def query_creator(request):
 	query_s = request.GET.get("query_s","")
 
 	data = get_create_query_subtab_data()
-	data.update({"create_mongo_form_1":PopularHash(), "create_mongo_form_2":PopularHashInInterval(), 
+	data.update({"create_mongo_form_1":PopularHash(), "create_mongo_form_2":PopularHashInInterval(),
 		"create_mongo_form_3":HashUsageInInterval(), "create_mongo_form_4":HashSentimentInInterval()})
 	data.update({"query_s":query_s, 'output_s':output_s})
 	data.update({"uploadfileform":UploadFileForm()})
@@ -244,7 +253,7 @@ def create_neo4j_query_handler(request):
 		if eform.is_valid():
 			ret_vars = eform.cleaned_data['Return_Variables']
 			query_name = eform.cleaned_data['Query_Name']
-		
+
 		if (len(Query.objects.filter(name=query_name)) > 0):
 			print("Error: Query Name already exists!")
 			messages.error(request, "Error: Query name already exists! Use a unique query name.")
@@ -284,7 +293,7 @@ def create_neo4j_query_handler(request):
 				QueryInput.objects.create(query=query_object, input_name=input_name)
 			for output_name in sq["outputs"]:
 				QueryOutput.objects.create(query=query_object, output_name=output_name)
-			
+
 			# driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
 			# session = driver.session()
 			# result = session.run(sq,{})
@@ -292,7 +301,7 @@ def create_neo4j_query_handler(request):
 			#     print(r)
 			#     output_s += str(r)
 			# session.close()
-			
+
 			User.objects.all().delete()
 			Tweet.objects.all().delete()
 			Relation.objects.all().delete()
@@ -305,26 +314,34 @@ def create_mongo_query_handler(request):
 		phform = PopularHash(request.POST)
 		print("first button pressed")
 		if phform.is_valid():
-		  name = phform.cleaned_data['Name']
-		
+			name = phform.cleaned_data["query_name"]
+			number = phform.cleaned_data["number"]
+			q = Query.objects.create(name=name,query="mp_ht_in_total",type="mongoDB")
+			QueryOutput.objects.create(query=q,output_name="_id")
+			QueryOutput.objects.create(query=q,output_name="count")
+			if(number[0]=="{" and number[-1]=="}"):
+				QueryInput.objects.create(query=q,input_name=number[1:-1])
+
+
+
 	elif("b2" in request.POST):
 		phiform = PopularHashInInterval(request.POST)
 		print("second button pressed")
 		if phiform.is_valid():
 			pass
-			
+
 	elif("b3" in request.POST):
 		huiform = HashUsageInInterval(request.POST)
 		print("third button pressed")
 		if huiform.is_valid():
 			pass
-			
+
 	elif("b4" in request.POST):
 		hsiform = HashSentimentInInterval(request.POST)
 		print("4th button pressed")
 		if hsiform.is_valid():
 			pass
-				
+
 	return redirect("/create_metric/")
 
 def create_postprocessing_handler(request):
@@ -422,16 +439,87 @@ def delete_post_proc_handler(request):
 
 
 def alerts(request):
-	# alerts = [{"_id":1, "name":"alert1", "window_start":datetime.now(), "window_end":datetime.now(), "tweet_count":987},
-	# {"_id":2, "name":"alert2", "window_start":datetime.now(), "window_end":datetime.now(), "tweet_count":789}]
-	alerts = mongoAlert.get_all_alerts()
-	for alert in alerts:
-		alert['id'] = str(alert['id'])
-		alert['tweet_count'] = len(alert['tweet_ids'].split(' '))
-		alert['window_start'] = str(alert['window_start'])
-		alert['window_end'] = str(alert['window_end'])
-	print(alerts)
-	return render(request, "myapp/alerts.html", {"create_alert_form":CreateAlertForm(), "alerts":alerts})
+
+	def get_live_alerts():
+		# alerts = [{"_id":1, "name":"alert1", "window_start":datetime.now(), "window_end":datetime.now(), "tweet_count":987},
+		# {"_id":2, "name":"alert2", "window_start":datetime.now(), "window_end":datetime.now(), "tweet_count":789}]
+		alerts = mongoAlert.get_all_alerts()
+		for alert in alerts:
+			alert['id'] = str(alert['id'])
+			alert['tweet_count'] = len(alert['tweet_ids'].split(' '))
+			alert['window_start'] = str(alert['window_start'])
+			alert['window_end'] = str(alert['window_end'])
+		# print(alerts)
+		return alerts
+
+	def get_alert_specs():
+		alertSpecs = AlertSpecification.objects.all()
+		flink_status = flink_api.check_job_status_all()
+		# print(flink_status)
+		ret = []
+		for alertSpec in alertSpecs:
+			ret.append({"id":alertSpec.id, "alert_name":alertSpec.alert_name, "status":flink_status.get(alertSpec.alert_name,'NOT RUNNING')})
+		return ret
+
+	live_alerts = get_live_alerts()
+	alertSpecs = get_alert_specs()
+	return render(request, "myapp/alerts.html", {"create_alert_form":CreateAlertForm(), "alerts":live_alerts, "alertSpecs":alertSpecs})
+
+def alerts_view(request):
+	alert_id = request.GET["alert_id"]
+	try:
+		alert = AlertSpecification.objects.get(id=alert_id)
+		return HttpResponse("<pre>%s</pre>"%(json.dumps(model_to_dict(alert),indent=4)))
+	except Exception as e:
+		print('Alert not found! %s:%s'%(str(type(e)),str(e)))
+		return HttpResponse('Alert not found!')
+
+def alerts_delete(request):
+	alert_id = request.GET["alert_id"]
+	try:
+		AlertSpecification.objects.get(id=alert_id).delete()
+	except Exception as e:
+		print("Failed to delete alert. %s: %s"%(str(type(e),str(e))))
+		messages.error(request, "Failed to delete alert. %s: %s"%(str(type(e),str(e))))
+	return redirect('/alerts')
+
+def alerts_activate(request):
+	alert_id = request.GET["alert_id"]
+	try:
+		alertSpec = AlertSpecification.objects.get(id=alert_id)
+	except Exception as e:
+		messages.error(request, "Alert not found!.")
+	try:
+		print('Running jar')
+		job_id = flink_api.run_jar(alertSpec.alert_name, alertSpec.flink_jar_id)
+		alertSpec.current_job_id = job_id
+		alertSpec.save()
+	except Exception as e:
+		try:
+			print('Uploading jar')
+			flink_jar_id = flink_api.upload_jar(alertSpec.jar_path)
+			print('Running jar')
+			job_id = flink_api.run_jar(alertSpec.alert_name,flink_jar_id)
+			alertSpec.flink_jar_id = flink_jar_id
+			alertSpec.current_job_id = job_id
+			alertSpec.save()
+		except Exception as e:
+			print("Failed to activate alert. %s:%s"%(str(type(e),str(e))))
+			messages.error(request, "Failed to activate alert. %s:%s"%(str(type(e),str(e))))
+	return redirect('/alerts')
+
+def alerts_deactivate(request):
+	alert_id = request.GET["alert_id"]
+	try:
+		alertSpec = AlertSpecification.objects.get(id=alert_id)
+	except Exception as e:
+		messages.error(request, "Alert not found!.")
+	try:
+		flink_api.cancel_job(alertSpec.current_job_id)
+	except Exception as e:
+		print("Failed to deactivate job. %s:%s"%(str(type(e),str(e))))
+		messages.error(request, "Failed to deactivate job. %s:%s"%(str(type(e),str(e))))
+	return redirect('/alerts')
 
 def alerts_tweets(request):
 	alert_id = request.GET["alert_id"]
@@ -442,7 +530,7 @@ def alerts_tweets(request):
 	else:
 		return HttpResponse('Alert not found!')
 
-def alerts_delete(request):
+def alerts_dismiss(request):
 	alert_id = request.GET["alert_id"]
 	mongoAlert.delete_alert(alert_id)
 	return redirect('/alerts')
@@ -450,18 +538,78 @@ def alerts_delete(request):
 def alerts_create_handler(request):
 	create_alert_form = CreateAlertForm(request.POST)
 	if create_alert_form.is_valid():
-		form_data = create_alert_form['cleaned_data']
-		
+		data = create_alert_form.cleaned_data
+		# print(form_data)
+		# first check that same alert_name doesn't exist already
+		try:
+			if AlertSpecification.objects.get(alert_name=data['alert_name']) is not None:
+				messages.error(request, "This alert name (%s) already exists!"%(data['alert_name']))
+				return redirect("/alerts/")
+		except ObjectDoesNotExist:
+			pass
+
+		try:
+			print('Writing code')
+			flinkCodeGenerator.write_code(data['alert_name'],data['filter'],data['keys'],data['window_length'],
+				data['window_slide'],data['count_threshold'])
+			print('Compiling code')
+			jar_path = flinkCodeGenerator.compile_code(data['alert_name'])
+			print('Uploading jar')
+			flink_jar_id = flink_api.upload_jar(jar_path)
+			print('Running jar')
+			job_id = flink_api.run_jar(data['alert_name'],flink_jar_id)
+			AlertSpecification.objects.create(alert_name=data['alert_name'], filter=data['filter'], 
+				keys=','.join(data['keys']), window_length=data['window_length'], window_slide=data['window_slide'],
+				count_threshold=data['count_threshold'], jar_path=jar_path, flink_jar_id=flink_jar_id, current_job_id=job_id)
+		except Exception as e:
+			print("Alert creation failed. Error: %s, %s"%(str(type(e)),str(e)))
+			messages.error(request, "Alert creation failed. Error: %s, %s"%(str(type(e)),str(e)))
+			flinkCodeGenerator.delete_code(data['alert_name'])
 	else:
 		messages.error(request, "Error: Invalid form data.")
 	return redirect("/alerts/")
 
 
 def create_query(request):
-	return render(request, "myapp/create_query.html", {"uploadfileform":UploadFileForm()})
+	global dag_div
+	print(dag_div)
+	print('create_query')
+	return render(request, "myapp/create_query.html", {"uploadfileform":UploadFileForm(),"dag_graph_my":dag_div,"query_output":query_output})
+
+def execute(query_name,inputs):
+	q = Query.objects.get(name=query_name)
+	outputs = [x.output_name for x in QueryOutput.objects.filter(query=q)]
+	ret = {out:[] for out in outputs}
+	print("========================================")
+	print("Executing query ",q.name)
+	pprint(inputs)
+	if(q.type=='neo4j'):
+		driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
+		session = driver.session()
+		result = session.run(q.query,inputs)
+		ret = {x:[] for x in outputs}
+		try:
+			for record in result:
+				for out in outputs:
+					if(isinstance(record[out],bytes)):
+						ret[out].append(record[out].decode("utf-8"))
+					else:
+						ret[out].append(record[out])
+		except:
+			pass
+	if(q.type=="mongoDB"):
+		if(q.query=="mp_ht_in_total"):
+			print(inputs["num"])
+			ret = mongoQuery.mp_ht_in_total(limit=inputs["num"])
+	print(ret)
+	print("========================================")
+	return ret
+
 
 def create_dag_handler(request):
-
+	global dag_div
+	global query_output
+	print("came into the function")
 	def get_all_queries():
 		ret_query = {}
 		ret_types = {}
@@ -474,9 +622,18 @@ def create_dag_handler(request):
 		return ret_query,ret_types
 
 	if request.method == 'POST':
+		print("came into post")
 		form = UploadFileForm(request.POST, request.FILES)
 		if form.is_valid():
+			print("came here")
 			file_handler = request.FILES['file']
+			# print(file_handler.read().decode())
 			queries,types = get_all_queries()
 			dag = DAG(file_handler, queries, types)
-			dag.feed_forward()
+			rets = dag.feed_forward(execute)
+			# query_output = pformat(rets, indent=4)
+			query_output = rets
+			dag_div = dag.plot_dag()
+		else:
+			print(form["name"].errors,form['file'].errors)
+		return redirect('/create_query/')

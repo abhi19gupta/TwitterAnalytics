@@ -27,17 +27,34 @@
 
 		<div id="manageTab" class="tab-pane fade">
 			<h3>View/Delete/Deactivate/Reactivate an existing alert</h3>
-			<!-- <form id="top10form" method="post" action="hashtag_top10_getter/">{% csrf_token %}
-				{{ top10_form | crispy }}
-			    <br>
-			    <button type="submit" class="btn btn-primary">Submit!</button>
-			</form>
-			<br>
-			<div class="row">
-				<div id="top10list" class="col-sm-4"> -->
-					<!-- Top 10 hashtags list will be drawn inside this DIV -->
-				<!-- </div>
-			</div> -->
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+					    <th style="text-align: center;">Alert Name</th>
+					    <th style="text-align: center;">Status</th>
+					    <th style="text-align: center;">Action</th>
+					  </tr>
+					</thead>
+					<tbody>
+						{% for alertspec in alertSpecs %}
+						<tr>
+							<td style="text-align: center;">{{alertspec.alert_name}}</td>
+							<td style="text-align: center;">{{alertspec.status}}</td>
+							<td style="text-align: center;">
+								<a class="btn btn-info"    href="alerts_view?alert_id={{alertspec.id}} " target="_blank">View</a>
+								<a class="btn btn-danger"  href="alerts_delete?alert_id={{alertspec.id}}">Delete</a>
+								{% if alertspec.status == "RUNNING" %}
+								<a class="btn btn-warning" href="alerts_deactivate?alert_id={{alertspec.id}}">Deactivate</a>
+								{% else %}
+								<a class="btn btn-success" href="alerts_activate?alert_id={{alertspec.id}}">Activate</a>
+								{% endif %}
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 
 		<div id="liveTab" class="tab-pane fade">
@@ -63,7 +80,7 @@
 							<td style="text-align: center;">{{alert.window_start}}</td>
 							<td style="text-align: center;">{{alert.window_end}}</td>
 							<td style="text-align: center;"><a href="alerts_tweets?alert_id={{alert.id}}" target="_blank">{{alert.tweet_count}}</a></td>
-							<td style="text-align: center;"><a class="btn btn-danger" href="alerts_delete?alert_id={{alert.id}}">Delete</a></td>
+							<td style="text-align: center;"><a class="btn btn-danger" href="alerts_dismiss?alert_id={{alert.id}}">Dismiss</a></td>
 						</tr>
 						{% endfor %}
 					</tbody>

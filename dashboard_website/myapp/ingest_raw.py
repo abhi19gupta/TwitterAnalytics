@@ -6,7 +6,7 @@ from pprint import *
 from datetime import datetime
 from collections import defaultdict
 from copy import *
-import time,os
+import time,os,json
 import logging
 from multiprocessing import Process, Event, Queue
 import multiprocessing
@@ -145,12 +145,12 @@ class Ingest():
         global count
         # self.current = int(time.time())
         # print("Came here",self.current,count)
-        logging.debug("Came here %d ",int(time.time()))
+        # logging.debug("Time before copying =  %d ",int(time.time()))
         # with self.lock:
         print("length of tweets ",len(self.tweets))
         temp = self.tweets[:]
         self.tweets = []
-        logging.debug("Came here %d, %d %d ",int(time.time()),self.current,count)
+        logging.debug("At time %d count = %d ",int(time.time()),count)
 
         self.q.put([self.current-self.interval,temp])
         print("putting into the q ",len(temp))
@@ -188,11 +188,14 @@ class MongoQuery():
         self.db = self.client['regular_interval']
         # self.hashtag_collection = self.db['hashtags']
     def clear_db(self):
-        self.hashtag_collection.remove({})
-    def mp_ht_in_total(self):
-        pipeline = [{"$group": {"_id": "$hashtag", "count": {"$sum": 1}}},{"$sort": {"count":-1}},{"$limit":50}]
-        return self.db.ht_collection.aggregate(pipeline)["result"]
-    
+        print("Clearing out the complete graph....")
+        self.db.ht_collection.remove({})
+        print("Graph deleted")
+        
+    def mp_ht_in_total(self,limit):
+        pipeline = [{"$group": {"_id": "$hashtag", "count": {"$sum": 1}}},{"$sort": {"count":-1}},{"$limit":limit}]
+        l = self.db.ht_collection.aggregate(pipeline)["result"]
+        return {"_id":[x["_id"] for x in l],"count":[x["count"] for x in l]}
     def mp_ht_in_interval(self,begin,end):
         # t1 = begin.timestamp()
         # t2 = end.timestamp()
@@ -215,6 +218,9 @@ class MongoQuery():
         records = self.db.ht_collection.find({"hashtag":hashtag,"timestamp":{"$gte":t1,"$lte":t2}},{"timestamp":1,"sentiment_pos":1,"sentiment_neg":1})
         return [(x["timestamp"],x["sentiment_pos"],x["sentiment_neg"]) for x in list(records)]
 
+    def mp_um_in_total(self):
+        pipeline = [{"$group": {"_id": "$user", "count": {"$sum": 1}}},{"$sort": {"count":-1}},{"$limit":50}]
+        return self.db.um_collection.aggregate(pipeline)["result"]
 # def hello():
 #     global count
 #     print("Tweets Ingested : ",count)
@@ -223,49 +229,49 @@ class MongoQuery():
 
 def read_tweets(path):
     global count
+    i= Ingest(10)
     ll = []
     # fout = open("ll.txt","w")
     for file in os.listdir(path):
         print(len(ll))
         fin = open(path+"/"+file)
-        s = fin.read().replace("null","'null'").replace("false","False").replace("true","True")
-        l = eval(s)
+        # s = fin.read().replace("null","'null'").replace("false","False").replace("true","True")
+        l = json.loads(fin.read())
         ll += [twt for sl in l for twt in sl]
-        if(len(ll)>50000):
+        if(len(ll)>500000):
             break
-        # for sl in l:
-        #     for twt in sl:
-        #         # if(count>5000):
-        #         #     break
-        #         i.insert_tweet(twt)
-        #         count+=1
-    # print(ll,file=fout)
-    # fout.close()
     print("We have total tweets ",len(ll))
     print("Starting to simulate the process")
     print(len(ll))
-    i= Ingest(5)
     i.populate()
     for twt in ll:
         i.insert_tweet(twt)
         count+=1
+    ll = []
     print(count)
-# i= Ingest(10)
-# i.populate()
-# print("------------")
-# time.sleep(2)
-# i.insert_tweet(tweet1)
-# time.sleep(10)
-# i.insert_tweet(tweet2)
-# i.insert_tweet(tweet3)
-# print("------------")
-# time.sleep(12)
-# i.insert_tweet(tweet1)
+    print("Ingestion process is done")        
 
-# q = MongoQuery()
-# q.clear_db()
-# read_tweets("/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets")
-# print(q.mp_ht_in_total())
-# print(q.mp_ht_in_interval(1500486521,1501496521))
-# print(q.ht_in_interval(1500486521,1501496521,"baystars"))
-# print(q.ht_with_sentiment(1500486521,1501496521,"baystars"))
+if __name__=="__main__":
+    # i= Ingest(10)
+    # i.populate()
+    # print("------------")
+    # time.sleep(2)
+    # i.insert_tweet(tweet1)
+    # time.sleep(10)
+    # i.insert_tweet(tweet2)
+    # i.insert_tweet(tweet3)
+    # print("------------")
+    # time.sleep(12)
+    # i.insert_tweet(tweet1)
+
+    q = Query()
+    # q.clear_db()
+    # t1 = time.time()
+    # read_tweets("/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets")
+    # print("Done in time ",time.time()-t1)
+    print(q.mp_ht_in_total())
+    print(q.mp_um_in_total())
+
+    print(q.mp_ht_in_interval(1500486521,1501496521))
+    # print(q.ht_in_interval(1500486521,1501496521,"baystars"))
+    # print(q.ht_with_sentiment(1500486521,1501496521,"baystars"))

@@ -64,3 +64,14 @@ class QueryOutput(models.Model):
 
     def __str__(self):
         return self.output_name
+
+class AlertSpecification(models.Model):
+    alert_name = models.CharField(unique=True, max_length=50)
+    filter = models.TextField(blank=True)
+    keys = models.CharField(max_length=100, blank=True) # csv (0 or more) from ['user_id','hashtag','url','user_mention']
+    window_length = models.IntegerField()
+    window_slide = models.IntegerField()
+    count_threshold = models.IntegerField()
+    jar_path = models.TextField()
+    flink_jar_id = models.TextField()
+    current_job_id = models.TextField() # flink job id

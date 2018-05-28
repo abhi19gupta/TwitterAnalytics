@@ -201,17 +201,17 @@ class CreateQuery:
 
 if __name__ == '__main__':
 
-    actors=[("u","USER"),("x","USER"),("t","TWEET")]
-    attributes=[[("id","{id_var}")],[],[("hashtag","BLEEDBLUE")]]
-    relations=[("x","FOLLOWS","u","",""),("u","TWEETED","t","15","17")]
+    actors=[("u","USER"),("t","TWEET"),("t1","TWEET")]
+    attributes=[[],[("hashtag","{hash}")],[]]
+    relations=[("u","TWEETED","t","",""),("u","TWEETED","t1","","")]
 
     # actors = [('x', 'USER'), ('u1', 'USER')] + [('t1', 'TWEET'), ('t2', 'TWEET')]
     # attributes = [[('id', '12')], [('id', '24')]]+[[('hashtag', 'BLUERISING')], [('retweet_of', 't1'), ('has_mention', 'u1')]]
     # relations = [('x', 'FOLLOWS', 'u1', '', ''), ('x', 'TWEETED', 't2', '24', '48')]
     cq = CreateQuery();
-    return_values="COUNT(x)"
+    return_values="u.id,count(t1)"
     ret_dict = cq.create_query(actors,attributes,relations,return_values)
-    pprint(ret_dict)
+    pprint(ret_dict,width=150)
     
 
     ##TODO

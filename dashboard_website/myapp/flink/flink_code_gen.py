@@ -1,0 +1,182 @@
+from jinja2 import Template
+import shutil, os
+from subprocess import Popen, PIPE
+
+"""
+# example input: USER:123 & (HASHTAG:h1 | HASHTAG:h2) , Precedence order in JAVA: ! && ||
+def get_filter_code(filter_string):
+
+	def convert_term_to_java(term):
+		key_map = {'USER':'user_id.equals', 'HASHTAG':'hashtags.contains', 'URL':'urls.contains', 'MENTION':'mentions.contains'}
+		terms = [x.strip() for x in term.split(':',1)]
+		if len(terms) == 1:
+			raise Exception('Missing ":" in term [%s]'%term)
+		if terms[0].upper() not in key_map:
+			raise Exception('Unknown attribute [%s] in term [%s]'%(terms[0],term))
+		if len(terms[1].split()) > 1:
+			raise Exception('Attribute value contains spaces in term [%s]'%term)
+		attr = key_map[terms[0].upper()]
+		value = terms[1]
+		return '%s(%s)'%(attr,value)
+
+	def check_parenthesis(s):
+		stack = []
+		for c in s:
+			if c=='(': 
+				stack.append('(')
+			elif c==')': 
+				if (len(stack)==0 or stack[-1]!='('):
+					raise Exception('Unmatched parenthesis in [%s]'%s)
+				stack.pop()
+		if len(stack) != 0:
+			raise Exception('Unmatched parenthesis in [%s]'%s)
+
+
+	check_parenthesis(filter_string)
+	ret = ""
+	for i,c in enumerate(filter_string):
+		if c in ['&','|',]
+	return convert_term_to_java(filter_string)
+	# Check format
+"""
+class FlinkCodeGenerator:
+
+	def __init__(self):
+		self.basepath = os.path.abspath(os.path.dirname(__file__))
+		self.template = Template(open(os.path.join(self.basepath,'flink_template.txt'),'r').read())
+		self.BASIC_INDENT = 7
+		attr_array_template = Template(''+\
+			'List<String> {{attr}} = new ArrayList<>();\n' + '\t'*self.BASIC_INDENT+\
+			'for (final JsonNode node : jsonNode.get("entities").get("{{attr}}"))\n' + '\t'*self.BASIC_INDENT+\
+			'	{{attr}}.add(node.get("{{field_name}}").asText());\n' + '\t'*self.BASIC_INDENT)
+		self.hashtags_array_code = attr_array_template.render(attr='hashtags',field_name='text')
+		self.urls_array_code = attr_array_template.render(attr='urls',field_name='expanded_url')
+		self.mentions_array_code = attr_array_template.render(attr='user_mentions',field_name='id_str')
+
+	# example input: user_id.equals("abc") && (hashtags.contains("h1") || hashtags.contains("h2"))
+	def _get_filter_code(self, filter_string):
+		ret = ''
+		if ('user_id.equals' in filter_string):
+			ret += 'String user_id = jsonNode.get("user").get("id_str").asText();\n' + '\t'*self.BASIC_INDENT
+		if ('hashtags.contains' in filter_string):
+			ret += self.hashtags_array_code
+		if ('urls.contains' in filter_string):
+			ret += self.urls_array_code
+		if ('user_mentions.contains' in filter_string):
+			ret += self.mentions_array_code
+
+		if ret == '':
+			if filter_string == '':
+				return 'return true;'
+			else:
+				raise Exception('Invalid filter string! [%s]'%filter_string)
+		else:
+			ret += 'return '+filter_string+';'
+
+		return ret
+
+	# keys is a list of elements from 'user_id','hashtag','url','user_mention'
+	def _get_duplication_code(self, keys):
+		for key in keys:
+			if key not in ['user_id','hashtag','url','user_mention']:
+				raise Exception('Invalid keys: %s'%str(keys))
+		ret = ''
+		if 'user_id' in keys:
+			ret += 'List<String> user_ids = new ArrayList<>();\n' + '\t'*self.BASIC_INDENT+\
+				'user_ids.add(jsonNode.get("user").get("id_str").asText());\n\n' + '\t'*self.BASIC_INDENT
+		if 'hashtag' in keys:
+			ret += self.hashtags_array_code +\
+				'if (hashtags.isEmpty())\n' + '\t'*self.BASIC_INDENT+\
+				'	hashtags.add("__NO_HASHTAG_FOUND__");\n\n' + '\t'*self.BASIC_INDENT
+		if 'url' in keys:
+			ret += self.urls_array_code+\
+				'if (urls.isEmpty())\n' + '\t'*self.BASIC_INDENT+\
+				'	urls.add("__NO_URLS_FOUND__");\n\n' + '\t'*self.BASIC_INDENT
+
+		if 'user_mention' in keys:
+			ret += self.mentions_array_code+\
+				'if (user_mentions.isEmpty())\n' + '\t'*self.BASIC_INDENT+\
+				'	user_mentions.add("__NO_MENTIONS_FOUND__");\n\n' + '\t'*self.BASIC_INDENT
+
+		for (i,key) in enumerate(keys):
+			if key == 'user_id':
+				ret += 'for (final String user_id : user_ids){\n' + '\t'*(self.BASIC_INDENT+i+1)
+			elif key == 'hashtag':
+				ret += 'for (final String hashtag : hashtags){\n' + '\t'*(self.BASIC_INDENT+i+1)
+			elif key == 'url':
+				ret += 'for (final String url : urls){\n' + '\t'*(self.BASIC_INDENT+i+1)
+			elif key == 'user_mention':
+				ret += 'for (final String user_mention : user_mentions){\n' +'\t'*(self.BASIC_INDENT+i+1)
+
+		num_keys = len(keys)
+		ret += 'ObjectNode newJsonNode = jsonNode.deepCopy();\n' + '\t'*(self.BASIC_INDENT+num_keys) +\
+				'ObjectNode keyNode = newJsonNode.putObject("key");\n' + '\t'*(self.BASIC_INDENT+num_keys)
+		for key in keys:
+			ret += 'keyNode.put("%s",%s);\n'%(key,key) + '\t'*(self.BASIC_INDENT+num_keys)
+		ret += 'out.collect(newJsonNode);'
+		for i in range(num_keys):
+			ret += '\n' + '\t'*(self.BASIC_INDENT+num_keys-i-1)+'}'
+		return ret
+
+	def _get_alert_base_path(self, alert_name):
+		return os.path.join(self.basepath, 'all_alerts', alert_name)
+
+	def _get_alert_jar_path(self, alert_name):
+		alert_base_path = self._get_alert_base_path(alert_name)
+		orig_jar_path = os.path.join(alert_base_path, 'target', 'quickstart-0.1.jar')
+		if (not os.path.isfile(orig_jar_path)):
+			return None
+		new_jar_path = os.path.join(alert_base_path, '%s.jar'%alert_name)
+		shutil.copyfile(orig_jar_path, new_jar_path)
+		return new_jar_path
+
+	# can raise exception like alert already exists
+	def write_code(self, alert_name, filter_string, group_keys, window_length, window_slide, threshold):
+		try:
+			template_base_path = os.path.join(self.basepath,'quickstart')
+			alert_base_path = self._get_alert_base_path(alert_name)
+			shutil.copytree(template_base_path, alert_base_path)
+			if os.path.exists(os.path.join(alert_base_path, 'target')):
+				shutil.rmtree(os.path.join(alert_base_path, 'target'))
+
+			filter_code = self._get_filter_code(filter_string)
+			duplication_code = self._get_duplication_code(group_keys)
+			java = self.template.render(filter_code=filter_code, duplication_and_key_generation_code=duplication_code, 
+				window_length=window_length, window_slide=window_slide, threshold=threshold)
+			f = open(os.path.join(alert_base_path,'src','main','java','org','myorg','quickstart','StreamingJob.java'),'w')
+			f.write(java)
+			f.close()
+		except Exception as e:
+			raise Exception('Failed to write code. Error: %s, %s'%(str(type(e)),str(e)))
+
+	def delete_code(self, alert_name):
+		alert_base_path = self._get_alert_base_path(alert_name)
+		if os.path.exists(alert_base_path):
+			shutil.rmtree(alert_base_path)
+
+	def compile_code(self, alert_name):
+		alert_base_path = self._get_alert_base_path(alert_name)
+		orig_dir = os.getcwd()
+		os.chdir(alert_base_path)
+		try:
+			childProc = Popen(['mvn clean package -Pbuild-jar'], stdout = PIPE, stderr=PIPE, bufsize=0, shell=True)
+			(stdoutdata, stderrdata) = childProc.communicate() # waits for child to complete
+			jar_path = self._get_alert_jar_path(alert_name)
+			if jar_path==None:
+				msg = str(stderrdata) + '. ' + str(stdoutdata)
+				raise Exception(msg)
+			else:
+				return jar_path
+		except Exception as e:
+			raise Exception('Failed to compile code. Error: %s, %s'%(str(type(e)),str(e)))
+		finally:
+			os.chdir(orig_dir)
+	
+if __name__ == "__main__":
+	gen = FlinkCodeGenerator()
+	filter_string = 'user_id.equals("i") && (hashtags.contains("h") || urls.contains("u") || user_mentions.contains("m"))'
+	group_keys = ['user_id','hashtag','url']
+	# print(gen._get_filter_code(filter_string))
+	# print(gen._get_duplication_code(group_keys))
+	gen.write_code("my_alert",filter_string, group_keys, 10, 5, 3)
+	print(gen.compile_code("my_alert"))

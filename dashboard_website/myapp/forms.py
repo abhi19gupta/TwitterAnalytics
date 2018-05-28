@@ -78,17 +78,32 @@ class CustomMetricForm(forms.Form):
     metric = forms.ModelChoiceField(queryset=CustomMetric.objects.all())
 
 class CreateAlertForm(forms.Form):
-    alert_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder':'No spaces allowed. Eg. viral_tweets'}))
-    filter = forms.CharField(max_length=200,  widget=forms.TextInput(attrs=
-        {'placeholder':'Eg. user_id.equals("i") && (hashtags.contains("h") || urls.contains("u") || user_mentions.contains("m"))'}))
+    # alert_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder':'No spaces allowed. Eg. viral_tweets'}))
+    alert_name = forms.CharField(max_length=50, help_text='No spaces allowed. Eg. viral_tweets')
+    filter = forms.CharField(required=False, widget=forms.Textarea, 
+        help_text='Eg. user_id.equals("i") && (hashtags.contains("h") || urls.contains("u") || user_mentions.contains("m"))')
     keys = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, 
-        choices=[(x,x) for x in ['user_id','hashtag','url','user_mention']])
-    window_length = forms.CharField(widget=forms.NumberInput(attrs={'placeholder':'Window length in seconds'}))
-    window_slide = forms.CharField(widget=forms.NumberInput(attrs={'placeholder':'Window slide in seconds'}))
-    count_threshold = forms.CharField(widget=forms.NumberInput(attrs={'placeholder':'Alert threshold of tweets in above window'}))
+        choices=[('user_id','User Id'),('hashtag','Hashtag'),('url','URL'),('user_mention','User Mention')])
+    window_length = forms.IntegerField(help_text='Window length in seconds')
+    window_slide = forms.IntegerField(help_text='Window slide in seconds')
+    count_threshold = forms.IntegerField(help_text='Alert threshold of tweets in above window')
 
+# class CreateAlertForm(forms.ModelForm):
+#     keys = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, 
+#         choices=[('user_id','User Id'),('hashtag','Hashtag'),('url','URL'),('user_mention','User Mention')])
+#     class Meta:
+#         model = AlertSpecification
+#         fields = ['alert_name','filter','keys','window_length','window_slide','count_threshold']
+#         help_texts = {
+#             'alert_name':'NOTE: No spaces allowed. Eg. viral_tweets',
+#             'filter':'Eg. user_id.equals("i") && (hashtags.contains("h") || urls.contains("u") || user_mentions.contains("m"))',
+#             'window_length':'Window length in seconds',
+#             'window_slide':'Window slide in seconds',
+#             'count_threshold':'Alert threshold of tweets in above window'
+#         }
 
 class PopularHash(forms.Form):
+    number = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
     query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
 
 class PopularHashInInterval(forms.Form):

@@ -10,6 +10,7 @@
 <div class="container-fluid">
 	<ul class="nav nav-tabs">
 	  <li class="active"><a data-toggle="tab" href="#createDAGTab">Create DAG</a></li>
+	  <li><a data-toggle="tab" href="#viewDAGTab">View DAG</a></li>
 	</ul>
 
 	<div class="tab-content">
@@ -23,7 +24,17 @@
 			</form>
 		</div>
 
-		
+		<div id="viewDAGTab" class="tab-pane fade">
+			<h3>View the DAG and the outputs</h3>
+			<center>
+			{{ dag_graph_my | safe }}
+			<br>
+			"<pre>{{query_output}}</pre>"
+			</center>
+
+		</div>
+
+
 
 	</div>
 
