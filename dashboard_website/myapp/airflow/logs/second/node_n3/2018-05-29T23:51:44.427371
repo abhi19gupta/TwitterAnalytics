@@ -1,0 +1,382 @@
+[2018-05-29 23:52:40,723] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/second.py
+[2018-05-29 23:52:41,419] {base_task_runner.py:112} INFO - Running: ['bash', '-c', 'airflow run second node_n3 2018-05-29T23:51:44.427371 --job_id 65 --raw -sd DAGS_FOLDER/second.py']
+[2018-05-29 23:52:41,612] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:41,611] {__init__.py:57} INFO - Using executor SequentialExecutor
+[2018-05-29 23:52:41,839] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:41,839] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/second.py
+[2018-05-29 23:52:42,246] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,246] {models.py:1126} INFO - Dependencies all met for <TaskInstance: second.node_n3 2018-05-29 23:51:44.427371 [queued]>
+[2018-05-29 23:52:42,249] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,249] {models.py:1126} INFO - Dependencies all met for <TaskInstance: second.node_n3 2018-05-29 23:51:44.427371 [queued]>
+[2018-05-29 23:52:42,249] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,249] {models.py:1318} INFO - 
+[2018-05-29 23:52:42,249] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-29 23:52:42,249] {base_task_runner.py:95} INFO - Subtask: Starting attempt 1 of 1
+[2018-05-29 23:52:42,249] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-29 23:52:42,249] {base_task_runner.py:95} INFO - Subtask: 
+[2018-05-29 23:52:42,375] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,375] {models.py:1342} INFO - Executing <Task(PythonOperator): node_n3> on 2018-05-29 23:51:44.427371
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask: ['xid']
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask: node_n2
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask: [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360]
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask: Executing query  q7
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask: {'xid': [3937766717,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          2916493133,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          817476366824259585,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          893447248092200960,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          898191672814821376,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          4548190041,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          2571290936,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          839642738165448706,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          783306126821564416,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          952095620,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          912863770719989760,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          912864891962347520,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          893450097018773504,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          4795098980,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          912863182569508864,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          893449420569706497,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          850013541084082176,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          912862276302012421,
+[2018-05-29 23:52:42,391] {base_task_runner.py:95} INFO - Subtask:          886713250573950976,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2254832538,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          911354682773295106,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2508986484,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2872133436,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2457198102,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          3352222925,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2933829101,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          912864520615464960,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          1468542488,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          748297628937494528,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          911357152920506379,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          888139249937207304,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          911356996267466755,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          885068404679471105,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2891352634,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2427784178,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          893448279563927552,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          333451285,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          893448104132968448,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          888425569146331137,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          746452856891400192,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          896195118700646400,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          878316861473005568,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          877209370135756801,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          911285752780218368,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          3171333059,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          374089967,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          912864309608374273,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          1628126785,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          911285376186232833,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          1668873386,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2456571353,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          739418652403961856,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          844888370,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          769939963744051201,
+[2018-05-29 23:52:42,392] {base_task_runner.py:95} INFO - Subtask:          2250300164,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          893446856100990976,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          266863903,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          3075933892,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          893447709742563330,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          309212829,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          873711799782264832,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          911358276968812545,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          2892616179,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          893447539315355649,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          1639111292,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          3013448897,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          885316418702635009,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          809093619617583104,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          893449528250183680,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          765676573844537344,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          911356780420182018,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          911356066088341504,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          3436177053,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          2261808925,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          893448675288117249,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          798004626461257728,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          906870838732967936,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          912862058420539394,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          2938881622,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          1571318634,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          4675489896,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          818602330409025536,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          840945272,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          911354458424082435,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          893449988780544000,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          912863396328087553,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          3346159109,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          744164594772500480,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          866816225338433536,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          780718416,
+[2018-05-29 23:52:42,393] {base_task_runner.py:95} INFO - Subtask:          4584670636,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          4244238441,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          802285614615904256,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          808330085849858048,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          755218946551349248,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          777267653333442560,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          911356251791032320,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          3179104025,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          879440362732957697,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          748756061444673536,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          911356409698242561,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          918251874213654528,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          2878169087,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          911285971416731648,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          2950088956,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          911356624706686976,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          912864677490765824,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          907707346041917440,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          909254014033907712,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          505698635,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          893447997572435968,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          911357367215955968,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          911355141445517312,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          63808966,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          2451891643,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          2353408235,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          751429605291020288,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          758579470689181696,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          826776153411162113,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          880755870489079809,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          912863024616296450,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          885691154687283200,
+[2018-05-29 23:52:42,394] {base_task_runner.py:95} INFO - Subtask:          914683872780197888,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          905969009350336513,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893449244635516928,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          1255150068,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          802211011054825472,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893446396514369536,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          912862649603510272,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          1702526653,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          911357742039932929,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893447425884663808,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          766630338080669696,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893448565548298240,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893446678786846721,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          2960389905,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          358910883,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893448961901678593,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          2875676128,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893449708097736704,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          854280696684269569,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          2254288777,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          912862807808446464,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          911357900551065601,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          773218019677835264,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          893448851159437312,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          361232285,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          912863554126204928,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          4567956689,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          3345063737,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          911357525483753473,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          759492175902154752,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          272667602,
+[2018-05-29 23:52:42,395] {base_task_runner.py:95} INFO - Subtask:          772485848944246784,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          3364982451,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          893449814855364608,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          707698214837817344,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          911358118130483202,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          1092678511,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          250883503,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          893448387969908740,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          893446963978526720,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          893446572498931712,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          3986785042,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          3401505851,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          1881249530,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          3381974651,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          911354996691750917,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          339192243,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          3995175627,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          396814767,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          893447140541968384,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          906649487673888769,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          912863927125659648,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          3307450079,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          875354228738449408,
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask:          287905360]}
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,390] {connection.py:449} INFO - ~~ [CONNECT] ('127.0.0.1', 7687)
+[2018-05-29 23:52:42,396] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,391] {connection.py:486} INFO - ~~ [SECURE] 127.0.0.1
+[2018-05-29 23:52:42,400] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,400] {connection.py:516} INFO - C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+[2018-05-29 23:52:42,402] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,401] {connection.py:541} INFO - S: [HANDSHAKE] 1
+[2018-05-29 23:52:42,402] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,402] {connection.py:209} INFO - C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+[2018-05-29 23:52:42,403] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,402] {connection.py:270} INFO - S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+[2018-05-29 23:52:42,403] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,403] {connection.py:449} INFO - ~~ [CONNECT] ('127.0.0.1', 7687)
+[2018-05-29 23:52:42,403] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,403] {connection.py:486} INFO - ~~ [SECURE] 127.0.0.1
+[2018-05-29 23:52:42,412] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,412] {connection.py:516} INFO - C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+[2018-05-29 23:52:42,412] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,412] {connection.py:541} INFO - S: [HANDSHAKE] 1
+[2018-05-29 23:52:42,413] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,413] {connection.py:209} INFO - C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+[2018-05-29 23:52:42,413] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,413] {connection.py:270} INFO - S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+[2018-05-29 23:52:42,413] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,413] {connection.py:199} INFO - C: RUN ('UNWIND {xid} as id_value\r\nMATCH (u :USER {id:id_value})-[:TWEETED]->(t :TWEET)-[:HAS_HASHTAG]->(h :HASHTAG)\r\nWITH DISTINCT h\r\nRETURN h.text', {'xid': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360]})
+[2018-05-29 23:52:42,414] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:42,414] {connection.py:201} INFO - C: PULL_ALL ()
+[2018-05-29 23:52:43,081] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:43,081] {connection.py:270} INFO - S: SUCCESS ({'result_available_after': 1, 'fields': ['h.text']})
+[2018-05-29 23:52:43,082] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:43,082] {connection.py:261} INFO - S: RECORD * 161
+[2018-05-29 23:52:43,082] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:43,082] {connection.py:270} INFO - S: SUCCESS ({'result_consumed_after': 666, 'type': 'r'})
+[2018-05-29 23:52:43,270] {base_task_runner.py:95} INFO - Subtask: <Record h.text='EduChociayRevelacao'>
+[2018-05-29 23:52:43,270] {base_task_runner.py:95} INFO - Subtask: <Record h.text='MPN'>
+[2018-05-29 23:52:43,270] {base_task_runner.py:95} INFO - Subtask: <Record h.text='izmirescort'>
+[2018-05-29 23:52:43,270] {base_task_runner.py:95} INFO - Subtask: <Record h.text='alsancak'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='bucaescort'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='bornovaescort'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='alsancakescort'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='OErradoSouEuClipe'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='AcordandoOPredioClipe'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='LuanSantana'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='MPM'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='baziyalnizliklariyidirCikti'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Ankara'>
+[2018-05-29 23:52:43,271] {base_task_runner.py:95} INFO - Subtask: <Record h.text='antalyaescort'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='HarryStyles'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='KCAArgentina'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='2AğustosDünyaYakışıklılarGünü'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DemiLovato'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='SouLuna'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BrunaInstagram'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='AGN'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='LongasIgetPaid'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='beylikdüzüescort'>
+[2018-05-29 23:52:43,272] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Chosenmusicawards'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Directioners'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='CelebrityAwards2015'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='ChosenMusicAwards'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BestFandomCA2015'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='5YearsSinceNiallsAudition'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='WeKnowTheTruth'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='MTVHitsLA'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='5YearsOfOneDirection'>
+[2018-05-29 23:52:43,273] {base_task_runner.py:95} INFO - Subtask: <Record h.text='ThankYou1Dfor'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='MTVHottest'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='NightChanges'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='ChoiceLoveSong'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DragMeDown'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='OneDirection'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DearLouis'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='TOMLINSONSLAYSAGAIN'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='NoControlMusicVideo'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='1DForMMVA'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='LiamDay'>
+[2018-05-29 23:52:43,274] {base_task_runner.py:95} INFO - Subtask: <Record h.text='WeAreReadyForLarry'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='HCCOTS'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Sophiam'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BestFandom'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='WMYBTo1Billion'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='ARIASONEDIRECTION'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='NOWOneDirection'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='NOW2016'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='EMABiggestFans1D'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='WeWillMeetAgain1D'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='wmybto1billion'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DUYURU'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='MPn'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='SorryNotSorryClipe'>
+[2018-05-29 23:52:43,275] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DemiLovatoShow'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='AnnelerGünüKutluOlsun'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='orarparaelBarcelona'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='SouTrouxaMais'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='QuintaDetremuraSdv'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Demilovato'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='SrebrenitsaSoykırımı20Yıl'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSShow'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='bookmeter'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='GetWellSoonYoongi'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='방타소년단'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='hwarang'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='화랑'>
+[2018-05-29 23:52:43,276] {base_task_runner.py:95} INFO - Subtask: <Record h.text='JIMIN'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='지민'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='방탄소년단'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='삭진'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='JIN'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='teamsawi'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='TeamBTS'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='SOOMPIAWARDS'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='KBSSongFestival'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='KBS가요대축제'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='2017startswithBTS'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='HappyTaehyungDay'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='뷔생일ㅊㅋ'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='armyselcaday'>
+[2018-05-29 23:52:43,277] {base_task_runner.py:95} INFO - Subtask: <Record h.text='YOU_NEVER_WALK_ALONE'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='jeonchiiYNWAgiveaway'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='씨디태'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='JIMINBAR1stGA'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='정국아졸업축하해'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='JKGraduationDay'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='YouNeverWalkAlone'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='봄날'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='SpringDay'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='홉이생일ᄎᄏ'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='HappyHopeDay'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='NotToday'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='정국아_사랑해'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='민윤기_생일_깹짜앙'>
+[2018-05-29 23:52:43,278] {base_task_runner.py:95} INFO - Subtask: <Record h.text='HappySUGAday'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='슈가생일ᄎᄏ'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='슈가생일ㅊㅋ'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='HAPPYSUGADAY'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSWingsTourManila'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='진민'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='ARMYSelcaDay'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='MabuhayBTS'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='twerk_pathoericia1stGA'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='4주년BTSGA_CHAE'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSBBMAs'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BBMAs'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='TAEKOOK_LOVEisMUTUAL'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSWingsTourInManila'>
+[2018-05-29 23:52:43,279] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSWINGSTourInManilaDay2'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='TWERK_TAEHYUNG2ndGA'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSWINGSTourInManila'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSWEEK'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='2017BTSFESTA'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSfesta2017'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='WORLDWIDEHANDSOME'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTS4thANNIVERSARY'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='방탄소년단4주년축하해'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='AegyoChildEntry'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='HappyJungkookDay'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='골든데이2017'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='황금막내'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Happy21stJungkook'>
+[2018-05-29 23:52:43,280] {base_task_runner.py:95} INFO - Subtask: <Record h.text='LOVE_YOURSELF'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Serendipity'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='MINFLAIR1stGA'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DNA9thWin'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='stantalentstanpanj'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTS_MWAVE_FINAL'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='85BTSDNAonHot100'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BOYMEETSEVIL1YEAR'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSHOT100'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DNA1STWIN'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSALBUM3DAYS'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTS_DNA_TODAY'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='terörelanetolsun'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='ereniyikivarsin'>
+[2018-05-29 23:52:43,281] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Na'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='ankaraescort'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='istanbulescort'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='LASTCHANCE_VOTE_BTS'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='마지막기회야_VOTE_BTS'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='돔입성_축하해_BTS'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='PLZ_VOTE_FOR_BTS'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTS_MWave_GoGo'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='무한의_ID를_넘어서_계속'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='DNA8thwin'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTS_Mwave_vote'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='mutluyıllar'>
+[2018-05-29 23:52:43,282] {base_task_runner.py:95} INFO - Subtask: <Record h.text='üçyol'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='BTSSHOW'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='NBAVote'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='LuisaSonza'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='semideus'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='EXO'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Tributo'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Army'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: <Record h.text='Lovatic'>
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: {'h.text': ['EduChociayRevelacao', 'MPN', 'izmirescort', 'alsancak', 'bucaescort', 'bornovaescort', 'alsancakescort', 'OErradoSouEuClipe', 'AcordandoOPredioClipe', 'LuanSantana', 'MPM', 'baziyalnizliklariyidirCikti', 'Ankara', 'antalyaescort', 'HarryStyles', 'KCAArgentina', '2AğustosDünyaYakışıklılarGünü', 'DemiLovato', 'SouLuna', 'BrunaInstagram', 'AGN', 'LongasIgetPaid', 'beylikdüzüescort', 'Chosenmusicawards', 'Directioners', 'CelebrityAwards2015', 'ChosenMusicAwards', 'BestFandomCA2015', '5YearsSinceNiallsAudition', 'WeKnowTheTruth', 'MTVHitsLA', '5YearsOfOneDirection', 'ThankYou1Dfor', 'MTVHottest', 'NightChanges', 'ChoiceLoveSong', 'DragMeDown', 'OneDirection', 'DearLouis', 'TOMLINSONSLAYSAGAIN', 'NoControlMusicVideo', '1DForMMVA', 'LiamDay', 'WeAreReadyForLarry', 'HCCOTS', 'Sophiam', 'BestFandom', 'WMYBTo1Billion', 'ARIASONEDIRECTION', 'NOWOneDirection', 'NOW2016', 'EMABiggestFans1D', 'WeWillMeetAgain1D', 'wmybto1billion', 'DUYURU', 'MPn', 'SorryNotSorryClipe', 'DemiLovatoShow', 'AnnelerGünüKutluOlsun', 'orarparaelBarcelona', 'SouTrouxaMais', 'QuintaDetremuraSdv', 'Demilovato', 'SrebrenitsaSoykırımı20Yıl', 'BTSShow', 'bookmeter', 'GetWellSoonYoongi', '방타소년단', 'hwarang', '화랑', 'JIMIN', '지민', '방탄소년단', '삭진', 'JIN', 'teamsawi', 'TeamBTS', 'SOOMPIAWARDS', 'KBSSongFestival', 'KBS가요대축제', '2017startswithBTS', 'HappyTaehyungDay', '뷔생일ㅊㅋ', 'armyselcaday', 'YOU_NEVER_WALK_ALONE', 'jeonchiiYNWAgiveaway', '씨디태', 'JIMINBAR1stGA', '정국아졸업축하해', 'JKGraduationDay', 'YouNeverWalkAlone', '봄날', 'SpringDay', '홉이생일ᄎᄏ', 'HappyHopeDay', 'NotToday', '정국아_사랑해', '민윤기_생일_깹짜앙', 'HappySUGAday', '슈가생일ᄎᄏ', '슈가생일ㅊㅋ', 'HAPPYSUGADAY', 'BTSWingsTourManila', '진민', 'ARMYSelcaDay', 'MabuhayBTS', 'twerk_pathoericia1stGA', '4주년BTSGA_CHAE', 'BTSBBMAs', 'BBMAs', 'TAEKOOK_LOVEisMUTUAL', 'BTSWingsTourInManila', 'BTSWINGSTourInManilaDay2', 'TWERK_TAEHYUNG2ndGA', 'BTSWINGSTourInManila', 'BTSWEEK', '2017BTSFESTA', 'BTSfesta2017', 'WORLDWIDEHANDSOME', 'BTS4thANNIVERSARY', '방탄소년단4주년축하해', 'AegyoChildEntry', 'HappyJungkookDay', '골든데이2017', '황금막내', 'Happy21stJungkook', 'LOVE_YOURSELF', 'Serendipity', 'MINFLAIR1stGA', 'DNA9thWin', 'stantalentstanpanj', 'BTS_MWAVE_FINAL', '85BTSDNAonHot100', 'BOYMEETSEVIL1YEAR', 'BTSHOT100', 'DNA1STWIN', 'BTSALBUM3DAYS', 'BTS_DNA_TODAY', 'terörelanetolsun', 'ereniyikivarsin', 'Na', 'ankaraescort', 'istanbulescort', 'LASTCHANCE_VOTE_BTS', '마지막기회야_VOTE_BTS', '돔입성_축하해_BTS', 'PLZ_VOTE_FOR_BTS', 'BTS_MWave_GoGo', '무한의_ID를_넘어서_계속', 'DNA8thwin', 'BTS_Mwave_vote', 'mutluyıllar', 'üçyol', 'BTSSHOW', 'NBAVote', 'LuisaSonza', 'semideus', 'EXO', 'Tributo', 'Army', 'Lovatic']}
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:43,270] {connection.py:338} INFO - ~~ [CLOSE]
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:43,270] {connection.py:338} INFO - ~~ [CLOSE]
+[2018-05-29 23:52:43,283] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 23:52:43,272] {python_operator.py:81} INFO - Done. Returned value was: {'h.text': ['EduChociayRevelacao', 'MPN', 'izmirescort', 'alsancak', 'bucaescort', 'bornovaescort', 'alsancakescort', 'OErradoSouEuClipe', 'AcordandoOPredioClipe', 'LuanSantana', 'MPM', 'baziyalnizliklariyidirCikti', 'Ankara', 'antalyaescort', 'HarryStyles', 'KCAArgentina', '2AğustosDünyaYakışıklılarGünü', 'DemiLovato', 'SouLuna', 'BrunaInstagram', 'AGN', 'LongasIgetPaid', 'beylikdüzüescort', 'Chosenmusicawards', 'Directioners', 'CelebrityAwards2015', 'ChosenMusicAwards', 'BestFandomCA2015', '5YearsSinceNiallsAudition', 'WeKnowTheTruth', 'MTVHitsLA', '5YearsOfOneDirection', 'ThankYou1Dfor', 'MTVHottest', 'NightChanges', 'ChoiceLoveSong', 'DragMeDown', 'OneDirection', 'DearLouis', 'TOMLINSONSLAYSAGAIN', 'NoControlMusicVideo', '1DForMMVA', 'LiamDay', 'WeAreReadyForLarry', 'HCCOTS', 'Sophiam', 'BestFandom', 'WMYBTo1Billion', 'ARIASONEDIRECTION', 'NOWOneDirection', 'NOW2016', 'EMABiggestFans1D', 'WeWillMeetAgain1D', 'wmybto1billion', 'DUYURU', 'MPn', 'SorryNotSorryClipe', 'DemiLovatoShow', 'AnnelerGünüKutluOlsun', 'orarparaelBarcelona', 'SouTrouxaMais', 'QuintaDetremuraSdv', 'Demilovato', 'SrebrenitsaSoykırımı20Yıl', 'BTSShow', 'bookmeter', 'GetWellSoonYoongi', '방타소년단', 'hwarang', '화랑', 'JIMIN', '지민', '방탄소년단', '삭진', 'JIN', 'teamsawi', 'TeamBTS', 'SOOMPIAWARDS', 'KBSSongFestival', 'KBS가요대축제', '2017startswithBTS', 'HappyTaehyungDay', '뷔생일ㅊㅋ', 'armyselcaday', 'YOU_NEVER_WALK_ALONE', 'jeonchiiYNWAgiveaway', '씨디태', 'JIMINBAR1stGA', '정국아졸업축하해', 'JKGraduationDay', 'YouNeverWalkAlone', '봄날', 'SpringDay', '홉이생일ᄎᄏ', 'HappyHopeDay', 'NotToday', '정국아_사랑해', '민윤기_생일_깹짜앙', 'HappySUGAday', '슈가생일ᄎᄏ', '슈가생일ㅊㅋ', 'HAPPYSUGADAY', 'BTSWingsTourManila', '진민', 'ARMYSelcaDay', 'MabuhayBTS', 'twerk_pathoericia1stGA', '4주년BTSGA_CHAE', 'BTSBBMAs', 'BBMAs', 'TAEKOOK_LOVEisMUTUAL', 'BTSWingsTourInManila', 'BTSWINGSTourInManilaDay2', 'TWERK_TAEHYUNG2ndGA', 'BTSWINGSTourInManila', 'BTSWEEK', '2017BTSFESTA', 'BTSfesta2017', 'WORLDWIDEHANDSOME', 'BTS4thANNIVERSARY', '방탄소년단4주년축하해', 'AegyoChildEntry', 'HappyJungkookDay', '골든데이2017', '황금막내', 'Happy21stJungkook', 'LOVE_YOURSELF', 'Serendipity', 'MINFLAIR1stGA', 'DNA9thWin', 'stantalentstanpanj', 'BTS_MWAVE_FINAL', '85BTSDNAonHot100', 'BOYMEETSEVIL1YEAR', 'BTSHOT100', 'DNA1STWIN', 'BTSALBUM3DAYS', 'BTS_DNA_TODAY', 'terörelanetolsun', 'ereniyikivarsin', 'Na', 'ankaraescort', 'istanbulescort', 'LASTCHANCE_VOTE_BTS', '마지막기회야_VOTE_BTS', '돔입성_축하해_BTS', 'PLZ_VOTE_FOR_BTS', 'BTS_MWave_GoGo', '무한의_ID를_넘어서_계속', 'DNA8thwin', 'BTS_Mwave_vote', 'mutluyıllar', 'üçyol', 'BTSSHOW', 'NBAVote', 'LuisaSonza', 'semideus', 'EXO', 'Tributo', 'Army', 'Lovatic']}
+[2018-05-29 23:52:43,637] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+[2018-05-29 23:52:43,637] {base_task_runner.py:95} INFO - Subtask:   DeprecationWarning)
+[2018-05-29 23:52:43,638] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/ti_deps/deps/base_ti_dep.py:94: DeprecationWarning: generator '_get_dep_statuses' raised StopIteration
+[2018-05-29 23:52:43,638] {base_task_runner.py:95} INFO - Subtask:   for dep_status in self._get_dep_statuses(ti, session, dep_context):
+[2018-05-29 23:52:46,315] {jobs.py:2083} INFO - Task exited with return code 0

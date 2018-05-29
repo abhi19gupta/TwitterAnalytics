@@ -6366,3 +6366,351 @@ DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 2
 WARNING:django.request:Not Found: /favicon.ico
 DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
 DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1313
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 634, in create_dag_handler
+    rets = dag.generate_dag(dag_name)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/create_dag.py", line 182, in generate_dag
+    fout = open("./airflow/dags/"+dag_name+".py","w")
+TypeError: must be str, not BoundField
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 634, in create_dag_handler
+    rets = dag.generate_dag(dag_name)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/create_dag.py", line 182, in generate_dag
+    fout = open("./airflow/dags/"+dag_name+".py","w")
+FileNotFoundError: [Errno 2] No such file or directory: './airflow/dags/second.py'
+ERROR:django.request:Internal Server Error: /create_query/create_dag_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 634, in create_dag_handler
+    rets = dag.generate_dag(dag_name)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/create_dag.py", line 184, in generate_dag
+    fout = open("./airflow/dags/"+dag_name+".py","w")
+FileNotFoundError: [Errno 2] No such file or directory: './airflow/dags/second.py'
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+ERROR:django.request:Internal Server Error: /alerts/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/util/connection.py", line 83, in create_connection
+    raise err
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connectionpool.py", line 357, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1239, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1285, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1234, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1026, in _send_output
+    self.send(msg)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 964, in send
+    self.connect()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connection.py", line 166, in connect
+    conn = self._new_conn()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7f38b56dd5c0>: Failed to establish a new connection: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/adapters.py", line 440, in send
+    timeout=timeout
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/util/retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f38b56dd5c0>: Failed to establish a new connection: [Errno 111] Connection refused',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_api.py", line 52, in check_job_status_all
+    r = requests.get(self.base_url + "joboverview")
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f38b56dd5c0>: Failed to establish a new connection: [Errno 111] Connection refused',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 465, in alerts
+    alertSpecs = get_alert_specs()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 457, in get_alert_specs
+    flink_status = flink_api.check_job_status_all()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_api.py", line 70, in check_job_status_all
+    raise Exception('Failed to check job statuses. Error: %s, %s'%(str(type(e)),str(e)))
+Exception: Failed to check job statuses. Error: <class 'requests.exceptions.ConnectionError'>, HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f38b56dd5c0>: Failed to establish a new connection: [Errno 111] Connection refused',))
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/23957e00-b2fb-4a38-9519-c78452686d54_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 333
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 336
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 336
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 336
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 337
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 337
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 337
+ERROR:django.request:Internal Server Error: /alerts/alerts_tweets
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 532, in alerts_tweets
+    alert = mongoAlert.get_alert(alert_id)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 14, in get_alert
+    self.__replace_id(alert)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 9, in __replace_id
+    alert['id'] = alert['_id'] # Django template system doesn't accept field names starting with _
+TypeError: 'NoneType' object is not subscriptable
+ERROR:django.request:Internal Server Error: /alerts/alerts_tweets
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 532, in alerts_tweets
+    alert = mongoAlert.get_alert(alert_id)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 15, in get_alert
+    self.__replace_id(alert)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 9, in __replace_id
+    alert['id'] = alert['_id'] # Django template system doesn't accept field names starting with _
+TypeError: 'NoneType' object is not subscriptable
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 337
+ERROR:django.request:Internal Server Error: /alerts/alerts_tweets
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 532, in alerts_tweets
+    alert = mongoAlert.get_alert(alert_id)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 16, in get_alert
+    self.__replace_id(alert)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 9, in __replace_id
+    alert['id'] = alert['_id'] # Django template system doesn't accept field names starting with _
+TypeError: 'NoneType' object is not subscriptable
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/23957e00-b2fb-4a38-9519-c78452686d54_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 500 1702
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/19bc5a71-0fb3-4a12-9838-4eaa4b2a7ece_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 333
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 337
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 337
+ERROR:django.request:Internal Server Error: /alerts/alerts_tweets
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 532, in alerts_tweets
+    alert = mongoAlert.get_alert(alert_id)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 16, in get_alert
+    self.__replace_id(alert)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo_alert.py", line 9, in __replace_id
+    alert['id'] = alert['_id'] # Django template system doesn't accept field names starting with _
+TypeError: 'NoneType' object is not subscriptable
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 337
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/4ca93185-221f-4b52-a899-036c73bdaae6_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 643
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/99e480ca33cdd7145a4faca7a934cb5e/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 649
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/2247d404-d247-47b1-b47c-58022e5f65ff_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 963
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 967
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 967
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/b2cc323ddd112df91b516650fd904d59/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 979
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/178eefa9-7191-4d63-9954-de1ae5e85690_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1285
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/466166c920a10a0f6df2d8fcbbba9b04/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 28
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/29b0363b-7772-439d-a944-8d5cbf1bf569_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 333
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 336
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/43b9bbca808ef78546e2209778a71cab/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 339
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/2229d1c0-5c9f-4586-9453-e8485f85cf62_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 653
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/c2c18174b68bc43e8be17327105ed05e/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 668
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 668
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 668
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 668
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/53a3d4ab-d981-4aa7-873d-d55358382959_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 973
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 974
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 975
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 977
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/774d82fffe60ed9b613c7ad56bd05511/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 980
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 990
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/774d82fffe60ed9b613c7ad56bd05511/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 990
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/562bcf4a-6117-4e6a-8f64-ad9efd279fb8_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1295
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1298
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "DELETE /jobs/65b0f618e3facf0de2237ad18e7435d6/cancel HTTP/1.1" 200 2
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1311
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1311
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1311
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1311
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 1311
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/upload HTTP/1.1" 200 84
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "POST /jars/3f086214-c211-4e32-8de6-a74136c6b86a_alert1.jar/run?entry-class=org.myorg.quickstart.StreamingJob&program-args=alert1 HTTP/1.1" 200 44
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 333
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 335
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 336
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 336
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+DEBUG:urllib3.connectionpool:http://localhost:8081 "GET /joboverview HTTP/1.1" 200 336

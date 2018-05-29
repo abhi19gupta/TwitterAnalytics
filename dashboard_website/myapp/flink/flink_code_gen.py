@@ -43,7 +43,7 @@ class FlinkCodeGenerator:
 
 	def __init__(self):
 		self.basepath = os.path.abspath(os.path.dirname(__file__))
-		self.template = Template(open(os.path.join(self.basepath,'flink_template.txt'),'r').read())
+		self.template_path = os.path.join(self.basepath,'flink_template.txt')
 		self.BASIC_INDENT = 7
 		attr_array_template = Template(''+\
 			'List<String> {{attr}} = new ArrayList<>();\n' + '\t'*self.BASIC_INDENT+\
@@ -141,7 +141,8 @@ class FlinkCodeGenerator:
 
 			filter_code = self._get_filter_code(filter_string)
 			duplication_code = self._get_duplication_code(group_keys)
-			java = self.template.render(filter_code=filter_code, duplication_and_key_generation_code=duplication_code, 
+			template = Template(open(self.template_path,'r').read())
+			java = template.render(filter_code=filter_code, duplication_and_key_generation_code=duplication_code, 
 				window_length=window_length, window_slide=window_slide, threshold=threshold)
 			f = open(os.path.join(alert_base_path,'src','main','java','org','myorg','quickstart','StreamingJob.java'),'w')
 			f.write(java)

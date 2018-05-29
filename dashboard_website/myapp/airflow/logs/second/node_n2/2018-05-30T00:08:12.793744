@@ -1,0 +1,224 @@
+[2018-05-30 00:08:42,159] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/second.py
+[2018-05-30 00:08:42,745] {base_task_runner.py:112} INFO - Running: ['bash', '-c', 'airflow run second node_n2 2018-05-30T00:08:12.793744 --job_id 67 --raw -sd DAGS_FOLDER/second.py']
+[2018-05-30 00:08:42,948] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:42,948] {__init__.py:57} INFO - Using executor SequentialExecutor
+[2018-05-30 00:08:43,195] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,195] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/second.py
+[2018-05-30 00:08:43,601] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,600] {models.py:1126} INFO - Dependencies all met for <TaskInstance: second.node_n2 2018-05-30 00:08:12.793744 [queued]>
+[2018-05-30 00:08:43,603] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,603] {models.py:1126} INFO - Dependencies all met for <TaskInstance: second.node_n2 2018-05-30 00:08:12.793744 [queued]>
+[2018-05-30 00:08:43,603] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,603] {models.py:1318} INFO - 
+[2018-05-30 00:08:43,603] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-30 00:08:43,603] {base_task_runner.py:95} INFO - Subtask: Starting attempt 1 of 1
+[2018-05-30 00:08:43,603] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-30 00:08:43,604] {base_task_runner.py:95} INFO - Subtask: 
+[2018-05-30 00:08:43,777] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,777] {models.py:1342} INFO - Executing <Task(PythonOperator): node_n2> on 2018-05-30 00:08:12.793744
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask: ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask: Executing query  q4
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask: {'hash': ['MPN',
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask:           'bookmeter',
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask:           'SorryNotSorryClipe',
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask:           'izmirescort',
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask:           'EduChociayRevelacao']}
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,791] {connection.py:449} INFO - ~~ [CONNECT] ('127.0.0.1', 7687)
+[2018-05-30 00:08:43,792] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,792] {connection.py:486} INFO - ~~ [SECURE] 127.0.0.1
+[2018-05-30 00:08:43,802] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,802] {connection.py:516} INFO - C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+[2018-05-30 00:08:43,803] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,803] {connection.py:541} INFO - S: [HANDSHAKE] 1
+[2018-05-30 00:08:43,803] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,803] {connection.py:209} INFO - C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+[2018-05-30 00:08:43,804] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,804] {connection.py:270} INFO - S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+[2018-05-30 00:08:43,804] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,804] {connection.py:449} INFO - ~~ [CONNECT] ('127.0.0.1', 7687)
+[2018-05-30 00:08:43,804] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,804] {connection.py:486} INFO - ~~ [SECURE] 127.0.0.1
+[2018-05-30 00:08:43,813] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,813] {connection.py:516} INFO - C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+[2018-05-30 00:08:43,814] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,814] {connection.py:541} INFO - S: [HANDSHAKE] 1
+[2018-05-30 00:08:43,814] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,814] {connection.py:209} INFO - C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+[2018-05-30 00:08:43,815] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,815] {connection.py:270} INFO - S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+[2018-05-30 00:08:43,815] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,815] {connection.py:199} INFO - C: RUN ('UNWIND {hash} AS hash_value\r\nMATCH (u :USER) -[:TWEETED]-> (t :TWEET), (t) -[:HAS_HASHTAG]-> (:HASHTAG {text:hash_value})\r\nWITH DISTINCT u\r\nMATCH (u) -[:TWEETED]-> (t1 :TWEET)\r\nRETURN u.id,count(t1)', {'hash': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao']})
+[2018-05-30 00:08:43,815] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,815] {connection.py:201} INFO - C: PULL_ALL ()
+[2018-05-30 00:08:43,876] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,876] {connection.py:270} INFO - S: SUCCESS ({'result_available_after': 59, 'fields': ['u.id', 'count(t1)']})
+[2018-05-30 00:08:43,876] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,876] {connection.py:261} INFO - S: RECORD * 177
+[2018-05-30 00:08:43,876] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:43,876] {connection.py:270} INFO - S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3937766717 count(t1)=2>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2916493133 count(t1)=1>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=817476366824259585 count(t1)=15>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893447248092200960 count(t1)=49>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=898191672814821376 count(t1)=1>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=4548190041 count(t1)=2>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2571290936 count(t1)=1>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=839642738165448706 count(t1)=4>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=783306126821564416 count(t1)=23>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=952095620 count(t1)=4>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912863770719989760 count(t1)=76>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912864891962347520 count(t1)=30>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893450097018773504 count(t1)=40>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=4795098980 count(t1)=3241>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912863182569508864 count(t1)=30>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893449420569706497 count(t1)=52>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=850013541084082176 count(t1)=5>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912862276302012421 count(t1)=73>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=886713250573950976 count(t1)=8>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2254832538 count(t1)=4>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911354682773295106 count(t1)=54>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2508986484 count(t1)=13>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2872133436 count(t1)=43>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2457198102 count(t1)=1>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3352222925 count(t1)=6>
+[2018-05-30 00:08:43,878] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2933829101 count(t1)=2>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912864520615464960 count(t1)=72>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1468542488 count(t1)=5>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=748297628937494528 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911357152920506379 count(t1)=59>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=888139249937207304 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911356996267466755 count(t1)=80>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=885068404679471105 count(t1)=14>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2891352634 count(t1)=26>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2427784178 count(t1)=41>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893448279563927552 count(t1)=15>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=333451285 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893448104132968448 count(t1)=54>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=888425569146331137 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=746452856891400192 count(t1)=37>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=896195118700646400 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=878316861473005568 count(t1)=3>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=877209370135756801 count(t1)=88>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911285752780218368 count(t1)=70>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3171333059 count(t1)=2>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=374089967 count(t1)=456>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912864309608374273 count(t1)=28>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1628126785 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911285376186232833 count(t1)=66>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1668873386 count(t1)=3>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2456571353 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=739418652403961856 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=844888370 count(t1)=17>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=769939963744051201 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2250300164 count(t1)=6>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893446856100990976 count(t1)=60>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=266863903 count(t1)=7>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3075933892 count(t1)=1>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893447709742563330 count(t1)=52>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=309212829 count(t1)=5>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=873711799782264832 count(t1)=57>
+[2018-05-30 00:08:43,879] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911358276968812545 count(t1)=62>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2892616179 count(t1)=5>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893447539315355649 count(t1)=62>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1639111292 count(t1)=3>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3013448897 count(t1)=24>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=885316418702635009 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=809093619617583104 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893449528250183680 count(t1)=46>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=765676573844537344 count(t1)=7>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911356780420182018 count(t1)=72>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911356066088341504 count(t1)=58>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3436177053 count(t1)=19>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2261808925 count(t1)=71>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893448675288117249 count(t1)=44>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=798004626461257728 count(t1)=2>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=906870838732967936 count(t1)=77>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912862058420539394 count(t1)=58>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2938881622 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1571318634 count(t1)=12>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=4675489896 count(t1)=686>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=818602330409025536 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=840945272 count(t1)=3204>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911354458424082435 count(t1)=49>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893449988780544000 count(t1)=45>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912863396328087553 count(t1)=74>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3346159109 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=744164594772500480 count(t1)=7>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=866816225338433536 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=780718416 count(t1)=44>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=4584670636 count(t1)=9>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=4244238441 count(t1)=2>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=802285614615904256 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=808330085849858048 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=755218946551349248 count(t1)=16>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=777267653333442560 count(t1)=1>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911356251791032320 count(t1)=21>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3179104025 count(t1)=17>
+[2018-05-30 00:08:43,880] {base_task_runner.py:95} INFO - Subtask: <Record u.id=879440362732957697 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=748756061444673536 count(t1)=2>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911356409698242561 count(t1)=25>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=918251874213654528 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2878169087 count(t1)=7>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911285971416731648 count(t1)=33>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2950088956 count(t1)=6>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911356624706686976 count(t1)=50>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912864677490765824 count(t1)=65>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=907707346041917440 count(t1)=3>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=909254014033907712 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=505698635 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893447997572435968 count(t1)=38>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911357367215955968 count(t1)=63>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911355141445517312 count(t1)=29>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=63808966 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2451891643 count(t1)=2>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2353408235 count(t1)=2>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=751429605291020288 count(t1)=7>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=758579470689181696 count(t1)=3242>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=826776153411162113 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=880755870489079809 count(t1)=19>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912863024616296450 count(t1)=59>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=885691154687283200 count(t1)=8>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=914683872780197888 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=905969009350336513 count(t1)=5>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893449244635516928 count(t1)=57>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1255150068 count(t1)=1>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=802211011054825472 count(t1)=2938>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893446396514369536 count(t1)=50>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912862649603510272 count(t1)=72>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1702526653 count(t1)=6>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911357742039932929 count(t1)=60>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893447425884663808 count(t1)=46>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=766630338080669696 count(t1)=2>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893448565548298240 count(t1)=20>
+[2018-05-30 00:08:43,881] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893446678786846721 count(t1)=62>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2960389905 count(t1)=109>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=358910883 count(t1)=1>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893448961901678593 count(t1)=61>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2875676128 count(t1)=1>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893449708097736704 count(t1)=48>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=854280696684269569 count(t1)=10>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=2254288777 count(t1)=2>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912862807808446464 count(t1)=61>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911357900551065601 count(t1)=69>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=773218019677835264 count(t1)=9>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893448851159437312 count(t1)=54>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=361232285 count(t1)=15>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912863554126204928 count(t1)=81>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=4567956689 count(t1)=4>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3345063737 count(t1)=20>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911357525483753473 count(t1)=63>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=759492175902154752 count(t1)=63>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=272667602 count(t1)=12>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=772485848944246784 count(t1)=3>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3364982451 count(t1)=2>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893449814855364608 count(t1)=54>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=707698214837817344 count(t1)=10>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911358118130483202 count(t1)=25>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1092678511 count(t1)=1>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=250883503 count(t1)=2>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893448387969908740 count(t1)=65>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893446963978526720 count(t1)=51>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893446572498931712 count(t1)=55>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3986785042 count(t1)=468>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3401505851 count(t1)=1>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=1881249530 count(t1)=1>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3381974651 count(t1)=1>
+[2018-05-30 00:08:43,882] {base_task_runner.py:95} INFO - Subtask: <Record u.id=911354996691750917 count(t1)=67>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=339192243 count(t1)=20>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3995175627 count(t1)=16>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=396814767 count(t1)=1>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=893447140541968384 count(t1)=63>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=906649487673888769 count(t1)=1>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=912863927125659648 count(t1)=66>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=3307450079 count(t1)=78>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=875354228738449408 count(t1)=65>
+[2018-05-30 00:08:43,883] {base_task_runner.py:95} INFO - Subtask: <Record u.id=287905360 count(t1)=1>
+[2018-05-30 00:08:44,164] {base_task_runner.py:95} INFO - Subtask: {'u.id': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360], 'count(t1)': [2, 1, 15, 49, 1, 2, 1, 4, 23, 4, 76, 30, 40, 3241, 30, 52, 5, 73, 8, 4, 54, 13, 43, 1, 6, 2, 72, 5, 1, 59, 1, 80, 14, 26, 41, 15, 1, 54, 1, 37, 1, 3, 88, 70, 2, 456, 28, 1, 66, 3, 1, 1, 17, 1, 6, 60, 7, 1, 52, 5, 57, 62, 5, 62, 3, 24, 1, 1, 46, 7, 72, 58, 19, 71, 44, 2, 77, 58, 1, 12, 686, 1, 3204, 49, 45, 74, 1, 7, 1, 44, 9, 2, 1, 1, 16, 1, 21, 17, 1, 2, 25, 1, 7, 33, 6, 50, 65, 3, 1, 1, 38, 63, 29, 1, 2, 2, 7, 3242, 1, 19, 59, 8, 1, 5, 57, 1, 2938, 50, 72, 6, 60, 46, 2, 20, 62, 109, 1, 61, 1, 48, 10, 2, 61, 69, 9, 54, 15, 81, 4, 20, 63, 63, 12, 3, 2, 54, 10, 25, 1, 2, 65, 51, 55, 468, 1, 1, 1, 67, 20, 16, 1, 63, 1, 66, 78, 65, 1]}
+[2018-05-30 00:08:44,164] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-05-30 00:08:44,164] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:44,164] {connection.py:338} INFO - ~~ [CLOSE]
+[2018-05-30 00:08:44,165] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:44,164] {connection.py:338} INFO - ~~ [CLOSE]
+[2018-05-30 00:08:44,168] {base_task_runner.py:95} INFO - Subtask: [2018-05-30 00:08:44,167] {python_operator.py:81} INFO - Done. Returned value was: {'u.id': [3937766717, 2916493133, 817476366824259585, 893447248092200960, 898191672814821376, 4548190041, 2571290936, 839642738165448706, 783306126821564416, 952095620, 912863770719989760, 912864891962347520, 893450097018773504, 4795098980, 912863182569508864, 893449420569706497, 850013541084082176, 912862276302012421, 886713250573950976, 2254832538, 911354682773295106, 2508986484, 2872133436, 2457198102, 3352222925, 2933829101, 912864520615464960, 1468542488, 748297628937494528, 911357152920506379, 888139249937207304, 911356996267466755, 885068404679471105, 2891352634, 2427784178, 893448279563927552, 333451285, 893448104132968448, 888425569146331137, 746452856891400192, 896195118700646400, 878316861473005568, 877209370135756801, 911285752780218368, 3171333059, 374089967, 912864309608374273, 1628126785, 911285376186232833, 1668873386, 2456571353, 739418652403961856, 844888370, 769939963744051201, 2250300164, 893446856100990976, 266863903, 3075933892, 893447709742563330, 309212829, 873711799782264832, 911358276968812545, 2892616179, 893447539315355649, 1639111292, 3013448897, 885316418702635009, 809093619617583104, 893449528250183680, 765676573844537344, 911356780420182018, 911356066088341504, 3436177053, 2261808925, 893448675288117249, 798004626461257728, 906870838732967936, 912862058420539394, 2938881622, 1571318634, 4675489896, 818602330409025536, 840945272, 911354458424082435, 893449988780544000, 912863396328087553, 3346159109, 744164594772500480, 866816225338433536, 780718416, 4584670636, 4244238441, 802285614615904256, 808330085849858048, 755218946551349248, 777267653333442560, 911356251791032320, 3179104025, 879440362732957697, 748756061444673536, 911356409698242561, 918251874213654528, 2878169087, 911285971416731648, 2950088956, 911356624706686976, 912864677490765824, 907707346041917440, 909254014033907712, 505698635, 893447997572435968, 911357367215955968, 911355141445517312, 63808966, 2451891643, 2353408235, 751429605291020288, 758579470689181696, 826776153411162113, 880755870489079809, 912863024616296450, 885691154687283200, 914683872780197888, 905969009350336513, 893449244635516928, 1255150068, 802211011054825472, 893446396514369536, 912862649603510272, 1702526653, 911357742039932929, 893447425884663808, 766630338080669696, 893448565548298240, 893446678786846721, 2960389905, 358910883, 893448961901678593, 2875676128, 893449708097736704, 854280696684269569, 2254288777, 912862807808446464, 911357900551065601, 773218019677835264, 893448851159437312, 361232285, 912863554126204928, 4567956689, 3345063737, 911357525483753473, 759492175902154752, 272667602, 772485848944246784, 3364982451, 893449814855364608, 707698214837817344, 911358118130483202, 1092678511, 250883503, 893448387969908740, 893446963978526720, 893446572498931712, 3986785042, 3401505851, 1881249530, 3381974651, 911354996691750917, 339192243, 3995175627, 396814767, 893447140541968384, 906649487673888769, 912863927125659648, 3307450079, 875354228738449408, 287905360], 'count(t1)': [2, 1, 15, 49, 1, 2, 1, 4, 23, 4, 76, 30, 40, 3241, 30, 52, 5, 73, 8, 4, 54, 13, 43, 1, 6, 2, 72, 5, 1, 59, 1, 80, 14, 26, 41, 15, 1, 54, 1, 37, 1, 3, 88, 70, 2, 456, 28, 1, 66, 3, 1, 1, 17, 1, 6, 60, 7, 1, 52, 5, 57, 62, 5, 62, 3, 24, 1, 1, 46, 7, 72, 58, 19, 71, 44, 2, 77, 58, 1, 12, 686, 1, 3204, 49, 45, 74, 1, 7, 1, 44, 9, 2, 1, 1, 16, 1, 21, 17, 1, 2, 25, 1, 7, 33, 6, 50, 65, 3, 1, 1, 38, 63, 29, 1, 2, 2, 7, 3242, 1, 19, 59, 8, 1, 5, 57, 1, 2938, 50, 72, 6, 60, 46, 2, 20, 62, 109, 1, 61, 1, 48, 10, 2, 61, 69, 9, 54, 15, 81, 4, 20, 63, 63, 12, 3, 2, 54, 10, 25, 1, 2, 65, 51, 55, 468, 1, 1, 1, 67, 20, 16, 1, 63, 1, 66, 78, 65, 1]}
+[2018-05-30 00:08:44,486] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+[2018-05-30 00:08:44,486] {base_task_runner.py:95} INFO - Subtask:   DeprecationWarning)
+[2018-05-30 00:08:44,486] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/ti_deps/deps/base_ti_dep.py:94: DeprecationWarning: generator '_get_dep_statuses' raised StopIteration
+[2018-05-30 00:08:44,487] {base_task_runner.py:95} INFO - Subtask:   for dep_status in self._get_dep_statuses(ti, session, dep_context):
+[2018-05-30 00:08:47,846] {jobs.py:2083} INFO - Task exited with return code 0

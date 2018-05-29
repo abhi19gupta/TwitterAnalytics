@@ -10,7 +10,9 @@ class MongoAlert():
 		del alert['_id']
 
 	def get_alert(self, alert_id):
+		print(alert_id)
 		alert = self.db.find_one({'_id':ObjectId(alert_id)})
+		print(str(alert is None))
 		self.__replace_id(alert)
 		return alert
 

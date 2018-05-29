@@ -1,0 +1,48 @@
+[2018-05-29 18:11:02,381] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-05-29 18:11:03,045] {base_task_runner.py:112} INFO - Running: ['bash', '-c', 'airflow run example query.q6 2018-05-29T18:10:59.592390 --job_id 7 --raw -sd DAGS_FOLDER/example.py']
+[2018-05-29 18:11:03,244] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,244] {__init__.py:57} INFO - Using executor SequentialExecutor
+[2018-05-29 18:11:03,468] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,468] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-05-29 18:11:03,820] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,819] {models.py:1126} INFO - Dependencies all met for <TaskInstance: example.query.q6 2018-05-29 18:10:59.592390 [queued]>
+[2018-05-29 18:11:03,821] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,820] {models.py:1126} INFO - Dependencies all met for <TaskInstance: example.query.q6 2018-05-29 18:10:59.592390 [queued]>
+[2018-05-29 18:11:03,821] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,820] {models.py:1318} INFO - 
+[2018-05-29 18:11:03,821] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-29 18:11:03,821] {base_task_runner.py:95} INFO - Subtask: Starting attempt 1 of 1
+[2018-05-29 18:11:03,821] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-29 18:11:03,821] {base_task_runner.py:95} INFO - Subtask: 
+[2018-05-29 18:11:03,964] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,964] {models.py:1342} INFO - Executing <Task(PythonOperator): query.q6> on 2018-05-29 18:10:59.592390
+[2018-05-29 18:11:03,991] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,989] {models.py:1417} ERROR - conn_name_attr is not defined
+[2018-05-29 18:11:03,992] {base_task_runner.py:95} INFO - Subtask: Traceback (most recent call last):
+[2018-05-29 18:11:03,992] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 1374, in run
+[2018-05-29 18:11:03,992] {base_task_runner.py:95} INFO - Subtask:     result = task_copy.execute(context=context)
+[2018-05-29 18:11:03,992] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/python_operator.py", line 80, in execute
+[2018-05-29 18:11:03,992] {base_task_runner.py:95} INFO - Subtask:     return_value = self.python_callable(*self.op_args, **self.op_kwargs)
+[2018-05-29 18:11:03,993] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 21, in execute_query
+[2018-05-29 18:11:03,993] {base_task_runner.py:95} INFO - Subtask:     hook = DbApiHook('../../../db.sqlite3')
+[2018-05-29 18:11:03,993] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/hooks/dbapi_hook.py", line 43, in __init__
+[2018-05-29 18:11:03,993] {base_task_runner.py:95} INFO - Subtask:     raise AirflowException("conn_name_attr is not defined")
+[2018-05-29 18:11:03,993] {base_task_runner.py:95} INFO - Subtask: airflow.exceptions.AirflowException: conn_name_attr is not defined
+[2018-05-29 18:11:03,993] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:03,992] {models.py:1441} INFO - Marking task as FAILED.
+[2018-05-29 18:11:04,208] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 18:11:04,208] {models.py:1462} ERROR - conn_name_attr is not defined
+[2018-05-29 18:11:04,208] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+[2018-05-29 18:11:04,209] {base_task_runner.py:95} INFO - Subtask:   DeprecationWarning)
+[2018-05-29 18:11:04,209] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing DbApiHook directly from <module 'airflow.hooks' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/hooks/__init__.py'> has been deprecated. Please import from '<module 'airflow.hooks' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/hooks/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+[2018-05-29 18:11:04,209] {base_task_runner.py:95} INFO - Subtask:   DeprecationWarning)
+[2018-05-29 18:11:04,209] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/ti_deps/deps/base_ti_dep.py:94: DeprecationWarning: generator '_get_dep_statuses' raised StopIteration
+[2018-05-29 18:11:04,209] {base_task_runner.py:95} INFO - Subtask:   for dep_status in self._get_dep_statuses(ti, session, dep_context):
+[2018-05-29 18:11:04,211] {base_task_runner.py:95} INFO - Subtask: Traceback (most recent call last):
+[2018-05-29 18:11:04,211] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/bin/airflow", line 28, in <module>
+[2018-05-29 18:11:04,211] {base_task_runner.py:95} INFO - Subtask:     args.func(args)
+[2018-05-29 18:11:04,211] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/bin/cli.py", line 422, in run
+[2018-05-29 18:11:04,211] {base_task_runner.py:95} INFO - Subtask:     pool=args.pool,
+[2018-05-29 18:11:04,211] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/db.py", line 53, in wrapper
+[2018-05-29 18:11:04,211] {base_task_runner.py:95} INFO - Subtask:     result = func(*args, **kwargs)
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 1374, in run
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:     result = task_copy.execute(context=context)
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/python_operator.py", line 80, in execute
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:     return_value = self.python_callable(*self.op_args, **self.op_kwargs)
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 21, in execute_query
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:     hook = DbApiHook('../../../db.sqlite3')
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:   File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/hooks/dbapi_hook.py", line 43, in __init__
+[2018-05-29 18:11:04,212] {base_task_runner.py:95} INFO - Subtask:     raise AirflowException("conn_name_attr is not defined")
+[2018-05-29 18:11:04,213] {base_task_runner.py:95} INFO - Subtask: airflow.exceptions.AirflowException: conn_name_attr is not defined
+[2018-05-29 18:11:07,995] {jobs.py:2083} INFO - Task exited with return code 1

@@ -63,7 +63,7 @@ class Timer(Process):
                 self.current_iteration += 1
         self.finished.set()
 
-@nb.jit(nb.types.Tuple((nb.int64, nb.int64))(nb.int64[:],nb.int64[:],nb.int64[:]),nopython=True,cache=True)
+# @nb.jit(nb.types.Tuple((nb.int64, nb.int64))(nb.int64[:],nb.int64[:],nb.int64[:]),nopython=True,cache=True)
 def calculate_sentiment(positive_words,negative_words,tweet_text):
         pos = 0
         neg = 0

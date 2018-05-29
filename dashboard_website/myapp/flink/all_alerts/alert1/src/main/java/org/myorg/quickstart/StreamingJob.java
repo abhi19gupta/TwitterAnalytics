@@ -10,6 +10,7 @@ import org.apache.flink.core.fs.FileSystem;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.JsonNode;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.DataStream;
@@ -67,7 +68,7 @@ public class StreamingJob {
 		env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);
 
 		DataStream<JsonNode> filtered_stream = env
-				.addSource(new FlinkKafkaConsumer08<>("flink_in_topic", new SimpleStringSchema(), kafkaConsumerProperties))
+				.addSource(new FlinkKafkaConsumer08<>("tweets_topic", new SimpleStringSchema(), kafkaConsumerProperties))
 				// convert String to JsonNode type if possible and make it simpler, else leave out
 				.flatMap(new FlatMapFunction<String, JsonNode>() {
 					@Override
@@ -82,17 +83,7 @@ public class StreamingJob {
 					@Override
 					public boolean filter(JsonNode jsonNode) {
 						try {
-							String user_id = jsonNode.get("user").get("id_str").asText();
-							List<String> hashtags = new ArrayList<>();
-							for (final JsonNode node : jsonNode.get("entities").get("hashtags"))
-								hashtags.add(node.get("text").asText());
-							List<String> urls = new ArrayList<>();
-							for (final JsonNode node : jsonNode.get("entities").get("urls"))
-								urls.add(node.get("expanded_url").asText());
-							List<String> user_mentions = new ArrayList<>();
-							for (final JsonNode node : jsonNode.get("entities").get("user_mentions"))
-								user_mentions.add(node.get("id_str").asText());
-							return user_id.equals("i") && (hashtags.contains("h") || urls.contains("u") || user_mentions.contains("m"));
+							return true;
 						} catch (Exception e) {
 							return false;
 						}
@@ -102,7 +93,8 @@ public class StreamingJob {
 				.assignTimestampsAndWatermarks(new AscendingTimestampExtractor<JsonNode>() {
 					@Override
 					public long extractAscendingTimestamp(JsonNode jsonNode) {
-						return getTwitterDateMillis(jsonNode.get("created_at").asText());
+						// return getTwitterDateMillis(jsonNode.get("created_at").asText());
+						return Long.parseLong(jsonNode.get("timestamp_ms").asText());
 					}
 				})
 				// duplicate tweets into multiple tweets, separating the grouping entities
@@ -135,8 +127,8 @@ public class StreamingJob {
 						}
 					}
 				})
-				.window(SlidingEventTimeWindows.of(Time.seconds(1), Time.seconds(1)))
-				.trigger(CountTrigger.of(1))
+				.window(SlidingEventTimeWindows.of(Time.seconds(60), Time.seconds(30)))
+				.trigger(CountTrigger.of(3))
 				.aggregate(new AggregateFunction<JsonNode, JsonNode, JsonNode>() {
 					@Override
 					public JsonNode createAccumulator() { return null; }
@@ -145,7 +137,9 @@ public class StreamingJob {
 					public JsonNode add(JsonNode jsonNode, JsonNode accumulator) {
 						String tweet_id = jsonNode.get("id_str").asText();
 						if (accumulator == null) {
-							ObjectNode newAccumulator = jsonNode.get("key").deepCopy();
+							ObjectNode newAccumulator = JsonNodeFactory.instance.objectNode();
+							newAccumulator.put("key", jsonNode.get("key").toString());
+//							ObjectNode newAccumulator = jsonNode.get("key").deepCopy();
 							newAccumulator.put("tweet_ids",tweet_id);
 							return newAccumulator;
 						} else {
@@ -178,7 +172,7 @@ public class StreamingJob {
 				})
 				;
 
-		filtered_stream.addSink(new FlinkKafkaProducer08<>("localhost:9092", "flink_out_topic", new SerializationSchema<JsonNode>() {
+		filtered_stream.addSink(new FlinkKafkaProducer08<>("localhost:9092", "alerts_topic", new SerializationSchema<JsonNode>() {
 			@Override
 			public byte[] serialize(JsonNode jsonNode) {
 				try {

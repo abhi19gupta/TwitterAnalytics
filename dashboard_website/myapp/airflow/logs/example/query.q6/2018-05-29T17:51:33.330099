@@ -1,0 +1,28 @@
+[2018-05-29 17:51:37,257] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-05-29 17:51:37,751] {base_task_runner.py:112} INFO - Running: ['bash', '-c', 'airflow run example query.q6 2018-05-29T17:51:33.330099 --job_id 5 --raw -sd DAGS_FOLDER/example.py']
+[2018-05-29 17:51:37,960] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 17:51:37,960] {__init__.py:57} INFO - Using executor SequentialExecutor
+[2018-05-29 17:51:38,250] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 17:51:38,250] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-05-29 17:51:38,691] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 17:51:38,691] {models.py:1126} INFO - Dependencies all met for <TaskInstance: example.query.q6 2018-05-29 17:51:33.330099 [queued]>
+[2018-05-29 17:51:38,692] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 17:51:38,692] {models.py:1126} INFO - Dependencies all met for <TaskInstance: example.query.q6 2018-05-29 17:51:33.330099 [queued]>
+[2018-05-29 17:51:38,692] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 17:51:38,692] {models.py:1318} INFO - 
+[2018-05-29 17:51:38,692] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-29 17:51:38,692] {base_task_runner.py:95} INFO - Subtask: Starting attempt 1 of 1
+[2018-05-29 17:51:38,692] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-05-29 17:51:38,692] {base_task_runner.py:95} INFO - Subtask: 
+[2018-05-29 17:51:38,895] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 17:51:38,895] {models.py:1342} INFO - Executing <Task(PythonOperator): query.q6> on 2018-05-29 17:51:33.330099
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: (13, 'q6', 'mp_ht_in_total', 'mongoDB')
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: ['id_', 'counts']
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: Executing query  q6
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: {'num': 5}
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: 5
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: {'_id': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao'], 'count': [6199, 3242, 3167, 3157, 2944]}
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-05-29 17:51:39,011] {base_task_runner.py:95} INFO - Subtask: [2018-05-29 17:51:39,011] {python_operator.py:81} INFO - Done. Returned value was: {'_id': ['MPN', 'bookmeter', 'SorryNotSorryClipe', 'izmirescort', 'EduChociayRevelacao'], 'count': [6199, 3242, 3167, 3157, 2944]}
+[2018-05-29 17:51:39,262] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+[2018-05-29 17:51:39,263] {base_task_runner.py:95} INFO - Subtask:   DeprecationWarning)
+[2018-05-29 17:51:39,263] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing DbApiHook directly from <module 'airflow.hooks' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/hooks/__init__.py'> has been deprecated. Please import from '<module 'airflow.hooks' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/hooks/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+[2018-05-29 17:51:39,263] {base_task_runner.py:95} INFO - Subtask:   DeprecationWarning)
+[2018-05-29 17:51:39,263] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/ti_deps/deps/base_ti_dep.py:94: DeprecationWarning: generator '_get_dep_statuses' raised StopIteration
+[2018-05-29 17:51:39,263] {base_task_runner.py:95} INFO - Subtask:   for dep_status in self._get_dep_statuses(ti, session, dep_context):
+[2018-05-29 17:51:42,785] {jobs.py:2083} INFO - Task exited with return code 0

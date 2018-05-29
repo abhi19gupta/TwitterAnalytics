@@ -64,10 +64,11 @@
 					<thead>
 					  <tr style="background: #2C2B2A; color: white">
 					    <th rowspan="2" style="text-align: center;">Alert Name</th>
-					    <th colspan="3" style="text-align: center;">Window Description</th>
+					    <th colspan="4" style="text-align: center;">Window Description</th>
 					    <th rowspan="2" style="text-align: center;">Delete Alert</th>
 					  </tr>
 					  <tr style="background: #2C2B2A; color: white">
+					    <th style="text-align: center;">Keys</th>
 					    <th style="text-align: center;">Start Time</th>
 					    <th style="text-align: center;">End Time</th>
 					    <th style="text-align: center;">Current Tweet Count</th>
@@ -77,6 +78,7 @@
 						{% for alert in alerts %}
 						<tr>
 							<td style="text-align: center;">{{alert.alert_name}}</td>
+							<td style="text-align: center;">{{alert.key}}</td>
 							<td style="text-align: center;">{{alert.window_start}}</td>
 							<td style="text-align: center;">{{alert.window_end}}</td>
 							<td style="text-align: center;"><a href="alerts_tweets?alert_id={{alert.id}}" target="_blank">{{alert.tweet_count}}</a></td>

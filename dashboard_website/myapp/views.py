@@ -9,7 +9,7 @@ from django.forms.models import model_to_dict
 from myapp.forms import *
 from myapp.models import *
 from myapp.tables import *
-from myapp.dag import DAG
+from myapp.create_dag import DAG
 from myapp.flink.flink_code_gen import FlinkCodeGenerator
 from myapp.flink.flink_api import FlinkAPI
 from myapp.generate_queries import *
@@ -477,7 +477,13 @@ def alerts_view(request):
 def alerts_delete(request):
 	alert_id = request.GET["alert_id"]
 	try:
-		AlertSpecification.objects.get(id=alert_id).delete()
+		alert = AlertSpecification.objects.get(id=alert_id)
+		flinkCodeGenerator.delete_code(alert.alert_name)
+		try:
+			flink_api.cancel_job(alert.current_job_id)
+		except Exception as e:
+			print("Failed to cancel_job. %s, %s"%(str(type(e)),str(e)))
+		alert.delete()
 	except Exception as e:
 		print("Failed to delete alert. %s: %s"%(str(type(e),str(e))))
 		messages.error(request, "Failed to delete alert. %s: %s"%(str(type(e),str(e))))
@@ -626,14 +632,12 @@ def create_dag_handler(request):
 		form = UploadFileForm(request.POST, request.FILES)
 		if form.is_valid():
 			print("came here")
+			dag_name = form.cleaned_data["name"]
 			file_handler = request.FILES['file']
 			# print(file_handler.read().decode())
 			queries,types = get_all_queries()
 			dag = DAG(file_handler, queries, types)
-			rets = dag.feed_forward(execute)
-			# query_output = pformat(rets, indent=4)
-			query_output = rets
-			dag_div = dag.plot_dag()
+			rets = dag.generate_dag(dag_name)
 		else:
 			print(form["name"].errors,form['file'].errors)
 		return redirect('/create_query/')
