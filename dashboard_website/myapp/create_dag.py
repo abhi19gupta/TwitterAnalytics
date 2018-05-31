@@ -5,6 +5,9 @@ import networkx as nx
 from pprint import *
 import jinja2 as jj
 import os
+import plotly.graph_objs as go
+from plotly.graph_objs import *
+from plotly.offline import plot
 ##expect a dictionary of queries with keys as the query names/postprocessing function names
 ## for neo4j queries it will be the query code, input, output list
 ## for mongoDB queries it will be the partially formatted query specification, input, output list
@@ -66,7 +69,7 @@ def execute_query(node_name,**context):
 
 	inputs = {}
 	for x in input_vars:
-		if(mapping[node_name][x]=="-"):	
+		if(mapping[node_name][x]=="-"):
 			inputs[x] = provided_inputs[node_name][x]
 		else:
 			mapp = mapping[node_name][x]
@@ -119,9 +122,10 @@ class DAG:
 		self.returns = []
 		self.inputs = {}
 		self.connections = {}
-		# self.taking_inputs = {}
-		# self.giving_outputs = []
-		# fin = open(network_file,"r")
+		self.taking_inputs = {}
+		self.giving_outputs = []
+		self.edges = []
+
 		fin = network_file
 		s = fin.read()
 		if(isinstance(s,bytes)):
@@ -144,7 +148,7 @@ class DAG:
 				self.node_to_query[node_name] = query_name
 				self.inputs[node_name]  ={}
 				self.connections[node_name]  ={}
-
+				self.edges = []
 			else:
 				if(line.strip()=="CONNECTIONS:"):
 					cond = 1
@@ -164,30 +168,27 @@ class DAG:
 					print(u,outp,v,inp)
 					self.graph.add_edge(u,v,mapping=(outp,inp))
 					self.connections[v][inp] = (u,outp)
+					self.edges.append((self.graph.node[u]["query_name"]+"."+outp,self.graph.node[v]["query_name"]+"."+inp))
 				elif(cond==0):
 					l = line.strip().split()
 					ind = l[0].index(".")
 					node_name,var_name = l[0][:ind],l[0][ind+1:]
-					# self.taking_inputs[self.graph.node[node_name]["query_name"]+"."+var_name] = eval(l[1])
+					self.taking_inputs[self.graph.node[node_name]["query_name"]+"."+var_name] = eval(l[1])
 					self.inputs[node_name][var_name] = eval(l[1])
 					self.connections[node_name][var_name] = "-"
 				elif(cond==2):
 					s = line.strip()
 					ind = s.index(".")
 					node_name,var_name = s[:ind], s[ind+1:]
-					# self.giving_outputs.append(self.graph.node[node_name]["query_name"]+"."+var_name)
+					self.giving_outputs.append(self.graph.node[node_name]["query_name"]+"."+var_name)
 					self.returns.append((node_name,var_name))
-
-		# for q in self.inputs.keys():
-		# 	for k,v in self.inputs[q]:
-		# 		self.taking_inputs[q+"."+k] = v
 
 		is_dag = nx.is_directed_acyclic_graph(self.graph)
 		if(not(is_dag)):
 			print("The input file doesn't specify a DAG. Please Check!!")
 
 		print("-----------")
-	
+
 	def generate_dag(self,dag_name):
 		print(os.getcwd())
 		fout = open("myapp/airflow/dags/"+dag_name+".py","w")
@@ -230,6 +231,100 @@ class DAG:
 		for u,v in self.graph.edges():
 			print(node_to_task[u] + " >> " + node_to_task[v],file=fout)
 		fout.close()
+
+	def get_drawable_dag(self,G,queries,types,edges):
+		ts = nx.topological_sort(G)
+		dis = nx.DiGraph()
+		rectangle = []
+		for i,node in enumerate(ts):
+			query_name = G.node[node]["query_name"]
+			inputs = queries[query_name][1]
+			outputs = queries[query_name][2]
+			inputs.reverse()
+			outputs.reverse()
+			length = 2*(max(len(inputs),len(outputs))-1)
+			inputs_y = np.linspace(0,length,len(inputs))
+			outputs_y = np.linspace(0,length,len(outputs))
+
+			for j,inp in enumerate(inputs):
+				dis.add_node(query_name+"."+inp, pos = (i,inputs_y[j]))
+			for j,out in enumerate(outputs):
+				dis.add_node(query_name+"."+out, pos = (i+0.25,outputs_y[j]))
+			rectangle.append((i,length))
+		for i,o in edges:
+			dis.add_edge(i,o)
+		return dis,rectangle
+
+
+	def plot_dag(self):
+		G ,rect= self.get_drawable_dag(self.graph,self.queries,self.types,self.edges)
+		print(G.nodes(data=True))
+		edge_trace = Scatter(
+			x=[],
+			y=[],
+			line=Line(width=1,color='black'),
+			hoverinfo='none',
+			mode='arrows')
+
+		for edge in G.edges():
+			x0, y0 = G.node[edge[0]]['pos']
+			x1, y1 = G.node[edge[1]]['pos']
+			edge_trace['x'] += [x0, x1, None]
+			edge_trace['y'] += [y0, y1, None]
+
+		node_trace = Scatter(
+			x=[],
+			y=[],
+			text=[],
+			mode='markers',
+			hoverinfo='text',
+			marker=Marker(
+				color = [],
+				size=10,
+				))
+
+		for node in G.nodes():
+			x, y = G.node[node]['pos']
+			node_trace['x'].append(x)
+			node_trace['y'].append(y)
+			outs = []
+			for q in self.queries.keys():
+				for o in self.queries[q][2]:
+					outs.append(q+"."+o)
+			if(node in outs):
+				ind = node.index(".")
+				q,val = node[:ind],node[ind+1:]
+				node_trace["text"].append(node+"<<"+str(self.outputs_dict[q][val]))
+				node_trace["marker"]["color"].append("red")
+			elif(node in self.taking_inputs.keys()):
+				node_trace["text"].append(node+">>"+str(self.taking_inputs[node]))
+				node_trace["marker"]["color"].append("green")
+			else:
+				node_trace["text"].append(node)
+				node_trace["marker"]["color"].append("blue")
+
+		xmargin = 0.15
+		ymargin = 0.4
+		fig = Figure(data=Data([edge_trace, node_trace]),
+					 layout=Layout(
+					 	autosize=False,
+    					width=500,
+    					height=500,
+						title='<br>Your Query DAG',
+						# titlefont=dict(size=16),
+						showlegend=False,
+						hovermode='closest',
+						margin=dict(b=20,l=5,r=5,t=40),
+						xaxis=XAxis(showgrid=False, zeroline=False, range = [-5,5], showticklabels=False),
+						yaxis=YAxis(showgrid=False, zeroline=False, range = [-5,5], showticklabels=False),
+						shapes = [{'type': 'rect','x0': i-xmargin,'y0': -ymargin,'x1': i+0.25+xmargin,'y1': j+ymargin,'line': {'color': 'yellow',}} for i,j in rect]
+						))
+
+		# plot(fig, auto_open=False, filename='networkx.html')
+		div = plot(fig, auto_open=False, output_type='div')
+		print(div)
+		return div
+
 
 if __name__=="__main__":
 	queries = {"q1":["query 1",["inp1","inp2"],["out1","out2"]],

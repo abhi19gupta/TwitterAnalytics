@@ -18,7 +18,7 @@ from myapp.mongo_alert import MongoAlert
 
 from datetime import datetime
 from pprint import *
-import json
+import json, os
 
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
@@ -147,11 +147,27 @@ def query_creator(request):
 	data.update({"create_mongo_form_1":PopularHash(), "create_mongo_form_2":PopularHashInInterval(),
 		"create_mongo_form_3":HashUsageInInterval(), "create_mongo_form_4":HashSentimentInInterval()})
 	data.update({"query_s":query_s, 'output_s':output_s})
-	data.update({"uploadfileform":UploadFileForm()})
+	data.update({"createdagform":CreateDagForm()})
 	data.update({"create_custom_metric_form":CreateCustomMetricForm()})
 	data.update({"custom_metrics_form":CustomMetricForm()})
+	q_lis = []
+	queries = Query.objects.all()
+	for query in queries:
+		q_dict = {}
+		q_dict["name"] = query.name
+		q_dict["query_type"] = query.type
+		q_dict["code"] = query.query
 
-	return render(request, 'myapp/custom_metrics.html', data)
+		inputs = [x.input_name for x in QueryInput.objects.filter(query=query)]
+		outputs = [x.output_name for x in QueryOutput.objects.filter(query=query)]
+		q_dict["inputs"] = inputs
+		q_dict["outputs"] = outputs
+		q_lis.append(q_dict)
+	pprint(q_lis)
+	data.update({"queries":q_lis})
+	data.update({"dags":Dag.objects.all()})
+	data.update({"createcmform":CreateCustomMetricForm()})
+	return render(request, 'myapp/create_query.html', data)
 
 def create_neo4j_query_handler(request):
 
@@ -306,7 +322,7 @@ def create_neo4j_query_handler(request):
 			Tweet.objects.all().delete()
 			Relation.objects.all().delete()
 
-	return redirect("/create_metric/?query_s=%s"%sq)
+	return redirect("/create_query/?query_s=%s"%sq)
 
 def create_mongo_query_handler(request):
 
@@ -342,7 +358,7 @@ def create_mongo_query_handler(request):
 		if hsiform.is_valid():
 			pass
 
-	return redirect("/create_metric/")
+	return redirect("/create_query/")
 
 def create_postprocessing_handler(request):
 	if request.method == 'POST':
@@ -350,15 +366,15 @@ def create_postprocessing_handler(request):
 		if form.is_valid():
 			code = request.FILES['file'].read()
 			print(code)
-			PostProcFunc.objects.create(name=form.cleaned_data['name'],code=code)
-			return redirect("/create_metric")
+			Query.objects.create(name=form.cleaned_data['name'],query=code,type="PostProcessing")
+			return redirect("/create_query")
 
 def create_custom_metric_handler(request):
 	if request.method == 'POST':
 		form = CreateCustomMetricForm(request.POST)
 		if form.is_valid():
 			CustomMetric.objects.create(name=form.cleaned_data['name'],query=form.cleaned_data['query'],post_proc=form.cleaned_data['post_processing_function'])
-			return redirect("/create_metric")
+			return redirect("/create_query")
 
 def view_custom_metric_handler(request):
 
@@ -410,17 +426,17 @@ def view_custom_metric_handler(request):
 @csrf_exempt
 def view_query_handler(request):
 	if request.method == 'POST':
-		query = request.POST["query"]
+		query = request.POST['query']
 		query = Query.objects.get(name=query)
 		return JsonResponse({"query":query.query})
 
 @csrf_exempt
-def delete_query_handler(request):
+def delete_query_handler(request,query):
 	if request.method == 'POST':
-		query = request.POST["query"]
+		# query = request.POST["query"]
 		query = Query.objects.get(name=query)
 		query.delete()
-		return JsonResponse({"url":"/create_metric"})
+		return redirect("/create_query")
 
 @csrf_exempt
 def view_post_proc_handler(request):
@@ -564,7 +580,7 @@ def alerts_create_handler(request):
 			flink_jar_id = flink_api.upload_jar(jar_path)
 			print('Running jar')
 			job_id = flink_api.run_jar(data['alert_name'],flink_jar_id)
-			AlertSpecification.objects.create(alert_name=data['alert_name'], filter=data['filter'], 
+			AlertSpecification.objects.create(alert_name=data['alert_name'], filter=data['filter'],
 				keys=','.join(data['keys']), window_length=data['window_length'], window_slide=data['window_slide'],
 				count_threshold=data['count_threshold'], jar_path=jar_path, flink_jar_id=flink_jar_id, current_job_id=job_id)
 		except Exception as e:
@@ -629,15 +645,36 @@ def create_dag_handler(request):
 
 	if request.method == 'POST':
 		print("came into post")
-		form = UploadFileForm(request.POST, request.FILES)
+		form = CreateDagForm(request.POST, request.FILES)
 		if form.is_valid():
 			print("came here")
 			dag_name = form.cleaned_data["name"]
+			description = form.cleaned_data["description"]
+
 			file_handler = request.FILES['file']
-			# print(file_handler.read().decode())
 			queries,types = get_all_queries()
 			dag = DAG(file_handler, queries, types)
+			dag_div = dag.plot_dag()
+			Dag.objects.create(dag_name=dag_name,description = description, dag_div=dag_div,source=file_handler.read())
 			rets = dag.generate_dag(dag_name)
 		else:
 			print(form["name"].errors,form['file'].errors)
 		return redirect('/create_query/')
+
+def delete_dag_handler(request,dag_name):
+	form = ViewDagForm(request.POST)
+	if(form.is_valid()):
+		dag = form.cleaned_data["dag"]
+		dag_name = dag.dag_name
+		# dag = Dag.objects.filter(dag_name=dag_name)[0]
+		dag.delete()
+		try:
+			os.remove("myapp/airflow/dags/"+dag_name+".py")
+		except OSError:
+			pass
+	return redirect('/create_query/')
+
+def view_dag_handler(request,dag_name):
+	dag = Dag.objects.get(dag_name=dag_name)
+	data = {"dag":dag}
+	return render(request, 'myapp/view_dag.html', data)

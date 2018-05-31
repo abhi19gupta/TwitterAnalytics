@@ -2,38 +2,175 @@
 {% load crispy_forms_tags %}
 
 {% block head %}
-<title>Create Query</title>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Create Queries</title>
+
+	<style type="text/css">
+	  html, body {
+		  background: #eee;
+		  height: 100%;
+	  }
+	</style>
+
+	<style type="text/css">
+	.legend { list-style: none; }
+	.legend li { float: left; margin-right: 10px; }
+	.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+	/* your colors */
+	.legend .mongo { background-color: #ffb380; }
+	.legend .postproc { background-color: #b3ffb3; }
+	.legend .neo { background-color: #80aaff; }
+	</style>
+</head>
+
 {% endblock %}
 
 {% block body %}
 
 <div class="container-fluid">
 	<ul class="nav nav-tabs">
-	  <li class="active"><a data-toggle="tab" href="#createDAGTab">Create DAG</a></li>
+	<li class="active"><a data-toggle="tab" href="#create_neo4j_query">Create Neo4j Query</a></li>
+	  <li><a data-toggle="tab" href="#create_mongo_query">Create MongoDB Query</a></li>
+	  <li><a data-toggle="tab" href="#create_postprocessing">Create Post-Processing Function</a></li>
+	  <li><a data-toggle="tab" href="#view_queries">All Queries</a></li>
+	  <li><a data-toggle="tab" href="#createDAGTab">Create DAG</a></li>
 	  <li><a data-toggle="tab" href="#viewDAGTab">View DAG</a></li>
+	  <li><a data-toggle="tab" href="#create_custom_metric">Create Custom Metric</a></li>
 	</ul>
 
 	<div class="tab-content">
 
+		<div id="create_neo4j_query" class="tab-pane fade in active">
+			<h3>Create Neo4j custom query</h3>
+			{% include "myapp/neo4j_query.html" %}
+		</div>
+
+		<div id="create_mongo_query" class="tab-pane fade">
+			<h3>Create MongoDB custom query</h3>
+			{% include "myapp/mongo_query.html" %}
+		</div>
+
+		<div id="create_postprocessing" class="tab-pane fade">
+			<h3>Create custom post-processing function</h3>
+			<form id="uploadfileform" method="post" action="/create_postprocessing_handler/" enctype="multipart/form-data">{% csrf_token %}
+				{{ uploadfileform | crispy }}
+				<br>
+				<button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+		</div>
+
+		<div id="view_queries" class="tab-pane fade in active">
+			<h5>All the Queris and Post processing functions created by you</h5>
+			<br>
+			<div>
+			<ul class="legend">
+				<li><span class="neo"></span> Neo4j Queries </li>
+				<li><span class="mongo"></span> MongoDB Queries</li>
+				<li><span class="postproc"></span> Post Processing Functions</li>
+			</ul>
+			</div>
+			<br>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+						<th rowspan="2" style="text-align: center;">Query Name</th>
+						<th rowspan="2" colspan="4" style="text-align: center;">Code</th>
+						<th rowspan="2" colspan="3" style="text-align: center;">Inputs</th>
+						<th rowspan="2" colspan="3" style="text-align: center;">Outputs</th>
+						<th rowspan="2" colspan="2" style="text-align: center;">Actions</th>
+
+					  </tr>
+					</thead>
+					<tbody>
+						{% for q in queries %}
+						{% if q.query_type == 'Neo4j' %}
+						<tr style="background-color: #80aaff;">
+						{% elif q.query_type == "MongoDB" %}
+						<tr style="background-color: #ffb380;">
+						{% else %}
+						<tr style="background-color: #b3ffb3;">
+						{% endif %}
+							<td style="text-align: center;">{{q.name}}</td>
+							<td colspan="4" style="text-align: center;"><pre>{{q.code}}</pre></td>
+							<td colspan="3" >
+								{% for i in q.inputs%}
+									<li>{{i}}</li>
+								{% endfor %}
+							</td>
+							<td colspan="3">
+								{% for o in q.outputs%}
+									<li>{{o}}</li>
+								{% endfor %}
+							</td>
+							<td style="text-align: center;">
+								<form method="POST" action={% url 'delete_query_handler' query=q.name %}>
+								{% csrf_token %}
+								<button type="submit" name="submit" class="btn">Delete</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
 		<div id="createDAGTab" class="tab-pane fade in active">
 			<h3>Create a new DAG</h3>
 			<form id="uploadfileform" method="post" action="create_dag_handler/" enctype="multipart/form-data">{% csrf_token %}
-			    {{ uploadfileform | crispy }}
-			    <br>
-			    <button type="submit" class="btn btn-primary">Submit!</button>
+				{{ createdagform | crispy }}
+				<br>
+				<button type="submit" class="btn btn-primary">Submit!</button>
 			</form>
 		</div>
 
 		<div id="viewDAGTab" class="tab-pane fade">
-			<h3>View the DAG and the outputs</h3>
-			<center>
-			{{ dag_graph_my | safe }}
-			<br>
-			"<pre>{{query_output}}</pre>"
-			</center>
+			<h5>Select a DAG and the action you want to apply on the DAG</h5>
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+						<th rowspan="2" style="text-align: center;">DAG Name</th>
+						<th rowspan="2" colspan="4" style="text-align: center;">DAG Description</th>
+						<th rowspan="2" colspan="2" style="text-align: center;">Actions</th>
 
+					  </tr>
+					</thead>
+					<tbody>
+						{% for d in dags %}
+						<tr>
+							<td style="text-align: center;">{{d.dag_name}}</td>
+							<td colspan="4" style="text-align: center;">{{d.description}}</td>
+							<td style="text-align: center;">
+								<form id="deletedagform" method="post" action={% url 'delete_dag_handler' dag_name=d.dag_name %} enctype="multipart/form-data">
+								{% csrf_token %}
+									<button type="submit" name="delete" class="btn btn-primary">Delete</button>
+								</form>
+								<form id="viewdagform" method="post" target="_blank"  action={% url 'view_dag_handler' dag_name=d.dag_name %} enctype="multipart/form-data">
+								{% csrf_token %}
+									<button type="submit" name="view" class="btn btn-primary">View</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 
+		<div id="create_custom_metric" class="tab-pane fade in active">
+			<h3>Create Custom Metric here to plot the graphs</h3>
+			<form id="custommetricid" method="post" action="/create_query/create_custom_metric_handler/">{% csrf_token %}
+			    {{ createcmform | crispy }}
+			    <br>
+			    <button type="submit" class="btn btn-primary">Submit!</button>
+			</form>
+		</div>
 
 
 	</div>
@@ -42,12 +179,12 @@
 
 <script type="text/javascript">
 	$(function(){
-	    $("#hashtags_tab").removeClass("active");
-	    $("#mentions_tab").removeClass("active");
-	    $("#urls_tab").removeClass("active");
-	    $("#custom_metrics_tab").removeClass("active");
-	    $("#alerts_tab").removeClass("active");
-	    $("#create_query_tab").addClass("active");
+		$("#hashtags_tab").removeClass("active");
+		$("#mentions_tab").removeClass("active");
+		$("#urls_tab").removeClass("active");
+		$("#custom_metrics_tab").removeClass("active");
+		$("#alerts_tab").removeClass("active");
+		$("#create_query_tab").addClass("active");
 	});
 </script>
 

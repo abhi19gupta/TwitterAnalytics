@@ -1,0 +1,21 @@
+{% load crispy_forms_tags %}
+
+{% block head %}
+<title>View DAG</title>
+{% endblock %}
+
+{% block body %}
+
+
+
+<div id="viewdaginfo">
+	<h3>View the DAG and its source</h3>
+	<center>
+	{{ dag.dag_div | safe }}
+	<br>
+	<pre>{{ dag.source }}</pre>
+	</center>
+
+</div>
+
+{% endblock %}
