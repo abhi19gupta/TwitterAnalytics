@@ -97,7 +97,7 @@
 					<div class="row valign change-form">
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
-							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Users</span></h5>
 								{% form form=uform %}{% endform %}
 								<p class="bs-component">
@@ -147,7 +147,7 @@
 					<div class="row valign change-form">
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
-							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Tweets</span></h5>
 								{% form form=tform %}{% endform %}
 								<p class="bs-component">
@@ -195,7 +195,7 @@
 					<div class="row valign change-form">
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
-							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
 							<h5 class="heading"><span>Relations</span></h5>
 							{% form form=rform %}{% endform %}
 
@@ -215,7 +215,7 @@
 					<div class="row valign change-form">
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
-							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Evaluate Query</span></h5>
 								{% form form=eform %}{% endform %}
 								<p class="bs-component">
@@ -240,7 +240,7 @@
 					<div class="row valign change-form">
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
-							<form  method='post' action="/create_mongo_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Most Popular hashtags</span></h5>
 								<!-- <h5>Give the most popular hashtags in total</h5> -->
 								{% form form=create_mongo_form_1 %}{% endform %}
@@ -253,7 +253,7 @@
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 
-							<form  method='post' action="/create_mongo_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Most popular hashtags in interval</span></h5>
 								<!-- <h5>Give the most popular hashtags in the time interval &ltBegin Time&gt and &ltEnd Time&gt</h5> -->
 								{% form form=create_mongo_form_2 %}{% endform %}
@@ -266,7 +266,7 @@
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 
-							<form  method='post' action="/create_mongo_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Usage of hashtag</span></h5>
 								<!-- <h5>Give the timetamps at which &lthashtag&gt is used between &ltBegin Time&gt and &ltEnd Time&gt</h5> -->
 								{% form form=create_mongo_form_3 %}{% endform %}
@@ -279,7 +279,7 @@
 							<p>&nbsp;</p>
 							<p>&nbsp;</p>
 
-							<form  method='post' action="/create_mongo_query_handler/">{% csrf_token %}
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Usage and Sentiment of hashtag</span></h5>
 								<!-- <h5>Give the timetamps, associated positive and negative sentiment of a &lthashtag&gt between &ltBegin Time&gt and &ltEnd Time&gt</h5> -->
 								{% form form=create_mongo_form_4 %}{% endform %}
@@ -303,7 +303,7 @@
 					<div class="row valign change-form">
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
-							<form id="createpostprocform" method="post" action="/create_postprocessing_handler/" enctype="multipart/form-data">{% csrf_token %}
+							<form id="createpostprocform" method="post" action="/create_query/create_postprocessing_handler/" enctype="multipart/form-data">{% csrf_token %}
 								{% form form=createpostprocform %}{% endform %}
 								<br>
 								<center>
@@ -317,7 +317,7 @@
 			</div>
 		</div>
 
-		<div id="view_queries" class="tab-pane fade in active">
+		<div id="view_queries" class="tab-pane fade">
 			<h5>All the Queris and Post processing functions created by you</h5>
 			<br>
 			<div>
@@ -375,14 +375,14 @@
 			</div>
 		</div>
 
-		<div id="createDAGTab" class="tab-pane fade in active">
+		<div id="createDAGTab" class="tab-pane fade">
 			<h5>Create a new DAG</h5>
 			<div class="valign-wrapper2">
 				<div class="container expand-on-small-only">
 					<div class="row valign change-form">
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
-							<form id="uploadfileform" method="post" action="create_dag_handler/" enctype="multipart/form-data">{% csrf_token %}
+							<form id="uploadfileform" method="post" action="/create_query/create_dag_handler/" enctype="multipart/form-data">{% csrf_token %}
 								{% form form=createdagform %}{% endform %}
 								<br>
 								<button type="submit" class="btn btn-primary">Submit!</button>
@@ -432,7 +432,7 @@
 			</div>
 		</div>
 
-		<div id="create_custom_metric" class="tab-pane fade in active">
+		<div id="create_custom_metric" class="tab-pane fade">
 			<h5>Create Custom Metric here to plot the graphs</h5>
 			<div class="valign-wrapper2">
 			<div class="container expand-on-small-only">
