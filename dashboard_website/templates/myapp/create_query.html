@@ -53,8 +53,38 @@
 	<div class="tab-content">
 
 		<div id="create_neo4j_query" class="tab-pane fade in active">
-			<h3>Create Neo4j custom query</h3>
-			{% include "myapp/neo4j_query.html" %}
+			<h5>Create Neo4j custom query</h5>
+			<div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;">
+							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+								<h4><span>Users</span></h4>
+								{{ uform|crispy }}
+								<p class="bs-component">
+										<center>
+												<input class="btn btn-success btn-sm" type="submit" name="b1" value="Make User" />
+										</center>
+								</p>
+							</form>
+							<p>&nbsp;</p>
+
+							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+								<h4><span>Tweets</span></h4>
+								{{ tform|crispy }}
+								<p class="bs-component">
+										<center>
+												<input class="btn btn-success btn-sm" type="submit" name="b2" value="Make Tweet" />
+										</center>
+								</p>
+							</form>
+							<p>&nbsp;</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div id="create_mongo_query" class="tab-pane fade">
@@ -173,28 +203,29 @@
 		</div>
 
 		<div id="create_custom_metric" class="tab-pane fade in active">
-			<h3>Create Custom Metric here to plot the graphs</h3>
+			<h5>Create Custom Metric here to plot the graphs</h5>
 			<div class="valign-wrapper2">
 			<div class="container expand-on-small-only">
 				<div class="row valign change-form">
 					<div class="col s12 m8 offset-m2 l8 offset-l2">
 						<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;">
 						<form id="custommetricid" method="post" action="/create_query/create_custom_metric_handler/">{% csrf_token %}
-						    {{ createcmform | crispy }}
+						    {% form form=createcmform %}{% endform %}
 						    <br>
 						    <button type="submit" class="btn btn-primary">Submit!</button>
 						</form>
+						<br>
+						<button id="plot_graph" class="btn btn-success">Plot Graph!</button>
+						<button id="create_table" class="btn btn-success">Create Table!</button>
+						<br><br>
+						<div id="custom_metric_space"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 			</div>
 
-			<br>
-			<button id="plot_graph" class="btn btn-success">Plot Graph!</button>
-			<button id="create_table" class="btn btn-success">Create Table!</button>
-			<br><br>
-			<div id="custom_metric_space"></div>
+
 		</div>
 
 
