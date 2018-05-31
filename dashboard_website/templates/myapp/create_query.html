@@ -1,5 +1,14 @@
-{% extends "myapp/theme.html" %}
+{% load static %}
+<div>
+{% include "myapp/theme.html" %}
+</div>
+
 {% load crispy_forms_tags %}
+
+{% include 'material/includes/material_css.html' %}
+<script src="{% static 'material/js/jquery.js' %}"></script>
+{% include 'material/includes/material_js.html' %}
+{% load material_form %}
 
 {% block head %}
 <head>
@@ -165,11 +174,22 @@
 
 		<div id="create_custom_metric" class="tab-pane fade in active">
 			<h3>Create Custom Metric here to plot the graphs</h3>
-			<form id="custommetricid" method="post" action="/create_query/create_custom_metric_handler/">{% csrf_token %}
-			    {{ createcmform | crispy }}
-			    <br>
-			    <button type="submit" class="btn btn-primary">Submit!</button>
-			</form>
+			<div class="valign-wrapper2">
+			<div class="container expand-on-small-only">
+				<div class="row valign change-form">
+					<div class="col s12 m8 offset-m2 l8 offset-l2">
+						<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;">
+						<form id="custommetricid" method="post" action="/create_query/create_custom_metric_handler/">{% csrf_token %}
+						    {{ createcmform | crispy }}
+						    <br>
+						    <button type="submit" class="btn btn-primary">Submit!</button>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+
 			<br>
 			<button id="plot_graph" class="btn btn-success">Plot Graph!</button>
 			<button id="create_table" class="btn btn-success">Create Table!</button>

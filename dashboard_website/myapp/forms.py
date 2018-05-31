@@ -1,6 +1,8 @@
 from django import forms
-from myapp.models import *
 from django.forms.extras.widgets import SelectDateWidget
+from material import *
+
+from myapp.models import *
 
 date_formats = ['%Y-%m-%dT%H:%M'] # this is returned by browsers implementing datetime-local
 date_formats.extend([
@@ -74,6 +76,10 @@ class CreateCustomMetricForm(forms.Form):
 	DAG = forms.ModelChoiceField(queryset=Dag.objects.all())
 	post_processing_function = forms.ModelChoiceField(queryset=Query.objects.filter(type="postProcessing"))
 	arguments = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}))
+
+	layout = Layout(Fieldset("Choose the DAG you want to execute",'DAG',
+					Fieldset('Choose the Post Processing function to get plot values',
+							 Row('post_processing_function', 'arguments'))))
 
 class CustomMetricForm(forms.Form):
 	metric = forms.ModelChoiceField(queryset=CustomMetric.objects.all())

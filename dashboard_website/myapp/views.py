@@ -5,6 +5,7 @@ from django.contrib import messages
 import django_tables2 as tables
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms.models import model_to_dict
+from material import *
 
 from myapp.forms import *
 from myapp.models import *

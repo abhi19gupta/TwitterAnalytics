@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'myapp',
     'crispy_forms',
     'django_tables2',
+    'material',
+    'material.theme.amber',
+    'material.frontend',
 ]
 
 MIDDLEWARE = [

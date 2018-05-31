@@ -7400,3 +7400,121 @@ KeyError: 'description'
 WARNING:django.request:Not Found: /favicon.ico
 WARNING:django.request:Not Found: /favicon.ico
 WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/defaulttags.py", line 1021, in find_library
+    return parser.libraries[name]
+KeyError: 'material_form'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 222, in query_creator
+    return render(request, 'myapp/create_query.html', data)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loader.py", line 67, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loader.py", line 21, in get_template
+    return engine.get_template(template_name)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 39, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/engine.py", line 160, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/engine.py", line 134, in find_template
+    name, template_dirs=dirs, skip=skip,
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loaders/base.py", line 44, in get_template
+    contents, origin, origin.template_name, self.engine,
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 191, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 233, in compile_nodelist
+    return parser.parse()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 518, in parse
+    raise self.error(token, e)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 516, in parse
+    compiled_result = compile_func(self, token)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/defaulttags.py", line 1078, in load
+    lib = find_library(parser, name)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/defaulttags.py", line 1025, in find_library
+    name, "\n".join(sorted(parser.libraries.keys())),
+django.template.exceptions.TemplateSyntaxError: 'material_form' is not a registered tag library. Must be one of:
+admin_list
+admin_modify
+admin_static
+admin_urls
+cache
+crispy_forms_field
+crispy_forms_filters
+crispy_forms_tags
+crispy_forms_utils
+django_tables2
+i18n
+l10n
+log
+static
+staticfiles
+tz
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loader_tags.py", line 201, in render
+    template = context.template.engine.get_template(template_name)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/engine.py", line 160, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/engine.py", line 146, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: info/theme.html
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 222, in query_creator
+    return render(request, 'myapp/create_query.html', data)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 68, in render
+    reraise(exc, self.backend)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 89, in reraise
+    six.reraise(exc.__class__, new, sys.exc_info()[2])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loader_tags.py", line 201, in render
+    template = context.template.engine.get_template(template_name)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/engine.py", line 160, in get_template
+    template, origin = self.find_template(template_name)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/engine.py", line 146, in find_template
+    raise TemplateDoesNotExist(name, tried=tried)
+django.template.exceptions.TemplateDoesNotExist: info/theme.html
