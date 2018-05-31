@@ -106,7 +106,7 @@ def execute_query(node_name,**context):
 """
 
 class DAG:
-	def __init__(self,network_file,queries,types):
+	def __init__(self,network_file_source,queries,types):
 		self.queries = queries
 		self.types = types
 		print("the queries and types are ")
@@ -126,8 +126,7 @@ class DAG:
 		self.giving_outputs = []
 		self.edges = []
 
-		fin = network_file
-		s = fin.read()
+		s = network_file_source
 		if(isinstance(s,bytes)):
 			s = s.decode()
 		cond = -1
@@ -188,6 +187,30 @@ class DAG:
 			print("The input file doesn't specify a DAG. Please Check!!")
 
 		print("-----------")
+
+	def feed_forward(self,execute):
+		"""
+		Do a topological sort and then do a bfs
+		"""
+		# outputs_dict = {}
+		ts = nx.topological_sort(self.graph)
+		for node in ts:
+			print(node)
+			query_name = self.graph.node[node]["query_name"]
+			inputs = self.inputs[node]
+			for inp in self.queries[query_name][1]:
+				if inp not in inputs.keys():
+					print("Node not getting all inputs")
+					sys.exit(0)
+			outputs = execute(query_name,inputs)
+			self.outputs_dict[node] = outputs
+			for nbr in self.graph.neighbors(node):
+				outp, inp = self.graph.edge[node][nbr]["mapping"]
+				self.inputs[nbr][inp] = outputs[outp]
+		rets= {}
+		for ret in self.returns:
+			rets[ret] = self.outputs_dict[ret[0]][ret[1]]
+		return self.outputs_dict
 
 	def generate_dag(self,dag_name):
 		print(os.getcwd())

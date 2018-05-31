@@ -7397,3 +7397,6 @@ Traceback (most recent call last):
   File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 652, in create_dag_handler
     dag_name = form.cleaned_data["description"]
 KeyError: 'description'
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico

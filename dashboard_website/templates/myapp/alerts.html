@@ -105,4 +105,18 @@
 	});
 </script>
 
+<script type="text/javascript">
+	function update_alerts(){
+		$.get(
+			"get_live_alerts",
+			function (data, status) {
+            	console.log(data);
+            	console.log(status);
+
+            }
+        );
+	};
+	setInterval(function(){update_alerts();}, 5000);
+</script>
+
 {% endblock %}

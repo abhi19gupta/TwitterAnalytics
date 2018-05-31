@@ -31,7 +31,7 @@ class Relation(models.Model):
 class Query(models.Model):
 	name = models.CharField(max_length=50)
 	query = models.TextField()
-	type = models.CharField(max_length=50, choices=[(x,x) for x in ['neo4j','mongoDB','PostProcesing']])
+	type = models.CharField(max_length=50, choices=[(x,x) for x in ['neo4j','mongoDB','postProcesing']])
 
 	def __str__(self):
 		return self.name

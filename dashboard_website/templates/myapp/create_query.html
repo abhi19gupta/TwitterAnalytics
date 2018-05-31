@@ -32,7 +32,7 @@
 
 <div class="container-fluid">
 	<ul class="nav nav-tabs">
-	<li class="active"><a data-toggle="tab" href="#create_neo4j_query">Create Neo4j Query</a></li>
+	  <li class="active"><a data-toggle="tab" href="#create_neo4j_query">Create Neo4j Query</a></li>
 	  <li><a data-toggle="tab" href="#create_mongo_query">Create MongoDB Query</a></li>
 	  <li><a data-toggle="tab" href="#create_postprocessing">Create Post-Processing Function</a></li>
 	  <li><a data-toggle="tab" href="#view_queries">All Queries</a></li>
@@ -88,9 +88,9 @@
 					</thead>
 					<tbody>
 						{% for q in queries %}
-						{% if q.query_type == 'Neo4j' %}
+						{% if q.query_type == 'neo4j' %}
 						<tr style="background-color: #80aaff;">
-						{% elif q.query_type == "MongoDB" %}
+						{% elif q.query_type == "mongoDB" %}
 						<tr style="background-color: #ffb380;">
 						{% else %}
 						<tr style="background-color: #b3ffb3;">
@@ -182,7 +182,7 @@
 		$("#hashtags_tab").removeClass("active");
 		$("#mentions_tab").removeClass("active");
 		$("#urls_tab").removeClass("active");
-		$("#custom_metrics_tab").removeClass("active");
+		// $("#custom_metrics_tab").removeClass("active");
 		$("#alerts_tab").removeClass("active");
 		$("#create_query_tab").addClass("active");
 	});

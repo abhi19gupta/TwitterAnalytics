@@ -22,12 +22,19 @@ import json, os
 
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
+###################################################################################################
+####################################  Create Global Objects #######################################
+###################################################################################################
 mongoQuery = MongoQuery()
 mongoAlert = MongoAlert()
 neo4jCreator = CreateQuery()
 flinkCodeGenerator = FlinkCodeGenerator()
 flink_api = FlinkAPI()
 
+
+###################################################################################################
+####################################  Meta logic functions ########################################
+###################################################################################################
 dag_div = ""
 query_output  = ""
 def binning(vals, num_bins):
@@ -48,6 +55,50 @@ def binning(vals, num_bins):
 		y[m]+=b[i]
 	return (x,y)
 
+def execute(query_name,inputs):
+	q = Query.objects.get(name=query_name)
+	outputs = [x.output_name for x in QueryOutput.objects.filter(query=q)]
+	ret = {out:[] for out in outputs}
+	print("========================================")
+	print("Executing query ",q.name)
+	pprint(inputs)
+	if(q.type=='neo4j'):
+		driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
+		session = driver.session()
+		result = session.run(q.query,inputs)
+		ret = {x:[] for x in outputs}
+		try:
+			for record in result:
+				for out in outputs:
+					if(isinstance(record[out],bytes)):
+						ret[out].append(record[out].decode("utf-8"))
+					else:
+						ret[out].append(record[out])
+		except:
+			pass
+	if(q.type=="mongoDB"):
+		if(q.query=="mp_ht_in_total"):
+			print(inputs["num"])
+			ret = mongoQuery.mp_ht_in_total(limit=inputs["num"])
+	print(ret)
+	print("========================================")
+	return ret
+
+def get_all_queries():
+		ret_query = {}
+		ret_types = {}
+		queries = Query.objects.all()
+		for query in queries:
+			inputs = [x.input_name for x in QueryInput.objects.filter(query=query)]
+			outputs = [x.output_name for x in QueryOutput.objects.filter(query=query)]
+			ret_query[query.name] = [query.query, inputs, outputs]
+			ret_types[query.name] = query.type
+		return ret_query,ret_types
+
+
+###################################################################################################
+####################################  Website View Functions ######################################
+###################################################################################################
 def home(request):
    return redirect("hashtags")
 
@@ -366,7 +417,7 @@ def create_postprocessing_handler(request):
 		if form.is_valid():
 			code = request.FILES['file'].read()
 			print(code)
-			Query.objects.create(name=form.cleaned_data['name'],query=code,type="PostProcessing")
+			Query.objects.create(name=form.cleaned_data['name'],query=code,type="postProcessing")
 			return redirect("/create_query")
 
 def create_custom_metric_handler(request):
@@ -394,28 +445,47 @@ def view_custom_metric_handler(request):
 			ret.append(dict_)
 		return ret
 
-	def run_query(query):
-		driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
-		session = driver.session()
-		result = session.run(query,{})
-		session.close()
-		return convert_result_to_json(result)
+	def run_query(dag_name):
+		# driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
+		# session = driver.session()
+		# result = session.run(query,{})
+		# session.close()
+		# return convert_result_to_json(result)
+		dag_obj = Dag.objects.get(dag_name=dag_name)
+		queries,types = get_all_queries()
+		dag = DAG(dag_obj.source, queries, types)
+		outputs = dag.feed_forward(execute)
+		return outputs
 
 	if request.method == 'POST':
 		form = CustomMetricForm(request.POST)
 		if form.is_valid():
-			custom_metric = form.cleaned_data['metric']
-			query = custom_metric.query.query
-			post_proc = custom_metric.post_proc.code
-			print("Query: ", query)
-			print("Post-Proc: ", post_proc)
-			query_result = run_query(query)
+			dag = form.cleaned_data["DAG"]
+			post_proc = form.cleaned_data["post_processing_function"].query
+			args = [x.lstrip().rstrip() for x in form.cleaned_data["arguments"].split(",")]
+
+			# query = custom_metric.query.query
+			# post_proc = custom_metric.post_proc.code
+			# print("Query: ", query)
+			# print("Post-Proc: ", post_proc)
+			outputs = run_query(dag.dag_name)
+			output_vars = {}
+			for k,v in outputs:
+				for var,val in v:
+					output_vars[k+"."+var] = val
+			con = {}
+			for i,arg in enumerate(args):
+				if arg in output_vars.keys():
+					con["arg"+str(i)] = output_vars[arg]
+				else:
+					con["arg"+str(i)] = eval(arg)
 			# print(query_result)
 			(x_values,y_values) = ([],[])
 			try:
 				compile(post_proc,'','exec')
-				context = {"query_result":query_result}
-				exec(post_proc + "\n" + "(x_values,y_values) = func(query_result)", context)
+				# context = {"query_result":query_result}
+				context = con
+				exec(post_proc + "\n" + "(x_values,y_values) = func("+",".join(list(con.keys()))+")", context)
 				(x_values,y_values) = (context["x_values"],context["y_values"])
 				# print(context["x_values"],context["y_values"])
 			except Exception as e:
@@ -598,50 +668,12 @@ def create_query(request):
 	print('create_query')
 	return render(request, "myapp/create_query.html", {"uploadfileform":UploadFileForm(),"dag_graph_my":dag_div,"query_output":query_output})
 
-def execute(query_name,inputs):
-	q = Query.objects.get(name=query_name)
-	outputs = [x.output_name for x in QueryOutput.objects.filter(query=q)]
-	ret = {out:[] for out in outputs}
-	print("========================================")
-	print("Executing query ",q.name)
-	pprint(inputs)
-	if(q.type=='neo4j'):
-		driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
-		session = driver.session()
-		result = session.run(q.query,inputs)
-		ret = {x:[] for x in outputs}
-		try:
-			for record in result:
-				for out in outputs:
-					if(isinstance(record[out],bytes)):
-						ret[out].append(record[out].decode("utf-8"))
-					else:
-						ret[out].append(record[out])
-		except:
-			pass
-	if(q.type=="mongoDB"):
-		if(q.query=="mp_ht_in_total"):
-			print(inputs["num"])
-			ret = mongoQuery.mp_ht_in_total(limit=inputs["num"])
-	print(ret)
-	print("========================================")
-	return ret
 
 
 def create_dag_handler(request):
 	global dag_div
 	global query_output
 	print("came into the function")
-	def get_all_queries():
-		ret_query = {}
-		ret_types = {}
-		queries = Query.objects.all()
-		for query in queries:
-			inputs = [x.input_name for x in QueryInput.objects.filter(query=query)]
-			outputs = [x.output_name for x in QueryOutput.objects.filter(query=query)]
-			ret_query[query.name] = [query.query, inputs, outputs]
-			ret_types[query.name] = query.type
-		return ret_query,ret_types
 
 	if request.method == 'POST':
 		print("came into post")
@@ -652,26 +684,24 @@ def create_dag_handler(request):
 			description = form.cleaned_data["description"]
 
 			file_handler = request.FILES['file']
+			source = file_handler.read()
+
 			queries,types = get_all_queries()
-			dag = DAG(file_handler, queries, types)
+			dag = DAG(source, queries, types)
 			dag_div = dag.plot_dag()
-			Dag.objects.create(dag_name=dag_name,description = description, dag_div=dag_div,source=file_handler.read())
+			Dag.objects.create(dag_name=dag_name,description = description, dag_div=dag_div,source=source)
 			rets = dag.generate_dag(dag_name)
 		else:
 			print(form["name"].errors,form['file'].errors)
 		return redirect('/create_query/')
 
 def delete_dag_handler(request,dag_name):
-	form = ViewDagForm(request.POST)
-	if(form.is_valid()):
-		dag = form.cleaned_data["dag"]
-		dag_name = dag.dag_name
-		# dag = Dag.objects.filter(dag_name=dag_name)[0]
-		dag.delete()
-		try:
-			os.remove("myapp/airflow/dags/"+dag_name+".py")
-		except OSError:
-			pass
+	dag = Dag.objects.filter(dag_name=dag_name)[0]
+	dag.delete()
+	try:
+		os.remove("myapp/airflow/dags/"+dag_name+".py")
+	except OSError:
+		pass
 	return redirect('/create_query/')
 
 def view_dag_handler(request,dag_name):

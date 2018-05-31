@@ -70,10 +70,10 @@ class UploadFileForm(forms.Form):
 	file = forms.FileField(required=False)
 
 class CreateCustomMetricForm(forms.Form):
-	name = forms.CharField(max_length=50)
+	# name = forms.CharField(max_length=50)
 	DAG = forms.ModelChoiceField(queryset=Dag.objects.all())
-	post_processing_function = forms.ModelChoiceField(queryset=Query.objects.filter(type="PostProcessing"))
-	arguemnts = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}))
+	post_processing_function = forms.ModelChoiceField(queryset=Query.objects.filter(type="postProcessing"))
+	arguments = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}))
 
 class CustomMetricForm(forms.Form):
 	metric = forms.ModelChoiceField(queryset=CustomMetric.objects.all())
