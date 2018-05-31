@@ -23,6 +23,11 @@ import json, os
 
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
+# TODOS:
+# username in neo4j
+# deal with multiple hashtags in create neo4j query form
+# include post processing functions in create and execute DAG
+
 ###################################################################################################
 ####################################  Create Global Objects #######################################
 ###################################################################################################
@@ -170,26 +175,26 @@ def hashtag_sentiment_getter(request):
 def query_creator(request):
 
 	def get_create_query_subtab_data():
-		d = []
+		users = []
 		for usr in User.objects.all():
-			d.append({"Variable_Name":usr.uname,"UserId":usr.userid})
-		utable = UserTable(d)
-		d = []
+			users.append({"Variable_Name":usr.uname,"UserId":usr.userid})
+		# utable = UserTable(d)
+		tweets = []
 		for twt in Tweet.objects.all():
-			d.append({"Variable_Name":twt.tname,"Hashtag":twt.hashtag,"Retweet_Of":twt.retweet_of,"Reply_Of":twt.reply_of,"Quoted":twt.quoted,"Has_Mentioned":twt.has_mention})
-		ttable = TweetTable(d)
+			tweets.append({"Variable_Name":twt.tname,"Hashtag":twt.hashtag,"Retweet_Of":twt.retweet_of,"Reply_Of":twt.reply_of,"Quoted":twt.quoted,"Has_Mentioned":twt.has_mention})
+		# ttable = TweetTable(d)
 
-		d = []
+		rels = []
 		for rel in Relation.objects.all():
-			d.append({"Source":rel.source,"Relation_Ship":rel.relation,"Destination":rel.destn,"Begin":rel.bt,"End":rel.et})
-		rtable = RelationTable(d)
+			rels.append({"Source":rel.source,"Relation_Ship":rel.relation,"Destination":rel.destn,"Begin":rel.bt,"End":rel.et})
+		# rtable = RelationTable(d)
 		# print(d)
-		tables.RequestConfig(request).configure(utable)
-		tables.RequestConfig(request).configure(ttable)
-		tables.RequestConfig(request).configure(rtable)
+		# tables.RequestConfig(request).configure(utable)
+		# tables.RequestConfig(request).configure(ttable)
+		# tables.RequestConfig(request).configure(rtable)
 
 		return {'uform': UserForm(),'tform': TweetForm(),'rform': RelationForm(), 'eform' : EvaluateForm(),
-		'user_list':utable,'tweet_list':ttable,'relation_list':rtable}
+		'user_list':users,'tweet_list':tweets,'relation_list':rels}
 
 
 	output_s = ""
@@ -198,6 +203,7 @@ def query_creator(request):
 	data = get_create_query_subtab_data()
 	data.update({"create_mongo_form_1":PopularHash(), "create_mongo_form_2":PopularHashInInterval(),
 		"create_mongo_form_3":HashUsageInInterval(), "create_mongo_form_4":HashSentimentInInterval()})
+	data.update({"createpostprocform":PostProcForm()})
 	data.update({"query_s":query_s, 'output_s':output_s})
 	data.update({"createdagform":CreateDagForm()})
 	data.update({"create_custom_metric_form":CreateCustomMetricForm()})

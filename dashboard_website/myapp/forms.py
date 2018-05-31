@@ -18,6 +18,7 @@ date_formats.extend([
  '%d/%m/%Y %H:%M',       # '25/10/2016 14:30'
  '%d-%m-%Y %H:%M']        # '25-10-2016 14:30'
 )
+# required for Tt2 = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats,required=False)
 
 class HashtagForm(forms.Form):
 	hashtag = forms.CharField(max_length = 50)
@@ -39,35 +40,34 @@ class TweetForm(forms.Form):
 	Reply_Of = forms.ModelChoiceField(queryset=Tweet.objects.all(),required=False)
 	Quoted = forms.ModelChoiceField(queryset=Tweet.objects.all(),required=False)
 	Has_Mentioned = forms.ModelChoiceField(queryset=User.objects.all(),required=False)
+	layout = Layout("Variable_Name","Hashtag",
+					Row("Retweet_Of","Reply_Of"),
+					Row("Quoted","Has_Mentioned"),
+					)
 
 class RelationForm(forms.Form):
 	Source = forms.ModelChoiceField(queryset=User.objects.all(),required=False)
 	URelationShip = forms.ChoiceField(choices=[(x,x) for x in [None,"FOLLOWS","STARTED_FOLLOWING","FOLLOWED"]],required=False)
 	UDestination = forms.ModelChoiceField(queryset=User.objects.all(),required=False)
 
-	# Ut1 = forms.DateTimeField(required=False,widget=SelectDateWidget(years=("2016","2017")))
-	# Ut1m = forms.TimeField(widget=forms.TimeInput(format='%H:%M'),required=False)
-	# Ut2 = forms.DateTimeField(required=False,widget=SelectDateWidget(years=("2016","2017")))
-	# Ut2m = forms.TimeField(widget=forms.TimeInput(format='%H:%M'),required=False)
-
-	Ut1 = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats,required=False)
-	Ut2 = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats,required=False)
+	Ut1 = forms.DateTimeField(required=False)
+	Ut2 = forms.DateTimeField(required=False)
 
 	TRelationShip = forms.ChoiceField(choices=[(x,x) for x in [None,"TWEETED"]],required=False)
 	TDestination = forms.ModelChoiceField(queryset=Tweet.objects.all(),required=False)
 
-	# Tt1 = forms.DateTimeField(required=False,widget=SelectDateWidget(years=("2016","2017")))
-	# Tt1m = forms.TimeField(widget=forms.TimeInput(format='%H:%M'),required=False)
+	Tt1 = forms.DateTimeField(required=False)
+	Tt2 = forms.DateTimeField(required=False)
+	layout = Layout("Source",
+					Fieldset("Choose the User Relationships",Row("URelationShip","UDestination"),Row("Ut1","Ut2")),
+					Fieldset("Choose the Tweet Relationships",Row("TRelationShip","TDestination"),Row("Tt1","Tt2")),
+					)
 
-	# Tt2 = forms.DateTimeField(required=False,widget=SelectDateWidget(years=("2016","2017")))
-	# Tt2m = forms.TimeField(widget=forms.TimeInput(format='%H:%M'),required=False)
-	Tt1 = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats,required=False)
-	Tt2 = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats,required=False)
 class EvaluateForm(forms.Form):
 	Return_Variables  = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}))
 	Query_Name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}))
 
-class UploadFileForm(forms.Form):
+class PostProcForm(forms.Form):
 	name = forms.CharField(max_length = 50)
 	file = forms.FileField(required=False)
 
@@ -112,23 +112,34 @@ class CreateAlertForm(forms.Form):
 class PopularHash(forms.Form):
 	number = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
 	query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+	layout = Layout(Fieldset("Give the most popular hashtags in total","query_name","number"))
 
 class PopularHashInInterval(forms.Form):
-	Begin_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
-	End_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+	Begin_Time = forms.DateTimeField()
+	End_Time = forms.DateTimeField()
 	query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+	layout = Layout(Fieldset("Give the most popular hashtags in the time interval <Begin Time> and <End Time>",
+							"query_name",
+							 Row('Begin_Time', 'End_Time')))
 
 class HashUsageInInterval(forms.Form):
 	Hashtag  = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
-	Begin_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
-	End_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+	Begin_Time = forms.DateTimeField(required=False)
+	End_Time = forms.DateTimeField(required=False)
 	query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+
+	layout = Layout(Fieldset("Give the timetamps at which <hashtag> is used between <Begin Time> and <End Time>",
+							"query_name",'Hashtag',
+							 Row('Begin_Time', 'End_Time')))
 
 class HashSentimentInInterval(forms.Form):
 	Hashtag  = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
-	Begin_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
-	End_Time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+	Begin_Time = forms.DateTimeField()
+	End_Time = forms.DateTimeField()
 	query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
+	layout = Layout(Fieldset("Give the timetamps, associated positive and negative sentiment of a <hashtag> between <Begin Time> and <End Time>",
+							"query_name",'Hashtag',
+							 Row('Begin_Time', 'End_Time')))
 
 class ViewDagForm(forms.Form):
 	dag = forms.ModelChoiceField(queryset=Dag.objects.all())

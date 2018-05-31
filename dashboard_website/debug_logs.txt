@@ -7520,3 +7520,92 @@ Traceback (most recent call last):
 django.template.exceptions.TemplateDoesNotExist: info/theme.html
 WARNING:django.request:Not Found: /favicon.ico
 WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such column: myapp_user.username
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 198, in query_creator
+    data = get_create_query_subtab_data()
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 174, in get_create_query_subtab_data
+    for usr in User.objects.all():
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/models/query.py", line 256, in __iter__
+    self._fetch_all()
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/models/query.py", line 1087, in _fetch_all
+    self._result_cache = list(self.iterator())
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql()
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/models/sql/compiler.py", line 835, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such column: myapp_user.username
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 222, in query_creator
+    return render(request, 'myapp/create_query.html', data)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/loader_tags.py", line 61, in render
+    result = self.nodelist.render(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/template/defaulttags.py", line 165, in render
+    values = list(values)
+TypeError: 'UserTable' object is not iterable
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 198, in query_creator
+    data = get_create_query_subtab_data()
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 182, in get_create_query_subtab_data
+    rels
+NameError: name 'rels' is not defined
