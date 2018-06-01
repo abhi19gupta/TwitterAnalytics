@@ -8564,3 +8564,5 @@ Traceback (most recent call last):
   File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/flink/flink_api.py", line 70, in check_job_status_all
     raise Exception('Failed to check job statuses. Error: %s, %s'%(str(type(e)),str(e)))
 Exception: Failed to check job statuses. Error: <class 'requests.exceptions.ConnectionError'>, HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb6191b7cf8>: Failed to establish a new connection: [Errno 111] Connection refused',))
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico

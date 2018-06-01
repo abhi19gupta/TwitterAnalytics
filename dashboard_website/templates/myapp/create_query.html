@@ -69,7 +69,12 @@
 		<div id="create_neo4j_query" class="tab-pane fade in active">
 			<h5>Create Neo4j custom query</h5>
 			<br>
-
+			<form  method='post' action="/create_query/delete_all_variables_handler/">{% csrf_token %}
+			<center>
+				<input class="btn btn-success btn-sm" type="submit" name="clear" value="Delete All Variables" />
+			</center>
+			</form>
+			<br>
 			<div class="table-responsive">
 				<table class="table table-hover table-striped table-bordered">
 					<thead>

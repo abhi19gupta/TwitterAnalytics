@@ -411,6 +411,12 @@ def create_neo4j_query_handler(request):
 
 	return redirect("/create_query/?query_s=%s"%sq)
 
+def delete_all_variables_handler(request):
+	User.objects.all().delete()
+	Tweet.objects.all().delete()
+	Relation.objects.all().delete()
+	return redirect("/create_query/")
+
 def create_mongo_query_handler(request):
 
 	if("b1" in request.POST):
