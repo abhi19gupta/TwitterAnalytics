@@ -334,10 +334,10 @@
 					<thead>
 					  <tr style="background: #2C2B2A; color: white">
 						<th rowspan="2" style="text-align: center;">Query Name</th>
-						<th rowspan="2" colspan="4" style="text-align: center;">Code</th>
-						<th rowspan="2" colspan="3" style="text-align: center;">Inputs</th>
-						<th rowspan="2" colspan="3" style="text-align: center;">Outputs</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Actions</th>
+						<th rowspan="2" colspan="3" style="text-align: center;">Code</th>
+						<th rowspan="2"  style="text-align: center;">Inputs</th>
+						<th rowspan="2" style="text-align: center;">Outputs</th>
+						<th rowspan="2" style="text-align: center;">Actions</th>
 
 					  </tr>
 					</thead>
@@ -351,13 +351,13 @@
 						<tr style="background-color: #b3ffb3;">
 						{% endif %}
 							<td style="text-align: center;">{{q.name}}</td>
-							<td colspan="4" ><pre>{{q.code}}</pre></td>
-							<td colspan="3" >
+							<td colspan="3"><pre>{{q.code}}</pre></td>
+							<td>
 								{% for i in q.inputs%}
 									<li>{{i}}</li>
 								{% endfor %}
 							</td>
-							<td colspan="3">
+							<td>
 								{% for o in q.outputs%}
 									<li>{{o}}</li>
 								{% endfor %}

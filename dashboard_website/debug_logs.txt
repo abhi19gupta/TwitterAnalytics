@@ -8484,3 +8484,83 @@ Traceback (most recent call last):
   File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo/ingest_raw.py", line 213, in ht_in_interval
     t1,t2 = eval(begin),eval(end)
 TypeError: eval() arg 1 must be a string, bytes or code object
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+ERROR:django.request:Internal Server Error: /alerts/
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/util/connection.py", line 83, in create_connection
+    raise err
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/connectionpool.py", line 357, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/http/client.py", line 1137, in request
+    self._send_request(method, url, body, headers)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/http/client.py", line 1182, in _send_request
+    self.endheaders(body)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/http/client.py", line 1133, in endheaders
+    self._send_output(message_body)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/http/client.py", line 963, in _send_output
+    self.send(msg)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/http/client.py", line 898, in send
+    self.connect()
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/connection.py", line 166, in connect
+    conn = self._new_conn()
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7fb6191b7cf8>: Failed to establish a new connection: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/requests/adapters.py", line 440, in send
+    timeout=timeout
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/urllib3/util/retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb6191b7cf8>: Failed to establish a new connection: [Errno 111] Connection refused',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/flink/flink_api.py", line 52, in check_job_status_all
+    r = requests.get(self.base_url + "joboverview")
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/requests/api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/requests/api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/requests/sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/requests/sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/requests/adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb6191b7cf8>: Failed to establish a new connection: [Errno 111] Connection refused',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/deepak_saini/anaconda3/envs/django1.10/lib/python3.4/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 637, in alerts
+    alertSpecs = get_alert_specs()
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 629, in get_alert_specs
+    flink_status = flink_api.check_job_status_all()
+  File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/flink/flink_api.py", line 70, in check_job_status_all
+    raise Exception('Failed to check job statuses. Error: %s, %s'%(str(type(e)),str(e)))
+Exception: Failed to check job statuses. Error: <class 'requests.exceptions.ConnectionError'>, HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb6191b7cf8>: Failed to establish a new connection: [Errno 111] Connection refused',))

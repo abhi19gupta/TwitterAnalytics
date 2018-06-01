@@ -22,12 +22,12 @@ date_formats.extend([
 
 class HashtagForm(forms.Form):
 	hashtag = forms.CharField(max_length = 50)
-	start_time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
-	end_time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+	start_time = forms.DateTimeField()
+	end_time = forms.DateTimeField()
 
 class Top10Form(forms.Form):
-	start_time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2016 14:30'}),input_formats=date_formats)
-	end_time = forms.DateTimeField(widget=forms.TextInput(attrs={'type': 'datetime-local','placeholder':'25/10/2018 14:30'}),input_formats=date_formats)
+	start_time = forms.DateTimeField()
+	end_time = forms.DateTimeField()
 
 class UserForm(forms.Form):
 	User_Variable  = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}),required=False)
