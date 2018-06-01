@@ -17,7 +17,7 @@ class Tweet(models.Model):
 class User(models.Model):
 	uname = models.CharField(max_length=200)
 	userid = models.CharField(max_length=200)
-	username = models.CharField(default="_NOT_PROVIDED_",max_length=200)
+	username = models.CharField(max_length=200)
 	userscreenname = models.CharField(max_length=200)
 
 	def __str__(self):

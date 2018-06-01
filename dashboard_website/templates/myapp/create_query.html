@@ -273,7 +273,6 @@
 
 							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Usage of hashtag</span></h5>
-								<!-- <h5>Give the timetamps at which &lthashtag&gt is used between &ltBegin Time&gt and &ltEnd Time&gt</h5> -->
 								{% form form=create_mongo_form_3 %}{% endform %}
 								<p class="bs-component">
 									<center>
@@ -286,11 +285,22 @@
 
 							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
 								<h5 class="heading"><span>Usage and Sentiment of hashtag</span></h5>
-								<!-- <h5>Give the timetamps, associated positive and negative sentiment of a &lthashtag&gt between &ltBegin Time&gt and &ltEnd Time&gt</h5> -->
 								{% form form=create_mongo_form_4 %}{% endform %}
 								<p class="bs-component">
 									<center>
 										<input class="btn btn-success btn-sm" type="submit" name="b4" value="Create" />
+									</center>
+								</p>
+							</form>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Most Popular users</span></h5>
+								{% form form=create_mongo_form_5 %}{% endform %}
+								<p class="bs-component">
+									<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b5" value="Create" />
 									</center>
 								</p>
 							</form>

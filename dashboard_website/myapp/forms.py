@@ -101,6 +101,8 @@ class CreateAlertForm(forms.Form):
 	window_slide = forms.IntegerField(help_text='Window slide in seconds')
 	count_threshold = forms.IntegerField(help_text='Alert threshold of tweets in above window')
 
+	layout = Layout("alert_name", "filter", "keys", "window_length", "window_slide", "count_threshold")
+
 # class CreateAlertForm(forms.ModelForm):
 #     keys = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple,
 #         choices=[('user_id','User Id'),('hashtag','Hashtag'),('url','URL'),('user_mention','User Mention')])
@@ -147,6 +149,10 @@ class HashSentimentInInterval(forms.Form):
 	layout = Layout(Fieldset("Give the timetamps, associated positive and negative sentiment of a <hashtag> between <Begin Time> and <End Time>",
 							"query_name",'hashtag',
 							 Row('begin_time', 'end_time')))
+class PopularUser(forms.Form):
+	number = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}))
+	query_name = forms.CharField(widget=forms.TextInput(attrs={'class' : 'myfieldclass'}))
+	layout = Layout(Fieldset("Give the most popular users in total","query_name","number"))
 
 class ViewDagForm(forms.Form):
 	dag = forms.ModelChoiceField(queryset=Dag.objects.all())

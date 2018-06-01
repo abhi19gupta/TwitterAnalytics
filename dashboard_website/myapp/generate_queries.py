@@ -108,9 +108,15 @@ class CreateQuery:
             if(a[1]=="TWEET"):
                 for att in self.properties[a[0]]:
                     if(att[0]=="hashtag"):
-                        tweet_properties.append((self.conditional_create(a[0]),"HAS_HASHTAG",":HASHTAG {text:'"+att[1]+"'}"))
+                        if (att[1] in [x+"_value" for x in unwind_list]):
+                            tweet_properties.append((self.conditional_create(a[0]),"HAS_HASHTAG",":HASHTAG {text:"+att[1]+"}"))
+                        else:
+                            tweet_properties.append((self.conditional_create(a[0]),"HAS_HASHTAG",":HASHTAG {text:'"+att[1]+"'}"))
                     elif(att[0]=="url"):
-                        tweet_properties.append((self.conditional_create(a[0]),"HAS_URL",":URL {expanded_url:'"+att[1]+"'}"))
+                        if (att[1] in [x+"_value" for x in unwind_list]):
+                            tweet_properties.append((self.conditional_create(a[0]),"HAS_URL",":URL {expanded_url:"+att[1]+"}"))
+                        else:
+                            tweet_properties.append((self.conditional_create(a[0]),"HAS_URL",":URL {expanded_url:'"+att[1]+"'}"))
                     elif(att[0]=="retweet_of"):
                         tweet_properties.append((self.conditional_create(a[0]),"RETWEET_OF",self.conditional_create(att[1])))
                     elif(att[0]=="reply_of"):

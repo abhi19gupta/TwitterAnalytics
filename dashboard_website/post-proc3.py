@@ -1,5 +1,5 @@
 def func(inputs):
-	inputs = list(zip(inputs["uid"], inputs["count"]))
+	inputs = list(zip(inputs["userid"], inputs["count"]))
 	inputs.sort(key=lambda item:item[1], reverse=True)
 	x_vals = []
 	y_vals = []

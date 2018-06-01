@@ -196,7 +196,7 @@ class MongoQuery():
 		limit = int(limit)
 		pipeline = [{"$group": {"_id": "$hashtag", "count": {"$sum": 1}}},{"$sort": {"count":-1}},{"$limit":limit}]
 		l = self.db.ht_collection.aggregate(pipeline)["result"]
-		return {"_id":[x["_id"] for x in l],"count":[x["count"] for x in l]}
+		return {"hashtag":[x["_id"] for x in l],"count":[x["count"] for x in l]}
 	def mp_ht_in_interval(self,limit,begin,end):
 		limit = int(limit)
 		t1 = int(begin)
@@ -205,7 +205,7 @@ class MongoQuery():
 		pipeline = [{"$match":{"timestamp":{"$gte":t1,"$lte":t2}}},{"$group": {"_id": "$hashtag", "count": {"$sum": 1}}},
 		{"$sort": {"count":-1}},{"$limit":limit}]
 		l =  self.db.ht_collection.aggregate(pipeline)["result"]
-		return {"_id":[x["_id"] for x in l],"count":[x["count"] for x in l]}
+		return {"hashtag":[x["_id"] for x in l],"count":[x["count"] for x in l]}
 
 	def ht_in_interval(self,hashtag,begin,end):
 		# t1 = begin.timestamp()
@@ -223,9 +223,11 @@ class MongoQuery():
 		l = [(x["timestamp"],x["sentiment_pos"],x["sentiment_neg"]) for x in list(records)]
 		return {"timestamps":[x[0] for x in l],"positive_sentiment":[x[1] for x in l],"negative_sentiment":[x[2] for x in l]}
 
-	def mp_um_in_total(self):
-		pipeline = [{"$group": {"_id": "$user", "count": {"$sum": 1}}},{"$sort": {"count":-1}},{"$limit":50}]
-		return self.db.um_collection.aggregate(pipeline)["result"]
+	def mp_um_in_total(self,limit):
+		limit = int(limit)
+		pipeline = [{"$group": {"_id": "$user", "count": {"$sum": 1}}},{"$sort": {"count":-1}},{"$limit":limit}]
+		l = self.db.um_collection.aggregate(pipeline)["result"]
+		return {"userId":[int(x["_id"]) for x in l],"count":[x["count"] for x in l]}
 # def hello():
 #     global count
 #     print("Tweets Ingested : ",count)

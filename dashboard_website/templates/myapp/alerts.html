@@ -1,8 +1,45 @@
-{% extends "myapp/theme.html" %}
+{% load static %}
+<div>
+{% include "myapp/theme.html" %}
+</div>
+
 {% load crispy_forms_tags %}
 
+{% include 'material/includes/material_css.html' %}
+<script src="{% static 'material/js/jquery.js' %}"></script>
+{% include 'material/includes/material_js.html' %}
+{% load material_form %}
+
 {% block head %}
-<title>Alerts</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alerts</title>
+
+    <style type="text/css">
+      html, body {
+          background: #eee;
+          height: 100%;
+      }
+    </style>
+
+    <style type="text/css">
+    .heading {
+         width: 100%;
+         text-align: center;
+         border-bottom: 1px solid #000;
+         line-height: 0.1em;
+         margin: 10px 0 20px;
+    }
+
+    .heading span {
+            background:#fff;
+            padding:0 10px;
+    }
+    </style>
+</head>
+
 {% endblock %}
 
 {% block body %}
@@ -17,12 +54,22 @@
 	<div class="tab-content">
 
 		<div id="createTab" class="tab-pane fade in active">
-			<h3>Create a new alert</h3>
-			<form id="createAlertForm" method="post" action="alerts_create_handler/">{% csrf_token %}
-			    {{ create_alert_form | crispy }}
-			    <br>
-			    <button type="submit" class="btn btn-primary">Create Alert!</button>
-			</form>
+			<h5>Create a new alert</h5>
+			<div class="valign-wrapper2">
+                <div class="container expand-on-small-only">
+                    <div class="row valign change-form">
+                        <div class="col s12 m8 offset-m2 l8 offset-l2">
+                        	<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form id="createAlertForm" method="post" action="alerts_create_handler/">{% csrf_token %}
+							    {% form form=create_alert_form %}{% endform %}
+							    <br>
+							    <button type="submit" class="btn btn-primary">Create Alert!</button>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div id="manageTab" class="tab-pane fade">
@@ -99,7 +146,7 @@
 	    $("#hashtags_tab").removeClass("active");
 	    $("#mentions_tab").removeClass("active");
 	    $("#urls_tab").removeClass("active");
-	    $("#custom_metrics_tab").removeClass("active");
+	    // $("#custom_metrics_tab").removeClass("active");
 	    $("#alerts_tab").addClass("active");
 	    $("#create_query_tab").removeClass("active");
 	});

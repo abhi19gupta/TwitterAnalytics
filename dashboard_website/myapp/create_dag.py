@@ -23,6 +23,8 @@ from airflow.models import DAG
 from datetime import datetime
 import sys
 import sqlite3
+import copy
+import os
 from pprint import *
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
@@ -58,18 +60,20 @@ def get_task_from_node(node):
 
 execute_fn = """
 def execute_query(node_name,**context):
+	query_to_node = {v:k for k,v in node_to_query.items()}
 	query_name = node_to_query[node_name]
 	mongoQuery = MongoQuery()
 
 	query_code  = queries[query_name][0]
 	input_vars = queries[query_name][1]
+	constant_vars = list(provided_inputs[query_to_node[query_name]].keys())
 	output_vars = queries[query_name][2]
 	query_type = types[query_name]
 	ret = {out:[] for out in output_vars}
 
 	inputs = {}
-	for x in input_vars:
-		if(mapping[node_name][x]=="-"):
+	for x in set(input_vars+constant_vars):
+		if(x not in mapping[node_name] or mapping[node_name][x]=="-"):
 			inputs[x] = provided_inputs[node_name][x]
 		else:
 			mapp = mapping[node_name][x]
@@ -94,19 +98,41 @@ def execute_query(node_name,**context):
 						ret[out].append(record[out])
 		except:
 			print("Came into except ")
-	if(query_type=="mongoDB"):
+	elif(query_type=="mongoDB"):
+		temp = inputs
 		if(query_code=="mp_ht_in_total"):
-			print(inputs["num"])
-			ret = mongoQuery.mp_ht_in_total(limit=inputs["num"])
+			ret = mongoQuery.mp_ht_in_total(**temp)
+		elif(query_code=="mp_ht_in_interval"):
+			ret = mongoQuery.mp_ht_in_interval(**temp)
+		elif(query_code=="ht_in_interval"):
+			ret = mongoQuery.ht_in_interval(**temp)
+		elif(query_code=="ht_with_sentiment"):
+			ret = mongoQuery.ht_with_sentiment(**temp)
+		elif(query_code=="mp_um_in_total"):
+			ret = mongoQuery.mp_um_in_total(**temp)
+
+	elif(query_type=="postProcessing"):
+		context = {"inputs":copy.deepcopy(inputs)}
+		try:
+			compile(q.query,'','exec')
+			exec(q.query + "\\n" + "ret = func(inputs)", context)
+			for out in outputs:
+				ret[out] = context[out]
+		except Exception as e:
+			print("Exeption while executing Post proc function: %s, %s"%(type(e),e))
+
 	print(ret)
 	for k,v in ret.items():
 		context['task_instance'].xcom_push(k,v)
 	print("========================================")
 	return ret
 """
-
+# if(query_type=="mongoDB"):
+# 		if(query_code=="mp_ht_in_total"):
+# 			print(inputs["num"])
+# 			ret = mongoQuery.mp_ht_in_total(limit=inputs["num"])
 class DAG:
-	def __init__(self,network_file_source,queries,types):
+	def __init__(self,network_file_source,queries,types,constants):
 		self.queries = queries
 		self.types = types
 		print("the queries and types are ")
@@ -185,7 +211,12 @@ class DAG:
 		is_dag = nx.is_directed_acyclic_graph(self.graph)
 		if(not(is_dag)):
 			print("The input file doesn't specify a DAG. Please Check!!")
-
+		#Treating mongoDB constants as provided inputs in DAG
+		self.query_to_node = {v:k for k,v in self.node_to_query.items()}
+		for q,v in constants.items():
+			# print(q,v)
+			for var,val in v.items():
+				self.inputs[self.query_to_node[q]][var] = val
 		print("-----------")
 
 	def feed_forward(self,execute):
@@ -207,9 +238,9 @@ class DAG:
 			for nbr in self.graph.neighbors(node):
 				outp, inp = self.graph.edge[node][nbr]["mapping"]
 				self.inputs[nbr][inp] = outputs[outp]
-		rets= {}
-		for ret in self.returns:
-			rets[ret] = self.outputs_dict[ret[0]][ret[1]]
+		# rets= {}
+		# for ret in self.returns:
+		# 	rets[ret] = self.outputs_dict[ret[0]][ret[1]]
 		return self.outputs_dict
 
 	def generate_dag(self,dag_name):

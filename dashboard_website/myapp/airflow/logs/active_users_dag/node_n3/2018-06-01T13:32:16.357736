@@ -1,0 +1,82 @@
+[2018-06-01 13:32:51,338] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/active_users_dag.py
+[2018-06-01 13:32:51,863] {base_task_runner.py:112} INFO - Running: ['bash', '-c', 'airflow run active_users_dag node_n3 2018-06-01T13:32:16.357736 --job_id 99 --raw -sd DAGS_FOLDER/active_users_dag.py']
+[2018-06-01 13:32:52,070] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,070] {__init__.py:57} INFO - Using executor SequentialExecutor
+[2018-06-01 13:32:52,300] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,300] {models.py:167} INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/active_users_dag.py
+[2018-06-01 13:32:52,739] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,739] {models.py:1126} INFO - Dependencies all met for <TaskInstance: active_users_dag.node_n3 2018-06-01 13:32:16.357736 [queued]>
+[2018-06-01 13:32:52,743] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,743] {models.py:1126} INFO - Dependencies all met for <TaskInstance: active_users_dag.node_n3 2018-06-01 13:32:16.357736 [queued]>
+[2018-06-01 13:32:52,743] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,743] {models.py:1318} INFO - 
+[2018-06-01 13:32:52,743] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-06-01 13:32:52,743] {base_task_runner.py:95} INFO - Subtask: Starting attempt 1 of 1
+[2018-06-01 13:32:52,743] {base_task_runner.py:95} INFO - Subtask: --------------------------------------------------------------------------------
+[2018-06-01 13:32:52,743] {base_task_runner.py:95} INFO - Subtask: 
+[2018-06-01 13:32:52,856] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,856] {models.py:1342} INFO - Executing <Task(PythonOperator): node_n3> on 2018-06-01 13:32:16.357736
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask: ['LOVE_YOURSELF', 'BTS', '방탄소년단', 'PremiosMTVMiaw', 'MetGala', 'MTVBRKPOPBTS', 'MTVLAKPOPBTS', 'SMTMThailand', 'GOT7', 'ShawnMendesTheTour', 'MTVLAKPOPGOT7', 'ローソン', 'ごちろう', 'マチカフェ', 'アイスカフェラテ無料プレゼント', 'คมแฝก', '갓세븐', 'MTVLAFANARMYBTS', 'กาหลมหรทึก', 'Singularity']
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask: ['335141638', '1343977518', '10228272', '168683422', '25073877', '791145648171126784', '228395466', '237915732', '883135139428970497', '81071710', '2156299840', '12371162', '47839975', '339620073', '147810583', '873036966933045248', '198049087', '2156278138', '712208574', '11522502']
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask: Executing query  active_users
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask: {'hashtag': ['LOVE_YOURSELF',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'BTS',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              '방탄소년단',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'PremiosMTVMiaw',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'MetGala',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'MTVBRKPOPBTS',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'MTVLAKPOPBTS',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'SMTMThailand',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'GOT7',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'ShawnMendesTheTour',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'MTVLAKPOPGOT7',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'ローソン',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'ごちろう',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'マチカフェ',
+[2018-06-01 13:32:52,877] {base_task_runner.py:95} INFO - Subtask:              'アイスカフェラテ無料プレゼント',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:              'คมแฝก',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:              '갓세븐',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:              'MTVLAFANARMYBTS',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:              'กาหลมหรทึก',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:              'Singularity'],
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:  'um_id': ['335141638',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '1343977518',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '10228272',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '168683422',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '25073877',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '791145648171126784',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '228395466',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '237915732',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '883135139428970497',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '81071710',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '2156299840',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '12371162',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '47839975',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '339620073',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '147810583',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '873036966933045248',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '198049087',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '2156278138',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '712208574',
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask:            '11522502']}
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,876] {connection.py:449} INFO - ~~ [CONNECT] ('127.0.0.1', 7687)
+[2018-06-01 13:32:52,878] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,877] {connection.py:486} INFO - ~~ [SECURE] 127.0.0.1
+[2018-06-01 13:32:52,896] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,896] {connection.py:516} INFO - C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+[2018-06-01 13:32:52,897] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,896] {connection.py:541} INFO - S: [HANDSHAKE] 1
+[2018-06-01 13:32:52,898] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,897] {connection.py:209} INFO - C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+[2018-06-01 13:32:52,899] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,899] {connection.py:270} INFO - S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+[2018-06-01 13:32:52,899] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,899] {connection.py:449} INFO - ~~ [CONNECT] ('127.0.0.1', 7687)
+[2018-06-01 13:32:52,899] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,899] {connection.py:486} INFO - ~~ [SECURE] 127.0.0.1
+[2018-06-01 13:32:52,911] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,911] {connection.py:516} INFO - C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+[2018-06-01 13:32:52,912] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,912] {connection.py:541} INFO - S: [HANDSHAKE] 1
+[2018-06-01 13:32:52,913] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,913] {connection.py:209} INFO - C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+[2018-06-01 13:32:52,914] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,914] {connection.py:270} INFO - S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+[2018-06-01 13:32:52,914] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,914] {connection.py:199} INFO - C: RUN ('\nUNWIND {um_id} AS um_id_value\nUNWIND {hashtag} AS hashtag_value\nMATCH (user :USER) -[:TWEETED]-> (t1 :TWEET), (user ) -[:TWEETED]-> (t2 :TWEET), (user ) -[:TWEETED]-> (t3 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:hashtag_value}), (t2 ) -[:HAS_MENTION]-> (user_mentioned :USER {id:um_id_value})\nRETURN user.id as userid, count(distinct t3) as count\n', {'hashtag': ['LOVE_YOURSELF', 'BTS', '방탄소년단', 'PremiosMTVMiaw', 'MetGala', 'MTVBRKPOPBTS', 'MTVLAKPOPBTS', 'SMTMThailand', 'GOT7', 'ShawnMendesTheTour', 'MTVLAKPOPGOT7', 'ローソン', 'ごちろう', 'マチカフェ', 'アイスカフェラテ無料プレゼント', 'คมแฝก', '갓세븐', 'MTVLAFANARMYBTS', 'กาหลมหรทึก', 'Singularity'], 'um_id': ['335141638', '1343977518', '10228272', '168683422', '25073877', '791145648171126784', '228395466', '237915732', '883135139428970497', '81071710', '2156299840', '12371162', '47839975', '339620073', '147810583', '873036966933045248', '198049087', '2156278138', '712208574', '11522502']})
+[2018-06-01 13:32:52,914] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:52,914] {connection.py:201} INFO - C: PULL_ALL ()
+[2018-06-01 13:32:53,011] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:53,011] {connection.py:270} INFO - S: SUCCESS ({'result_available_after': 96, 'fields': ['userid', 'count']})
+[2018-06-01 13:32:53,012] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:53,011] {connection.py:270} INFO - S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+[2018-06-01 13:32:53,207] {base_task_runner.py:95} INFO - Subtask: {'count': [], 'userid': []}
+[2018-06-01 13:32:53,208] {base_task_runner.py:95} INFO - Subtask: ========================================
+[2018-06-01 13:32:53,208] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:53,207] {connection.py:338} INFO - ~~ [CLOSE]
+[2018-06-01 13:32:53,208] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:53,207] {connection.py:338} INFO - ~~ [CLOSE]
+[2018-06-01 13:32:53,211] {base_task_runner.py:95} INFO - Subtask: [2018-06-01 13:32:53,210] {python_operator.py:81} INFO - Done. Returned value was: {'count': [], 'userid': []}
+[2018-06-01 13:32:53,398] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+[2018-06-01 13:32:53,398] {base_task_runner.py:95} INFO - Subtask:   DeprecationWarning)
+[2018-06-01 13:32:53,399] {base_task_runner.py:95} INFO - Subtask: /home/db1/anaconda3/lib/python3.6/site-packages/airflow/ti_deps/deps/base_ti_dep.py:94: DeprecationWarning: generator '_get_dep_statuses' raised StopIteration
+[2018-06-01 13:32:53,399] {base_task_runner.py:95} INFO - Subtask:   for dep_status in self._get_dep_statuses(ti, session, dep_context):
+[2018-06-01 13:32:56,861] {jobs.py:2083} INFO - Task exited with return code 0
