@@ -14,12 +14,12 @@ from myapp.create_dag import DAG
 from myapp.flink.flink_code_gen import FlinkCodeGenerator
 from myapp.flink.flink_api import FlinkAPI
 from myapp.generate_queries import *
-from myapp.ingest_raw import MongoQuery
+from myapp.mongo.ingest_raw import MongoQuery
 from myapp.mongo_alert import MongoAlert
 
 from datetime import datetime
 from pprint import *
-import json, os
+import json, os, copy
 
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
@@ -27,6 +27,7 @@ from neo4j.v1 import GraphDatabase, basic_auth, types
 # username in neo4j
 # deal with multiple hashtags in create neo4j query form
 # include post processing functions in create and execute DAG
+# unions and AND
 
 ###################################################################################################
 ####################################  Create Global Objects #######################################
@@ -68,6 +69,7 @@ def execute(query_name,inputs):
 	print("========================================")
 	print("Executing query ",q.name)
 	pprint(inputs)
+
 	if(q.type=='neo4j'):
 		driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
 		session = driver.session()
@@ -82,10 +84,31 @@ def execute(query_name,inputs):
 						ret[out].append(record[out])
 		except:
 			pass
-	if(q.type=="mongoDB"):
+
+	elif(q.type=="mongoDB"):
+		consts = QueryConstant.objects.filter(query=q)
+		input_objs = QueryInput.objects.filter(query=q)
+		temp = {i.attribute:inputs[i.input_name] for i in input_objs}
+		temp.update({c.attribute:c.value for c in consts})
 		if(q.query=="mp_ht_in_total"):
-			print(inputs["num"])
-			ret = mongoQuery.mp_ht_in_total(limit=inputs["num"])
+			ret = mongoQuery.mp_ht_in_total(**temp)
+		elif(q.query=="mp_ht_in_total"):
+			ret = mongoQuery.mp_ht_in_interval(**temp)
+		if(q.query=="ht_in_interval"):
+			ret = mongoQuery.ht_in_interval(**temp)
+		if(q.query=="ht_with_sentiment"):
+			ret = mongoQuery.ht_with_sentiment(**temp)
+
+	elif(q.type=="postProcessing"):
+		context = {"inputs":copy.deepcopy(inputs)}
+		try:
+			compile(q.query,'','exec')
+			exec(q.query + "\n" + "ret = func(inputs)", context)
+			for out in outputs:
+				ret[out] = context[out]
+		except Exception as e:
+			print("Exeption while executing Post proc function: %s, %s"%(type(e),e))
+
 	print(ret)
 	print("========================================")
 	return ret
@@ -125,8 +148,8 @@ def hashtag_usage_getter(request):
 		start_time = form.cleaned_data['start_time']
 		end_time = form.cleaned_data['end_time']
 		print(hashtag, start_time, end_time)
-		data = mongoQuery.ht_in_interval(start_time.timestamp(), end_time.timestamp(), hashtag)
-		(x,y) = binning([(x,1) for x in data],60)
+		data = mongoQuery.ht_in_interval(hashtag, start_time.timestamp(), end_time.timestamp())
+		(x,y) = binning([(x,1) for x in data["timestamps"]],60)
 		data = {"x":x,"y":y}
 	else:
 		print(form['hashtag'].errors, form['start_time'].errors, form['end_time'].errors)
@@ -144,8 +167,8 @@ def hashtag_top10_getter(request):
 		start_time = form.cleaned_data['start_time']
 		end_time = form.cleaned_data['end_time']
 		print(start_time, end_time)
-		data = mongoQuery.mp_ht_in_interval(start_time.timestamp(), end_time.timestamp())
-		data = [{"hashtag":x["_id"],"count":x["count"]} for x in data]
+		data = mongoQuery.mp_ht_in_interval(20, start_time.timestamp(), end_time.timestamp())
+		data = [{"hashtag":x[0],"count":x[1]} for x in list(zip(data["_id"],data["count"]))]
 	else:
 		print(form['start_time'].errors, form['end_time'].errors)
 
@@ -163,8 +186,9 @@ def hashtag_sentiment_getter(request):
 		start_time = form.cleaned_data['start_time']
 		end_time = form.cleaned_data['end_time']
 		print(hashtag, start_time, end_time)
-		data = mongoQuery.ht_with_sentiment(start_time.timestamp(), end_time.timestamp(), hashtag)
-		(x,y) = binning([(x[0],x[1]) for x in data],60)
+		data = mongoQuery.ht_with_sentiment(hashtag,start_time.timestamp(), end_time.timestamp())
+		(x,y) = binning(list(zip(data["timestamps"],data["positive_sentiment"])),60)
+
 		data = {"x":x,"y":y}
 	else:
 		print(form['hashtag'].errors, form['start_time'].errors, form['end_time'].errors)
@@ -207,7 +231,7 @@ def query_creator(request):
 	data.update({"query_s":query_s, 'output_s':output_s})
 	data.update({"createdagform":CreateDagForm()})
 	data.update({"create_custom_metric_form":CreateCustomMetricForm()})
-	data.update({"custom_metrics_form":CustomMetricForm()})
+	data.update({"custom_metrics_form":CreateCustomMetricForm()})
 	q_lis = []
 	queries = Query.objects.all()
 	for query in queries:
@@ -237,8 +261,9 @@ def create_neo4j_query_handler(request):
 		if uform.is_valid():
 			vn = uform.cleaned_data['User_Variable']
 			i = uform.cleaned_data['UserId']
+			screen_name = uform.cleaned_data['User_Screen_Name']
 			print("vn is ",vn)
-			s = User.objects.create( uname= vn,userid=i)
+			s = User.objects.create( uname= vn,userid=i,userscreenname=screen_name,username="")
 	elif "b2" in request.POST:
 		tform = TweetForm(request.POST)
 		print("second button pressed")
@@ -337,6 +362,10 @@ def create_neo4j_query_handler(request):
 				up = []
 				if u.userid!="":
 					up.append(("id",u.userid))
+				if u.username!="":
+					up.append(("name",u.username))
+				if u.userscreenname!="":
+					up.append(("screen_name",u.userscreenname))
 				uprops.append(up)
 			for t in Tweet.objects.all():
 				tweets.append((t.tname,"TWEET"))
@@ -394,37 +423,84 @@ def create_mongo_query_handler(request):
 			QueryOutput.objects.create(query=q,output_name="_id")
 			QueryOutput.objects.create(query=q,output_name="count")
 			if(number[0]=="{" and number[-1]=="}"):
-				QueryInput.objects.create(query=q,input_name=number[1:-1])
-
+				QueryInput.objects.create(query=q,attribute="limit",input_name=number[1:-1])
+			else:
+				QueryConstant.objects.create(query=q,attribute="limit",value=number)
 
 
 	elif("b2" in request.POST):
 		phiform = PopularHashInInterval(request.POST)
 		print("second button pressed")
 		if phiform.is_valid():
-			pass
+			name = phiform.cleaned_data["query_name"]
+			number = phiform.cleaned_data["number"]
+			begin_time = phiform.cleaned_data["begin_time"]
+			end_time = phiform.cleaned_data["end_time"]
+			q = Query.objects.create(name=name,query="mp_ht_in_interval",type="mongoDB")
+			QueryOutput.objects.create(query=q,output_name="_id")
+			QueryOutput.objects.create(query=q,output_name="count")
+			if(number[0]=="{" and number[-1]=="}"):
+				QueryInput.objects.create(query=q,attibute="limit",input_name=number[1:-1])
+			else:
+				QueryConstant.objects.create(query=q,attibute="limit",value=number)
+			QueryConstant.objects.create(query=q,attibute="begin",value=str(begin_time.timestamp()))
+			QueryConstant.objects.create(query=q,attibute="end",value=str(end_time.timestamp()))
+
 
 	elif("b3" in request.POST):
 		huiform = HashUsageInInterval(request.POST)
 		print("third button pressed")
 		if huiform.is_valid():
-			pass
+			name = huiform.cleaned_data["query_name"]
+			hashtag = huiform.cleaned_data["hashtag"]
+			begin_time = huiform.cleaned_data["begin_time"]
+			end_time = huiform.cleaned_data["end_time"]
+			q = Query.objects.create(name=name,query="mp_ht_in_interval",type="mongoDB")
+			QueryOutput.objects.create(query=q,output_name="timestamps")
+			if(hashtag[0]=="{" and hashtag[-1]=="}"):
+				QueryInput.objects.create(query=q,attibute="hashtag",input_name=hashtag[1:-1])
+			else:
+				QueryConstant.objects.create(query=q,attibute="hashtag",value=hashtag)
+			QueryConstant.objects.create(query=q,attibute="begin",value=str(begin_time.timestamp()))
+			QueryConstant.objects.create(query=q,attibute="end",value=str(end_time.timestamp()))
 
 	elif("b4" in request.POST):
 		hsiform = HashSentimentInInterval(request.POST)
 		print("4th button pressed")
 		if hsiform.is_valid():
-			pass
+			name = hsiform.cleaned_data["query_name"]
+			hashtag = hsiform.cleaned_data["hashtag"]
+			begin_time = hsiform.cleaned_data["begin_time"]
+			end_time = hsiform.cleaned_data["end_time"]
+			q = Query.objects.create(name=name,query="mp_ht_in_interval",type="mongoDB")
+			QueryOutput.objects.create(query=q,output_name="timestamps")
+			QueryOutput.objects.create(query=q,output_name="positive_sentiment")
+			QueryOutput.objects.create(query=q,output_name="negative_sentiment")
+			if(hashtag[0]=="{" and hashtag[-1]=="}"):
+				QueryInput.objects.create(query=q,attibute="hashtag",input_name=hashtag[1:-1])
+			else:
+				QueryConstant.objects.create(query=q,attibute="hashtag",value=hashtag)
+			QueryConstant.objects.create(query=q,attibute="begin",value=str(begin_time.timestamp()))
+			QueryConstant.objects.create(query=q,attibute="end",value=str(end_time.timestamp()))
 
 	return redirect("/create_query/")
 
 def create_postprocessing_handler(request):
 	if request.method == 'POST':
-		form = UploadFileForm(request.POST, request.FILES)
+		form = PostProcForm(request.POST, request.FILES)
 		if form.is_valid():
+			name = form.cleaned_data['name']
+			inputs = form.cleaned_data['input_variable_names']
+			input_variable_names = [x.strip() for x in inputs.split(",")]
+			outputs = form.cleaned_data['output_variable_names']
+			output_variable_names = [x.strip() for x in outputs.split(",")]
 			code = request.FILES['file'].read()
 			print(code)
-			Query.objects.create(name=form.cleaned_data['name'],query=code,type="postProcessing")
+			q = Query.objects.create(name=name,query=code,type="postProcessing")
+			for input_var in input_variable_names:
+				QueryInput.objects.create(query=q,input_name=input_var)
+			for output_var in output_variable_names:
+				QueryOutput.objects.create(query=q,output_name=output_var)
 			return redirect("/create_query")
 
 def create_custom_metric_handler(request):
@@ -465,40 +541,43 @@ def view_custom_metric_handler(request):
 		return outputs
 
 	if request.method == 'POST':
-		form = CustomMetricForm(request.POST)
+		form = CreateCustomMetricForm(request.POST)
 		if form.is_valid():
 			dag = form.cleaned_data["DAG"]
 			post_proc = form.cleaned_data["post_processing_function"].query
-			args = [x.lstrip().rstrip() for x in form.cleaned_data["arguments"].split(",")]
+			input_args = [x.lstrip().rstrip() for x in form.cleaned_data["input_arguments"].split(",")]
+			x_axis_output_field = form.cleaned_data["x_axis_output_field"].lstrip().rstrip()
+			y_axis_output_field = form.cleaned_data["y_axis_output_field"].lstrip().rstrip()
 
-			# query = custom_metric.query.query
-			# post_proc = custom_metric.post_proc.code
-			# print("Query: ", query)
-			# print("Post-Proc: ", post_proc)
 			outputs = run_query(dag.dag_name)
 			output_vars = {}
-			for k,v in outputs:
-				for var,val in v:
+			for k,v in outputs.items():
+				for var,val in v.items():
 					output_vars[k+"."+var] = val
-			con = {}
-			for i,arg in enumerate(args):
-				if arg in output_vars.keys():
-					con["arg"+str(i)] = output_vars[arg]
+
+			context = {}
+			for arg in input_args:
+				tmp = [x.lstrip().rstrip() for x in arg.split("=")]
+				name = tmp[0]
+				val = tmp[1]
+				if val in output_vars.keys():
+					context[name] = output_vars[val]
 				else:
-					con["arg"+str(i)] = eval(arg)
-			# print(query_result)
-			(x_values,y_values) = ([],[])
+					context[name] = eval(val)
+			context = {"inputs":context}
+
 			try:
 				compile(post_proc,'','exec')
-				# context = {"query_result":query_result}
-				context = con
-				exec(post_proc + "\n" + "(x_values,y_values) = func("+",".join(list(con.keys()))+")", context)
-				(x_values,y_values) = (context["x_values"],context["y_values"])
+				exec(post_proc + "\n" + "ret = func(inputs)", context)
+				(x_values,y_values) = (context["ret"][x_axis_output_field],context["ret"][y_axis_output_field])
 				# print(context["x_values"],context["y_values"])
 			except Exception as e:
-				print("Error: ", e)
+				print("Error: ", type(e), e)
 			data = {"x":x_values,"y":y_values}
 			return JsonResponse(data)
+		else:
+			print(form.errors)
+
 
 @csrf_exempt
 def view_query_handler(request):
@@ -709,6 +788,7 @@ def delete_dag_handler(request,dag_name):
 		os.remove("myapp/airflow/dags/"+dag_name+".py")
 	except OSError:
 		pass
+	os.system("python myapp/airflow/delete_dag.py "+dag_name)
 	return redirect('/create_query/')
 
 def view_dag_handler(request,dag_name):

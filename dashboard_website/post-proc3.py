@@ -1,11 +1,13 @@
-def func(result):
-	(x_vals,y_vals) = ([],[])
-	print(result)
-	result.sort(key=lambda item:item["count(t)"], reverse=True)
+def func(inputs):
+	inputs = list(zip(inputs["uid"], inputs["count"]))
+	inputs.sort(key=lambda item:item[1], reverse=True)
+	x_vals = []
+	y_vals = []
 	for i in range(10):
-		x_vals.append(result[i]["u"]["id"])
-		y_vals.append(result[i]["count(t)"])
-		print(result[i]["u"]["id"], result[i]["count(t)"])
-	print(x_vals,y_vals)
-	return (x_vals,y_vals)
+		x_vals.append(str(inputs[i][0]))
+		y_vals.append(inputs[i][1])
 
+	ret = {}
+	ret["x_vals"] = x_vals
+	ret["y_vals"] = y_vals
+	return ret

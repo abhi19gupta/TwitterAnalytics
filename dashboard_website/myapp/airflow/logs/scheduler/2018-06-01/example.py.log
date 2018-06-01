@@ -1,0 +1,345 @@
+[2018-06-01 00:53:53,111] {jobs.py:343} DagFileProcessor2 INFO - Started process (PID=16114) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:53:53,112] {jobs.py:534} DagFileProcessor2 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:53:53,112] {jobs.py:1521} DagFileProcessor2 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:53:53,113] {models.py:167} DagFileProcessor2 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:53:53,453] {models.py:266} DagFileProcessor2 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:53:53,454] {jobs.py:1535} DagFileProcessor2 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:53:55,435] {models.py:322} DagFileProcessor2 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:53:55,436] {models.py:328} DagFileProcessor2 INFO - Failing jobs without heartbeat after 2018-06-01 00:48:55.436179
+[2018-06-01 00:53:55,447] {jobs.py:351} DagFileProcessor2 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.336 seconds
+[2018-06-01 00:54:06,868] {jobs.py:343} DagFileProcessor6 INFO - Started process (PID=16140) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:54:06,869] {jobs.py:534} DagFileProcessor6 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:54:06,869] {jobs.py:1521} DagFileProcessor6 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:54:06,869] {models.py:167} DagFileProcessor6 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:54:07,116] {models.py:266} DagFileProcessor6 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:54:07,117] {jobs.py:1535} DagFileProcessor6 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:54:09,642] {models.py:322} DagFileProcessor6 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:54:09,643] {models.py:328} DagFileProcessor6 INFO - Failing jobs without heartbeat after 2018-06-01 00:49:09.643235
+[2018-06-01 00:54:09,655] {jobs.py:351} DagFileProcessor6 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.787 seconds
+[2018-06-01 00:54:23,038] {jobs.py:343} DagFileProcessor10 INFO - Started process (PID=16214) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:54:23,039] {jobs.py:534} DagFileProcessor10 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:54:23,040] {jobs.py:1521} DagFileProcessor10 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:54:23,040] {models.py:167} DagFileProcessor10 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:54:23,336] {models.py:266} DagFileProcessor10 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:54:23,337] {jobs.py:1535} DagFileProcessor10 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:54:25,807] {models.py:322} DagFileProcessor10 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:54:25,808] {models.py:328} DagFileProcessor10 INFO - Failing jobs without heartbeat after 2018-06-01 00:49:25.808061
+[2018-06-01 00:54:25,815] {jobs.py:351} DagFileProcessor10 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.777 seconds
+[2018-06-01 00:54:36,828] {jobs.py:343} DagFileProcessor14 INFO - Started process (PID=16247) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:54:36,830] {jobs.py:534} DagFileProcessor14 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:54:36,832] {jobs.py:1521} DagFileProcessor14 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:54:36,832] {models.py:167} DagFileProcessor14 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:54:37,110] {models.py:266} DagFileProcessor14 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:54:37,111] {jobs.py:1535} DagFileProcessor14 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:54:39,073] {models.py:322} DagFileProcessor14 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:54:39,074] {models.py:328} DagFileProcessor14 INFO - Failing jobs without heartbeat after 2018-06-01 00:49:39.074022
+[2018-06-01 00:54:39,080] {jobs.py:351} DagFileProcessor14 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.252 seconds
+[2018-06-01 00:54:50,482] {jobs.py:343} DagFileProcessor18 INFO - Started process (PID=16271) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:54:50,483] {jobs.py:534} DagFileProcessor18 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:54:50,484] {jobs.py:1521} DagFileProcessor18 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:54:50,484] {models.py:167} DagFileProcessor18 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:54:50,727] {models.py:266} DagFileProcessor18 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:54:50,728] {jobs.py:1535} DagFileProcessor18 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:54:52,663] {models.py:322} DagFileProcessor18 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:54:52,663] {models.py:328} DagFileProcessor18 INFO - Failing jobs without heartbeat after 2018-06-01 00:49:52.663950
+[2018-06-01 00:54:52,668] {jobs.py:351} DagFileProcessor18 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.185 seconds
+[2018-06-01 00:55:04,812] {jobs.py:343} DagFileProcessor22 INFO - Started process (PID=16310) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:55:04,813] {jobs.py:534} DagFileProcessor22 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:55:04,813] {jobs.py:1521} DagFileProcessor22 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:55:04,813] {models.py:167} DagFileProcessor22 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:55:05,049] {models.py:266} DagFileProcessor22 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:55:05,049] {jobs.py:1535} DagFileProcessor22 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:55:07,704] {models.py:322} DagFileProcessor22 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:55:07,705] {models.py:328} DagFileProcessor22 INFO - Failing jobs without heartbeat after 2018-06-01 00:50:07.705142
+[2018-06-01 00:55:07,723] {jobs.py:351} DagFileProcessor22 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.912 seconds
+[2018-06-01 00:55:22,327] {jobs.py:343} DagFileProcessor26 INFO - Started process (PID=16345) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:55:22,328] {jobs.py:534} DagFileProcessor26 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:55:22,329] {jobs.py:1521} DagFileProcessor26 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:55:22,329] {models.py:167} DagFileProcessor26 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:55:22,565] {models.py:266} DagFileProcessor26 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:55:22,565] {jobs.py:1535} DagFileProcessor26 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:55:24,744] {models.py:322} DagFileProcessor26 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:55:24,745] {models.py:328} DagFileProcessor26 INFO - Failing jobs without heartbeat after 2018-06-01 00:50:24.745344
+[2018-06-01 00:55:24,757] {jobs.py:351} DagFileProcessor26 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.430 seconds
+[2018-06-01 00:55:36,510] {jobs.py:343} DagFileProcessor30 INFO - Started process (PID=16369) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:55:36,511] {jobs.py:534} DagFileProcessor30 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:55:36,511] {jobs.py:1521} DagFileProcessor30 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:55:36,511] {models.py:167} DagFileProcessor30 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:55:36,758] {models.py:266} DagFileProcessor30 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:55:36,758] {jobs.py:1535} DagFileProcessor30 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:55:38,843] {models.py:322} DagFileProcessor30 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:55:38,843] {models.py:328} DagFileProcessor30 INFO - Failing jobs without heartbeat after 2018-06-01 00:50:38.843886
+[2018-06-01 00:55:38,854] {jobs.py:351} DagFileProcessor30 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.345 seconds
+[2018-06-01 00:55:51,079] {jobs.py:343} DagFileProcessor34 INFO - Started process (PID=16400) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:55:51,081] {jobs.py:534} DagFileProcessor34 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:55:51,081] {jobs.py:1521} DagFileProcessor34 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:55:51,082] {models.py:167} DagFileProcessor34 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:55:51,342] {models.py:266} DagFileProcessor34 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:55:51,342] {jobs.py:1535} DagFileProcessor34 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:55:53,350] {models.py:322} DagFileProcessor34 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:55:53,350] {models.py:328} DagFileProcessor34 INFO - Failing jobs without heartbeat after 2018-06-01 00:50:53.350279
+[2018-06-01 00:55:53,354] {jobs.py:351} DagFileProcessor34 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.275 seconds
+[2018-06-01 00:56:05,882] {jobs.py:343} DagFileProcessor38 INFO - Started process (PID=16447) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:56:05,883] {jobs.py:534} DagFileProcessor38 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:56:05,884] {jobs.py:1521} DagFileProcessor38 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:56:05,884] {models.py:167} DagFileProcessor38 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:56:06,133] {models.py:266} DagFileProcessor38 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:56:06,133] {jobs.py:1535} DagFileProcessor38 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:56:08,449] {models.py:322} DagFileProcessor38 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:56:08,450] {models.py:328} DagFileProcessor38 INFO - Failing jobs without heartbeat after 2018-06-01 00:51:08.449964
+[2018-06-01 00:56:08,458] {jobs.py:351} DagFileProcessor38 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.575 seconds
+[2018-06-01 00:56:21,622] {jobs.py:343} DagFileProcessor42 INFO - Started process (PID=16478) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:56:21,623] {jobs.py:534} DagFileProcessor42 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:56:21,624] {jobs.py:1521} DagFileProcessor42 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:56:21,624] {models.py:167} DagFileProcessor42 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/airflow/utils/helpers.py:406: DeprecationWarning: Importing PythonOperator directly from <module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'> has been deprecated. Please import from '<module 'airflow.operators' from '/home/db1/anaconda3/lib/python3.6/site-packages/airflow/operators/__init__.py'>.[operator_module]' instead. Support for direct imports will be dropped entirely in Airflow 2.0.
+  DeprecationWarning)
+[2018-06-01 00:56:21,866] {models.py:266} DagFileProcessor42 ERROR - Failed to import: /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/airflow/models.py", line 263, in process_file
+    m = imp.load_source(mod_name, filepath)
+  File "/home/db1/anaconda3/lib/python3.6/imp.py", line 172, in load_source
+    module = _load(spec)
+  File "<frozen importlib._bootstrap>", line 675, in _load
+  File "<frozen importlib._bootstrap>", line 655, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 678, in exec_module
+  File "<frozen importlib._bootstrap>", line 205, in _call_with_frames_removed
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py", line 13, in <module>
+    from ingest_raw import MongoQuery
+ModuleNotFoundError: No module named 'ingest_raw'
+[2018-06-01 00:56:21,867] {jobs.py:1535} DagFileProcessor42 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:56:24,172] {models.py:322} DagFileProcessor42 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:56:24,173] {models.py:328} DagFileProcessor42 INFO - Failing jobs without heartbeat after 2018-06-01 00:51:24.173204
+[2018-06-01 00:56:24,181] {jobs.py:351} DagFileProcessor42 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.558 seconds
+[2018-06-01 00:56:38,530] {jobs.py:343} DagFileProcessor46 INFO - Started process (PID=16518) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:56:38,532] {jobs.py:534} DagFileProcessor46 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:56:38,533] {jobs.py:1521} DagFileProcessor46 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:56:38,533] {models.py:167} DagFileProcessor46 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:56:38,768] {jobs.py:1535} DagFileProcessor46 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:56:41,580] {models.py:322} DagFileProcessor46 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:56:41,580] {models.py:328} DagFileProcessor46 INFO - Failing jobs without heartbeat after 2018-06-01 00:51:41.580369
+[2018-06-01 00:56:41,583] {jobs.py:351} DagFileProcessor46 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 3.053 seconds
+[2018-06-01 00:56:54,287] {jobs.py:343} DagFileProcessor50 INFO - Started process (PID=16550) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:56:54,288] {jobs.py:534} DagFileProcessor50 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:56:54,289] {jobs.py:1521} DagFileProcessor50 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:56:54,289] {models.py:167} DagFileProcessor50 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:56:54,505] {jobs.py:1535} DagFileProcessor50 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:56:56,536] {models.py:322} DagFileProcessor50 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:56:56,536] {models.py:328} DagFileProcessor50 INFO - Failing jobs without heartbeat after 2018-06-01 00:51:56.536211
+[2018-06-01 00:56:56,538] {jobs.py:351} DagFileProcessor50 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.251 seconds
+[2018-06-01 00:57:08,924] {jobs.py:343} DagFileProcessor54 INFO - Started process (PID=16585) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:57:08,927] {jobs.py:534} DagFileProcessor54 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:57:08,929] {jobs.py:1521} DagFileProcessor54 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:57:08,929] {models.py:167} DagFileProcessor54 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:57:09,172] {jobs.py:1535} DagFileProcessor54 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:57:11,377] {models.py:322} DagFileProcessor54 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:57:11,377] {models.py:328} DagFileProcessor54 INFO - Failing jobs without heartbeat after 2018-06-01 00:52:11.377378
+[2018-06-01 00:57:11,379] {jobs.py:351} DagFileProcessor54 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.456 seconds
+[2018-06-01 00:57:23,266] {jobs.py:343} DagFileProcessor58 INFO - Started process (PID=16655) to work on /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:57:23,266] {jobs.py:534} DagFileProcessor58 ERROR - Cannot use more than 1 thread when using sqlite. Setting max_threads to 1
+[2018-06-01 00:57:23,267] {jobs.py:1521} DagFileProcessor58 INFO - Processing file /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py for tasks to queue
+[2018-06-01 00:57:23,267] {models.py:167} DagFileProcessor58 INFO - Filling up the DagBag from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+[2018-06-01 00:57:23,484] {jobs.py:1535} DagFileProcessor58 INFO - DAG(s) dict_keys(['example_skip_dag', 'example_trigger_target_dag', 'example_branch_operator', 'example_python_operator', 'example_short_circuit_operator', 'example_xcom', 'example_passing_params_via_test_command', 'test_utils', 'example_subdag_operator', 'example_subdag_operator.section-1', 'example_subdag_operator.section-2', 'example_http_operator', 'tutorial', 'example_branch_dop_operator_v3', 'latest_only', 'example_trigger_controller_dag', 'latest_only_with_trigger', 'example_bash_operator']) retrieved from /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_stats.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+/home/db1/anaconda3/lib/python3.6/site-packages/sqlalchemy/sql/default_comparator.py:161: SAWarning: The IN-predicate on "dag_run.dag_id" was invoked with an empty sequence. This results in a contradiction, which nonetheless can be expensive to evaluate.  Consider alternative strategies for improved performance.
+  'strategies for improved performance.' % expr)
+[2018-06-01 00:57:25,576] {models.py:322} DagFileProcessor58 INFO - Finding 'running' jobs without a recent heartbeat
+[2018-06-01 00:57:25,577] {models.py:328} DagFileProcessor58 INFO - Failing jobs without heartbeat after 2018-06-01 00:52:25.576993
+[2018-06-01 00:57:25,580] {jobs.py:351} DagFileProcessor58 INFO - Processing /home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/airflow/dags/example.py took 2.314 seconds

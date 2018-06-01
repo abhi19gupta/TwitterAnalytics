@@ -18,6 +18,7 @@ class User(models.Model):
 	uname = models.CharField(max_length=200)
 	userid = models.CharField(max_length=200)
 	username = models.CharField(default="_NOT_PROVIDED_",max_length=200)
+	userscreenname = models.CharField(max_length=200)
 
 	def __str__(self):
 		return (self.uname)
@@ -37,6 +38,7 @@ class Query(models.Model):
 	def __str__(self):
 		return self.name
 
+# Delete this
 class PostProcFunc(models.Model):
 	name = models.CharField(max_length=50)
 	code = models.TextField()
@@ -44,6 +46,7 @@ class PostProcFunc(models.Model):
 	def __str__(self):
 		return self.name
 
+# Delete this
 class CustomMetric(models.Model):
 	name = models.CharField(max_length=50)
 	query = models.ForeignKey(Query)
@@ -55,9 +58,17 @@ class CustomMetric(models.Model):
 class QueryInput(models.Model):
 	query = models.ForeignKey(Query)
 	input_name = models.CharField(max_length=50)
+	attribute = models.CharField(max_length=50,default="_NOT_REQUIRED_")
 
 	def __str__(self):
 		return self.input_name
+class QueryConstant(models.Model):
+	query = models.ForeignKey(Query)
+	attribute = models.CharField(max_length=50)
+	value = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.attribute+"="+self.value
 
 class QueryOutput(models.Model):
 	query = models.ForeignKey(Query)

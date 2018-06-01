@@ -7609,3 +7609,878 @@ Traceback (most recent call last):
   File "/home/deepak_saini/Documents/10th_sem/TwitterAnalytics/dashboard_website/myapp/views.py", line 182, in get_create_query_subtab_data
     rels
 NameError: name 'rels' is not defined
+WARNING:django.request:Not Found: /favicon.ico
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost
+ERROR:django.request:Internal Server Error: /alerts/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connection.py", line 141, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/util/connection.py", line 83, in create_connection
+    raise err
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connectionpool.py", line 601, in urlopen
+    chunked=chunked)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connectionpool.py", line 357, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1239, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1285, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1234, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 1026, in _send_output
+    self.send(msg)
+  File "/home/db1/anaconda3/lib/python3.6/http/client.py", line 964, in send
+    self.connect()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connection.py", line 166, in connect
+    conn = self._new_conn()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connection.py", line 150, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x7f5886d82898>: Failed to establish a new connection: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/adapters.py", line 440, in send
+    timeout=timeout
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/connectionpool.py", line 639, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/urllib3/util/retry.py", line 388, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f5886d82898>: Failed to establish a new connection: [Errno 111] Connection refused',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_api.py", line 52, in check_job_status_all
+    r = requests.get(self.base_url + "joboverview")
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/api.py", line 72, in get
+    return request('get', url, params=params, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/api.py", line 58, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/sessions.py", line 508, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/sessions.py", line 618, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/requests/adapters.py", line 508, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f5886d82898>: Failed to establish a new connection: [Errno 111] Connection refused',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 558, in alerts
+    alertSpecs = get_alert_specs()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 550, in get_alert_specs
+    flink_status = flink_api.check_job_status_all()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/flink/flink_api.py", line 70, in check_job_status_all
+    raise Exception('Failed to check job statuses. Error: %s, %s'%(str(type(e)),str(e)))
+Exception: Failed to check job statuses. Error: <class 'requests.exceptions.ConnectionError'>, HTTPConnectionPool(host='localhost', port=8081): Max retries exceeded with url: /joboverview (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f5886d82898>: Failed to establish a new connection: [Errno 111] Connection refused',))
+ERROR:django.request:Internal Server Error: /create_query/create_neo4j_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 362, in create_neo4j_query_handler
+    sq = neo4jCreator.create_query(actors=users+tweets,attributes=uprops+tprops,relations=relations,return_values=ret_vars)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/generate_queries.py", line 125, in create_query
+    match_actors_solo_l.append(conditional_create(a[0]))
+NameError: name 'conditional_create' is not defined
+ERROR:django.request:Internal Server Error: /create_query/create_neo4j_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 362, in create_neo4j_query_handler
+    sq = neo4jCreator.create_query(actors=users+tweets,attributes=uprops+tprops,relations=relations,return_values=ret_vars)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/generate_queries.py", line 161, in create_query
+    mas_c = mac.render(match_actors_solo_l)
+NameError: name 'mac' is not defined
+ERROR:django.request:Internal Server Error: /create_query/create_neo4j_query_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 362, in create_neo4j_query_handler
+    sq = neo4jCreator.create_query(actors=users+tweets,attributes=uprops+tprops,relations=relations,return_values=ret_vars)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/generate_queries.py", line 161, in create_query
+    mas_c = mas.render(match_actors_solo_l)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/jinja2/environment.py", line 984, in render
+    vars = dict(*args, **kwargs)
+ValueError: dictionary update sequence element #0 has length 22; 2 is required
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such column: myapp_queryinput.attribute
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 242, in query_creator
+    inputs = [x.input_name for x in QueryInput.objects.filter(query=query)]
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 256, in __iter__
+    self._fetch_all()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 1085, in _fetch_all
+    self._result_cache = list(self.iterator())
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/compiler.py", line 835, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such column: myapp_queryinput.attribute
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such column: myapp_queryinput.attribute
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 242, in query_creator
+    inputs = [x.input_name for x in QueryInput.objects.filter(query=query)]
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 256, in __iter__
+    self._fetch_all()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 1085, in _fetch_all
+    self._result_cache = list(self.iterator())
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/compiler.py", line 835, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such column: myapp_queryinput.attribute
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/forms/forms.py", line 144, in __getitem__
+    field = self.fields[name]
+KeyError: 'Hashtag'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 251, in query_creator
+    return render(request, 'myapp/create_query.html', data)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/shortcuts.py", line 30, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loader.py", line 68, in render_to_string
+    return template.render(context, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/loader_tags.py", line 61, in render
+    result = self.nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/templatetags/material_form.py", line 142, in render
+    return template.render(context_flatten(context))
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/templatetags/material_form.py", line 203, in render
+    value = self.nodelist.render(context).strip()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/defaulttags.py", line 323, in render
+    return nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/templatetags/material_form.py", line 203, in render
+    value = self.nodelist.render(context).strip()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/templatetags/material_form_internal.py", line 83, in render
+    return element.render(context, **options)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/base.py", line 53, in render
+    return template.render(context.flatten())
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/defaulttags.py", line 217, in render
+    nodelist.append(node.render_annotated(context))
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/templatetags/material_form_internal.py", line 83, in render
+    return element.render(context, **options)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/base.py", line 53, in render
+    return template.render(context.flatten())
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/backends/django.py", line 66, in render
+    return self.template.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 208, in render
+    return self._render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 199, in _render
+    return self.nodelist.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 994, in render
+    bit = node.render_annotated(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/defaulttags.py", line 217, in render
+    nodelist.append(node.render_annotated(context))
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/template/base.py", line 961, in render_annotated
+    return self.render(context)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/templatetags/material_form_internal.py", line 83, in render
+    return element.render(context, **options)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/material/base.py", line 192, in render
+    bound_field = form[self.field_name]
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/forms/forms.py", line 150, in __getitem__
+    ', '.join(sorted(f for f in self.fields)),
+KeyError: "Key 'Hashtag' not found in 'HashUsageInInterval'. Choices are: begin_time, end_time, hashtag, query_name."
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /create_query/create_postprocessing_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 484, in create_postprocessing_handler
+    form = UploadFileForm(request.POST, request.FILES)
+NameError: name 'UploadFileForm' is not defined
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+sqlite3.OperationalError: no such column: myapp_user.userscreenname
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 226, in query_creator
+    data = get_create_query_subtab_data()
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 202, in get_create_query_subtab_data
+    for usr in User.objects.all():
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 256, in __iter__
+    self._fetch_all()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 1085, in _fetch_all
+    self._result_cache = list(self.iterator())
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/query.py", line 54, in __iter__
+    results = compiler.execute_sql()
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/models/sql/compiler.py", line 835, in execute_sql
+    cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 79, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/utils.py", line 94, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/utils/six.py", line 685, in reraise
+    raise value.with_traceback(tb)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/utils.py", line 64, in execute
+    return self.cursor.execute(sql, params)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/db/backends/sqlite3/base.py", line 337, in execute
+    return Database.Cursor.execute(self, query, params)
+django.db.utils.OperationalError: no such column: myapp_user.userscreenname
+WARNING:django.request:Not Found: /favicon.ico
+WARNING:django.request:Not Found: /create_query/create_custom_metric_handler/
+ERROR:django.request:Internal Server Error: /create_query/create_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 509, in create_custom_metric_handler
+    CustomMetric.objects.create(name=form.cleaned_data['name'],query=form.cleaned_data['query'],post_proc=form.cleaned_data['post_processing_function'])
+KeyError: 'name'
+WARNING:django.request:Not Found: /create_query/create_custom_metric_handler/
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view myapp.views.view_custom_metric_handler didn't return an HttpResponse object. It returned None instead.
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view myapp.views.view_custom_metric_handler didn't return an HttpResponse object. It returned None instead.
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view myapp.views.view_custom_metric_handler didn't return an HttpResponse object. It returned None instead.
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view myapp.views.view_custom_metric_handler didn't return an HttpResponse object. It returned None instead.
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view myapp.views.view_custom_metric_handler didn't return an HttpResponse object. It returned None instead.
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    "returned None instead." % (callback.__module__, view_name)
+ValueError: The view myapp.views.view_custom_metric_handler didn't return an HttpResponse object. It returned None instead.
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 34, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 554, in view_custom_metric_handler
+    for var,val in v:
+ValueError: not enough values to unpack (expected 2, got 1)
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 16, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 554, in view_custom_metric_handler
+    for var,val in v:
+ValueError: too many values to unpack (expected 2)
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 16, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 555, in view_custom_metric_handler
+    for var,val in v:
+ValueError: too many values to unpack (expected 2)
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 12, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 559, in view_custom_metric_handler
+    (name,val) = [x.lstrip().rstrip() for x in arg.split("=")]
+ValueError: not enough values to unpack (expected 2, got 1)
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 561, in view_custom_metric_handler
+    val = tmp[1]
+IndexError: list index out of range
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 7, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 576, in view_custom_metric_handler
+    data = {"x":x_values,"y":y_values}
+UnboundLocalError: local variable 'x_values' referenced before assignment
+ERROR:django.request:Internal Server Error: /create_query/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 233, in query_creator
+    data.update({"custom_metrics_form":CustomMetricForm()})
+NameError: name 'CustomMetricForm' is not defined
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 7, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 575, in view_custom_metric_handler
+    data = {"x":x_values,"y":y_values}
+UnboundLocalError: local variable 'x_values' referenced before assignment
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 9, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+ERROR:django.request:Internal Server Error: /create_query/view_custom_metric_handler/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 575, in view_custom_metric_handler
+    data = {"x":x_values,"y":y_values}
+UnboundLocalError: local variable 'x_values' referenced before assignment
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 9, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 9, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 0, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:~~ [CONNECT] ('127.0.0.1', 7687)
+INFO:neo4j.bolt:~~ [SECURE] 127.0.0.1
+INFO:neo4j.bolt:C: [HANDSHAKE] 0x6060B017 [1, 0, 0, 0]
+INFO:neo4j.bolt:S: [HANDSHAKE] 1
+INFO:neo4j.bolt:C: INIT ('neo4j-python/1.3.1', {'scheme': 'basic', 'principal': 'neo4j', 'credentials': 'password'})
+INFO:neo4j.bolt:S: SUCCESS ({'server': 'Neo4j/3.2.6'})
+INFO:neo4j.bolt:C: RUN ("\n\nMATCH (u :USER) -[:TWEETED]-> (t1 :TWEET), (u ) -[:TWEETED]-> (t2 :TWEET), (t1 ) -[:HAS_HASHTAG]-> (:HASHTAG {text:'GOT7'})\nRETURN u.id, count(distinct t2)\n", {})
+INFO:neo4j.bolt:C: PULL_ALL ()
+INFO:neo4j.bolt:S: SUCCESS ({'result_available_after': 8, 'fields': ['u.id', 'count(distinct t2)']})
+INFO:neo4j.bolt:S: RECORD * 228
+INFO:neo4j.bolt:S: SUCCESS ({'result_consumed_after': 1, 'type': 'r'})
+INFO:neo4j.bolt:~~ [CLOSE]
+INFO:neo4j.bolt:~~ [CLOSE]
+WARNING:django.request:Not Found: /favicon.ico
+ERROR:django.request:Internal Server Error: /hashtags/hashtag_usage_getter/
+Traceback (most recent call last):
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/exception.py", line 39, in inner
+    response = get_response(request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 187, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/db1/anaconda3/lib/python3.6/site-packages/django/core/handlers/base.py", line 185, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/views.py", line 151, in hashtag_usage_getter
+    data = mongoQuery.ht_in_interval(hashtag, start_time.timestamp(), end_time.timestamp())
+  File "/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo/ingest_raw.py", line 213, in ht_in_interval
+    t1,t2 = eval(begin),eval(end)
+TypeError: eval() arg 1 must be a string, bytes or code object

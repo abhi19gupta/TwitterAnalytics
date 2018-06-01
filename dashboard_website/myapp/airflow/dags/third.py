@@ -7,7 +7,7 @@ import sqlite3
 from pprint import *
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
-sys.path.append("/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp")
+sys.path.append("/home/db1/Documents/TwitterAnalytics/dashboard_website/myapp/mongo")
 from ingest_raw import MongoQuery
 
 queries = \

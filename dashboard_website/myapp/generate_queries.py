@@ -1,7 +1,6 @@
 from __future__ import print_function
 from pprint import *
 import jinja2 as jj
-
 from neo4j.v1 import GraphDatabase, basic_auth
 from datetime import datetime
 import json
@@ -17,6 +16,7 @@ match_events = """{% for e in events %}(frame{{e[0]}}) -[:{{e[1]}}]-> (event{{e[
 match_actors = """{% for e in events %}(event{{e[0]}}) -[:{{e[1]}}]-> ({{e[2]}}), {% endfor %}"""
 match_actors2 = """{% for r in rels %}({{r[0]}}) -[:{{r[1]}}]-> ({{r[2]}}), {% endfor %}"""
 tweet_attribs = """{% for tp in tweet_properties %}({{tp[0]}}) -[:{{tp[1]}}]-> ({{tp[2]}}), {% endfor %}"""
+match_actors_solo = """{% for a in actors %}({{a}}), {% endfor %}"""
 returns  = """RETURN {{ret_values}}"""
 unwinds = """{%  for uw in unwinds %}UNWIND {% raw %}{{% endraw %}{{uw}}{% raw %}}{% endraw %} AS {{uw}}_value
 {% endfor %}"""
@@ -98,7 +98,7 @@ class CreateQuery:
                 enc_right = encode_right[x[1]]
                 match_actors_l.append( (num_frames,enc_left,self.conditional_create(x[0])) )
                 match_actors_l.append( (num_frames,enc_right,self.conditional_create(x[2])) )
-                    
+
 
             elif(x[3]=="" and x[4]==""):
                 match_actors_l2.append( (self.conditional_create(x[0]),x[1],self.conditional_create(x[2])) )
@@ -119,6 +119,10 @@ class CreateQuery:
                         tweet_properties.append((conditional_create(a[0]),"QUOTED",conditional_create(att[1])))
                     elif(att[0]=="has_mention"):
                         tweet_properties.append((self.conditional_create(a[0]),"HAS_MENTION",self.conditional_create(att[1])))
+        match_actors_solo_l = []
+        for a in actors:
+            if(a[0] not in self.already_described):
+                match_actors_solo_l.append(self.conditional_create(a[0]))
 
         ##get the individual codes
         # print("The different lists are ")
@@ -153,6 +157,9 @@ class CreateQuery:
         ta = jj.Template(tweet_attribs)
         ta_c = ta.render(tweet_properties=tweet_properties)
 
+        mas = jj.Template(match_actors_solo)
+        mas_c = mas.render(actors=match_actors_solo_l)
+
         r = jj.Template(returns)
         r_c = r.render(ret_values=return_values)
         ##final cleaning
@@ -163,6 +170,7 @@ class CreateQuery:
         ma_c = ma_c.strip().strip(",")
         ma_c2 = ma_c2.strip().strip(",")
         ta_c = ta_c.strip().strip(",")
+        mas_c = mas_c.strip().strip(",")
         r_c = r_c.strip().strip(",")
 
         print(uw_c)
@@ -172,12 +180,13 @@ class CreateQuery:
         print(ma_c)
         print(ma_c2)
         print(ta_c)
+        print(mas_c)
 
         ##get the complete query
         unwind = uw_c
         match1 = "MATCH "+mf_c
         where1 = wf_c
-        match2 = "MATCH "+", ".join([x for x in [me_c,ma_c,ma_c2,ta_c] if x.strip()!=""])
+        match2 = "MATCH "+", ".join([x for x in [me_c,ma_c,ma_c2,ta_c,mas_c] if x.strip()!=""])
         ret = r_c
         tot_template = jj.Template(total_query)
         parts = []
@@ -212,7 +221,7 @@ if __name__ == '__main__':
     return_values="u.id,count(t1)"
     ret_dict = cq.create_query(actors,attributes,relations,return_values)
     pprint(ret_dict,width=150)
-    
+
 
     ##TODO
     # compostion of realationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2

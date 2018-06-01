@@ -117,11 +117,11 @@
 					<thead>
 					  <tr style="background: #2C2B2A; color: white">
 						<th rowspan="2" style="text-align: center;">Tweet Variable Name</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Contains Hashtag</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Retweet Of</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Reply Of</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Has Quoted</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Has Mentioned</th>
+						<th rowspan="2" style="text-align: center;">Contains Hashtag</th>
+						<th rowspan="2" style="text-align: center;">Retweet Of</th>
+						<th rowspan="2" style="text-align: center;">Reply Of</th>
+						<th rowspan="2" style="text-align: center;">Has Quoted</th>
+						<th rowspan="2" style="text-align: center;">Has Mentioned</th>
 
 
 					  </tr>
@@ -167,10 +167,10 @@
 					<thead>
 					  <tr style="background: #2C2B2A; color: white">
 						<th rowspan="2" style="text-align: center;">Source</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Relationship</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Destination</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">Begin Time</th>
-						<th rowspan="2" colspan="2" style="text-align: center;">End Time</th>
+						<th rowspan="2" style="text-align: center;">Relationship</th>
+						<th rowspan="2" style="text-align: center;">Destination</th>
+						<th rowspan="2" style="text-align: center;">Begin Time</th>
+						<th rowspan="2" style="text-align: center;">End Time</th>
 
 
 					  </tr>
@@ -179,10 +179,10 @@
 						{% for r in relation_list %}
 						<tr>
 							<td style="text-align: center;">{{r.Source}}</td>
-							<td style="text-align: center;">{{t.Relation_Ship}}</td>
-							<td style="text-align: center;">{{t.Destination}}</td>
-							<td style="text-align: center;">{{t.Begin}}</td>
-							<td style="text-align: center;">{{t.End}}</td>
+							<td style="text-align: center;">{{r.Relation_Ship}}</td>
+							<td style="text-align: center;">{{r.Destination}}</td>
+							<td style="text-align: center;">{{r.Begin}}</td>
+							<td style="text-align: center;">{{r.End}}</td>
 
 						</tr>
 						{% endfor %}
@@ -216,7 +216,7 @@
 						<div class="col s12 m8 offset-m2 l8 offset-l2">
 							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
 							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
-								<h5 class="heading"><span>Evaluate Query</span></h5>
+								<h5 class="heading"><span>Create Query</span></h5>
 								{% form form=eform %}{% endform %}
 								<p class="bs-component">
 								<center>
@@ -351,7 +351,7 @@
 						<tr style="background-color: #b3ffb3;">
 						{% endif %}
 							<td style="text-align: center;">{{q.name}}</td>
-							<td colspan="4" style="text-align: center;"><pre>{{q.code}}</pre></td>
+							<td colspan="4" ><pre>{{q.code}}</pre></td>
 							<td colspan="3" >
 								{% for i in q.inputs%}
 									<li>{{i}}</li>
@@ -397,6 +397,10 @@
 		<div id="viewDAGTab" class="tab-pane fade">
 			<h5>Select a DAG and the action you want to apply on the DAG</h5>
 			<br>
+			<center>
+				<a class="btn btn-info" target="_blank" href="/" onclick="javascript:event.target.port=8080">Open in Airflow</a>
+			</center>
+			<br>
 			<div class="table-responsive">
 				<table class="table table-hover table-striped table-bordered">
 					<thead>
@@ -439,10 +443,10 @@
 				<div class="row valign change-form">
 					<div class="col s12 m8 offset-m2 l8 offset-l2">
 						<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;">
-						<form id="custommetricid" method="post" action="/create_query/create_custom_metric_handler/">{% csrf_token %}
+						<form id="custommetricid" method="post" action="/create_query/view_custom_metric_handler/">{% csrf_token %}
 							{% form form=createcmform %}{% endform %}
 							<br>
-							<button type="submit" class="btn btn-primary">Submit!</button>
+							<button type="submit" class="btn btn-primary">Fetch Data!</button>
 						</form>
 						<br>
 						<button id="plot_graph" class="btn btn-success">Plot Graph!</button>
@@ -472,6 +476,9 @@
 		$("#alerts_tab").removeClass("active");
 		$("#create_query_tab").addClass("active");
 	});
+	var x_vals = [];
+	var y_vals = [];
+	var metric_name = "";
 </script>
 
 
@@ -501,9 +508,9 @@
 	}
 
 	function create_table(x_,y_,div_id) {
-		trHTML = '<div class="col-sm-4"><ul class="list-group">';
+		trHTML = '<div"><ul class="list-group">';
 		$.each(x_, function (i, item) {
-			trHTML += '<li class="list-group-item">' + x_[i] + '<span class="badge">' + y_[i].toString() + '</span></li>';
+			trHTML += '<li class="list-group-item">' + x_[i] + '<span class="badge" style="color:white">' + y_[i].toString() + '</span></li>';
 		});
 		trHTML += '</ul></div>';
 		$("#"+div_id).html(trHTML);
@@ -514,7 +521,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 
-		var frm = $('#custom_metrics_form_id');
+		var frm = $('#custommetricid');
 		frm.submit(function() {
 			$.ajax({
 				type: frm.attr('method'),
@@ -524,7 +531,7 @@
 					console.log(data);
 					x_vals = data.x;
 					y_vals = data.y;
-					metric_name = $("#id_metric :selected").text();
+					// metric_name = $("#id_metric :selected").text();
 					plot(x_vals, y_vals,'Result for metric: '+metric_name,'','','custom_metric_space');
 				},
 				error: function(data) {
