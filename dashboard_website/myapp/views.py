@@ -24,7 +24,10 @@ import json, os, copy
 from neo4j.v1 import GraphDatabase, basic_auth, types
 
 # TODOS:
-# username in neo4j
+# username in neo4j and everywhere else
+# keep everything in neo4j as string. presently userid as int.
+
+# create_dag => Can we improve the structure?
 # deal with multiple hashtags in create neo4j query form
 # include post processing functions in create and execute DAG
 # unions and AND

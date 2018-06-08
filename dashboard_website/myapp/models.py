@@ -49,21 +49,21 @@ class PostProcFunc(models.Model):
 # Delete this
 class CustomMetric(models.Model):
 	name = models.CharField(max_length=50)
-	query = models.ForeignKey(Query)
-	post_proc = models.ForeignKey(PostProcFunc)
+	query = models.ForeignKey(Query,on_delete=models.CASCADE)
+	post_proc = models.ForeignKey(PostProcFunc,on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.name
 
 class QueryInput(models.Model):
-	query = models.ForeignKey(Query)
+	query = models.ForeignKey(Query,on_delete=models.CASCADE)
 	input_name = models.CharField(max_length=50)
 	attribute = models.CharField(max_length=50,default="_NOT_REQUIRED_")
 
 	def __str__(self):
 		return self.input_name
 class QueryConstant(models.Model):
-	query = models.ForeignKey(Query)
+	query = models.ForeignKey(Query,on_delete=models.CASCADE)
 	attribute = models.CharField(max_length=50)
 	value = models.CharField(max_length=50)
 
@@ -71,7 +71,7 @@ class QueryConstant(models.Model):
 		return self.attribute+"="+self.value
 
 class QueryOutput(models.Model):
-	query = models.ForeignKey(Query)
+	query = models.ForeignKey(Query,on_delete=models.CASCADE)
 	output_name = models.CharField(max_length=50)
 
 	def __str__(self):
