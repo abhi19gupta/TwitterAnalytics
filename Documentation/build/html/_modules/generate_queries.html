@@ -88,7 +88,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../flink.html">Generating alerts using flink and kafka</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking the query answering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../example.html">Contains example documentation</a></li>
 </ul>
 
             
@@ -152,7 +151,33 @@
            <div itemprop="articleBody">
             
   <h1>Source code for generate_queries</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to generate cypher code for inputs taken from user though dashboard API.</span>
+
+<span class="sd">The :mod:`generate_queries` module contains the classes:</span>
+
+<span class="sd">- :class:`generate_queries.CreateQuery`</span>
+
+<span class="sd">One can use the :func:`generate_queries.CreateQuery.create_query` to build a cypher query.</span>
+
+<span class="sd">Example illustrating how to create a query which gives the userids and their tweet counts who have used a certian hashtag.</span>
+
+<span class="sd">&gt;&gt;&gt; actors=[(&quot;u&quot;,&quot;USER&quot;),(&quot;t&quot;,&quot;TWEET&quot;),(&quot;t1&quot;,&quot;TWEET&quot;)]</span>
+<span class="sd">&gt;&gt;&gt; attributes=[[],[(&quot;hashtag&quot;,&quot;{hash}&quot;)],[]]</span>
+<span class="sd">&gt;&gt;&gt; relations=[(&quot;u&quot;,&quot;TWEETED&quot;,&quot;t&quot;,&quot;&quot;,&quot;&quot;),(&quot;u&quot;,&quot;TWEETED&quot;,&quot;t1&quot;,&quot;&quot;,&quot;&quot;)]</span>
+<span class="sd">&gt;&gt;&gt; cq = CreateQuery();</span>
+<span class="sd">&gt;&gt;&gt; return_values=&quot;u.id,count(t1)&quot;</span>
+<span class="sd">&gt;&gt;&gt; ret_dict = cq.create_query(actors,attributes,relations,return_values)</span>
+<span class="sd">&gt;&gt;&gt; pprint(ret_dict,width=150)</span>
+
+<span class="sd">Example of a query which uses time indexing in a relationship:</span>
+
+<span class="sd">&gt;&gt;&gt; actors = [(&#39;x&#39;, &#39;USER&#39;), (&#39;u1&#39;, &#39;USER&#39;)] + [(&#39;t1&#39;, &#39;TWEET&#39;), (&#39;t2&#39;, &#39;TWEET&#39;)]</span>
+<span class="sd">&gt;&gt;&gt; attributes = [[(&#39;id&#39;, &#39;12&#39;)], [(&#39;id&#39;, &#39;24&#39;)]]+[[(&#39;hashtag&#39;, &#39;BLUERISING&#39;)], [(&#39;retweet_of&#39;, &#39;t1&#39;), (&#39;has_mention&#39;, &#39;u1&#39;)]]</span>
+<span class="sd">&gt;&gt;&gt; relations = [(&#39;x&#39;, &#39;FOLLOWS&#39;, &#39;u1&#39;, &#39;&#39;, &#39;&#39;), (&#39;x&#39;, &#39;TWEETED&#39;, &#39;t2&#39;, &#39;24&#39;, &#39;48&#39;)]</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">jinja2</span> <span class="k">as</span> <span class="nn">jj</span>
 <span class="kn">from</span> <span class="nn">neo4j.v1</span> <span class="k">import</span> <span class="n">GraphDatabase</span><span class="p">,</span> <span class="n">basic_auth</span>
@@ -184,6 +209,9 @@
 <span class="n">encode_right</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;TWEETED&quot;</span><span class="p">:</span><span class="s2">&quot;TE_TWEET&quot;</span><span class="p">,</span><span class="s2">&quot;STARTED_FOLLOWING&quot;</span><span class="p">:</span><span class="s2">&quot;FE_FOLLOWED&quot;</span><span class="p">}</span>
 
 <div class="viewcode-block" id="CreateQuery"><a class="viewcode-back" href="../neo4j_query_generation.html#generate_queries.CreateQuery">[docs]</a><span class="k">class</span> <span class="nc">CreateQuery</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class containing functions to generate query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">L</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span> <span class="n">L</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="p">{}</span>
@@ -191,6 +219,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">already_described</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="CreateQuery.generate_node"><a class="viewcode-back" href="../neo4j_query_generation.html#generate_queries.CreateQuery.generate_node">[docs]</a>    <span class="k">def</span> <span class="nf">generate_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">var</span><span class="p">,</span><span class="nb">type</span><span class="p">,</span><span class="n">props</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Helper function for :func:`generate_queries.CreateQuery.conditional_create`</span>
+
+<span class="sd">        :param var: the variable name of the entity</span>
+<span class="sd">        :param type: the type of the entity. Observe we pass type as :USER and NOT as USER</span>
+<span class="sd">        :param props: the properties of the entity.</span>
+<span class="sd">        :returns: the code for the node as neo4j node enclosed in ()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">pt</span> <span class="o">=</span> <span class="s2">&quot;{{var}} {{type}} {</span><span class="si">% r</span><span class="s2">aw %}{{</span><span class="si">% e</span><span class="s2">ndraw %}{</span><span class="si">% f</span><span class="s2">or av in props %}{{av[0]}}:{{av[1]}}, {</span><span class="si">% e</span><span class="s2">ndfor %}&quot;</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">jj</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">pt</span><span class="p">)</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">props</span><span class="o">=</span><span class="n">props</span><span class="p">,</span><span class="n">var</span><span class="o">=</span><span class="n">var</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">)</span>
@@ -199,20 +235,43 @@
         <span class="k">return</span> <span class="p">((</span><span class="n">c</span><span class="o">+</span><span class="s2">&quot;}&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;  </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; )&quot;</span><span class="p">,</span><span class="s2">&quot;)&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CreateQuery.conditional_create"><a class="viewcode-back" href="../neo4j_query_generation.html#generate_queries.CreateQuery.conditional_create">[docs]</a>    <span class="k">def</span> <span class="nf">conditional_create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">entity</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt;&gt; &quot;</span><span class="p">,</span><span class="n">entity</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">already_described</span><span class="p">)</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">already_described</span><span class="p">):</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_node</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,[])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;:TWEET&quot;</span><span class="p">):</span>
-                    <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_node</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">],[])</span>
-                <span class="k">elif</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;:USER&quot;</span><span class="p">):</span>
-                    <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_node</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">entity</span><span class="p">])</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">already_described</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">node</span></div>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Condionally provide the attributes of the node if not already created, else directly use the name of the variable create earlier.</span>
+<span class="sd">        If already create, pass empty list of properties.</span>
+
+<span class="sd">        :param entity: the entity which to check and create</span>
+<span class="sd">        :returns: the code for the node as neo4j node enclosed in ()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;&gt;&gt; &quot;</span><span class="p">,</span><span class="n">entity</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">already_described</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">entity</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">already_described</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_node</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,[])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;:TWEET&quot;</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_node</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">],[])</span>
+            <span class="k">elif</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;:USER&quot;</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_node</span><span class="p">(</span><span class="n">entity</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">entity</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">entity</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">already_described</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">node</span></div>
 
 
 <div class="viewcode-block" id="CreateQuery.create_query"><a class="viewcode-back" href="../neo4j_query_generation.html#generate_queries.CreateQuery.create_query">[docs]</a>    <span class="k">def</span> <span class="nf">create_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">actors</span><span class="p">,</span><span class="n">attributes</span><span class="p">,</span><span class="n">relations</span><span class="p">,</span> <span class="n">return_values</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes a list of attributes and relationships between them and return a cypher code as string.</span>
+<span class="sd">        For the format of the lists see the examples.</span>
+
+<span class="sd">        :param actors: the variable names, types of the attributes</span>
+<span class="sd">        :param attributes: the properties of the actors</span>
+<span class="sd">        :param relations: the relations between the entities along with time index for the relations</span>
+<span class="sd">        :param return_values: a direct string containing the return directive.</span>
+<span class="sd">        :returns: index of the bond in the molecule</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Here we are expecting that if user has not specified the times on the dashboard, then we pass epmty string. If you</span>
+<span class="sd">            store some other default in dashboard database then change this accordingly.</span>
+<span class="sd">        .. note:: The return _values is directly used as a string in the cypher query, so the user can use AS and other similar cypher directives while specifying the query.</span>
+<span class="sd">        .. todo:: Support to compose queries using OR. For example, currently compostion of relationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2, is not supported. Use cypher union for this.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We are generating the query &quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------------------------&quot;</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">actors</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">relations</span><span class="p">)</span>
@@ -385,12 +444,6 @@
 
     <span class="c1">##TODO</span>
     <span class="c1"># compostion of realationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">1) Alerts using the neo4j API - not much to do.</span>
-<span class="sd">2) Customizability of post processing functions. - discuss.</span>
-<span class="sd">3) Merge the neo4j web interface to the dashboard.</span>
-<span class="sd">&quot;&quot;&quot;</span>
 </pre></div>
 
            </div>

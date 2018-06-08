@@ -26,7 +26,7 @@ Here we provide a comprehenstive documentaion of each component of the system al
    flink.rst
    benchmarking.rst
    dashboard_website.rst
-   example.rst
+   
 
 
 

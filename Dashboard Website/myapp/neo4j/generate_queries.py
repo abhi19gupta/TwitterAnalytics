@@ -1,3 +1,29 @@
+"""
+Module to generate cypher code for inputs taken from user though dashboard API.
+
+The :mod:`generate_queries` module contains the classes:
+
+- :class:`generate_queries.CreateQuery`
+
+One can use the :func:`generate_queries.CreateQuery.create_query` to build a cypher query.
+
+Example illustrating how to create a query which gives the userids and their tweet counts who have used a certian hashtag.
+
+>>> actors=[("u","USER"),("t","TWEET"),("t1","TWEET")]
+>>> attributes=[[],[("hashtag","{hash}")],[]]
+>>> relations=[("u","TWEETED","t","",""),("u","TWEETED","t1","","")]
+>>> cq = CreateQuery();
+>>> return_values="u.id,count(t1)"
+>>> ret_dict = cq.create_query(actors,attributes,relations,return_values)
+>>> pprint(ret_dict,width=150)
+
+Example of a query which uses time indexing in a relationship:
+
+>>> actors = [('x', 'USER'), ('u1', 'USER')] + [('t1', 'TWEET'), ('t2', 'TWEET')]
+>>> attributes = [[('id', '12')], [('id', '24')]]+[[('hashtag', 'BLUERISING')], [('retweet_of', 't1'), ('has_mention', 'u1')]]
+>>> relations = [('x', 'FOLLOWS', 'u1', '', ''), ('x', 'TWEETED', 't2', '24', '48')]
+"""
+
 from __future__ import print_function
 from pprint import *
 import jinja2 as jj
@@ -30,6 +56,9 @@ encode_left = {"TWEETED":"TE_USER","STARTED_FOLLOWING":"FE_FOLLOWER"}
 encode_right = {"TWEETED":"TE_TWEET","STARTED_FOLLOWING":"FE_FOLLOWED"}
 
 class CreateQuery:
+    """
+    Class containing functions to generate query.
+    """
     def __init__(self):
         self.depth = lambda L: isinstance(L, list) and max(map(self.depth, L))+1
         self.types = {}
@@ -37,6 +66,14 @@ class CreateQuery:
         self.already_described = []
 
     def generate_node(self,var,type,props):
+        """
+        Helper function for :func:`generate_queries.CreateQuery.conditional_create`
+
+        :param var: the variable name of the entity
+        :param type: the type of the entity. Observe we pass type as :USER and NOT as USER
+        :param props: the properties of the entity.
+        :returns: the code for the node as neo4j node enclosed in ()
+        """
         pt = "{{var}} {{type}} {% raw %}{{% endraw %}{% for av in props %}{{av[0]}}:{{av[1]}}, {% endfor %}"
         t = jj.Template(pt)
         c = t.render(props=props,var=var,type=type)
@@ -45,20 +82,43 @@ class CreateQuery:
         return ((c+"}").replace(" {}","").replace("  {}","").replace("{}","")).replace(" )",")")
 
     def conditional_create(self,entity):
-            print(">>>> ",entity,self.already_described)
-            if(entity in self.already_described):
-                return self.generate_node(entity,"",[])
-            else:
-                if(self.types[entity]==":TWEET"):
-                    node = self.generate_node(entity,self.types[entity],[])
-                elif(self.types[entity]==":USER"):
-                    node = self.generate_node(entity,self.types[entity],self.properties[entity])
-                self.already_described.append(entity)
-                print(node)
-                return node
+        """
+        Condionally provide the attributes of the node if not already created, else directly use the name of the variable create earlier.
+        If already create, pass empty list of properties.
+
+        :param entity: the entity which to check and create
+        :returns: the code for the node as neo4j node enclosed in ()
+        """
+        print(">>>> ",entity,self.already_described)
+        if(entity in self.already_described):
+            return self.generate_node(entity,"",[])
+        else:
+            if(self.types[entity]==":TWEET"):
+                node = self.generate_node(entity,self.types[entity],[])
+            elif(self.types[entity]==":USER"):
+                node = self.generate_node(entity,self.types[entity],self.properties[entity])
+            self.already_described.append(entity)
+            print(node)
+            return node
 
 
     def create_query(self,actors,attributes,relations, return_values):
+        """
+        Takes a list of attributes and relationships between them and return a cypher code as string.
+        For the format of the lists see the examples.
+
+        :param actors: the variable names, types of the attributes
+        :param attributes: the properties of the actors
+        :param relations: the relations between the entities along with time index for the relations
+        :param return_values: a direct string containing the return directive.
+        :returns: index of the bond in the molecule
+
+        .. note::
+            Here we are expecting that if user has not specified the times on the dashboard, then we pass epmty string. If you
+            store some other default in dashboard database then change this accordingly.
+        .. note:: The return _values is directly used as a string in the cypher query, so the user can use AS and other similar cypher directives while specifying the query.
+        .. todo:: Support to compose queries using OR. For example, currently compostion of relationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2, is not supported. Use cypher union for this.
+        """
         print("We are generating the query ")
         print("--------------------------------")
         print(actors, attributes, relations)
@@ -231,9 +291,3 @@ if __name__ == '__main__':
 
     ##TODO
     # compostion of realationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2
-
-"""
-1) Alerts using the neo4j API - not much to do.
-2) Customizability of post processing functions. - discuss.
-3) Merge the neo4j web interface to the dashboard.
-"""
