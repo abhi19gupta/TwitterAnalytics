@@ -12,20 +12,6 @@ In this demonstration, we introduce a system that tries to meet precisely the ab
 Directory structure of the Repo and description of files
 --------------------------------------------------------------
 
-Twitter Analytics System
-===============================
-
-Introduction
---------------------
-
-Twitter generates millions of tweets each day. A vast amount of information is hence available for different kinds of analyses. The end users of these analyses however, may or may not be technically proficient. This necessitates the need of a system that can absorb such large amounts of data and at the same time, provide an intuitive abstraction over this data. This abstraction should allow the end users to specify different kinds of analyses without going into the technicalities of the implementation.
-
-In this demonstration, we introduce a system that tries to meet precisely the above needs. Running on streaming data, the system provides an abstraction which allows the user to specify real time events in the stream, for which he wishes to be notified. Also, acting as a data-store for the tweet network, the system provides another abstraction which allows the user to formulate complex queries on this historical data. We demonstrate both of these abstractions using an example of each, on real world data.
-
-
-Directory structure of the Repo and description of files
---------------------------------------------------------------
-
 Here is a quick overview of the files in the repo with their brief description.
 For more involved documentation, navigate to Documentation/build/html/index.html of the pdf file of the documentaion in the same directory.
 
