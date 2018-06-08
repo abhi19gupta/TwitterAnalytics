@@ -1,7 +1,0 @@
-1
-n1 q4
-INPUTS:
-n1.hash ["MPN","bookmeter","GOT7"]
-CONNECTIONS:
-RETURNS:
-n1.u.id
