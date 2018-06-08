@@ -1,0 +1,72 @@
+\begin{sphinxtheindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter A
+  \item aggregate() (ingest\_raw.Ingest method), \hyperpage{10}
+  \item authkey (ingest\_raw.Timer attribute), \hyperpage{10}
+
+  \indexspace
+  \bigletter C
+  \item calculate\_sentiment() (in module ingest\_raw), \hyperpage{11}
+  \item cancel() (ingest\_raw.Timer method), \hyperpage{10}
+  \item conditional\_create() (generate\_queries.CreateQuery method), \hyperpage{15}
+  \item create\_query() (generate\_queries.CreateQuery method), \hyperpage{15}
+  \item CreateQuery (class in generate\_queries), \hyperpage{15}
+
+  \indexspace
+  \bigletter D
+  \item daemon (ingest\_raw.Timer attribute), \hyperpage{10}
+
+  \indexspace
+  \bigletter E
+  \item exit() (ingest\_raw.Ingest method), \hyperpage{10}
+  \item exitcode (ingest\_raw.Timer attribute), \hyperpage{11}
+
+  \indexspace
+  \bigletter G
+  \item generate\_node() (generate\_queries.CreateQuery method), \hyperpage{15}
+  \item generate\_queries (module), \hyperpage{14}
+  \item getDateFromTimestamp() (in module ingest\_raw), \hyperpage{11}
+
+  \indexspace
+  \bigletter I
+  \item ident (ingest\_raw.Timer attribute), \hyperpage{11}
+  \item Ingest (class in ingest\_raw), \hyperpage{10}
+  \item ingest\_raw (module), \hyperpage{10}
+  \item insert\_tweet() (ingest\_raw.Ingest method), \hyperpage{10}
+  \item is\_alive() (ingest\_raw.Timer method), \hyperpage{11}
+
+  \indexspace
+  \bigletter J
+  \item join() (ingest\_raw.Timer method), \hyperpage{11}
+
+  \indexspace
+  \bigletter N
+  \item name (ingest\_raw.Timer attribute), \hyperpage{11}
+
+  \indexspace
+  \bigletter P
+  \item pid (ingest\_raw.Timer attribute), \hyperpage{11}
+  \item populate() (ingest\_raw.Ingest method), \hyperpage{10}
+
+  \indexspace
+  \bigletter R
+  \item read\_tweets() (in module ingest\_raw), \hyperpage{11}
+  \item run() (ingest\_raw.Timer method), \hyperpage{11}
+
+  \indexspace
+  \bigletter S
+  \item sentinel (ingest\_raw.Timer attribute), \hyperpage{11}
+  \item start() (ingest\_raw.Timer method), \hyperpage{11}
+
+  \indexspace
+  \bigletter T
+  \item terminate() (ingest\_raw.Timer method), \hyperpage{11}
+  \item threaded() (in module ingest\_raw), \hyperpage{11}
+  \item Timer (class in ingest\_raw), \hyperpage{10}
+
+  \indexspace
+  \bigletter W
+  \item worker() (ingest\_raw.Ingest method), \hyperpage{10}
+
+\end{sphinxtheindex}

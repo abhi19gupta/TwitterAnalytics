@@ -1,0 +1,20 @@
+\select@language {english}
+\contentsline {chapter}{\numberline {1}Introduction to twitter analytics system}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}Read data from twitter streaming API}{5}{chapter.2}
+\contentsline {chapter}{\numberline {3}Ingesting data into Neo4j}{7}{chapter.3}
+\contentsline {chapter}{\numberline {4}Ingesting data into MongoDB}{9}{chapter.4}
+\contentsline {section}{\numberline {4.1}Basics First}{9}{section.4.1}
+\contentsline {section}{\numberline {4.2}Ingestion Rates}{9}{section.4.2}
+\contentsline {section}{\numberline {4.3}Code Documentation}{10}{section.4.3}
+\contentsline {chapter}{\numberline {5}Neo4j: API to generate cypher queries}{13}{chapter.5}
+\contentsline {section}{\numberline {5.1}Template of a general query}{13}{section.5.1}
+\contentsline {section}{\numberline {5.2}Creating a custom query through dashboard API : Behind the scenes}{14}{section.5.2}
+\contentsline {section}{\numberline {5.3}Code Documentation}{14}{section.5.3}
+\contentsline {chapter}{\numberline {6}Generating queries in mongoDB}{17}{chapter.6}
+\contentsline {chapter}{\numberline {7}Composing multiple queries : DAG}{19}{chapter.7}
+\contentsline {chapter}{\numberline {8}Generating alerts using flink and kafka}{21}{chapter.8}
+\contentsline {chapter}{\numberline {9}Benchmarking the query answering}{23}{chapter.9}
+\contentsline {chapter}{\numberline {10}Dashboard Website}{25}{chapter.10}
+\contentsline {chapter}{\numberline {11}Indices and tables}{27}{chapter.11}
+\contentsline {chapter}{Python Module Index}{29}{section*.32}
+\contentsline {chapter}{Index}{31}{section*.33}

@@ -1,11 +1,8 @@
-
-
 <!DOCTYPE html>
 <!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Ingesting data into MongoDB &mdash; Twitter Analytics 0.1 documentation</title>
@@ -13,180 +10,334 @@
 
   
   
+
   
+
   
 
   
 
   
-  
-    
-
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   
 
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Neo4j: API to generate cypher queries" href="neo4j_query_generation.html" />
-    <link rel="prev" title="Ingesting data into Neo4j" href="neo4j_data_ingestion.html" /> 
+  
+    <link rel="stylesheet" href="_static/jquery-ui/jquery-ui.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="_static/css/t3more.css" type="text/css" />
+  
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
+        <link rel="next" title="Neo4j: API to generate cypher queries" href="neo4j_query_generation.html"/>
+        <link rel="prev" title="Ingesting data into Neo4j" href="neo4j_data_ingestion.html"/> 
   <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
-<body class="wy-body-for-nav">
+<body class="wy-body-for-nav" role="document">
 
-   
   <div class="wy-grid-for-nav">
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
-          
+      <div class="wy-side-nav-search">
+        
 
-          
-            <a href="index.html" class="icon icon-home"> Twitter Analytics
-          
+        <ul class="sidebartop">
 
-          
-          </a>
+          <li class="docsite">
+            <a href="https://docs.typo3.org"><img src="_static/img/typo3-documentation.png" class="logo" /></a>
+          </li>
 
-          
-            
-            
-          
-
-          
+          <li class="project">
+            <a href="index.html">
+              Twitter Analytics<br>0.1</a>
+          </li><li class="nolink search">
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search this project" id="searchinput" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
-</div>
+</div></li>
 
-          
-        </div>
+        </ul>
 
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
           
-            
-            
-              
-            
-            
+          
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Ingesting data into MongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Gennerating queries in mongoDB</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ingesting data into MongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basics-first">Basics First</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ingest_raw">Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation">Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dag.html">Composing multiple queries : DAG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Contains example documentation</a></li>
 </ul>
 
-            
           
-        </div>
+        
       </div>
+      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Twitter Analytics</a>
-        
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Twitter Analytics</a>
       </nav>
 
 
+      
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>Ingesting data into MongoDB</li>
-    
-    
+    <li><a href="index.html">Docs</a> &raquo;</li>
+    <li>Ingesting data into MongoDB</li>
       <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="_sources/mongoDB_data_ingestion.rst.txt" rel="nofollow"> View page source</a>
-          
-        
+            <a href="_sources/mongoDB_data_ingestion.rst.txt" rel="nofollow">
+                <span class="fa fa-binoculars"></span>&#32;View page source
+            </a>
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+           <div itemprop="articleBody" class="toBeIndexed">
             
   <div class="section" id="ingesting-data-into-mongodb">
 <h1>Ingesting data into MongoDB<a class="headerlink" href="#ingesting-data-into-mongodb" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basics-first">
+<h2>Basics First<a class="headerlink" href="#basics-first" title="Permalink to this headline">¶</a></h2>
+<p>It has no network based data, simple data just sufficient for analytical queries.
+We are storing some basic statistics of the tweets in mongoDB for faster access.  Presently we are storing :</p>
+<blockquote>
+<div><ul class="simple">
+<li>The number of times a hashtag, url, user mention has appeared in time intervals of 1 min.</li>
+<li>The  basic  sentiment  associated  with  a  hashtag,  as  count  of  number  of  positive  and negative words</li>
+</ul>
+</div></blockquote>
+<p>So how are we ingesting? We have two processes(most of the times running on different cores), with P1 keeping track of the statistics.  After every min, the data is put into a pipe which is received by P2 and then parallely put into mongoDB.</p>
+</div>
+<div class="section" id="ingestion-rates">
+<h2>Ingestion Rates<a class="headerlink" href="#ingestion-rates" title="Permalink to this headline">¶</a></h2>
+<p>AS expected, the ingestion rate into mongoDB shilw overlapping writing into diska nd building the new batch is faster than without parallelization. This can be observed in this image:</p>
+<img alt="The mongoDB ingestion rate" src="_images/image1.png" />
+</div>
+<div class="section" id="module-ingest_raw">
+<span id="code-documentation"></span><h2>Code Documentation<a class="headerlink" href="#module-ingest_raw" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ingest_raw.Ingest">
+<em class="property">class </em><code class="descclassname">ingest_raw.</code><code class="descname">Ingest</code><span class="sig-paren">(</span><em>interval</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="ingest_raw.Ingest.aggregate">
+<code class="descname">aggregate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.aggregate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.aggregate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Ingest.exit">
+<code class="descname">exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.exit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Ingest.insert_tweet">
+<code class="descname">insert_tweet</code><span class="sig-paren">(</span><em>tweet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.insert_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.insert_tweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>update the in memory dictionaries</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Ingest.populate">
+<code class="descname">populate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.populate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.populate" title="Permalink to this definition">¶</a></dt>
+<dd><p>write to the mongoDB</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Ingest.worker">
+<code class="descname">worker</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.worker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ingest_raw.Timer">
+<em class="property">class </em><code class="descclassname">ingest_raw.</code><code class="descname">Timer</code><span class="sig-paren">(</span><em>interval</em>, <em>function</em>, <em>args=None</em>, <em>kwargs=None</em>, <em>iterations=1</em>, <em>infinite=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Timer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">multiprocessing.context.Process</span></code></p>
+<p>Calls a function after a specified number of seconds:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span> <span class="c1">#stops the timer if it is still waiting</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="ingest_raw.Timer.authkey">
+<code class="descname">authkey</code><a class="headerlink" href="#ingest_raw.Timer.authkey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Timer.cancel">
+<code class="descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Timer.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Timer.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the timer if it hasn’t already finished.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ingest_raw.Timer.daemon">
+<code class="descname">daemon</code><a class="headerlink" href="#ingest_raw.Timer.daemon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether process is a daemon</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ingest_raw.Timer.exitcode">
+<code class="descname">exitcode</code><a class="headerlink" href="#ingest_raw.Timer.exitcode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return exit code of process or <cite>None</cite> if it has yet to stop</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ingest_raw.Timer.ident">
+<code class="descname">ident</code><a class="headerlink" href="#ingest_raw.Timer.ident" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return identifier (PID) of process or <cite>None</cite> if it has yet to start</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Timer.is_alive">
+<code class="descname">is_alive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether process is alive</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Timer.join">
+<code class="descname">join</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until child process terminates</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ingest_raw.Timer.name">
+<code class="descname">name</code><a class="headerlink" href="#ingest_raw.Timer.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ingest_raw.Timer.pid">
+<code class="descname">pid</code><a class="headerlink" href="#ingest_raw.Timer.pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return identifier (PID) of process or <cite>None</cite> if it has yet to start</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Timer.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Timer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Timer.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ingest_raw.Timer.sentinel">
+<code class="descname">sentinel</code><a class="headerlink" href="#ingest_raw.Timer.sentinel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a file descriptor (Unix) or handle (Windows) suitable for
+waiting for process termination.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Timer.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start child process</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_raw.Timer.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate process; sends SIGTERM signal or uses TerminateProcess()</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ingest_raw.calculate_sentiment">
+<code class="descclassname">ingest_raw.</code><code class="descname">calculate_sentiment</code><span class="sig-paren">(</span><em>positive_words</em>, <em>negative_words</em>, <em>tweet_text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#calculate_sentiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.calculate_sentiment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ingest_raw.getDateFromTimestamp">
+<code class="descclassname">ingest_raw.</code><code class="descname">getDateFromTimestamp</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#getDateFromTimestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.getDateFromTimestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ingest_raw.read_tweets">
+<code class="descclassname">ingest_raw.</code><code class="descname">read_tweets</code><span class="sig-paren">(</span><em>path</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#read_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.read_tweets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ingest_raw.threaded">
+<code class="descclassname">ingest_raw.</code><code class="descname">threaded</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#threaded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.threaded" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 
 
-           </div>
-           
+           </div><!-- /.toBeIndexed -->
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="neo4j_query_generation.html" class="btn btn-neutral float-right" title="Neo4j: API to generate cypher queries" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="neo4j_query_generation.html" class="btn btn-neutral float-right" title="Accesskey Alt(+Shift)+n" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="neo4j_data_ingestion.html" class="btn btn-neutral" title="Ingesting data into Neo4j" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="neo4j_data_ingestion.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
 
   <hr/>
 
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018, Deepak Saini, Abhishek Gupta.
+  <div role="contentinfo" class="contentinfo">
+      <p class="show_source">
+        <a href="_sources/mongoDB_data_ingestion.rst.txt" rel="nofollow">
+          <span class="fa fa-binoculars"></span>&#32;View page source
+        </a>
+      </p>
+      <p class="show_copyright">
+            &copy; Copyright 2018, Deepak Saini, Abhishek Gupta
+      </p>
+      <p class="show_sphinx">
+        Built with <a href="http://sphinx-doc.org/" target="_blank">Sphinx</a> and
+        <a href="https://github.com/TYPO3-Documentation/t3SphinxThemeRtd" target="_blank">t3SphinxThemeRtd.</a>
+        Report theme issues <a href="https://github.com/TYPO3-Documentation/t3SphinxThemeRtd/issues" target="_blank">here.</a>
+      </p>
+      <p class="show_legalinfo">
+        <a href="https://typo3.org/legal-info/" rel="nofollow">
+          <span class="fa fa-legal"></span>&#32;Legal Info
+        </a>
+      </p>
 
-    </p>
+
+
+
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -202,27 +353,28 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
             VERSION:'0.1',
-            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
+            HAS_SOURCE:  true
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="_static/jquery-ui/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="_static/js/theme.js"></script>
+      <script type="text/javascript" src="_static/js/t3autocomplete.js"></script>
 
   
 
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
+  
+   
+  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
+          SphinxRtdTheme.StickyNav.enable();
       });
-  </script> 
-
-</body>
+  </script>
+   <script type="text/javascript" id="idPiwikScriptPlaceholder"></script></body>
 </html>
