@@ -19,27 +19,36 @@ h4 span {
 
 
 </style>
+
+
 <div>
 {% block utab %}
         <link rel="stylesheet" href="{% static 'css/screen.css' %}">
 {% render_table user_list %}
 {% endblock %}
 </div>
+<p>&nbsp;</p>
+
 <div>
 {% block ttab %}
         <link rel="stylesheet" href="{% static 'css/screen.css' %}">
 {% render_table tweet_list %}
 {% endblock %}
 </div>
+<p>&nbsp;</p>
+
 <div>
 {% block rtab %}
         <link rel="stylesheet" href="{% static 'css/screen.css' %}">
 {% render_table relation_list %}
 {% endblock %}
 </div>
+<p>&nbsp;</p>
+
 <div class="container">
-    <div class="row">
-        <div class="jumbotron">
+<div class="row">
+<div class="jumbotron">
+
 <form  method='post'>{% csrf_token %}
     <h4><span>Users</span></h4>
     {{ uform|crispy }}
@@ -48,6 +57,10 @@ h4 span {
             <input class="btn btn-success btn-sm" type="submit" name="b1" value="Make User" />
         </center>
     </p>
+</form>
+<p>&nbsp;</p>
+
+<form  method='post'>{% csrf_token %}
     <h4><span>Tweets</span></h4>
     {{ tform|crispy }}
     <p class="bs-component">
@@ -55,24 +68,108 @@ h4 span {
             <input class="btn btn-success btn-sm" type="submit" name="b2" value="Make Tweet" />
         </center>
     </p>
+</form>
+<p>&nbsp;</p>
 
+<form  method='post'>{% csrf_token %}
     <h4><span>Relations</span></h4>
-    {{ rform|crispy }}
+    <!-- {% crispy rform %} -->
+    <div class="container">
+    <!-- <div class="row" margin-bottom: 100em;> -->
+      <div class="col-sm-12">
+        <b>{{ rform.Source.label_tag }}</b> - {{ rform.Source }}
+      </div>
+
+    <p>&nbsp;</p>
+
+      <div class="col-sm-6">
+        <b>User Relation</b> -<br> {{ rform.URelationShip }}
+      </div>
+      <div class="col-sm-6">
+        <b>User Dest</b> -<br> {{ rform.UDestination }}
+      </div>
+    <p>&nbsp;</p>
+
+    <div class="col-sm-6">
+        <b>Start Date</b> - {{ rform.Ut1 }}
+      </div>
+      <div class="col-sm-6">
+        <b>Start Time</b> - {{ rform.Ut1m }}
+      </div>
+    <p>&nbsp;</p>
+
+      <div class="col-sm-6">
+        <b>End Date</b> - {{ rform.Ut2 }}
+      </div>
+      <div class="col-sm-6">
+        <b>End Time</b> - {{ rform.Ut2m }}
+      </div>
+
+    <!-- </div> -->
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <div>
+      <div class="col-sm-6">
+        <b>Tweet Relation</b> -<br> {{ rform.TRelationShip }}
+      </div>
+      <div class="col-sm-6">
+        <b>Tweet Dest</b> -<br> {{ rform.TDestination }}
+      </div>
+    </div>
+    <p>&nbsp;</p>
+    <!-- <p>&nbsp;</p> -->
+
+
+      <div class="col-sm-6">
+        <b>Start Date</b> - {{ rform.Tt1 }}
+      </div>
+      <div class="col-sm-6">
+        <b>Start Time</b> - {{ rform.Tt1m }}
+      </div>
+    <p>&nbsp;</p>
+
+      <div class="col-sm-6">
+        <b>End Date</b> - {{ rform.Tt2 }}
+      </div>
+      <div class="col-sm-6">
+        <b>End Time</b> - {{ rform.Tt2m }}
+      </div>
+  </div>
     <p class="bs-component">
         <center>
             <input class="btn btn-success btn-sm" type="submit" name="b3" value="Introduce Relation" />
         </center>
     </p>
+</form>
+<p>&nbsp;</p>
 
+<form  method='post'>{% csrf_token %}
     <h4><span>Evaluate Query</span></h4>
+    {{ eform|crispy }}
     <p class="bs-component">
         <center>
-            <input class="btn btn-success btn-sm" type="submit" value="Submit" />
+            <input class="btn btn-success btn-sm" type="submit" name="submit" value="Submit" />
         </center>
     </p>
 </form>
-        </div>
+<p>&nbsp;</p>
+
+    <div>
+    <h4><span>Query Executed in Cypher</span></h4>
+    <pre><code>{{query_s}}</code></pre>
     </div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <div>
+    <h4><span>Query Output</span></h4>
+    {{output_s|linebreaksbr}}
+    </div>
+   <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+</div>
+</div>
 </div>
 {% endblock %}
 

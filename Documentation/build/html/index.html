@@ -80,7 +80,15 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">Composing multiple queries : DAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Contains example documentation</a></li>
 </ul>
 
@@ -148,11 +156,27 @@
             
   <div class="section" id="welcome-to-twitter-analytics-documentation">
 <h1>Welcome to Twitter Analytics documentation!<a class="headerlink" href="#welcome-to-twitter-analytics-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Twitter generates millions of tweets each day. A vast amount of information is hence available for different kinds of analyses. The end users of these analyses however, may or may not be technically proficient. This necessitates the need of a system that can absorb such large amounts of data and at the same time, provide an intuitive abstraction over this data. This abstraction should allow the end users to specify different kinds of analyses without going into the technicalities of the implementation.</p>
+<p>In this demonstration, we introduce a system that tries to meet precisely the above needs. Running on streaming data, the system provides an abstraction which allows the user to specify real time events in the stream, for which he wishes to be notified. Also, acting as a data-store for the tweet network, the system provides another abstraction which allows the user to formulate complex queries on this historical data. We demonstrate both of these abstractions using an example of each, on real world data.</p>
+<p>Here we provide a comprehenstive documentaion of each component of the system along with a documentation of the code.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
-<li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation">Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">Composing multiple queries : DAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Contains example documentation</a></li>
 </ul>
 </div>

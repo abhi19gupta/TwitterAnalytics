@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Contains example documentation" href="example.html" />
-    <link rel="prev" title="Introduction to twitter analytics system" href="introduction.html" /> 
+    <link rel="next" title="Generating queries in mongoDB" href="mongoDB_query_generation.html" />
+    <link rel="prev" title="Ingesting data into MongoDB" href="mongoDB_data_ingestion.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -81,7 +81,20 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Neo4j: API to generate cypher queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Neo4j: API to generate cypher queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#template-of-a-general-query">Template of a general query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-documentation">Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dag.html">Composing multiple queries : DAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Contains example documentation</a></li>
 </ul>
 
@@ -150,6 +163,120 @@
   <div class="section" id="neo4j-api-to-generate-cypher-queries">
 <h1>Neo4j: API to generate cypher queries<a class="headerlink" href="#neo4j-api-to-generate-cypher-queries" title="Permalink to this headline">¶</a></h1>
 <p>Here we expalin the API to generate cypher queries for Neo4j.</p>
+<div class="section" id="template-of-a-general-query">
+<h2>Template of a general query<a class="headerlink" href="#template-of-a-general-query" title="Permalink to this headline">¶</a></h2>
+<p>Any query can be thought of as a 2 step process -</p>
+<blockquote>
+<div><ul class="simple">
+<li>Extract the relevant sub-graph satisfying the query constraints (Eg. Users and their tweets that use a certain hashtag)</li>
+<li>Post-processing of this sub-graph to return desired result (Eg. Return “names” of such users, Return “number” of such users)</li>
+</ul>
+</div></blockquote>
+<p>In a generic way, the 1st step can be constructed using AND,OR,NOT of multiple constraints. We now specify how each such constraint can be built.</p>
+<p>We look at the network in an abstract in two dimensions.</p>
+<blockquote>
+<div><ul class="simple">
+<li>There are “Entities” (users and tweets) which have “Attributes” (like user has screen_name,follower_count etc. and tweet has hashtag,mentions etc.).</li>
+<li>The entities have “Relations” between them which have the only attribute as time/time-interval (Eg. Follows “relation” between 2 user “entities” has a time-interval associated).</li>
+</ul>
+</div></blockquote>
+<p>So each constraint can be specified by specifying a pattern consisting of</p>
+<blockquote>
+<div><ul class="simple">
+<li>Two Entities and their Attributes</li>
+<li>Relation between the entities and its Attribute (which is the time constraint of this relation)</li>
+</ul>
+</div></blockquote>
+<p>To make things clear we provide an example here.
+Suppose our query is - Find users who follow a user with id=1 and have also tweeted with a hashtag “h” between time t1 and t2.
+We first break this into AND of two constraints:</p>
+<blockquote>
+<div><ul class="simple">
+<li>User follows a user with id=1</li>
+<li>User has tweeted with a hashtag “h” between time t1 and t2.</li>
+</ul>
+</div></blockquote>
+<p>We now specify the 1st constraint using our entity-attribute abstraction.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Source entity - User, Attributes - None</li>
+<li>Destination entity - User, Attributes - id=1</li>
+<li>Relationship - Follows, Attributes - None</li>
+</ul>
+</div></blockquote>
+<p>We now specify the 2nd constraint using our entity-attribute abstraction.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Source entity - User, Attributes - None</li>
+<li>Destination entity - Tweet, Attributes - hashtag:”h”</li>
+<li>Relationship - Follows, Attributes - b/w t1,t2</li>
+</ul>
+</div></blockquote>
+<p>The missing thing in this abstraction is that we have not taken into account that the source entity in both the constraints refers to the same User. To do so, we “name” each entity (like a variable). So we have:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="first docutils">
+<dt>Constraint 1:</dt>
+<dd><ul class="first last">
+<li>Source entity - u1:User, Attributes - None</li>
+<li>Destination entity - u2:User, Attributes - id=1</li>
+<li>Relationship - Follows, Attributes - None</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Constraint 2:</dt>
+<dd><ul class="first last">
+<li>Source entity - u1:User, Attributes - None</li>
+<li>Destination entity - u3:Tweet, Attributes - hashtag:”h”</li>
+<li>Relationship - Follows, Attributes - b/w t1,t2</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="creating-a-custom-query-through-dashboard-api-behind-the-scenes">
+<h2>Creating a custom query through dashboard API : Behind the scenes<a class="headerlink" href="#creating-a-custom-query-through-dashboard-api-behind-the-scenes" title="Permalink to this headline">¶</a></h2>
+<p>A user can follow the general template of a query as provided above to build a query.
+when a user provides the inputs to specify the query, the following steps are executed on the server:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Cleanup and processing of the inputs provided by the user.</li>
+<li>The variables(User/Tweet) and the relations are stored in a database. These stored objects can be later used by the user.</li>
+<li>The query specified by the user is converted into a Cypher neo4j graph mining query.</li>
+<li>Connection is established with the neo4j server and the query is executed on the database.</li>
+<li>The results obtained are concatenated and are displayed.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="code-documentation">
+<h2>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the code.</p>
+<span class="target" id="module-generate_queries"></span><dl class="class">
+<dt id="generate_queries.CreateQuery">
+<em class="property">class </em><code class="descclassname">generate_queries.</code><code class="descname">CreateQuery</code><a class="reference internal" href="_modules/generate_queries.html#CreateQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_queries.CreateQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="generate_queries.CreateQuery.conditional_create">
+<code class="descname">conditional_create</code><span class="sig-paren">(</span><em>entity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_queries.html#CreateQuery.conditional_create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_queries.CreateQuery.conditional_create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="generate_queries.CreateQuery.create_query">
+<code class="descname">create_query</code><span class="sig-paren">(</span><em>actors</em>, <em>attributes</em>, <em>relations</em>, <em>return_values</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_queries.html#CreateQuery.create_query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_queries.CreateQuery.create_query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="generate_queries.CreateQuery.generate_node">
+<code class="descname">generate_node</code><span class="sig-paren">(</span><em>var</em>, <em>type</em>, <em>props</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_queries.html#CreateQuery.generate_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_queries.CreateQuery.generate_node" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -160,10 +287,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="example.html" class="btn btn-neutral float-right" title="Contains example documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="mongoDB_query_generation.html" class="btn btn-neutral float-right" title="Generating queries in mongoDB" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="introduction.html" class="btn btn-neutral" title="Introduction to twitter analytics system" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="mongoDB_data_ingestion.html" class="btn btn-neutral" title="Ingesting data into MongoDB" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

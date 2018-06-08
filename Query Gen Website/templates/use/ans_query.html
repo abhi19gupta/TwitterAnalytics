@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+{% block content %}
+<style type="text/css">
+h4 {
+   width: 100%;
+   text-align: center;
+   border-bottom: 1px solid #000;
+   line-height: 0.1em;
+   margin: 10px 0 20px;
+}
+
+h4 span {
+    background:#fff;
+    padding:0 10px;
+}
+
+
+</style>
+
+<div class="container">
+<div class="row">
+<div class="jumbotron">
+
+<form  method='post'>{% csrf_token %}
+    <h4><span>Same Hashtag</span></h4>
+    <h5>Give the number of users who have used the same &ltHashtag&gt</h5>
+    {{ shform|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="b1" value="Execute" />
+        </center>
+    </p>
+</form>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+<form  method='post'>{% csrf_token %}
+    <h4><span>Commom Followers</span></h4>
+    <h5>Give the number of users who follow both &ltUser1&gt and &ltUser2&gt</h5>
+    {{ cfform|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="b2" value="Execute" />
+        </center>
+    </p>
+</form>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+<form  method='post'>{% csrf_token %}
+    <h4><span>New Followers</span></h4>
+    <h5>Give the number of new followers gained by &ltUser&gt between &ltBegin Date-Begin Time&gt and &ltEnd Date-End Time&gt</h5>
+    {{ nfform|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="b3" value="Execute" />
+        </center>
+    </p>
+</form>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+<form  method='post'>{% csrf_token %}
+    <h4><span>Hashtags used by User and followers</span></h4>
+    <h5>Give the number of unique hashtags used by &ltUser&gt and atleast one of his followers</h5>
+    {{ hfform|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="b4" value="Execute" />
+        </center>
+    </p>
+</form>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+<form  method='post'>{% csrf_token %}
+    <h4><span>Retweeted Users</span></h4>
+    <h5>Give the number of unique users retweeted by &ltUser&gt between &ltBegin Date-Begin Time&gt and &ltEnd Date-End Time&gt</h5>
+    {{ rfform|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="b5" value="Execute" />
+        </center>
+    </p>
+</form>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+
+
+  <div>
+    <h4><span>Query Executed in Cypher</span></h4>
+    {{query_s|linebreaksbr}}
+    </div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <div>
+    <h4><span>Query Output</span></h4>
+    {{output_s|linebreaksbr}}
+    </div>
+   <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+   <form  method='post'>{% csrf_token %}
+    {{ dummy|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="custom" value="I want to execute Custom Queries" />
+        </center>
+    </p>
+</form>
+
+</div>
+</div>
+</div>
+{% endblock %}

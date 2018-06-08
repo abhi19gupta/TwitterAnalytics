@@ -13,12 +13,12 @@ Directory structure of the Repo and description of files
 --------------------------------------------------------------
 
 Here is a quick overview of the files in the repo with their brief description.
-For more involved documentation, navigate to Documentation/build/html/index.html of the pdf file of the documentaion in the same directory.
+For more involved documentation, navigate to Documentation/build/html/index.html or the pdf file of the documentaion in the same directory.
 
 ```
 project
 │   readme.md
-│   notes.txt (Some impoertant things about the tools used in the project)    
+│   notes.txt (Some important things about the tools used in the project)
 │
 └───Dashboard Website (Contains the django code for the dashboard website)
 │   │   manage.py
@@ -32,13 +32,14 @@ project
 |       |____airflow (contains the airflow system)
 |       |____neo4j (contains the cypher query generation code for Neo4j API
 |       |____mongo (contains the code to answer mongoDB queries)
-|       |____dag (contains code to create DAG in networkX, do topological sort to execute the DAG, generate 
+|       |____dag (contains code to create DAG in networkX, do topological sort to execute the DAG, generate
 |       |             plotly div to display the dag)
-|       |____flink (contains all the flinka nd kafka code)
-│   
+|       |____flink (contains all the flink and kafka code)
+│
 └───Benchmarking (contains all the benchmarking code to benchmark the query answering rate)
-└───Basic Neo4j Material (contains the basic code form MTP1, starting new? see thsi first)
+└───Basic Neo4j Material (contains the basic code form MTP1, starting new? see this first)
 └───NLP on tweets (contains the code of different approaches to tokenize, NER of tweets, spacy seems to work best)
 └───Ingestion (code to ingest data into neo4j and mongoDB, also contains code to benchmark and plot the ingestion rates)
-└───Query Gen Website (old website containing just the Query Gen part, most of which incuded in the new dashboard website. Again If new to django, see this first)
+└───Query Gen Website (old website containing just the Query Gen part, most of which included in the dashboard website. Again If new to django, see this first)
+└───Read Twitter Stream (code to read data from twitter streaming API)
 ```

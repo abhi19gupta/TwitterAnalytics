@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load render_table from django_tables2 %}
+{% block content %}
+<style type="text/css">
+h4 {
+   width: 100%;
+   text-align: center;
+   border-bottom: 1px solid #000;
+   line-height: 0.1em;
+   margin: 10px 0 20px;
+}
+
+h4 span {
+    background:#fff;
+    padding:0 10px;
+}
+
+
+</style>
+
+<div class="container">
+<div class="row">
+<div class="jumbotron">
+
+ <h4><span>Template of a general Query</span></h4>
+Any query can be thought of as a 2 step process -
+</br>
+<ul>
+<li>Extract the relevant sub-graph satisfying the query constraints (Eg. Users and their tweets that use a certain hashtag)</li>
+<li>Post-processing of this sub-graph to return desired result (Eg. Return "names" of such users, Return "number" of such users)</li>
+</ul>
+</br>
+In a generic way, the 1st step can be constructed using AND,OR,NOT of multiple constraints. We now specify how each such constraint can be built.
+</br>
+</br>
+
+We look at the network in an abstract in two dimensions.
+<ul>
+<li>There are "Entities" (users and tweets) which have "Attributes" (like user has screen_name,follower_count etc. and tweet has hashtag,mentions etc.).</li>
+<li>The entities have "Relations" between them which have the only attribute as time/time-interval (Eg. Follows "relation" between 2 user "entities" has a time-interval associated).</li>
+</ul>
+</br>
+So each constraint can be specified by specifying a pattern consisting of
+<ul>
+<li> Two Entities and their Attributes</li>
+<li> Relation between the entities and its Attribute (which is the time constraint of this relation)</li>
+</ul>
+
+
+</br>
+To make things clear we provide an example here.
+</br>
+Suppose our query is - <b>Find users who follow a user with id=1 and have also tweeted with a hashtag "h" between time t1 and t2</b>.
+</br>
+We first break this into AND of two constraints:
+<ul>
+<li> User follows a user with id=1</li>
+<li> User has tweeted with a hashtag "h" between time t1 and t2.</li>
+</ul>
+</br>
+We now specify the 1st constraint using our entity-attribute abstraction.
+</br>
+<ul>
+<li> Source entity      - User,    Attributes - None</li>
+<li>Destination entity - User,    Attributes - id=1</li>
+<li>Relationship       - Follows, Attributes - None</li>
+</ul>
+We now specify the 2nd constraint using our entity-attribute abstraction.
+</br>
+<ul>
+<li>Source entity      - User,    Attributes - None</li>
+<li>Destination entity - Tweet,   Attributes - hashtag:"h"</li>
+<li>Relationship       - Follows, Attributes - b/w t1,t2</li>
+</ul>
+
+
+</br>
+The missing thing in this abstraction is that we have not taken into account that the source entity in both the constraints refers to the same User. To do so, we "name" each entity (like a variable). So we have:
+<ul>
+	<li>
+Constraint 1:
+<ul>
+<li>Source entity      - u1:User,    Attributes - None</li>
+<li>Destination entity - u2:User,    Attributes - id=1</li>
+<li>Relationship       - Follows,    Attributes - None</li>
+</ul>
+</li>
+<li>
+Constraint 2:
+<ul>
+<li>Source entity      - u1:User,    Attributes - None</li>
+<li>Destination entity - u3:Tweet,   Attributes - hashtag:"h"</li>
+<li>Relationship       - Follows,    Attributes - b/w t1,t2</li>
+</ul>
+</li>
+</ul>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h4><span>Common Queries Provided</span></h4>
+We have provided a sample of common queries. For each query, there may be certain variables that are required in the query. An input form is provided for each query below it. Enter the values in the fields provided to see the output of the query.
+<form  method='post'>{% csrf_token %}
+    {{ dummy1|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="simple" value="Execute them" />
+        </center>
+    </p>
+</form>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h4><span>Construct a custom query</span></h4>
+A user can follow the general template of a query as provided above to build a query. 
+</br>
+when a user provides the inputs to specify the query, the following steps are executed on the server:
+<ul>
+	<li> Cleanup and processing of the inputs provided by the user.</li>
+	<li> The variables(User/Tweet) and the relations are stored in a database. These stored objects can be later used by the user.</li>
+	<li> The query specified by the user is converted into a Cypher neo4j graph mining query.</li>
+	<li> Connection is established with the neo4j server and the query is executed on the database.</li>
+	<li> The results obtained are concatenated and are displayed.</li>
+</ul>
+<form  method='post'>{% csrf_token %}
+    {{ dummy|crispy }}
+    <p class="bs-component">
+        <center>
+            <input class="btn btn-success btn-sm" type="submit" name="custom" value="Build and Execute them" />
+        </center>
+    </p>
+</form>
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h4><span>Dataset Stats and query execution times</span></h4>
+
+<pre><code>
+Raw data size - 23GB.
+Data size in the neo4j database - 
+Time taken to add all profiles - around 0.2 ms per user
+Time taken to add all tweets and favourites - about 6 tweets per sec 12 tweets per sec (started with 27 tweets per sec, actually can't say much because of caching)
+Time taken to add all friends and follower - 810sec = 13 minutes 
+
+Here are mentioned some basic statistics of the graph and the time taken to calculate those using cypher queries:
+1. Total Number of nodes - 30 million
+	1 ms
+	match (r) return count(r)
+
+2. Total Number of edges - 55 million
+	1 ms
+	match (a)-[r]->(b) return count(r)
+
+3. Total Number of users - 2.7 million
+	1 ms
+	match(n:USER) return count(n)
+
+4. Total Number ot tweets - 5.2 million
+	1 ms
+	match(n:TWEET) return count(n)
+
+5. Total Number of hashtags - 230,000
+	1 ms
+	match(n:HASHTAG) return count(n)
+
+6. Total Number of URLS - 920,000
+	1 ms
+	match(n:URL) return count(n)
+
+7. Total number of followers (unique) - 2.2 million
+	10 seconds
+	match(n:USER)-[:FOLLOWS]->(n1:USER) with distinct n as n2 return count (n2)
+
+8. Total number of retweets - 1.1 million
+	8 minutes
+	match(n:TWEET)-[:RETWEET_OF]->(:TWEET) return count(n)
+
+
+We also run some common queries and the running times are as follows:
+
+1. Number of users who have used hashtag "health" - 36ms
+
+2. Common followers of 800306697751273472 and 728600098419040256 - 29ms
+
+3. New follower gained by 800306697751273472 between 1509044335 and 1509044336 - 26ms
+
+4. Hashtags used by 3238075504 which is also used by his followers - 2.5sec
+
+5. Whom did 3238075504 retweet between 1483304400 and 1509875264 - 8ms
+
+</code></pre>
+
+</div>
+</div>
+</div>
+{% endblock %}

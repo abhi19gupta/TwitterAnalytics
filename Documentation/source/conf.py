@@ -14,7 +14,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../dashboard_website/myapp'))
+sys.path.insert(0, os.path.abspath('../../Dashboard Website/myapp'))
+sys.path.insert(0, os.path.abspath('../../Dashboard Website/myapp/neo4j'))
 
 
 # -- Project information -----------------------------------------------------
