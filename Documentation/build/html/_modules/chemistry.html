@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>chemistry &mdash; Twitter Analytics 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Twitter Analytics
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to twitter analytics system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Contains example documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Twitter Analytics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>chemistry</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for chemistry</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Basic chemistry module.</span>
+
+<span class="sd">The :mod:`chemistry` module contains three classes:</span>
+
+<span class="sd">- :class:`chemistry.Atom`</span>
+<span class="sd">- :class:`chemistry.Bond`</span>
+<span class="sd">- :class:`chemistry.Molecule`</span>
+
+<span class="sd">One can use the :func:`chemistry.Molecule.add_atom` and</span>
+<span class="sd">:func:`chemsitry.Molecule.add_bond` functions to build up a molecule.</span>
+
+<span class="sd">Example illustrating how to create a methane molecule.</span>
+
+<span class="sd">&gt;&gt;&gt; from chemistry import Molecule</span>
+<span class="sd">&gt;&gt;&gt; mol = Molecule(&#39;Methane&#39;)</span>
+<span class="sd">&gt;&gt;&gt; carbon_index = mol.add_atom(atomic_number=6)</span>
+<span class="sd">&gt;&gt;&gt; hydrogen1_index = mol.add_atom(atomic_number=1)</span>
+<span class="sd">&gt;&gt;&gt; hydrogen2_index = mol.add_atom(atomic_number=1)</span>
+<span class="sd">&gt;&gt;&gt; hydrogen3_index = mol.add_atom(atomic_number=1)</span>
+<span class="sd">&gt;&gt;&gt; hydrogen4_index = mol.add_atom(atomic_number=1)</span>
+<span class="sd">&gt;&gt;&gt; bond1_index = mol.add_bond(carbon_index, hydrogen1_index)</span>
+<span class="sd">&gt;&gt;&gt; bond2_index = mol.add_bond(carbon_index, hydrogen2_index)</span>
+<span class="sd">&gt;&gt;&gt; bond3_index = mol.add_bond(carbon_index, hydrogen3_index)</span>
+<span class="sd">&gt;&gt;&gt; bond4_index = mol.add_bond(carbon_index, hydrogen4_index)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Atom"><a class="viewcode-back" href="../example.html#chemistry.Atom">[docs]</a><span class="k">class</span> <span class="nc">Atom</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing an atom.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atomic_number</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atomic_number</span> <span class="o">=</span> <span class="n">atomic_number</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Atom.bond_to"><a class="viewcode-back" href="../example.html#chemistry.Atom.bond_to">[docs]</a>    <span class="k">def</span> <span class="nf">bond_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_atom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the :class:`chemistry.Bond` formed between the two atoms.</span>
+
+<span class="sd">        :param other_atom: :class:`chemistry.Atom` to form :class:`chemistry.Bond` to</span>
+<span class="sd">        :returns: :class:`chemistry.Bond`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">Bond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_atom</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
+        <span class="n">other_atom</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bond</span></div></div>
+
+<div class="viewcode-block" id="Bond"><a class="viewcode-back" href="../example.html#chemistry.Bond">[docs]</a><span class="k">class</span> <span class="nc">Bond</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing a bond between two atoms.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom1</span><span class="p">,</span> <span class="n">atom2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="p">(</span><span class="n">atom1</span><span class="p">,</span> <span class="n">atom2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Molecule"><a class="viewcode-back" href="../example.html#chemistry.Molecule">[docs]</a><span class="k">class</span> <span class="nc">Molecule</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class representing a molecule consisting of atoms and bonds.</span>
+<span class="sd">    - **parameters**, **types**, **return** and **return types**::</span>
+
+<span class="sd">          :param arg1: description</span>
+<span class="sd">          :param arg2: description</span>
+<span class="sd">          :type arg1: type description</span>
+<span class="sd">          :type arg1: type description</span>
+<span class="sd">          :return: return description</span>
+<span class="sd">          :rtype: the return type description</span>
+
+<span class="sd">    - and to provide sections such as **Example** using the double commas syntax::</span>
+
+<span class="sd">          :Example:</span>
+
+<span class="sd">          followed by a blank line !</span>
+
+<span class="sd">      which appears as follow:</span>
+
+<span class="sd">      :Example:</span>
+
+<span class="sd">      followed by a blank line</span>
+
+<span class="sd">    - Finally special sections such as **See Also**, **Warnings**, **Notes**</span>
+<span class="sd">      use the sphinx syntax (*paragraph directives*)::</span>
+
+<span class="sd">          .. seealso:: blabla</span>
+<span class="sd">          .. warnings also:: blabla</span>
+<span class="sd">          .. note:: blabla</span>
+<span class="sd">          .. todo:: blabla</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        There are many other Info fields but they may be redundant:</span>
+<span class="sd">            * param, parameter, arg, argument, key, keyword: Description of a</span>
+<span class="sd">              parameter.</span>
+<span class="sd">            * type: Type of a parameter.</span>
+<span class="sd">            * raises, raise, except, exception: That (and when) a specific</span>
+<span class="sd">              exception is raised.</span>
+<span class="sd">            * var, ivar, cvar: Description of a variable.</span>
+<span class="sd">            * returns, return: Description of the return value.</span>
+<span class="sd">            * rtype: Return type.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        There are many other directives such as versionadded, versionchanged,</span>
+<span class="sd">        rubric, centered, ... See the sphinx documentation for more details.</span>
+<span class="sd">    .. seealso:: :class:`MainClass2`</span>
+<span class="sd">    .. warning:: arg2 must be non-zero.</span>
+<span class="sd">    .. todo:: check that arg2 is non zero.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">identifier</span> <span class="o">=</span> <span class="n">identifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="Molecule.add_atom"><a class="viewcode-back" href="../example.html#chemistry.Molecule.add_atom">[docs]</a>    <span class="k">def</span> <span class="nf">add_atom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atomic_number</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the list index of the atom added to the molecule.</span>
+
+<span class="sd">        :param atomic_number: atomic number of the atom to be added</span>
+<span class="sd">        :returns: index of the atom in the molecule</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="n">atomic_number</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Molecule.add_bond"><a class="viewcode-back" href="../example.html#chemistry.Molecule.add_bond">[docs]</a>    <span class="k">def</span> <span class="nf">add_bond</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom1_index</span><span class="p">,</span> <span class="n">atom2_index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the list index of the bond added to the molecule.</span>
+
+<span class="sd">        :param atom1_index: atom&#39;s index in molecule</span>
+<span class="sd">        :param atom2_index: atom&#39;s index in molecule</span>
+<span class="sd">        :returns: index of the bond in the molecule</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">atom1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">atom1_index</span><span class="p">]</span>
+        <span class="n">atom2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">atom2_index</span><span class="p">]</span>
+        <span class="n">bond</span> <span class="o">=</span> <span class="n">atom1</span><span class="o">.</span><span class="n">bond_to</span><span class="p">(</span><span class="n">atom2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bonds</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Deepak Saini, Abhishek Gupta.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
