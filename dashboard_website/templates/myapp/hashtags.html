@@ -90,7 +90,7 @@
                 			</form>
                 			<br>
                 			<div class="row">
-            				<div id="top10list" class="col-sm-4">
+            				<div id="top10list" >
             					<!-- Top 10 hashtags list will be drawn inside this DIV -->
             				</div>
                             </div>
@@ -197,7 +197,7 @@
 	            success: function (data) {
 	            	trHTML = '<ul class="list-group">';
 	            	$.each(data, function (i, item) {
-			            trHTML += '<li class="list-group-item">' + item.hashtag + '<span class="badge">' + item.count.toString() + '</span></li>';
+			            trHTML += '<li class="list-group-item">' + item.hashtag + '<span class="badge" style="color:white">' + item.count.toString() + '</span></li>';
 			        });
 	            	trHTML += '</ul>'
 	            	console.log(data);

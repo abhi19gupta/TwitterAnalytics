@@ -38,7 +38,11 @@ neo4jCreator = CreateQuery()
 flinkCodeGenerator = FlinkCodeGenerator()
 flink_api = FlinkAPI()
 
-
+mongo_mapping = {"mp_ht_in_total":"Give the most popular hashtags in total",
+"mp_ht_in_interval":"Give the most popular hashtags in the time interval <Begin Time> and <End Time>",
+"ht_in_interval":"Give the timetamps at which <hashtag> is used between <Begin Time> and <End Time>",
+"ht_with_sentiment":"Give the timetamps, associated positive and negative sentiment of a <hashtag> between <Begin Time> and <End Time>",
+"mp_um_in_total":"Give the most popular users in total"}
 ###################################################################################################
 ####################################  Meta logic functions ########################################
 ###################################################################################################
@@ -92,12 +96,14 @@ def execute(query_name,inputs):
 		temp.update({c.attribute:c.value for c in consts})
 		if(q.query=="mp_ht_in_total"):
 			ret = mongoQuery.mp_ht_in_total(**temp)
-		elif(q.query=="mp_ht_in_total"):
+		elif(q.query=="mp_ht_in_interval"):
 			ret = mongoQuery.mp_ht_in_interval(**temp)
-		if(q.query=="ht_in_interval"):
+		elif(q.query=="ht_in_interval"):
 			ret = mongoQuery.ht_in_interval(**temp)
-		if(q.query=="ht_with_sentiment"):
+		elif(q.query=="ht_with_sentiment"):
 			ret = mongoQuery.ht_with_sentiment(**temp)
+		elif(q.query=="mp_um_in_total"):
+			ret = mongoQuery.mp_um_in_total(**temp)
 
 	elif(q.type=="postProcessing"):
 		context = {"inputs":copy.deepcopy(inputs)}
@@ -116,13 +122,16 @@ def execute(query_name,inputs):
 def get_all_queries():
 		ret_query = {}
 		ret_types = {}
+		constants = {}
 		queries = Query.objects.all()
 		for query in queries:
 			inputs = [x.input_name for x in QueryInput.objects.filter(query=query)]
 			outputs = [x.output_name for x in QueryOutput.objects.filter(query=query)]
+			consts = {x.attribute:x.value for x in QueryConstant.objects.filter(query=query)}
 			ret_query[query.name] = [query.query, inputs, outputs]
 			ret_types[query.name] = query.type
-		return ret_query,ret_types
+			constants[query.name] = consts
+		return ret_query,ret_types,constants
 
 
 ###################################################################################################
@@ -168,7 +177,7 @@ def hashtag_top10_getter(request):
 		end_time = form.cleaned_data['end_time']
 		print(start_time, end_time)
 		data = mongoQuery.mp_ht_in_interval(20, start_time.timestamp(), end_time.timestamp())
-		data = [{"hashtag":x[0],"count":x[1]} for x in list(zip(data["_id"],data["count"]))]
+		data = [{"hashtag":x[0],"count":x[1]} for x in list(zip(data["hashtag"],data["count"]))]
 	else:
 		print(form['start_time'].errors, form['end_time'].errors)
 
@@ -187,7 +196,8 @@ def hashtag_sentiment_getter(request):
 		end_time = form.cleaned_data['end_time']
 		print(hashtag, start_time, end_time)
 		data = mongoQuery.ht_with_sentiment(hashtag,start_time.timestamp(), end_time.timestamp())
-		(x,y) = binning(list(zip(data["timestamps"],data["positive_sentiment"])),60)
+		sentiments = [data["positive_sentiment"][i]-data["negative_sentiment"][i] for i in range(len(data["positive_sentiment"]))]
+		(x,y) = binning(list(zip(data["timestamps"],sentiments)),60)
 
 		data = {"x":x,"y":y}
 	else:
@@ -226,7 +236,7 @@ def query_creator(request):
 
 	data = get_create_query_subtab_data()
 	data.update({"create_mongo_form_1":PopularHash(), "create_mongo_form_2":PopularHashInInterval(),
-		"create_mongo_form_3":HashUsageInInterval(), "create_mongo_form_4":HashSentimentInInterval()})
+		"create_mongo_form_3":HashUsageInInterval(), "create_mongo_form_4":HashSentimentInInterval(),"create_mongo_form_5":PopularUser()})
 	data.update({"createpostprocform":PostProcForm()})
 	data.update({"query_s":query_s, 'output_s':output_s})
 	data.update({"createdagform":CreateDagForm()})
@@ -238,7 +248,10 @@ def query_creator(request):
 		q_dict = {}
 		q_dict["name"] = query.name
 		q_dict["query_type"] = query.type
-		q_dict["code"] = query.query
+		if(query.type=="mongoDB"):
+			q_dict["code"] = mongo_mapping[query.query]
+		else:
+			q_dict["code"] = query.query
 
 		inputs = [x.input_name for x in QueryInput.objects.filter(query=query)]
 		outputs = [x.output_name for x in QueryOutput.objects.filter(query=query)]
@@ -395,6 +408,9 @@ def create_neo4j_query_handler(request):
 			for input_name in sq["inputs"]:
 				QueryInput.objects.create(query=query_object, input_name=input_name)
 			for output_name in sq["outputs"]:
+				splitted = output_name.split(" as ")
+				if (len(splitted) > 1):
+					output_name = splitted[1]
 				QueryOutput.objects.create(query=query_object, output_name=output_name)
 
 			# driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
@@ -426,7 +442,7 @@ def create_mongo_query_handler(request):
 			name = phform.cleaned_data["query_name"]
 			number = phform.cleaned_data["number"]
 			q = Query.objects.create(name=name,query="mp_ht_in_total",type="mongoDB")
-			QueryOutput.objects.create(query=q,output_name="_id")
+			QueryOutput.objects.create(query=q,output_name="hashtag")
 			QueryOutput.objects.create(query=q,output_name="count")
 			if(number[0]=="{" and number[-1]=="}"):
 				QueryInput.objects.create(query=q,attribute="limit",input_name=number[1:-1])
@@ -443,7 +459,7 @@ def create_mongo_query_handler(request):
 			begin_time = phiform.cleaned_data["begin_time"]
 			end_time = phiform.cleaned_data["end_time"]
 			q = Query.objects.create(name=name,query="mp_ht_in_interval",type="mongoDB")
-			QueryOutput.objects.create(query=q,output_name="_id")
+			QueryOutput.objects.create(query=q,output_name="hashtag")
 			QueryOutput.objects.create(query=q,output_name="count")
 			if(number[0]=="{" and number[-1]=="}"):
 				QueryInput.objects.create(query=q,attibute="limit",input_name=number[1:-1])
@@ -461,7 +477,7 @@ def create_mongo_query_handler(request):
 			hashtag = huiform.cleaned_data["hashtag"]
 			begin_time = huiform.cleaned_data["begin_time"]
 			end_time = huiform.cleaned_data["end_time"]
-			q = Query.objects.create(name=name,query="mp_ht_in_interval",type="mongoDB")
+			q = Query.objects.create(name=name,query="ht_in_interval",type="mongoDB")
 			QueryOutput.objects.create(query=q,output_name="timestamps")
 			if(hashtag[0]=="{" and hashtag[-1]=="}"):
 				QueryInput.objects.create(query=q,attibute="hashtag",input_name=hashtag[1:-1])
@@ -478,7 +494,7 @@ def create_mongo_query_handler(request):
 			hashtag = hsiform.cleaned_data["hashtag"]
 			begin_time = hsiform.cleaned_data["begin_time"]
 			end_time = hsiform.cleaned_data["end_time"]
-			q = Query.objects.create(name=name,query="mp_ht_in_interval",type="mongoDB")
+			q = Query.objects.create(name=name,query="ht_with_sentiment",type="mongoDB")
 			QueryOutput.objects.create(query=q,output_name="timestamps")
 			QueryOutput.objects.create(query=q,output_name="positive_sentiment")
 			QueryOutput.objects.create(query=q,output_name="negative_sentiment")
@@ -488,6 +504,20 @@ def create_mongo_query_handler(request):
 				QueryConstant.objects.create(query=q,attibute="hashtag",value=hashtag)
 			QueryConstant.objects.create(query=q,attibute="begin",value=str(begin_time.timestamp()))
 			QueryConstant.objects.create(query=q,attibute="end",value=str(end_time.timestamp()))
+
+	if("b5" in request.POST):
+		puform = PopularUser(request.POST)
+		print("5th button pressed")
+		if puform.is_valid():
+			name = puform.cleaned_data["query_name"]
+			number = puform.cleaned_data["number"]
+			q = Query.objects.create(name=name,query="mp_um_in_total",type="mongoDB")
+			QueryOutput.objects.create(query=q,output_name="userId")
+			QueryOutput.objects.create(query=q,output_name="count")
+			if(number[0]=="{" and number[-1]=="}"):
+				QueryInput.objects.create(query=q,attribute="limit",input_name=number[1:-1])
+			else:
+				QueryConstant.objects.create(query=q,attribute="limit",value=number)
 
 	return redirect("/create_query/")
 
@@ -541,8 +571,8 @@ def view_custom_metric_handler(request):
 		# session.close()
 		# return convert_result_to_json(result)
 		dag_obj = Dag.objects.get(dag_name=dag_name)
-		queries,types = get_all_queries()
-		dag = DAG(dag_obj.source, queries, types)
+		queries,types, constants = get_all_queries()
+		dag = DAG(dag_obj.source, queries, types, constants)
 		outputs = dag.feed_forward(execute)
 		return outputs
 
@@ -778,8 +808,8 @@ def create_dag_handler(request):
 			file_handler = request.FILES['file']
 			source = file_handler.read()
 
-			queries,types = get_all_queries()
-			dag = DAG(source, queries, types)
+			queries,types, constants = get_all_queries()
+			dag = DAG(source, queries, types, constants)
 			dag_div = dag.plot_dag()
 			Dag.objects.create(dag_name=dag_name,description = description, dag_div=dag_div,source=source)
 			rets = dag.generate_dag(dag_name)
