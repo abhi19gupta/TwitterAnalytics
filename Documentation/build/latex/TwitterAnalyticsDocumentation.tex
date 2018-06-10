@@ -5,6 +5,7 @@
    \let\sphinxpxdimen\pdfpxdimen\else\newdimen\sphinxpxdimen
 \fi \sphinxpxdimen=.75bp\relax
 
+\PassOptionsToPackage{warn}{textcomp}
 \usepackage[utf8]{inputenc}
 \ifdefined\DeclareUnicodeCharacter
  \ifdefined\DeclareUnicodeCharacterAsOptional
@@ -29,7 +30,7 @@
 \usepackage{babel}
 \usepackage{times}
 \usepackage[Bjarne]{fncychap}
-\usepackage[dontkeepoldnames]{sphinx}
+\usepackage{sphinx}
 
 \usepackage{geometry}
 
@@ -55,7 +56,7 @@
 
 
 \title{Twitter Analytics Documentation}
-\date{Jun 08, 2018}
+\date{Jun 11, 2018}
 \release{0.1}
 \author{Deepak Saini, Abhishek Gupta}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -77,62 +78,176 @@ Here we provide a comprehenstive documentaion of each component of the system al
 
 
 \chapter{Introduction to twitter analytics system}
-\label{\detokenize{introduction:welcome-to-twitter-analytics-documentation}}\label{\detokenize{introduction::doc}}\label{\detokenize{introduction:introduction-to-twitter-analytics-system}}
+\label{\detokenize{introduction:introduction-to-twitter-analytics-system}}\label{\detokenize{introduction::doc}}
 
 \chapter{Read data from twitter streaming API}
-\label{\detokenize{twitter_stream::doc}}\label{\detokenize{twitter_stream:read-data-from-twitter-streaming-api}}
+\label{\detokenize{twitter_stream:read-data-from-twitter-streaming-api}}\label{\detokenize{twitter_stream::doc}}
 
 \chapter{Ingesting data into Neo4j}
-\label{\detokenize{neo4j_data_ingestion::doc}}\label{\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}}
+\label{\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}}\label{\detokenize{neo4j_data_ingestion::doc}}
 
 \chapter{Ingesting data into MongoDB}
-\label{\detokenize{mongoDB_data_ingestion::doc}}\label{\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}}
+\label{\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}}\label{\detokenize{mongoDB_data_ingestion::doc}}
 
-\section{Basics First}
-\label{\detokenize{mongoDB_data_ingestion:basics-first}}
-It has no network based data, simple data just sufficient for analytical queries.
-We are storing some basic statistics of the tweets in mongoDB for faster access.  Presently we are storing :
+\section{Why store in MongoDB}
+\label{\detokenize{mongoDB_data_ingestion:why-store-in-mongodb}}
+In mongoDB we store only the data which can be extracted quickly from incoming tweets without much processing.
+
+This means that any query which can be answered using mongoDB can also be answered using the network data in neo4j. This has been done to ensure that some very common queries can be answered quickly. Also, neo4j has a limit on the parallel sessions that can be made to the database, so in case we decide to do away with mongoDB, those queries would have to be answered from neo4j and would unnecesarily take up the sessions.
+
+
+\section{Data Format in mongoDB}
+\label{\detokenize{mongoDB_data_ingestion:data-format-in-mongodb}}
+We have three collections in mongoDB:
 \begin{itemize}
+\item {} \begin{description}
+\item[{To store the hashtags. Each document in this collection stores the following infomration:}] \leavevmode\begin{itemize}
 \item {} 
-The number of times a hashtag, url, user mention has appeared in time intervals of 1 min.
+the hashtag
 
 \item {} 
-The  basic  sentiment  associated  with  a  hashtag,  as  count  of  number  of  positive  and negative words
+the timestamp of the tweet which contained the hashtag
+
+\item {} 
+the sentiment associated with the tweet containing the hashtag
 
 \end{itemize}
 
-So how are we ingesting? We have two processes(most of the times running on different cores), with P1 keeping track of the statistics.  After every min, the data is put into a pipe which is received by P2 and then parallely put into mongoDB.
+\end{description}
+
+\item {} \begin{description}
+\item[{To store urls}] \leavevmode\begin{itemize}
+\item {} 
+the url
+
+\item {} 
+the timestamp of the tweet which contained the hashtag
+
+\item {} 
+the sentiment associated with the tweet containing the hashtag
+
+\end{itemize}
+
+\end{description}
+
+\item {} \begin{description}
+\item[{To store user mentions}] \leavevmode\begin{itemize}
+\item {} 
+the user mention
+
+\item {} 
+the timestamp of the tweet which contained the hashtag
+
+\item {} 
+the sentiment associated with the tweet containing the hashtag
+
+\end{itemize}
+
+\end{description}
+
+\end{itemize}
+
+Given this information in mongoDB, we can currently use it to answer queries like:
+\begin{itemize}
+\item {} 
+Most popular hashtags(and their sentiment) in total
+
+\item {} 
+Most popular hashtags(and their sentiment) in an interval of time
+
+\item {} 
+Most popular urls in total
+
+\item {} 
+Most popular urls in an interval of time
+
+\item {} 
+Most popular users in total(in terms of their mentions)
+
+\item {} 
+Most popular users in an interval of time(in terms of their mentions)
+
+\end{itemize}
+
+
+\section{mongoDB v/s neo4j}
+\label{\detokenize{mongoDB_data_ingestion:mongodb-v-s-neo4j}}
+Note that just the bare minimum information that is currently being stored in the mongoDB. It can easily be extended to store more information. MongoDB provides strong mechanisms to aggregate and extract information
+from the database.
+
+So, even if we decide to store some pseudo-structural information, like the user of the tweet in hashtags collection and then answer queries like the sentiment associated will all the tweets of an user, we expect the query execution time to be atleast as fast as answering the query in neo4j, though in case of neo4j also, answering such query would also take only a single hop, which means that the execution time would be small anyways. This is precisely the reason why we don’t currently store such information in mongoDB.
+
+But, as the size of the system grows, it would surely be benefitial to store much more condensed data in mongoDB and use it to answer more complex queries.
+
+
+\section{Ingesting the data into database}
+\label{\detokenize{mongoDB_data_ingestion:ingesting-the-data-into-database}}
+A simple approach would be to ingest a tweet into the database as when it comes in real time. But clearly(and as mentioned in mongoDB documentation)
+this is suboptimal, as we are connecting to the on-disk database frequently.{[}scheme 1{]}
+
+An easy solution to this would be to keep collecting the data in memory and then write it to the database periodically. But observe that, the time it takes the process to open a connection to database and then write the data to it, no new tweeets are being collected in memory.{[}scheme 2{]}
+
+So finally we the approach of utilising multiple processes to write data to mongoDB.{[}scheme 3{]}
+
+Observe here the distinction between a thread and a process.
+While using multiple threads, the threads are run(usually, if we discount the kernel threads spawned by python) on a single core in python, due to Global Interpreter Lock and thus, though we get virtual parallelism,
+we don’t get real parallelism. Thus, due to the limitation of the language, we are using process to get the parallelism between wriing to database and collecitng new tweets.
+A clear disadvantage of using process over threads will become clear below.
+
+To explain the final multi-process approach, we have three processes running:
+\begin{itemize}
+\item {} 
+Accumulator process - It collects the tweets in an in-memory data structure. Also, in the begining at t=0, it spawns a timer thread, which generates an interrupt after every pre-specified T time.
+
+\item {} 
+Connector process - It takes a list of tweets through a pipe, opens connection to the database and writes the tweets to the database.
+
+\end{itemize}
+
+How the system works can be understood through this image:
+
+\noindent\sphinxincludegraphics{{mongo_ingestion}.jpg}
+
+So, the timer process in the accumulator process genertes an interrupt after every T seconds, at this instant, the accumulator stops collecting tweets and writes those to Inter process communication(IPC) pipe. This is generally fast as IPC pipe are implemented in memory. Now, the other end of the pipe is in the connector process. After the writing process has been complete, it recieves the tweets and starts writing those to the on-disk database as a batch, which again ensures that the process is faster as compared to writing single tweet at a time in a loop. Concurrently, while the connector process is writing the tweets, the acuumulator process starts accumulating new tweets.
+
+So in this way the the process of writing to database in connector process is overlapped with the the accumulation of tweets in accumulator process. Note that we have a small gap equivalent to time taken to write to IPC, in which the accummulator process is not collecting the tweets. The whole process can further be made efficient by removing this gap, but since we are getting tweet ingestion rate much more than the rate of tweets coming on twitter and the gain from removing the gap would not be much, we don’t implement it.
+
+To answer queries like the most popular hastags in total, or in a large interval. It would be benefitial to have an aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector thread to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don’t currently use this mechanism.
 
 
 \section{Ingestion Rates}
 \label{\detokenize{mongoDB_data_ingestion:ingestion-rates}}
-AS expected, the ingestion rate into mongoDB shilw overlapping writing into diska nd building the new batch is faster than without parallelization. This can be observed in this image:
+As expected, the ingestion rate into mongoDB whilw overlapping writing into database and accumulating data is faster than without parallelization. The plot below shows a comparison between scheme 2 and scheme 3 as described above. Observe that as more and more tweets are inserted, the difference between the two scheme grows as the time saved in overlapping inserting the accumulating keeps on adding up in advntage of scheme 3.
 
 \noindent\sphinxincludegraphics{{image1}.png}
 
+Clearly the ingestion rate depends on the time after which the interrupt to start write the collected tweets to database is generate(called T above).
+
+Finally we get an ingestion rate of around 7k-12k tweets/second on average, depending on T.
+
 
 \section{Code Documentation}
-\label{\detokenize{mongoDB_data_ingestion:code-documentation}}\label{\detokenize{mongoDB_data_ingestion:module-ingest_raw}}\index{ingest\_raw (module)}\index{Ingest (class in ingest\_raw)}
+\label{\detokenize{mongoDB_data_ingestion:module-ingest_raw}}\label{\detokenize{mongoDB_data_ingestion:code-documentation}}\index{ingest\_raw (module)}\index{Ingest (class in ingest\_raw)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{ingest\_raw.}\sphinxbfcode{Ingest}}{\emph{interval}}{}
-Bases: \sphinxcode{object}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{Ingest}}}{\emph{interval}}{}
+Bases: \sphinxcode{\sphinxupquote{object}}
 \index{aggregate() (ingest\_raw.Ingest method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.aggregate}}\pysiglinewithargsret{\sphinxbfcode{aggregate}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.aggregate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{aggregate}}}{}{}
 \end{fulllineitems}
 
 \index{exit() (ingest\_raw.Ingest method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.exit}}\pysiglinewithargsret{\sphinxbfcode{exit}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.exit}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{exit}}}{}{}
 \end{fulllineitems}
 
 \index{insert\_tweet() (ingest\_raw.Ingest method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.insert_tweet}}\pysiglinewithargsret{\sphinxbfcode{insert\_tweet}}{\emph{tweet}}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.insert_tweet}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{insert\_tweet}}}{\emph{tweet}}{}
 update the in memory dictionaries
 
 \end{fulllineitems}
@@ -140,7 +255,7 @@ update the in memory dictionaries
 \index{populate() (ingest\_raw.Ingest method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.populate}}\pysiglinewithargsret{\sphinxbfcode{populate}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.populate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{populate}}}{}{}
 write to the mongoDB
 
 \end{fulllineitems}
@@ -148,7 +263,7 @@ write to the mongoDB
 \index{worker() (ingest\_raw.Ingest method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.worker}}\pysiglinewithargsret{\sphinxbfcode{worker}}{\emph{q}}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.worker}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{worker}}}{\emph{q}}{}
 \end{fulllineitems}
 
 
@@ -157,11 +272,12 @@ write to the mongoDB
 \index{Timer (class in ingest\_raw)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{ingest\_raw.}\sphinxbfcode{Timer}}{\emph{interval}, \emph{function}, \emph{args=None}, \emph{kwargs=None}, \emph{iterations=1}, \emph{infinite=False}}{}
-Bases: \sphinxcode{multiprocessing.context.Process}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{Timer}}}{\emph{interval}, \emph{function}, \emph{args=None}, \emph{kwargs=None}, \emph{iterations=1}, \emph{infinite=False}}{}
+Bases: \sphinxcode{\sphinxupquote{multiprocessing.context.Process}}
 
 Calls a function after a specified number of seconds:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t} \PYG{o}{=} \PYG{n}{Timer}\PYG{p}{(}\PYG{l+m+mf}{30.0}\PYG{p}{,} \PYG{n}{f}\PYG{p}{,} \PYG{n}{args}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{kwargs}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{)}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
@@ -170,13 +286,13 @@ Calls a function after a specified number of seconds:
 \index{authkey (ingest\_raw.Timer attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.authkey}}\pysigline{\sphinxbfcode{authkey}}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.authkey}}\pysigline{\sphinxbfcode{\sphinxupquote{authkey}}}
 \end{fulllineitems}
 
 \index{cancel() (ingest\_raw.Timer method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.cancel}}\pysiglinewithargsret{\sphinxbfcode{cancel}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.cancel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{cancel}}}{}{}
 Stop the timer if it hasn’t already finished.
 
 \end{fulllineitems}
@@ -184,7 +300,7 @@ Stop the timer if it hasn’t already finished.
 \index{daemon (ingest\_raw.Timer attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.daemon}}\pysigline{\sphinxbfcode{daemon}}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.daemon}}\pysigline{\sphinxbfcode{\sphinxupquote{daemon}}}
 Return whether process is a daemon
 
 \end{fulllineitems}
@@ -192,7 +308,7 @@ Return whether process is a daemon
 \index{exitcode (ingest\_raw.Timer attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.exitcode}}\pysigline{\sphinxbfcode{exitcode}}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.exitcode}}\pysigline{\sphinxbfcode{\sphinxupquote{exitcode}}}
 Return exit code of process or \sphinxtitleref{None} if it has yet to stop
 
 \end{fulllineitems}
@@ -200,7 +316,7 @@ Return exit code of process or \sphinxtitleref{None} if it has yet to stop
 \index{ident (ingest\_raw.Timer attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.ident}}\pysigline{\sphinxbfcode{ident}}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.ident}}\pysigline{\sphinxbfcode{\sphinxupquote{ident}}}
 Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to start
 
 \end{fulllineitems}
@@ -208,7 +324,7 @@ Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to sta
 \index{is\_alive() (ingest\_raw.Timer method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.is_alive}}\pysiglinewithargsret{\sphinxbfcode{is\_alive}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.is_alive}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{is\_alive}}}{}{}
 Return whether process is alive
 
 \end{fulllineitems}
@@ -216,7 +332,7 @@ Return whether process is alive
 \index{join() (ingest\_raw.Timer method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.join}}\pysiglinewithargsret{\sphinxbfcode{join}}{\emph{timeout=None}}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.join}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{join}}}{\emph{timeout=None}}{}
 Wait until child process terminates
 
 \end{fulllineitems}
@@ -224,13 +340,13 @@ Wait until child process terminates
 \index{name (ingest\_raw.Timer attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.name}}\pysigline{\sphinxbfcode{name}}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.name}}\pysigline{\sphinxbfcode{\sphinxupquote{name}}}
 \end{fulllineitems}
 
 \index{pid (ingest\_raw.Timer attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.pid}}\pysigline{\sphinxbfcode{pid}}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.pid}}\pysigline{\sphinxbfcode{\sphinxupquote{pid}}}
 Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to start
 
 \end{fulllineitems}
@@ -238,13 +354,15 @@ Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to sta
 \index{run() (ingest\_raw.Timer method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.run}}\pysiglinewithargsret{\sphinxbfcode{run}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.run}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{run}}}{}{}
+Method to be run in sub-process; can be overridden in sub-class
+
 \end{fulllineitems}
 
 \index{sentinel (ingest\_raw.Timer attribute)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.sentinel}}\pysigline{\sphinxbfcode{sentinel}}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.sentinel}}\pysigline{\sphinxbfcode{\sphinxupquote{sentinel}}}
 Return a file descriptor (Unix) or handle (Windows) suitable for
 waiting for process termination.
 
@@ -253,7 +371,7 @@ waiting for process termination.
 \index{start() (ingest\_raw.Timer method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.start}}\pysiglinewithargsret{\sphinxbfcode{start}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.start}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{start}}}{}{}
 Start child process
 
 \end{fulllineitems}
@@ -261,7 +379,7 @@ Start child process
 \index{terminate() (ingest\_raw.Timer method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.terminate}}\pysiglinewithargsret{\sphinxbfcode{terminate}}{}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.terminate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{terminate}}}{}{}
 Terminate process; sends SIGTERM signal or uses TerminateProcess()
 
 \end{fulllineitems}
@@ -272,31 +390,31 @@ Terminate process; sends SIGTERM signal or uses TerminateProcess()
 \index{calculate\_sentiment() (in module ingest\_raw)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.calculate_sentiment}}\pysiglinewithargsret{\sphinxcode{ingest\_raw.}\sphinxbfcode{calculate\_sentiment}}{\emph{positive\_words}, \emph{negative\_words}, \emph{tweet\_text}}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.calculate_sentiment}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{calculate\_sentiment}}}{\emph{positive\_words}, \emph{negative\_words}, \emph{tweet\_text}}{}
 \end{fulllineitems}
 
 \index{getDateFromTimestamp() (in module ingest\_raw)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.getDateFromTimestamp}}\pysiglinewithargsret{\sphinxcode{ingest\_raw.}\sphinxbfcode{getDateFromTimestamp}}{\emph{timestamp}}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.getDateFromTimestamp}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{getDateFromTimestamp}}}{\emph{timestamp}}{}
 \end{fulllineitems}
 
 \index{read\_tweets() (in module ingest\_raw)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.read_tweets}}\pysiglinewithargsret{\sphinxcode{ingest\_raw.}\sphinxbfcode{read\_tweets}}{\emph{path}, \emph{filename}}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.read_tweets}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{read\_tweets}}}{\emph{path}, \emph{filename}}{}
 \end{fulllineitems}
 
 \index{threaded() (in module ingest\_raw)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.threaded}}\pysiglinewithargsret{\sphinxcode{ingest\_raw.}\sphinxbfcode{threaded}}{\emph{fn}}{}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.threaded}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{threaded}}}{\emph{fn}}{}
 \end{fulllineitems}
 
 
 
 \chapter{Neo4j: API to generate cypher queries}
-\label{\detokenize{neo4j_query_generation::doc}}\label{\detokenize{neo4j_query_generation:neo4j-api-to-generate-cypher-queries}}
+\label{\detokenize{neo4j_query_generation:neo4j-api-to-generate-cypher-queries}}\label{\detokenize{neo4j_query_generation::doc}}
 Here we expalin the API to generate cypher queries for Neo4j.
 
 
@@ -433,20 +551,22 @@ The results obtained are concatenated and are displayed.
 \section{Code Documentation}
 \label{\detokenize{neo4j_query_generation:code-documentation}}
 Here we provide a documentation of the code.
+
 \phantomsection\label{\detokenize{neo4j_query_generation:module-generate_queries}}\index{generate\_queries (module)}
 Module to generate cypher code for inputs taken from user though dashboard API.
 
-The {\hyperref[\detokenize{neo4j_query_generation:module-generate_queries}]{\sphinxcrossref{\sphinxcode{generate\_queries}}}} module contains the classes:
+The {\hyperref[\detokenize{neo4j_query_generation:module-generate_queries}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries}}}}} module contains the classes:
 \begin{itemize}
 \item {} 
-{\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery}]{\sphinxcrossref{\sphinxcode{generate\_queries.CreateQuery}}}}
+{\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries.CreateQuery}}}}}
 
 \end{itemize}
 
-One can use the {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}]{\sphinxcrossref{\sphinxcode{generate\_queries.CreateQuery.create\_query()}}}} to build a cypher query.
+One can use the {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries.CreateQuery.create\_query()}}}}} to build a cypher query.
 
 Example illustrating how to create a query which gives the userids and their tweet counts who have used a certian hashtag.
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{actors}\PYG{o}{=}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{USER}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEET}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEET}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{attributes}\PYG{o}{=}\PYG{p}{[}\PYG{p}{[}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{hashtag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}hash\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{p}{]}\PYG{p}{]}
@@ -459,6 +579,7 @@ Example illustrating how to create a query which gives the userids and their twe
 
 Example of a query which uses time indexing in a relationship:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{actors} \PYG{o}{=} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{x}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{USER}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{USER}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]} \PYG{o}{+} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEET}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t2}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEET}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{attributes} \PYG{o}{=} \PYG{p}{[}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{id}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{12}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{id}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{]}\PYG{o}{+}\PYG{p}{[}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{hashtag}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{BLUERISING}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{retweet\PYGZus{}of}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{has\PYGZus{}mention}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{]}
@@ -467,19 +588,19 @@ Example of a query which uses time indexing in a relationship:
 \index{CreateQuery (class in generate\_queries)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery}}\pysigline{\sphinxbfcode{class }\sphinxcode{generate\_queries.}\sphinxbfcode{CreateQuery}}
-Bases: \sphinxcode{object}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery}}\pysigline{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{generate\_queries.}}\sphinxbfcode{\sphinxupquote{CreateQuery}}}
+Bases: \sphinxcode{\sphinxupquote{object}}
 
 Class containing functions to generate query.
 \index{conditional\_create() (generate\_queries.CreateQuery method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}}\pysiglinewithargsret{\sphinxbfcode{conditional\_create}}{\emph{entity}}{}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{conditional\_create}}}{\emph{entity}}{}
 Condionally provide the attributes of the node if not already created, else directly use the name of the variable create earlier.
 If already create, pass empty list of properties.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{entity} \textendash{} the entity which to check and create
+\sphinxstyleliteralstrong{\sphinxupquote{entity}} \textendash{} the entity which to check and create
 
 \item[{Returns}] \leavevmode
 the code for the node as neo4j node enclosed in ()
@@ -491,22 +612,22 @@ the code for the node as neo4j node enclosed in ()
 \index{create\_query() (generate\_queries.CreateQuery method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}}\pysiglinewithargsret{\sphinxbfcode{create\_query}}{\emph{actors}, \emph{attributes}, \emph{relations}, \emph{return\_values}}{}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{create\_query}}}{\emph{actors}, \emph{attributes}, \emph{relations}, \emph{return\_values}}{}
 Takes a list of attributes and relationships between them and return a cypher code as string.
 For the format of the lists see the examples.
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{actors} \textendash{} the variable names, types of the attributes
+\sphinxstyleliteralstrong{\sphinxupquote{actors}} \textendash{} the variable names, types of the attributes
 
 \item {} 
-\sphinxstyleliteralstrong{attributes} \textendash{} the properties of the actors
+\sphinxstyleliteralstrong{\sphinxupquote{attributes}} \textendash{} the properties of the actors
 
 \item {} 
-\sphinxstyleliteralstrong{relations} \textendash{} the relations between the entities along with time index for the relations
+\sphinxstyleliteralstrong{\sphinxupquote{relations}} \textendash{} the relations between the entities along with time index for the relations
 
 \item {} 
-\sphinxstyleliteralstrong{return\_values} \textendash{} a direct string containing the return directive.
+\sphinxstyleliteralstrong{\sphinxupquote{return\_values}} \textendash{} a direct string containing the return directive.
 
 \end{itemize}
 
@@ -524,7 +645,7 @@ store some other default in dashboard database then change this accordingly.
 The return \_values is directly used as a string in the cypher query, so the user can use AS and other similar cypher directives while specifying the query.
 \end{sphinxadmonition}
 
-\begin{sphinxadmonition}{note}{Todo:}
+\begin{sphinxadmonition}{note}{\label{neo4j_query_generation:index-0}Todo:}
 Support to compose queries using OR. For example, currently compostion of relationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2, is not supported. Use cypher union for this.
 \end{sphinxadmonition}
 
@@ -533,18 +654,18 @@ Support to compose queries using OR. For example, currently compostion of relati
 \index{generate\_node() (generate\_queries.CreateQuery method)}
 
 \begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.generate_node}}\pysiglinewithargsret{\sphinxbfcode{generate\_node}}{\emph{var}, \emph{type}, \emph{props}}{}
-Helper function for {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}]{\sphinxcrossref{\sphinxcode{generate\_queries.CreateQuery.conditional\_create()}}}}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.generate_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{generate\_node}}}{\emph{var}, \emph{type}, \emph{props}}{}
+Helper function for {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries.CreateQuery.conditional\_create()}}}}}
 \begin{quote}\begin{description}
 \item[{Parameters}] \leavevmode\begin{itemize}
 \item {} 
-\sphinxstyleliteralstrong{var} \textendash{} the variable name of the entity
+\sphinxstyleliteralstrong{\sphinxupquote{var}} \textendash{} the variable name of the entity
 
 \item {} 
-\sphinxstyleliteralstrong{type} \textendash{} the type of the entity. Observe we pass type as :USER and NOT as USER
+\sphinxstyleliteralstrong{\sphinxupquote{type}} \textendash{} the type of the entity. Observe we pass type as :USER and NOT as USER
 
 \item {} 
-\sphinxstyleliteralstrong{props} \textendash{} the properties of the entity.
+\sphinxstyleliteralstrong{\sphinxupquote{props}} \textendash{} the properties of the entity.
 
 \end{itemize}
 
@@ -561,19 +682,19 @@ the code for the node as neo4j node enclosed in ()
 
 
 \chapter{Generating queries in mongoDB}
-\label{\detokenize{mongoDB_query_generation::doc}}\label{\detokenize{mongoDB_query_generation:generating-queries-in-mongodb}}
+\label{\detokenize{mongoDB_query_generation:generating-queries-in-mongodb}}\label{\detokenize{mongoDB_query_generation::doc}}
 
 \chapter{Composing multiple queries : DAG}
-\label{\detokenize{dag::doc}}\label{\detokenize{dag:composing-multiple-queries-dag}}
+\label{\detokenize{dag:composing-multiple-queries-dag}}\label{\detokenize{dag::doc}}
 
 \chapter{Generating alerts using flink and kafka}
-\label{\detokenize{flink::doc}}\label{\detokenize{flink:generating-alerts-using-flink-and-kafka}}
+\label{\detokenize{flink:generating-alerts-using-flink-and-kafka}}\label{\detokenize{flink::doc}}
 
 \chapter{Benchmarking the query answering}
-\label{\detokenize{benchmarking::doc}}\label{\detokenize{benchmarking:benchmarking-the-query-answering}}
+\label{\detokenize{benchmarking:benchmarking-the-query-answering}}\label{\detokenize{benchmarking::doc}}
 
 \chapter{Dashboard Website}
-\label{\detokenize{dashboard_website::doc}}\label{\detokenize{dashboard_website:dashboard-website}}
+\label{\detokenize{dashboard_website:dashboard-website}}\label{\detokenize{dashboard_website::doc}}
 
 \chapter{Indices and tables}
 \label{\detokenize{index:indices-and-tables}}\begin{itemize}

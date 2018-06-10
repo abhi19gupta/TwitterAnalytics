@@ -76,9 +76,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction to twitter analytics system</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../twitter_stream.html">Read data from twitter streaming API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../neo4j_data_ingestion.html">Ingesting data into Neo4j</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../mongoDB_data_ingestion.html#basics-first">Basics First</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation</a></li>
 </ul>
@@ -364,7 +370,12 @@
                 <span class="n">context</span><span class="o">.</span><span class="n">_force_start_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_method</span><span class="p">)</span>
             <span class="n">_process_counter</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">_children</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-            <span class="n">util</span><span class="o">.</span><span class="n">_close_stdin</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                    <span class="k">pass</span>
             <span class="n">old_process</span> <span class="o">=</span> <span class="n">_current_process</span>
             <span class="n">_current_process</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="k">try</span><span class="p">:</span>

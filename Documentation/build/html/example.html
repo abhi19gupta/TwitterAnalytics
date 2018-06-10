@@ -77,6 +77,9 @@
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#basics-first">Basics First</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation</a></li>
@@ -131,16 +134,16 @@
   <div class="section" id="module-chemistry">
 <span id="contains-example-documentation"></span><h1>Contains example documentation<a class="headerlink" href="#module-chemistry" title="Permalink to this headline">¶</a></h1>
 <p>Basic chemistry module.</p>
-<p>The <a class="reference internal" href="#module-chemistry" title="chemistry"><code class="xref py py-mod docutils literal"><span class="pre">chemistry</span></code></a> module contains three classes:</p>
+<p>The <a class="reference internal" href="#module-chemistry" title="chemistry"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chemistry</span></code></a> module contains three classes:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#chemistry.Atom" title="chemistry.Atom"><code class="xref py py-class docutils literal"><span class="pre">chemistry.Atom</span></code></a></li>
-<li><a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal"><span class="pre">chemistry.Bond</span></code></a></li>
-<li><a class="reference internal" href="#chemistry.Molecule" title="chemistry.Molecule"><code class="xref py py-class docutils literal"><span class="pre">chemistry.Molecule</span></code></a></li>
+<li><a class="reference internal" href="#chemistry.Atom" title="chemistry.Atom"><code class="xref py py-class docutils literal notranslate"><span class="pre">chemistry.Atom</span></code></a></li>
+<li><a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal notranslate"><span class="pre">chemistry.Bond</span></code></a></li>
+<li><a class="reference internal" href="#chemistry.Molecule" title="chemistry.Molecule"><code class="xref py py-class docutils literal notranslate"><span class="pre">chemistry.Molecule</span></code></a></li>
 </ul>
-<p>One can use the <a class="reference internal" href="#chemistry.Molecule.add_atom" title="chemistry.Molecule.add_atom"><code class="xref py py-func docutils literal"><span class="pre">chemistry.Molecule.add_atom()</span></code></a> and
-<code class="xref py py-func docutils literal"><span class="pre">chemsitry.Molecule.add_bond()</span></code> functions to build up a molecule.</p>
+<p>One can use the <a class="reference internal" href="#chemistry.Molecule.add_atom" title="chemistry.Molecule.add_atom"><code class="xref py py-func docutils literal notranslate"><span class="pre">chemistry.Molecule.add_atom()</span></code></a> and
+<code class="xref py py-func docutils literal notranslate"><span class="pre">chemsitry.Molecule.add_bond()</span></code> functions to build up a molecule.</p>
 <p>Example illustrating how to create a methane molecule.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">chemistry</span> <span class="k">import</span> <span class="n">Molecule</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">chemistry</span> <span class="k">import</span> <span class="n">Molecule</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="s1">&#39;Methane&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">carbon_index</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atomic_number</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">hydrogen1_index</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">add_atom</span><span class="p">(</span><span class="n">atomic_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -156,19 +159,19 @@
 <dl class="class">
 <dt id="chemistry.Atom">
 <em class="property">class </em><code class="descclassname">chemistry.</code><code class="descname">Atom</code><span class="sig-paren">(</span><em>atomic_number</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemistry.html#Atom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chemistry.Atom" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class representing an atom.</p>
 <dl class="method">
 <dt id="chemistry.Atom.bond_to">
 <code class="descname">bond_to</code><span class="sig-paren">(</span><em>other_atom</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemistry.html#Atom.bond_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chemistry.Atom.bond_to" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the <a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal"><span class="pre">chemistry.Bond</span></code></a> formed between the two atoms.</p>
+<dd><p>Return the <a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal notranslate"><span class="pre">chemistry.Bond</span></code></a> formed between the two atoms.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other_atom</strong> – <a class="reference internal" href="#chemistry.Atom" title="chemistry.Atom"><code class="xref py py-class docutils literal"><span class="pre">chemistry.Atom</span></code></a> to form <a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal"><span class="pre">chemistry.Bond</span></code></a> to</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>other_atom</strong> – <a class="reference internal" href="#chemistry.Atom" title="chemistry.Atom"><code class="xref py py-class docutils literal notranslate"><span class="pre">chemistry.Atom</span></code></a> to form <a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal notranslate"><span class="pre">chemistry.Bond</span></code></a> to</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal"><span class="pre">chemistry.Bond</span></code></a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference internal" href="#chemistry.Bond" title="chemistry.Bond"><code class="xref py py-class docutils literal notranslate"><span class="pre">chemistry.Bond</span></code></a></td>
 </tr>
 </tbody>
 </table>
@@ -179,17 +182,17 @@
 <dl class="class">
 <dt id="chemistry.Bond">
 <em class="property">class </em><code class="descclassname">chemistry.</code><code class="descname">Bond</code><span class="sig-paren">(</span><em>atom1</em>, <em>atom2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemistry.html#Bond"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chemistry.Bond" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class representing a bond between two atoms.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="chemistry.Molecule">
 <em class="property">class </em><code class="descclassname">chemistry.</code><code class="descname">Molecule</code><span class="sig-paren">(</span><em>identifier</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chemistry.html#Molecule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chemistry.Molecule" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class representing a molecule consisting of atoms and bonds.
 - <strong>parameters</strong>, <strong>types</strong>, <strong>return</strong> and <strong>return types</strong>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">arg1</span><span class="p">:</span> <span class="n">description</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">:</span><span class="n">param</span> <span class="n">arg1</span><span class="p">:</span> <span class="n">description</span>
 <span class="p">:</span><span class="n">param</span> <span class="n">arg2</span><span class="p">:</span> <span class="n">description</span>
 <span class="p">:</span><span class="nb">type</span> <span class="n">arg1</span><span class="p">:</span> <span class="nb">type</span> <span class="n">description</span>
 <span class="p">:</span><span class="nb">type</span> <span class="n">arg1</span><span class="p">:</span> <span class="nb">type</span> <span class="n">description</span>
@@ -199,7 +202,7 @@
 </div>
 <ul>
 <li><p class="first">and to provide sections such as <strong>Example</strong> using the double commas syntax:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>:Example:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>:Example:
 
 followed by a blank line !
 </pre></div>
@@ -217,7 +220,7 @@ followed by a blank line !
 </li>
 <li><p class="first">Finally special sections such as <strong>See Also</strong>, <strong>Warnings</strong>, <strong>Notes</strong>
 use the sphinx syntax (<em>paragraph directives</em>):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">seealso</span><span class="p">::</span> <span class="n">blabla</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">seealso</span><span class="p">::</span> <span class="n">blabla</span>
 <span class="o">..</span> <span class="n">warnings</span> <span class="n">also</span><span class="p">::</span> <span class="n">blabla</span>
 <span class="o">..</span> <span class="n">note</span><span class="p">::</span> <span class="n">blabla</span>
 <span class="o">..</span> <span class="n">todo</span><span class="p">::</span> <span class="n">blabla</span>
@@ -249,7 +252,7 @@ rubric, centered, … See the sphinx documentation for more details.</p>
 </div>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><code class="xref py py-class docutils literal"><span class="pre">MainClass2</span></code></p>
+<p class="last"><code class="xref py py-class docutils literal notranslate"><span class="pre">MainClass2</span></code></p>
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>

@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.6.8)  8 JUN 2018 16:55
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.25)  11 JUN 2018 03:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **TwitterAnalyticsDocumentation.tex
 (./TwitterAnalyticsDocumentation.tex
 LaTeX2e <2016/02/01>
-Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
+Babel <3.9q> and hyphenation patterns for 3 language(s) loaded.
 (./sphinxmanual.cls
 Document Class: sphinxmanual 2017/03/26 v1.6 Document class (Sphinx manual)
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -432,6 +432,8 @@ File: babel.def 2016/02/24 3.9q Babel common definitions
 \babel@savecnt=\count100
 \U@D=\dimen112
 )
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
@@ -451,7 +453,7 @@ Package: fncychap 2007/07/30 v1.34 LaTeX package (Revised chapters)
 \c@AlphaCnt=\count101
 \c@AlphaDecCnt=\count102
 ) (./sphinx.sty
-Package: sphinx 2017/06/17 v1.6.3 LaTeX package (Sphinx markup)
+Package: sphinx 2018/03/11 v1.7.2 LaTeX package (Sphinx markup)
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
@@ -759,7 +761,7 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 \FV@StepNumber=\count114
 \FV@OutFile=\write3
 ) (./footnotehyper-sphinx.sty
-Package: footnotehyper-sphinx 2017/03/07 v1.6 hyperref aware footnote.sty for s
+Package: footnotehyper-sphinx 2017/10/27 v1.7 hyperref aware footnote.sty for s
 phinx (JFB)
 \FNH@notes=\box35
 \FNH@width=\dimen134
@@ -796,6 +798,7 @@ Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
 (/usr/share/texlive/texmf-dist/tex/latex/needspace/needspace.sty
 Package: needspace 2010/09/12 v1.3d reserve vertical space
 )
+(/usr/share/texlive/texmf-dist/tex/latex/carlisle/remreset.sty)
 (./sphinxhighlight.sty
 Package: sphinxhighlight 2016/05/29 stylesheet for highlighting with pygments
 )
@@ -825,9 +828,9 @@ Package etexcmds Info: Could not find \expanded.
 \spx@notice@border=\dimen142
 \spx@image@box=\box39
 \c@literalblock=\count117
-\spx@Verbatim@TitleBox=\box40
-\sphinxcontinuationbox=\box41
-\sphinxvisiblespacebox=\box42
+\sphinxcontinuationbox=\box40
+\sphinxvisiblespacebox=\box41
+\sphinxVerbatim@TitleBox=\box42
 \py@argswidth=\skip71
 \lineblockindentation=\skip72
 \DUlineblockindent=\skip73
@@ -982,30 +985,30 @@ Writing index file TwitterAnalyticsDocumentation.idx
 (./TwitterAnalyticsDocumentation.aux)
 \openout1 = `TwitterAnalyticsDocumentation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 65.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 65.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 66.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 65.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 66.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -1073,7 +1076,7 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \AtBeginShipoutBox=\box44
-Package hyperref Info: Link coloring ON on input line 65.
+Package hyperref Info: Link coloring ON on input line 66.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -1082,54 +1085,54 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count137
 )
-LaTeX Info: Redefining \ref on input line 65.
-LaTeX Info: Redefining \pageref on input line 65.
-LaTeX Info: Redefining \nameref on input line 65.
+LaTeX Info: Redefining \ref on input line 66.
+LaTeX Info: Redefining \pageref on input line 66.
+LaTeX Info: Redefining \nameref on input line 66.
 
 (./TwitterAnalyticsDocumentation.out) (./TwitterAnalyticsDocumentation.out)
 \@outlinefile=\write5
 \openout5 = `TwitterAnalyticsDocumentation.out'.
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 68.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 68.
+Package hyperref Info: Option `pageanchor' set `false' on input line 69.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 69.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <10> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
 <<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
-LaTeX Font Info:    Try loading font information for U+msa on input line 68.
+LaTeX Font Info:    Try loading font information for U+msa on input line 69.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 68.
+LaTeX Font Info:    Try loading font information for U+msb on input line 69.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
 
 ]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
  (./TwitterAnalyticsDocumentation.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
@@ -1158,71 +1161,78 @@ Chapter 3.
 
 ]
 Chapter 4.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 96.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 103.
+
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)
-<image1.png, id=158, 702.625pt x 451.6875pt>
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 111.
+) [9]
+<mongo_ingestion.jpg, id=179, 945.5325pt x 356.33125pt>
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 209.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
-File: image1.png Graphic file (type png)
- <use image1.png>
-Package pdftex.def Info: image1.png used on input line 111.
-(pdftex.def)             Requested size: 469.75502pt x 301.99496pt.
+File: mongo_ingestion.jpg Graphic file (type jpg)
 
-[9]
+<use mongo_ingestion.jpg>
+Package pdftex.def Info: mongo_ingestion.jpg used on input line 209.
+(pdftex.def)             Requested size: 469.75502pt x 177.03424pt.
+ [10] <image1.png, id=184, 702.625pt x 451.6875pt>
+File: image1.png Graphic file (type png)
+
+<use image1.png>
+Package pdftex.def Info: image1.png used on input line 222.
+(pdftex.def)             Requested size: 469.75502pt x 301.99496pt.
+ [11 <./mongo_ingestion.jpg>]
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 233.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 166.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 282.
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 168.
- [10 <./image1.png>] [11] [12
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 284.
+ [12 <./image1.png>] [13] [14
 
 ]
 Chapter 5.
-[13]
+[15]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 1.
- [14]
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 463.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 558.
+ [16]
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 584.
 
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
-) [15]
-[16
+) [17]
+[18
 
 ]
 Chapter 6.
-[17] [18
-
-]
-Chapter 7.
 [19] [20
 
 ]
-Chapter 8.
+Chapter 7.
 [21] [22
 
 ]
-Chapter 9.
+Chapter 8.
 [23] [24
 
 ]
-Chapter 10.
+Chapter 9.
 [25] [26
 
 ]
-Chapter 11.
+Chapter 10.
 [27] [28
 
-] [29
+]
+Chapter 11.
+[29] [30
+
+] [31
 
 
-] (./TwitterAnalyticsDocumentation.ind [30
+] (./TwitterAnalyticsDocumentation.ind [32
 
 
 ]
@@ -1230,26 +1240,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 12--13
 []\T1/ptm/m/n/10 conditional_create() (gen-er-ate_queries.CreateQuery
  []
 
-[31
+[33
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 604.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 604.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 725.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 725.
  (./TwitterAnalyticsDocumentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 604.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 604.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 725.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 725.
 Package rerunfilecheck Info: File `TwitterAnalyticsDocumentation.out' has not c
 hanged.
-(rerunfilecheck)             Checksum: C809A893E8F77F4FC47D953C551B873E;3628.
+(rerunfilecheck)             Checksum: 9BD9A23C579AADFB692FDB06E5A61868;4221.
  ) 
 Here is how much of TeX's memory you used:
- 13922 strings out of 493029
- 192544 string characters out of 6136235
- 299076 words of memory out of 5000000
- 17064 multiletter control sequences out of 15000+600000
+ 13984 strings out of 494953
+ 194042 string characters out of 6180977
+ 294254 words of memory out of 5000000
+ 16864 multiletter control sequences out of 15000+600000
  48569 words of font info for 74 fonts, out of 8000000 for 9000
- 1142 hyphenation exceptions out of 8191
- 37i,11n,49p,1111b,497s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 15 hyphenation exceptions out of 8191
+ 37i,12n,45p,1111b,519s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/f
@@ -1261,10 +1271,10 @@ xlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
 ri8a.pfb>
-Output written on TwitterAnalyticsDocumentation.pdf (35 pages, 173275 bytes).
+Output written on TwitterAnalyticsDocumentation.pdf (37 pages, 212635 bytes).
 PDF statistics:
- 389 PDF objects out of 1000 (max. 8388607)
- 330 compressed objects within 4 object streams
- 84 named destinations out of 1000 (max. 500000)
- 178 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 417 PDF objects out of 1000 (max. 8388607)
+ 355 compressed objects within 4 object streams
+ 89 named destinations out of 1000 (max. 500000)
+ 207 words of extra memory for PDF output out of 10000 (max. 10000000)
 
