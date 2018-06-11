@@ -303,6 +303,16 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/courier/pcrr8c.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/courier/pcrr8c.vf
+INPUT example_query.jpg
+INPUT ./example_query.jpg
+INPUT ./example_query.jpg
+INPUT example_query.jpg
+INPUT ./example_query.jpg
+INPUT example_query_detailed.jpg
+INPUT ./example_query_detailed.jpg
+INPUT ./example_query_detailed.jpg
+INPUT example_query_detailed.jpg
+INPUT ./example_query_detailed.jpg
 INPUT /usr/share/texlive/texmf-dist/fonts/vf/adobe/helvetic/phvr8t.vf
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/adobe/helvetic/phvr8r.tfm
 INPUT TwitterAnalyticsDocumentation.ind

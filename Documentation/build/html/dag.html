@@ -33,7 +33,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
         <link rel="next" title="Generating alerts using flink and kafka" href="flink.html"/>
-        <link rel="prev" title="Generating queries in mongoDB" href="mongoDB_query_generation.html"/> 
+        <link rel="prev" title="About postprocessing functions" href="postprocessing.html"/> 
   <script src="_static/js/modernizr.min.js"></script>
 </head>
 
@@ -77,12 +77,15 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#basics-first">Basics First</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation</a></li>
 </ul>
@@ -94,7 +97,15 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Composing multiple queries : DAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Composing multiple queries : DAG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-terminology">Basic terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idea-behind-a-dag">Idea behind a DAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-a-dag-from-queries">Building a DAG from queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dag-in-airflow">DAG in airflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-custom-metric">Creating custom metric</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
@@ -135,6 +146,129 @@
             
   <div class="section" id="composing-multiple-queries-dag">
 <h1>Composing multiple queries : DAG<a class="headerlink" href="#composing-multiple-queries-dag" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basic-terminology">
+<h2>Basic terminology<a class="headerlink" href="#basic-terminology" title="Permalink to this headline">¶</a></h2>
+<p>When we say <strong>Query</strong>, it means an one of the following three things:</p>
+<blockquote>
+<div><ul class="simple">
+<li>MongoDB query : A query not capable of giving any network information</li>
+<li>Neo4j query : A network based and/or time indexed query on the twitter network</li>
+<li>Post processing function : A python function which takes outups of query(ies) as inputs and transforms them to give the output</li>
+</ul>
+</div></blockquote>
+<p><strong>DAG</strong> stands for directed acylic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose mutiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. The nodes represent queries.</p>
+</div>
+<div class="section" id="idea-behind-a-dag">
+<h2>Idea behind a DAG<a class="headerlink" href="#idea-behind-a-dag" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned above, our main idea is to provie the user an easy abstraction to build complex queries. But apart from this there are several functions that the abstraction of a DAG seems to serve, which we list below:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Provide an abstraction to build complex queires from simple queries.</li>
+<li>A particular database may be suited to answer particular type of queries. In fact this is the root reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.</li>
+<li>It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.</li>
+<li>On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.</li>
+<li>Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts to the user instead of waiting for the entire big query to execute.</li>
+</ul>
+</div></blockquote>
+<p>In this abstraction, a single query can also be treated as a DAG, one having a single node and no connections.</p>
+<p>We store the queries that the user creates through the dashboard. The user can then specify the structure of the DAG network by uploading a file in which he specifies how ouputs and inputs of queries are connected. We provide the details in the next section.</p>
+</div>
+<div class="section" id="building-a-dag-from-queries">
+<h2>Building a DAG from queries<a class="headerlink" href="#building-a-dag-from-queries" title="Permalink to this headline">¶</a></h2>
+<p>A DAG is composition of queries in which we need to specify how the outputs of queries downstrea feed into the inputs of the upstream ones.</p>
+<p>We explain how to build the queries with the help on an example. Let us build a DAG to get the most active users. Refer to this image(the green queries represent mongoDB queries and blue ones represent neo4j queries):</p>
+<img alt="_images/example_query.jpg" src="_images/example_query.jpg" />
+<p>First we need to build the three queries separately, let us say we have the built queries as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="first docutils">
+<dt>mongoDB query(most_popular_hashtags_20 - Node 1) - 20 most popular hashtags in total</dt>
+<dd><ul class="first last">
+<li>INPUTS  : limit(number of records to return)</li>
+<li>OUTPUTS : hashtags(list of popular hashtags, arranged by count in decreasing order), counts(list of their corresponding counts)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>mongoDB query(most_popular_mentions_20 - Node 2) - 20 most popular users(in terms of number of mentions) in total</dt>
+<dd><ul class="first last">
+<li>INPUTS  : limit(number of records to return)</li>
+<li>OUTPUTS : user_metions(list of popular users, arranged by count in decreasing order), counts(list of their corresponding counts)</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>neo4j query(active_users - Node 3)   - userIds and their tweet counts who have used one of the popular hashtags atleast once and have tweeted with one of the popular user mentions atleast once</dt>
+<dd><ul class="first last">
+<li>INPUTS  : hash_in(list of 20 most popular hashtags), users_in(list of 20 most popular users)</li>
+<li>OUTPUTS : userIds(list of required users), tweet_counts(total number of their tweets)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>This query is demonstrated by the block diagram below also:</p>
+<img alt="_images/example_query_detailed.jpg" src="_images/example_query_detailed.jpg" />
+<p>As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the keys are lists and similarly returns a dictionary with list values. The keys in both dictioanry is the name of hte inputs/outputs, as specified in the query generation.</p>
+<p>The only place where the list input breaks is in case of mongoDB query as they require some basic inputs which can directly be provided as native objects(for example the limit input to the above two mongoDB queries).</p>
+<p>Further we need to specify which outputs of the queries are to be returned.</p>
+<p>The example input file to create the above DAG looks something like this:</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+<span class="n">n1</span> <span class="n">most_popular_hashtags_20</span>
+<span class="n">n2</span> <span class="n">most_popular_mentions_20</span>
+<span class="n">n3</span> <span class="n">active_users</span>
+<span class="ss">INPUTS</span><span class="p">:</span>
+<span class="ss">CONNECTIONS</span><span class="p">:</span>
+<span class="n">n1</span><span class="o">.</span><span class="n">hashtag</span> <span class="n">n3</span><span class="o">.</span><span class="n">hashtag</span>
+<span class="n">n2</span><span class="o">.</span><span class="n">userId</span> <span class="n">n3</span><span class="o">.</span><span class="n">um_id</span>
+<span class="ss">RETURNS</span><span class="p">:</span>
+<span class="n">n3</span><span class="o">.</span><span class="n">userId</span>
+<span class="n">n3</span><span class="o">.</span><span class="n">count</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dag-in-airflow">
+<h2>DAG in airflow<a class="headerlink" href="#dag-in-airflow" title="Permalink to this headline">¶</a></h2>
+<p>Similary we generate the code to specify the dag in airflow something like this.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_0</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+    <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;node_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;n1&quot;</span><span class="p">),</span>
+    <span class="n">python_callable</span><span class="o">=</span><span class="n">execute_query</span><span class="p">,</span>
+    <span class="n">op_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;node_name&#39;</span><span class="p">:</span><span class="s2">&quot;n1&quot;</span><span class="p">},</span>
+    <span class="n">provide_context</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">dag</span><span class="o">=</span><span class="n">dag</span><span class="p">)</span>
+
+<span class="n">task_1</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+        <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;node_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;n2&quot;</span><span class="p">),</span>
+        <span class="n">python_callable</span><span class="o">=</span><span class="n">execute_query</span><span class="p">,</span>
+        <span class="n">op_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;node_name&#39;</span><span class="p">:</span><span class="s2">&quot;n2&quot;</span><span class="p">},</span>
+        <span class="n">provide_context</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="n">dag</span><span class="o">=</span><span class="n">dag</span><span class="p">)</span>
+
+<span class="n">task_2</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+        <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;node_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;n3&quot;</span><span class="p">),</span>
+        <span class="n">python_callable</span><span class="o">=</span><span class="n">execute_query</span><span class="p">,</span>
+        <span class="n">op_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;node_name&#39;</span><span class="p">:</span><span class="s2">&quot;n3&quot;</span><span class="p">},</span>
+        <span class="n">provide_context</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="n">dag</span><span class="o">=</span><span class="n">dag</span><span class="p">)</span>
+<span class="n">task_0</span> <span class="o">&gt;&gt;</span> <span class="n">task_2</span>
+<span class="n">task_1</span> <span class="o">&gt;&gt;</span> <span class="n">task_2</span>
+</pre></div>
+</div>
+<p>In the above code, the execute query is the function in which we execute queries and pass on their outputs to XComs to be used by the downstream nodes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pushing onto XComs</span>
+<span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">xcom_push</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
+<span class="c1"># Pulling from XComs</span>
+<span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">xcom_pull</span><span class="p">(</span><span class="n">task_ids</span><span class="o">=</span><span class="n">get_task_from_node</span><span class="p">(</span><span class="n">mapp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dag_id</span> <span class="o">=</span> <span class="s2">&quot;active_users_dag&quot;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-custom-metric">
+<h2>Creating custom metric<a class="headerlink" href="#creating-custom-metric" title="Permalink to this headline">¶</a></h2>
+<p>Custom metric can be created on top of the DAG.</p>
+</div>
 </div>
 
 
@@ -147,7 +281,7 @@
         <a href="flink.html" class="btn btn-neutral float-right" title="Accesskey Alt(+Shift)+n" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="mongoDB_query_generation.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="postprocessing.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

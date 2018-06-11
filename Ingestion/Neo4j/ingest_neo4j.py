@@ -7,7 +7,7 @@ from neo4j.v1 import GraphDatabase, basic_auth
 import logging, copy
 from multiprocessing import Process, Event, Queue
 import multiprocessing
-from kafka import KafkaConsumer, TopicPartition
+# from kafka import KafkaConsumer, TopicPartition
 
 # logging.basicConfig(filename="neo4j_logs.txt",level=logging.DEBUG)
 count = 0
@@ -84,7 +84,7 @@ class Twitter:
 		if(not(self.tweet_tx.finished())):
 			print("cleaning up")
 			self.tweet_tx.commit()
-			self.tweet_tx = self.graph.begin() 
+			self.tweet_tx = self.graph.begin()
 	# @profile
 	def insert_tweet(self,tweet, favourited_by=None, fav_timestamp=None):
 		# print("came here")
@@ -104,7 +104,7 @@ class Twitter:
 
 		(frame_start_t, frame_end_t) = getFrameStartEndTime(tweet['created_at'])
 		(fav_frame_start_t, fav_frame_end_t) = (None,None) if fav_timestamp is None else getFrameStartEndTime(fav_timestamp)
-		
+
 		retweeted_status      = tweet.get("retweeted_status",None)
 		quoted_status         = tweet.get("quoted_status",None)
 		in_reply_to_status_id = tweet.get("in_reply_to_status_id",None)
@@ -140,7 +140,7 @@ class Twitter:
 				"WITH tweet "
 				"MATCH (original_tweet:TWEET {id:{original_tweet_id}}) "
 				"CREATE (tweet) -[:RETWEET_OF {on:{created_at}}]-> (original_tweet) ",
-				{"user_id":user_id, "user_name":user_name, "user_screenname":user_screenname, "tweet_id":tweet["id"], 
+				{"user_id":user_id, "user_name":user_name, "user_screenname":user_screenname, "tweet_id":tweet["id"],
 				"created_at":tweet["created_at"] ,"tweet":{},
 				"original_tweet_id":retweeted_status["id"], "frame_start_t":frame_start_t, "frame_end_t":frame_end_t,
 				"favourited_by":favourited_by, "fav_timestamp":fav_timestamp, "fav_frame_start_t":fav_frame_start_t,
@@ -201,7 +201,7 @@ class Twitter:
 				"FOREACH (x IN CASE WHEN {in_reply_to_status_id} IS NULL THEN [] ELSE [1] END | "
 				"  MERGE (in_reply_to_tweet:TWEET {id:{in_reply_to_status_id}}) "
 				"  CREATE (tweet) -[:REPLY_TO {on:{created_at}}]-> (in_reply_to_tweet) )",
-				{"user_id":user_id, "user_name":user_name, "user_screenname":user_screenname, "tweet_id":tweet["id"], 
+				{"user_id":user_id, "user_name":user_name, "user_screenname":user_screenname, "tweet_id":tweet["id"],
 				"created_at":tweet["created_at"] ,"tweet":{},
 				"hashtags":hashtags, "mention_ids":mention_ids, "mention_names":mention_names, "mention_screennames":mention_screennames,
 				"urls":urls, "quoted_status":quoted_status, "quoted_status_id":quoted_status_id,

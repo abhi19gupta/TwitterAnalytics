@@ -86,6 +86,9 @@ Here we provide a comprehenstive documentaion of each component of the system al
 \chapter{Ingesting data into Neo4j}
 \label{\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}}\label{\detokenize{neo4j_data_ingestion::doc}}
 
+\section{Code Documentation}
+\label{\detokenize{neo4j_data_ingestion:code-documentation}}
+
 \chapter{Ingesting data into MongoDB}
 \label{\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}}\label{\detokenize{mongoDB_data_ingestion::doc}}
 
@@ -212,7 +215,7 @@ So, the timer process in the accumulator process genertes an interrupt after eve
 
 So in this way the the process of writing to database in connector process is overlapped with the the accumulation of tweets in accumulator process. Note that we have a small gap equivalent to time taken to write to IPC, in which the accummulator process is not collecting the tweets. The whole process can further be made efficient by removing this gap, but since we are getting tweet ingestion rate much more than the rate of tweets coming on twitter and the gain from removing the gap would not be much, we don’t implement it.
 
-To answer queries like the most popular hastags in total, or in a large interval. It would be benefitial to have an aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector thread to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don’t currently use this mechanism.
+To answer queries like the most popular hastags in total, or most popular hashtags in a large interval. It would be benefitial to have aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector process to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don’t currently use this mechanism.
 
 
 \section{Ingestion Rates}
@@ -684,8 +687,177 @@ the code for the node as neo4j node enclosed in ()
 \chapter{Generating queries in mongoDB}
 \label{\detokenize{mongoDB_query_generation:generating-queries-in-mongodb}}\label{\detokenize{mongoDB_query_generation::doc}}
 
+\chapter{About postprocessing functions}
+\label{\detokenize{postprocessing:about-postprocessing-functions}}\label{\detokenize{postprocessing::doc}}
+
 \chapter{Composing multiple queries : DAG}
 \label{\detokenize{dag:composing-multiple-queries-dag}}\label{\detokenize{dag::doc}}
+
+\section{Basic terminology}
+\label{\detokenize{dag:basic-terminology}}
+When we say \sphinxstylestrong{Query}, it means an one of the following three things:
+\begin{itemize}
+\item {} 
+MongoDB query : A query not capable of giving any network information
+
+\item {} 
+Neo4j query : A network based and/or time indexed query on the twitter network
+
+\item {} 
+Post processing function : A python function which takes outups of query(ies) as inputs and transforms them to give the output
+
+\end{itemize}
+
+\sphinxstylestrong{DAG} stands for directed acylic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose mutiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. The nodes represent queries.
+
+
+\section{Idea behind a DAG}
+\label{\detokenize{dag:idea-behind-a-dag}}
+As mentioned above, our main idea is to provie the user an easy abstraction to build complex queries. But apart from this there are several functions that the abstraction of a DAG seems to serve, which we list below:
+\begin{itemize}
+\item {} 
+Provide an abstraction to build complex queires from simple queries.
+
+\item {} 
+A particular database may be suited to answer particular type of queries. In fact this is the root reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.
+
+\item {} 
+It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.
+
+\item {} 
+On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.
+
+\item {} 
+Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts to the user instead of waiting for the entire big query to execute.
+
+\end{itemize}
+
+In this abstraction, a single query can also be treated as a DAG, one having a single node and no connections.
+
+We store the queries that the user creates through the dashboard. The user can then specify the structure of the DAG network by uploading a file in which he specifies how ouputs and inputs of queries are connected. We provide the details in the next section.
+
+
+\section{Building a DAG from queries}
+\label{\detokenize{dag:building-a-dag-from-queries}}
+A DAG is composition of queries in which we need to specify how the outputs of queries downstrea feed into the inputs of the upstream ones.
+
+We explain how to build the queries with the help on an example. Let us build a DAG to get the most active users. Refer to this image(the green queries represent mongoDB queries and blue ones represent neo4j queries):
+
+\noindent\sphinxincludegraphics{{example_query}.jpg}
+
+First we need to build the three queries separately, let us say we have the built queries as:
+\begin{itemize}
+\item {} \begin{description}
+\item[{mongoDB query(most\_popular\_hashtags\_20 - Node 1) - 20 most popular hashtags in total}] \leavevmode\begin{itemize}
+\item {} 
+INPUTS  : limit(number of records to return)
+
+\item {} 
+OUTPUTS : hashtags(list of popular hashtags, arranged by count in decreasing order), counts(list of their corresponding counts)
+
+\end{itemize}
+
+\end{description}
+
+\item {} \begin{description}
+\item[{mongoDB query(most\_popular\_mentions\_20 - Node 2) - 20 most popular users(in terms of number of mentions) in total}] \leavevmode\begin{itemize}
+\item {} 
+INPUTS  : limit(number of records to return)
+
+\item {} 
+OUTPUTS : user\_metions(list of popular users, arranged by count in decreasing order), counts(list of their corresponding counts)
+
+\end{itemize}
+
+\end{description}
+
+\item {} \begin{description}
+\item[{neo4j query(active\_users - Node 3)   - userIds and their tweet counts who have used one of the popular hashtags atleast once and have tweeted with one of the popular user mentions atleast once}] \leavevmode\begin{itemize}
+\item {} 
+INPUTS  : hash\_in(list of 20 most popular hashtags), users\_in(list of 20 most popular users)
+
+\item {} 
+OUTPUTS : userIds(list of required users), tweet\_counts(total number of their tweets)
+
+\end{itemize}
+
+\end{description}
+
+\end{itemize}
+
+This query is demonstrated by the block diagram below also:
+
+\noindent\sphinxincludegraphics{{example_query_detailed}.jpg}
+
+As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the keys are lists and similarly returns a dictionary with list values. The keys in both dictioanry is the name of hte inputs/outputs, as specified in the query generation.
+
+The only place where the list input breaks is in case of mongoDB query as they require some basic inputs which can directly be provided as native objects(for example the limit input to the above two mongoDB queries).
+
+Further we need to specify which outputs of the queries are to be returned.
+
+The example input file to create the above DAG looks something like this:
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{l+m+mi}{3}
+\PYG{n}{n1} \PYG{n}{most\PYGZus{}popular\PYGZus{}hashtags\PYGZus{}20}
+\PYG{n}{n2} \PYG{n}{most\PYGZus{}popular\PYGZus{}mentions\PYGZus{}20}
+\PYG{n}{n3} \PYG{n}{active\PYGZus{}users}
+\PYG{n}{INPUTS}\PYG{p}{:}
+\PYG{n}{CONNECTIONS}\PYG{p}{:}
+\PYG{n}{n1}\PYG{o}{.}\PYG{n}{hashtag} \PYG{n}{n3}\PYG{o}{.}\PYG{n}{hashtag}
+\PYG{n}{n2}\PYG{o}{.}\PYG{n}{userId} \PYG{n}{n3}\PYG{o}{.}\PYG{n}{um\PYGZus{}id}
+\PYG{n}{RETURNS}\PYG{p}{:}
+\PYG{n}{n3}\PYG{o}{.}\PYG{n}{userId}
+\PYG{n}{n3}\PYG{o}{.}\PYG{n}{count}
+\end{sphinxVerbatim}
+
+
+\section{DAG in airflow}
+\label{\detokenize{dag:dag-in-airflow}}
+Similary we generate the code to specify the dag in airflow something like this.
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{task\PYGZus{}0} \PYG{o}{=} \PYG{n}{PythonOperator}\PYG{p}{(}
+    \PYG{n}{task\PYGZus{}id}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}\PYGZob{}\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{o}{.}\PYG{n}{format}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+    \PYG{n}{python\PYGZus{}callable}\PYG{o}{=}\PYG{n}{execute\PYGZus{}query}\PYG{p}{,}
+    \PYG{n}{op\PYGZus{}kwargs}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}name}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
+    \PYG{n}{provide\PYGZus{}context} \PYG{o}{=} \PYG{n+nb+bp}{True}\PYG{p}{,}
+    \PYG{n}{dag}\PYG{o}{=}\PYG{n}{dag}\PYG{p}{)}
+
+\PYG{n}{task\PYGZus{}1} \PYG{o}{=} \PYG{n}{PythonOperator}\PYG{p}{(}
+        \PYG{n}{task\PYGZus{}id}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}\PYGZob{}\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{o}{.}\PYG{n}{format}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n2}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+        \PYG{n}{python\PYGZus{}callable}\PYG{o}{=}\PYG{n}{execute\PYGZus{}query}\PYG{p}{,}
+        \PYG{n}{op\PYGZus{}kwargs}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}name}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n2}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
+        \PYG{n}{provide\PYGZus{}context} \PYG{o}{=} \PYG{n+nb+bp}{True}\PYG{p}{,}
+        \PYG{n}{dag}\PYG{o}{=}\PYG{n}{dag}\PYG{p}{)}
+
+\PYG{n}{task\PYGZus{}2} \PYG{o}{=} \PYG{n}{PythonOperator}\PYG{p}{(}
+        \PYG{n}{task\PYGZus{}id}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}\PYGZob{}\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{o}{.}\PYG{n}{format}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n3}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
+        \PYG{n}{python\PYGZus{}callable}\PYG{o}{=}\PYG{n}{execute\PYGZus{}query}\PYG{p}{,}
+        \PYG{n}{op\PYGZus{}kwargs}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}name}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n3}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
+        \PYG{n}{provide\PYGZus{}context} \PYG{o}{=} \PYG{n+nb+bp}{True}\PYG{p}{,}
+        \PYG{n}{dag}\PYG{o}{=}\PYG{n}{dag}\PYG{p}{)}
+\PYG{n}{task\PYGZus{}0} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{task\PYGZus{}2}
+\PYG{n}{task\PYGZus{}1} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{task\PYGZus{}2}
+\end{sphinxVerbatim}
+
+In the above code, the execute query is the function in which we execute queries and pass on their outputs to XComs to be used by the downstream nodes.
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} Pushing onto XComs}
+\PYG{n}{context}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{task\PYGZus{}instance}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{xcom\PYGZus{}push}\PYG{p}{(}\PYG{n}{k}\PYG{p}{,}\PYG{n}{v}\PYG{p}{)}
+\PYG{c+c1}{\PYGZsh{} Pulling from XComs}
+\PYG{n}{context}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{task\PYGZus{}instance}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{xcom\PYGZus{}pull}\PYG{p}{(}\PYG{n}{task\PYGZus{}ids}\PYG{o}{=}\PYG{n}{get\PYGZus{}task\PYGZus{}from\PYGZus{}node}\PYG{p}{(}\PYG{n}{mapp}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}\PYG{p}{,}\PYG{n}{dag\PYGZus{}id} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{active\PYGZus{}users\PYGZus{}dag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{key}\PYG{o}{=}\PYG{n}{k}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+
+\section{Creating custom metric}
+\label{\detokenize{dag:creating-custom-metric}}
+Custom metric can be created on top of the DAG.
+
 
 \chapter{Generating alerts using flink and kafka}
 \label{\detokenize{flink:generating-alerts-using-flink-and-kafka}}\label{\detokenize{flink::doc}}

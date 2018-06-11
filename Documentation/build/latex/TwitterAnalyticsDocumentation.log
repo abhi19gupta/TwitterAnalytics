@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.25)  11 JUN 2018 03:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.25)  11 JUN 2018 16:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1161,13 +1161,13 @@ Chapter 3.
 
 ]
 Chapter 4.
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 103.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 106.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ) [9]
-<mongo_ingestion.jpg, id=179, 945.5325pt x 356.33125pt>
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 209.
+<mongo_ingestion.jpg, id=214, 945.5325pt x 356.33125pt>
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 212.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
@@ -1175,30 +1175,30 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 File: mongo_ingestion.jpg Graphic file (type jpg)
 
 <use mongo_ingestion.jpg>
-Package pdftex.def Info: mongo_ingestion.jpg used on input line 209.
+Package pdftex.def Info: mongo_ingestion.jpg used on input line 212.
 (pdftex.def)             Requested size: 469.75502pt x 177.03424pt.
- [10] <image1.png, id=184, 702.625pt x 451.6875pt>
+ [10] <image1.png, id=219, 702.625pt x 451.6875pt>
 File: image1.png Graphic file (type png)
 
 <use image1.png>
-Package pdftex.def Info: image1.png used on input line 222.
+Package pdftex.def Info: image1.png used on input line 225.
 (pdftex.def)             Requested size: 469.75502pt x 301.99496pt.
  [11 <./mongo_ingestion.jpg>]
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 233.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 236.
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 282.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 285.
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 284.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 287.
  [12 <./image1.png>] [13] [14
 
 ]
 Chapter 5.
 [15]
 LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <10> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 558.
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 561.
  [16]
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 584.
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 587.
 
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
@@ -1215,24 +1215,60 @@ Chapter 7.
 
 ]
 Chapter 8.
-[23] [24
+[23] <example_query.jpg, id=316, 783.92876pt x 452.69125pt>
+File: example_query.jpg Graphic file (type jpg)
 
-]
+<use example_query.jpg>
+Package pdftex.def Info: example_query.jpg used on input line 746.
+(pdftex.def)             Requested size: 469.75502pt x 271.27147pt.
+
+Overfull \hbox (70.22037pt too wide) in paragraph at lines 763--763
+[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 763--763
+
+ []
+
+
+Overfull \hbox (374.28706pt too wide) in paragraph at lines 775--775
+[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 775--775
+
+ []
+
+<example_query_detailed.jpg, id=317, 1388.18625pt x 1010.77625pt>
+File: example_query_detailed.jpg Graphic file (type jpg)
+
+<use example_query_detailed.jpg>
+Package pdftex.def Info: example_query_detailed.jpg used on input line 790.
+(pdftex.def)             Requested size: 469.75502pt x 342.03993pt.
+ [24 <./example_query.jpg>] [25 <./example_query_detailed.jpg>] [26]
 Chapter 9.
-[25] [26
+[27
+
+] [28
 
 ]
 Chapter 10.
-[27] [28
+[29] [30
 
 ]
 Chapter 11.
-[29] [30
+[31] [32
 
-] [31
+]
+Chapter 12.
+[33] [34
+
+] [35
 
 
-] (./TwitterAnalyticsDocumentation.ind [32
+] (./TwitterAnalyticsDocumentation.ind [36
 
 
 ]
@@ -1240,23 +1276,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 12--13
 []\T1/ptm/m/n/10 conditional_create() (gen-er-ate_queries.CreateQuery
  []
 
-[33
+[37
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 725.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 725.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 897.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 897.
  (./TwitterAnalyticsDocumentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 725.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 725.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 897.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 897.
 Package rerunfilecheck Info: File `TwitterAnalyticsDocumentation.out' has not c
 hanged.
-(rerunfilecheck)             Checksum: 9BD9A23C579AADFB692FDB06E5A61868;4221.
+(rerunfilecheck)             Checksum: 21BF79DA9ADB5D869677DC30886E5090;5366.
  ) 
 Here is how much of TeX's memory you used:
- 13984 strings out of 494953
- 194042 string characters out of 6180977
- 294254 words of memory out of 5000000
- 16864 multiletter control sequences out of 15000+600000
+ 14020 strings out of 494953
+ 194744 string characters out of 6180977
+ 310648 words of memory out of 5000000
+ 16887 multiletter control sequences out of 15000+600000
  48569 words of font info for 74 fonts, out of 8000000 for 9000
  15 hyphenation exceptions out of 8191
  37i,12n,45p,1111b,519s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1271,10 +1307,10 @@ xlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
 ri8a.pfb>
-Output written on TwitterAnalyticsDocumentation.pdf (37 pages, 212635 bytes).
+Output written on TwitterAnalyticsDocumentation.pdf (41 pages, 417080 bytes).
 PDF statistics:
- 417 PDF objects out of 1000 (max. 8388607)
- 355 compressed objects within 4 object streams
- 89 named destinations out of 1000 (max. 500000)
- 207 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 473 PDF objects out of 1000 (max. 8388607)
+ 404 compressed objects within 5 object streams
+ 100 named destinations out of 1000 (max. 500000)
+ 273 words of extra memory for PDF output out of 10000 (max. 10000000)
 
