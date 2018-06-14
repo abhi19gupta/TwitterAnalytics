@@ -75,7 +75,10 @@
           
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
@@ -97,12 +100,22 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Composing multiple queries : DAG</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-a-dag-from-queries">Building a DAG from queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dag-in-airflow">DAG in airflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dag-in-airflow">DAG in airflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tree-view">Tree view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graph-view">Graph view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gant-view">Gant view</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
@@ -164,7 +177,7 @@
 <blockquote>
 <div><ul class="simple">
 <li>Provide an abstraction to build complex queires from simple queries.</li>
-<li>A particular database may be suited to answer particular type of queries. In fact this is the root reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.</li>
+<li>A particular database may be suited to answer particular type of queries. In fact this is the main reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.</li>
 <li>It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.</li>
 <li>On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.</li>
 <li>Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts to the user instead of waiting for the entire big query to execute.</li>
@@ -216,15 +229,15 @@
 <p>The only place where the list input breaks is in case of mongoDB query as they require some basic inputs which can directly be provided as native objects(for example the limit input to the above two mongoDB queries).</p>
 <p>Further we need to specify which outputs of the queries are to be returned.</p>
 <p>The example input file to create the above DAG looks something like this:</p>
-<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
 <span class="n">n1</span> <span class="n">most_popular_hashtags_20</span>
 <span class="n">n2</span> <span class="n">most_popular_mentions_20</span>
 <span class="n">n3</span> <span class="n">active_users</span>
-<span class="ss">INPUTS</span><span class="p">:</span>
-<span class="ss">CONNECTIONS</span><span class="p">:</span>
+<span class="n">INPUTS</span><span class="p">:</span>
+<span class="n">CONNECTIONS</span><span class="p">:</span>
 <span class="n">n1</span><span class="o">.</span><span class="n">hashtag</span> <span class="n">n3</span><span class="o">.</span><span class="n">hashtag</span>
 <span class="n">n2</span><span class="o">.</span><span class="n">userId</span> <span class="n">n3</span><span class="o">.</span><span class="n">um_id</span>
-<span class="ss">RETURNS</span><span class="p">:</span>
+<span class="n">RETURNS</span><span class="p">:</span>
 <span class="n">n3</span><span class="o">.</span><span class="n">userId</span>
 <span class="n">n3</span><span class="o">.</span><span class="n">count</span>
 </pre></div>
@@ -264,10 +277,37 @@
 <span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">xcom_pull</span><span class="p">(</span><span class="n">task_ids</span><span class="o">=</span><span class="n">get_task_from_node</span><span class="p">(</span><span class="n">mapp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dag_id</span> <span class="o">=</span> <span class="s2">&quot;active_users_dag&quot;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Further on airflow, different views of the DAG can also be observed, some of the views which are of particular interest to us are the following :</p>
+<div class="section" id="tree-view">
+<h3>Tree view<a class="headerlink" href="#tree-view" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="graph-view">
+<h3>Graph view<a class="headerlink" href="#graph-view" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="gant-view">
+<h3>Gant view<a class="headerlink" href="#gant-view" title="Permalink to this headline">¶</a></h3>
+<p>Further airflow provides the functionality to schedule the DAG runs periodically and properly stores the logs of each run. This can be leveraged in scenerios in which the user wants to run the same copositional query periodically.</p>
+</div>
 </div>
 <div class="section" id="creating-custom-metric">
 <h2>Creating custom metric<a class="headerlink" href="#creating-custom-metric" title="Permalink to this headline">¶</a></h2>
-<p>Custom metric can be created on top of the DAG.</p>
+<p>Custom metric can be created on top of the DAG. A custom metric is nothing but a graphical view of the data output from the DAG execution.</p>
+<p>To view a custom metric, the user is required to specify the following things:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A DAG : The outputs of any queries in the DAG can be used to create the custom metric.</li>
+<li>A post processing function : accepts as inputs the outputs of any of the queries in the DAG and outputs a x and y coordinates to be used for plotting.</li>
+<li>Either mapping between the inputs of the post processing function and the outputs of the queries in the DAG or fixed native values to the inputs.</li>
+</ul>
+</div></blockquote>
+<p>To display the custom metric, the DAG is executed to feed data into the post processing function. The user can choose to view the metric in either of these formats:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Plot : The x and y coordinates are plotted using plotly through an Ajax call and displayed on the dashboard.</li>
+<li>Table : The values are displayed in table format again using an Ajax call.</li>
+</ul>
+</div></blockquote>
+<p>An example of creating a custom metric will br provided in the <a class="reference internal" href="dashboard_website.html#dashboard-website"><span class="std std-ref">Dashboard Website</span></a> section.</p>
 </div>
 </div>
 

@@ -18,7 +18,7 @@ Idea behind a DAG
 As mentioned above, our main idea is to provie the user an easy abstraction to build complex queries. But apart from this there are several functions that the abstraction of a DAG seems to serve, which we list below:
 
     * Provide an abstraction to build complex queires from simple queries.
-    * A particular database may be suited to answer particular type of queries. In fact this is the root reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.
+    * A particular database may be suited to answer particular type of queries. In fact this is the main reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.
     * It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.
     * On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.
     * Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts to the user instead of waiting for the entire big query to execute.
@@ -61,7 +61,7 @@ Further we need to specify which outputs of the queries are to be returned.
 
 The example input file to create the above DAG looks something like this:
 
-.. code-block:: ruby
+::
 
     3
     n1 most_popular_hashtags_20
@@ -114,7 +114,32 @@ In the above code, the execute query is the function in which we execute queries
     # Pulling from XComs
     context['task_instance'].xcom_pull(task_ids=get_task_from_node(mapp[0]),dag_id = "active_users_dag",key=k)
 
+Further on airflow, different views of the DAG can also be observed, some of the views which are of particular interest to us are the following :
+
+Tree view
+'''''''''''''
+
+Graph view
+''''''''''''''
+
+Gant view
+'''''''''''''
+
+Further airflow provides the functionality to schedule the DAG runs periodically and properly stores the logs of each run. This can be leveraged in scenerios in which the user wants to run the same copositional query periodically.
+
 Creating custom metric
 ------------------------
-Custom metric can be created on top of the DAG.
+Custom metric can be created on top of the DAG. A custom metric is nothing but a graphical view of the data output from the DAG execution.
 
+To view a custom metric, the user is required to specify the following things:
+
+    * A DAG : The outputs of any queries in the DAG can be used to create the custom metric.
+    * A post processing function : accepts as inputs the outputs of any of the queries in the DAG and outputs a x and y coordinates to be used for plotting.
+    * Either mapping between the inputs of the post processing function and the outputs of the queries in the DAG or fixed native values to the inputs.
+
+To display the custom metric, the DAG is executed to feed data into the post processing function. The user can choose to view the metric in either of these formats:
+
+    * Plot : The x and y coordinates are plotted using plotly through an Ajax call and displayed on the dashboard.
+    * Table : The values are displayed in table format again using an Ajax call.
+
+An example of creating a custom metric will br provided in the :ref:`Dashboard Website` section.

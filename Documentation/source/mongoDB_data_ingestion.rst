@@ -87,8 +87,8 @@ Clearly the ingestion rate depends on the time after which the interrupt to star
 Finally we get an ingestion rate of around 7k-12k tweets/second on average, depending on T.
 
 
-Code Documentation
------------------------
+Code Documentation for this section
+-------------------------------------
 
 .. automodule:: ingest_raw
     :members:

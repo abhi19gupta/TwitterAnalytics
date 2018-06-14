@@ -75,7 +75,10 @@
           
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
@@ -97,11 +100,23 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">About postprocessing functions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About postprocessing functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#need-of-post-processing-function">Need of post processing function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#format-of-post-processing-functions">Format of post processing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-post-processing-function">Executing post processing function</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="dag.html">Composing multiple queries : DAG</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dag.html#tree-view">Tree view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dag.html#graph-view">Graph view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dag.html#gant-view">Gant view</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
@@ -144,6 +159,79 @@
             
   <div class="section" id="about-postprocessing-functions">
 <h1>About postprocessing functions<a class="headerlink" href="#about-postprocessing-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="need-of-post-processing-function">
+<h2>Need of post processing function<a class="headerlink" href="#need-of-post-processing-function" title="Permalink to this headline">¶</a></h2>
+<p>Some processing can be done in a cypher query in case of neo4j, and further in case of mongoDB, there is functionality to write custom functions to be included in the aggregation pipeline. But we provide the user the ability to create post processing function. The major reasons behind this are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB.</li>
+<li>On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="format-of-post-processing-functions">
+<h2>Format of post processing functions<a class="headerlink" href="#format-of-post-processing-functions" title="Permalink to this headline">¶</a></h2>
+<p>We treat the postprocessing functions as queries. The idea behind treating post processing functions as a query is to provide simplistic abstraction while creating a DAG. Thus while creating a DAG, a user has to just compose queries which can either be query to any of the two databases or a post processing function as well. Thus, given the DAG abstraction, the user can feed the output of the query(ies) into a postprocessing node.</p>
+<p>Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named “inputs”) and return a dicionary(named “ret”) in same format. The function should further be named as “func”. This requires that the user specifies the input and output varibale names while creating the post processing function. This will be expalined in detail in the DAG section.</p>
+<p>Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output varibales. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return varibales. Its easy in case named varibales are returned but the issue is when epressions are returned(for example the code contains <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">l[:10]</span></code>, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternatve.</p>
+<p>Here is an example of a post processing function to output the union of lists input to it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to take union of two lists.</span>
+<span class="sd">    :param: input - a dictionry with the attribute names as keys and their values as dict-values.</span>
+<span class="sd">    :return: a dictionary with output variables as keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">l1</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">&quot;list1&quot;</span><span class="p">]</span>
+    <span class="n">l2</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="s2">&quot;list2&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">l1</span><span class="p">:</span>
+            <span class="n">l1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;l_out&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l1</span>
+    <span class="k">return</span> <span class="n">ret</span>
+</pre></div>
+</div>
+<p>Post processing functions are also used to display custom metric. To view a custom metric, the user is required to specify a post processing function which accepts as inputs the outputs of any of the queries in the DAG and outputs a x and y coordinates to be used for plotting.</p>
+<p>Here is another example of a post processing function to create a custom metric to plot the users with their number of tweets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;userid&quot;</span><span class="p">],</span> <span class="n">inputs</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]))</span>
+    <span class="n">inputs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">x_vals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">y_vals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">x_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">y_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;x_vals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_vals</span>
+    <span class="n">ret</span><span class="p">[</span><span class="s2">&quot;y_vals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_vals</span>
+    <span class="k">return</span> <span class="n">ret</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="executing-post-processing-function">
+<h2>Executing post processing function<a class="headerlink" href="#executing-post-processing-function" title="Permalink to this headline">¶</a></h2>
+<p>To execute the post processing function, we just provide include the inputs in the context being passed to the function. The execution requires these three steps:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Compilation : Any code errors are output to the user at this point.</li>
+<li>Passing the inputs to the function and executing its code.</li>
+<li>Obtaining the outputs : The output ret dictionary is pushed on the context by the function.</li>
+</ul>
+</div></blockquote>
+<p>This can be seen in this code snippet used to execute the post processing functions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">context</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;inputs&quot;</span><span class="p">:</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">inputs</span><span class="p">)}</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">compile</span><span class="p">(</span><span class="n">function_code</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="s1">&#39;exec&#39;</span><span class="p">)</span>
+    <span class="k">exec</span><span class="p">(</span><span class="n">functiona_code</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;ret = func(inputs)&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="n">ret</span><span class="p">[</span><span class="n">out</span><span class="p">]</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="n">out</span><span class="p">]</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Exeption while executing Post proc function: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span><span class="n">e</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

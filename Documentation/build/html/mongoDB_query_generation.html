@@ -75,7 +75,10 @@
           
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction to twitter analytics system</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
@@ -97,11 +100,23 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Generating queries in mongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="dag.html">Composing multiple queries : DAG</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dag.html#tree-view">Tree view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dag.html#graph-view">Graph view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dag.html#gant-view">Gant view</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
@@ -144,6 +159,41 @@
             
   <div class="section" id="generating-queries-in-mongodb">
 <h1>Generating queries in mongoDB<a class="headerlink" href="#generating-queries-in-mongodb" title="Permalink to this headline">¶</a></h1>
+<p>As mentioned in mongoDB ingestion section, in mongoDB we store only the data wihtout any structural information which can be extracted quickly from incoming tweets without much processing. Further, we store in mongoDB to ensure that some very common queries can be answered quickly.</p>
+<p>This leads to these important properties of the mongoDB part of datastore:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Only very specific queries can be answered using only the mongoDB. The specific queries further depend on the data which is being stored, which is further decided by which queries are seen frequently and need to be sped up. Given that currently we have the hashtag, url and user mention collection in mongoDB with the entity name, timestamp, the sentiment associated with the tweet in which the mentioned entity occured; we can answer only specific queries like the most popular hashtag(and its sentiment) occuring in an interval(which can be the entire time as well).</li>
+<li>This further means that the mongoDB schema and datastore can easily be modified and extended. For example, if I decide to store the named entites in the tweets as well, all we need is to make a new collection.</li>
+</ul>
+</div></blockquote>
+<p>Contast this with neo4j where the schema is more or less for fixed for all practical purposes and the user can’t easily change it.</p>
+<p>Given the above two properties, it makes little sense to develop a complete generic API to input queies from the user as it would certainly be an overkill. So currently we provide APIs only to take only specific queries from the user. The queries which can currently be answered using mongoDB are follows(the things mentioned inside &lt;&gt; are the inputs to the query):</p>
+<blockquote>
+<div><ul class="simple">
+<li>Give the &lt;number&gt; most popular hashtags in total</li>
+<li>Give the &lt;number&gt; most popular hashtags in the time interval &lt;Begin Time&gt; and &lt;End Time&gt;</li>
+<li>Give the timetamps at which &lt;hashtag&gt; is used between &lt;Begin Time&gt; and &lt;End Time&gt;</li>
+<li>Give the timetamps, associated positive and negative sentiment of a &lt;hashtag&gt; between &lt;Begin Time&gt; and &lt;End Time&gt;</li>
+</ul>
+</div></blockquote>
+<p>Similarly, queris analogous to the above can also be answered for urls and user mantions.</p>
+<p>For sake of completeness we also provide the way to generate a generic API to get mongoDB queries. For example take at this code to answer the query to get the most popular hashtags in an interval:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:{</span><span class="s2">&quot;$gte&quot;</span><span class="p">:</span><span class="n">t1</span><span class="p">,</span><span class="s2">&quot;$lte&quot;</span><span class="p">:</span><span class="n">t2</span><span class="p">}}},{</span><span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$hashtag&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
+<span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span><span class="n">limit</span><span class="p">}]</span>
+<span class="n">l</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">ht_collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+<span class="k">return</span> <span class="p">{</span><span class="s2">&quot;hashtag&quot;</span><span class="p">:[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">],</span><span class="s2">&quot;count&quot;</span><span class="p">:[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]}</span>
+</pre></div>
+</div>
+<p>As can be seen the query answering has three parts :</p>
+<blockquote>
+<div><ul class="simple">
+<li>The aggregation pipeline: This is the part with needs to be input from the user. As we have limited number of constructs that, can be used in aggregation, Taking those as inputs alog with their parameters is not that difficult. Some of the construcut, though can also be filled in automatically.</li>
+<li>Aggregating the collection based on the pipeline: This has fixed code and can ge generated easily.</li>
+<li>Unzipping the result based on the output variables name input by the user: Again, fixed code and thus easily generated.</li>
+</ul>
+</div></blockquote>
+<p>Along with the reasons mentioned above regarding the non requirement of generic monogDB query creator, another reason is that to generate the queries, would invariably require generation of python code, something like the above snippet and then modifying a file with a new function to connect to the database and execute the python code. This would further require modifying the source code in the dashboard website and the DAG execution python functions as well to register the new function, opening several fronts from which bugs can creep in.</p>
 </div>
 
 
