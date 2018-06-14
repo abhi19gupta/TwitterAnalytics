@@ -81,7 +81,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#code-documentation">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-stored-in-neo4j">Data stored in neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-network">User network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tweet-network">Tweet network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#indexing-network">Indexing network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-database">Ingesting the data into database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-documentation-for-neo4j-data-ingestion">Code Documentation for neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
@@ -90,7 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for this section</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -159,8 +165,49 @@
             
   <div class="section" id="ingesting-data-into-neo4j">
 <h1>Ingesting data into Neo4j<a class="headerlink" href="#ingesting-data-into-neo4j" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="code-documentation">
-<h2>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-stored-in-neo4j">
+<h2>Data stored in neo4j<a class="headerlink" href="#data-stored-in-neo4j" title="Permalink to this headline">¶</a></h2>
+<p>Our aim in the project is to capture the dynamics of an evlving social network. These dynamics can be a combination of :</p>
+<blockquote>
+<div><ul class="simple">
+<li>Spatial dynamics : captured by network based information.</li>
+<li>Temporal dynamics : The spatial information present at some interval of time in the past. This makes sense as the network keeps on changing and the user might want to see its state at some point in past.</li>
+</ul>
+</div></blockquote>
+<p>We store the complete twitter network in graph database neo4j.</p>
+<p>For sake of understanding, lets divide the network into two parts:</p>
+<blockquote>
+<div><ul class="simple">
+<li>User network : Stores the user information and connections between the user nodes</li>
+<li>Tweet network : Stores the tweets, their attributes and interconnections between tweets and their connections with user nodes as well.</li>
+<li>Indexing network : Stores the time indexing structure utilised to answer queries having a temporal dimension. Its instructive to image the user and tweet network on a plane and the indexing network on top of this plane.</li>
+</ul>
+</div></blockquote>
+<p>Lets look at these networks in some detail</p>
+</div>
+<div class="section" id="user-network">
+<h2>User network<a class="headerlink" href="#user-network" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/neo_in1.png" src="_images/neo_in1.png" />
+<img alt="_images/neo_in2.png" src="_images/neo_in2.png" />
+</div>
+<div class="section" id="tweet-network">
+<h2>Tweet network<a class="headerlink" href="#tweet-network" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/neo_in3.png" src="_images/neo_in3.png" />
+</div>
+<div class="section" id="indexing-network">
+<h2>Indexing network<a class="headerlink" href="#indexing-network" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/neo_in4.png" src="_images/neo_in4.png" />
+</div>
+<div class="section" id="ingesting-the-data-into-database">
+<h2>Ingesting the data into database<a class="headerlink" href="#ingesting-the-data-into-database" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="ingestion-rates">
+<h2>Ingestion Rates<a class="headerlink" href="#ingestion-rates" title="Permalink to this headline">¶</a></h2>
+<img alt="_images/neo_in5.png" src="_images/neo_in5.png" />
+</div>
+<hr class="docutils" />
+<div class="section" id="code-documentation-for-neo4j-data-ingestion">
+<h2>Code Documentation for neo4j data ingestion<a class="headerlink" href="#code-documentation-for-neo4j-data-ingestion" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
