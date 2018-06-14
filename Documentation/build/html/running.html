@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Dashboard Website &mdash; Twitter Analytics 0.1 documentation</title>
+  <title>Getting the system running &mdash; Twitter Analytics 0.1 documentation</title>
   
 
   
@@ -32,8 +32,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
-        <link rel="next" title="Getting the system running" href="running.html"/>
-        <link rel="prev" title="Benchmarking the query answering" href="benchmarking.html"/> 
+        <link rel="prev" title="Dashboard Website" href="dashboard_website.html"/> 
   <script src="_static/js/modernizr.min.js"></script>
 </head>
 
@@ -127,19 +126,19 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Dashboard Website</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#hashtags">Hashtags</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mentions">Mentions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#urls">URLs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#alerts">Alerts</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#dag">DAG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#hashtags">Hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#mentions">Mentions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#urls">URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#alerts">Alerts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#dag">DAG</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting the system running</a></li>
 </ul>
 
           
@@ -163,9 +162,9 @@
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
-    <li>Dashboard Website</li>
+    <li>Getting the system running</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/dashboard_website.rst.txt" rel="nofollow">
+            <a href="_sources/running.rst.txt" rel="nofollow">
                 <span class="fa fa-binoculars"></span>&#32;View page source
             </a>
       </li>
@@ -175,70 +174,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody" class="toBeIndexed">
             
-  <div class="section" id="dashboard-website">
-<h1>Dashboard Website<a class="headerlink" href="#dashboard-website" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="major-parts-of-the-dashboard-website">
-<h2>Major parts of the dashboard website<a class="headerlink" href="#major-parts-of-the-dashboard-website" title="Permalink to this headline">¶</a></h2>
-<p>We have organised the dashboard website into tabs with each tab containing associated APIs and functionality. Each tab is futher divided into sub tabs. We enlist the major tabs and subtabs and the functionality contained there in, to give an overview of the hierarchy of the website.</p>
-<div class="section" id="hashtags">
-<h3>Hashtags<a class="headerlink" href="#hashtags" title="Permalink to this headline">¶</a></h3>
-<p>This tab contains the functionality to view major statistics associated with hashtags. Though as we will see, the functionality in this tab can entirely be emulated by creating a suitable DAG, but we choose to keep a separate option to get some common stats about the common entities like hastags, user mentions and urls.</p>
-<p>The Hashtags tab contains three subtabs:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Top 10 : Takes as inputs the start time and the end time, to output the 10 most popular hashtags in the said interval with the number of tweets containing the hashtag</li>
-<li>Usage Plot : Takes as input a hashtag, start time and end time, to output the plot of how the usage(as number of tweets in which the hashtag occurs) of the hashtag has changed over the interval.</li>
-<li>Sentiment Plot : Takes as input a hashtag, start time and end time, to output the plot of how the sentiment associated with the hashtag has changed over the interval.</li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="mentions">
-<h3>Mentions<a class="headerlink" href="#mentions" title="Permalink to this headline">¶</a></h3>
-<p>The Mentions tab contains the major statistics concerning user mentions. It has the follwoing three subtabs:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Top 10 : Takes as inputs the start time and the end time, to output the 10 most popular users in the said interval with the number of tweets in which the user is mentioned.</li>
-<li>Usage Plot : Takes as input a user, start time and end time, to output the plot of how the mention frequency(as number of tweets in which the user is mentioned) of the user has changed over the interval.</li>
-<li>Sentiment Plot : Takes as input a user, start time and end time, to output the plot of how the sentiment associated with the user has changed over the interval.</li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="urls">
-<h3>URLs<a class="headerlink" href="#urls" title="Permalink to this headline">¶</a></h3>
-<p>The URLs tab contains the major statistics concerning urls. It has the follwoing three subtabs:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Top 10 : Takes as inputs the start time and the end time, to output the 10 most popular urls in the said interval with the number of tweets containing the url.</li>
-<li>Usage Plot : Takes as input a url, start time and end time, to output the plot of how the usage(as number of tweets in which the url occurs) of the url has changed over the interval.</li>
-<li>Sentiment Plot : Takes as input a url, start time and end time, to output the plot of how the sentiment associated with the url has changed over the interval.</li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="alerts">
-<h3>Alerts<a class="headerlink" href="#alerts" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="dag">
-<h3>DAG<a class="headerlink" href="#dag" title="Permalink to this headline">¶</a></h3>
-<p>We expalin about DAGs in detail in section <a class="reference internal" href="dag.html#composing-multiple-queries-dag"><span class="std std-ref">Composing multiple queries : DAG</span></a>. We assume the reader has read though the section and is aware with the terminology.</p>
-<p>This tab contains the functionalities to create and view DAGs. It has the following subtabs:</p>
-<blockquote>
-<div><ul class="simple">
-<li>Create Neo4j Query : Contains the APIs to create a neo4j queries. The user provides the inputs for query cration thorugh a simple form.</li>
-<li>Create MongoDB Query : Contains the APIs to create mongoDB queries.</li>
-<li>Create Post-Processing Function: Contains the APIs to create a post processing function. The form contains a file upload field thorugh which the file containing the python code for the function needs to be uploaded.</li>
-<li>All Queries : A color coded list of all queries created by the user, along with their input and output variables names. The user can delete queries from here.</li>
-<li>Create DAG : Compose the queries seen in the list of queries to create a DAG. The structure need to be specified in a file which needs to be uploaded.</li>
-<li>View DAG : Contains a list of DAGs created by the user. Also contains a button through which the user can go the airflow dashboard. Apart from that, with each DAG there is a “View” button which redirects to a page containg the strucutre code and the plotly graph of the DAG.</li>
-<li>Create Custom Metric : Contains a form in which the user needs to specify a DAG and a post processing function to create metric and view it either in plot/graph format.</li>
-</ul>
-</div></blockquote>
-</div>
-</div>
-<div class="section" id="use-cases">
-<h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h2>
-<p>Here we walk through some major use cases of the system with snapshots to give the reader some headway on how to use the system. The system has been designed, keeping in mind that the end user may not be much proficient in computer technology and has been strucutured to be intuitive and simple. Nonetheless, the authors feel that these use case should be enough to get the user started.</p>
-<p>Also, please notice that the easlier use cases may be used in the later ones. So it’s better the reader goes through these in order.</p>
-</div>
+  <div class="section" id="getting-the-system-running">
+<h1>Getting the system running<a class="headerlink" href="#getting-the-system-running" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -248,10 +185,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="running.html" class="btn btn-neutral float-right" title="Accesskey Alt(+Shift)+n" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-      
-        <a href="benchmarking.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="dashboard_website.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -260,7 +195,7 @@
 
   <div role="contentinfo" class="contentinfo">
       <p class="show_source">
-        <a href="_sources/dashboard_website.rst.txt" rel="nofollow">
+        <a href="_sources/running.rst.txt" rel="nofollow">
           <span class="fa fa-binoculars"></span>&#32;View page source
         </a>
       </p>

@@ -81,7 +81,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
@@ -90,7 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for this section</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -110,18 +116,25 @@
 <li class="toctree-l2"><a class="reference internal" href="#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-a-dag-from-queries">Building a DAG from queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dag-in-airflow">DAG in airflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#tree-view">Tree view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#graph-view">Graph view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#gant-view">Gant view</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#hashtags">Hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#mentions">Mentions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#urls">URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#alerts">Alerts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#dag">DAG</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a></li>
 </ul>
 
           
@@ -169,7 +182,7 @@
 <li>Post processing function : A python function which takes outups of query(ies) as inputs and transforms them to give the output</li>
 </ul>
 </div></blockquote>
-<p><strong>DAG</strong> stands for directed acylic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose mutiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. The nodes represent queries.</p>
+<p><strong>DAG</strong> stands for directed acylic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose mutiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. Each node as a query associated with it.</p>
 </div>
 <div class="section" id="idea-behind-a-dag">
 <h2>Idea behind a DAG<a class="headerlink" href="#idea-behind-a-dag" title="Permalink to this headline">¶</a></h2>
@@ -177,10 +190,10 @@
 <blockquote>
 <div><ul class="simple">
 <li>Provide an abstraction to build complex queires from simple queries.</li>
-<li>A particular database may be suited to answer particular type of queries. In fact this is the main reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.</li>
-<li>It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.</li>
+<li>A particular database may be suited to answer particular type of queries. In fact this is the main reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose queries from different databases in sake of efficiency.</li>
+<li>It may be easy to do some projection of data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.</li>
 <li>On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.</li>
-<li>Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts to the user instead of waiting for the entire big query to execute.</li>
+<li>Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts(as they are executed) to the user instead of waiting for the entire big query to execute.</li>
 </ul>
 </div></blockquote>
 <p>In this abstraction, a single query can also be treated as a DAG, one having a single node and no connections.</p>
@@ -188,7 +201,7 @@
 </div>
 <div class="section" id="building-a-dag-from-queries">
 <h2>Building a DAG from queries<a class="headerlink" href="#building-a-dag-from-queries" title="Permalink to this headline">¶</a></h2>
-<p>A DAG is composition of queries in which we need to specify how the outputs of queries downstrea feed into the inputs of the upstream ones.</p>
+<p>A DAG is composition of queries in which we need to specify how the outputs of queries upstream feed into the inputs of the downstream ones.</p>
 <p>We explain how to build the queries with the help on an example. Let us build a DAG to get the most active users. Refer to this image(the green queries represent mongoDB queries and blue ones represent neo4j queries):</p>
 <img alt="_images/example_query.jpg" src="_images/example_query.jpg" />
 <p>First we need to build the three queries separately, let us say we have the built queries as:</p>
@@ -225,7 +238,7 @@
 </div></blockquote>
 <p>This query is demonstrated by the block diagram below also:</p>
 <img alt="_images/example_query_detailed.jpg" src="_images/example_query_detailed.jpg" />
-<p>As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the keys are lists and similarly returns a dictionary with list values. The keys in both dictioanry is the name of hte inputs/outputs, as specified in the query generation.</p>
+<p>As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the values are lists and similarly returns a dictionary with list values. The keys in both dictioanry is the name of the inputs/outputs, as specified in the query generation.</p>
 <p>The only place where the list input breaks is in case of mongoDB query as they require some basic inputs which can directly be provided as native objects(for example the limit input to the above two mongoDB queries).</p>
 <p>Further we need to specify which outputs of the queries are to be returned.</p>
 <p>The example input file to create the above DAG looks something like this:</p>
@@ -242,10 +255,22 @@
 <span class="n">n3</span><span class="o">.</span><span class="n">count</span>
 </pre></div>
 </div>
+<p>Observe the struture of the file.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Line 1 contains the number of nodes in the DAG.</li>
+<li>The following number of nodes lines contain the name of the nodes and  each node corresponds to which query.</li>
+<li>Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the <code class="docutils literal notranslate"><span class="pre">n1.hashtag</span></code> variable been taken as an input rather than feefind from the outptut of an upstream query, it would have been specified as <code class="docutils literal notranslate"><span class="pre">n1.hashtag</span> <span class="pre">[&quot;hash1&quot;,&quot;hash2&quot;]</span></code>.</li>
+<li>Then a line containing the keyword “CONNECTION:”. Below the connections in the DAG are specified.</li>
+<li>And finally a line contains the keyword “RETURNS:”. Below, we specifiy the outputs of the queries which are to be returned.</li>
+</ul>
+</div></blockquote>
+<p>Please note that, all the outputs of all the queries can be seen in XComs in airflow and also in the logs of the DAG run. But we provide the user to specify the things of interest to the user, thourgh the RETURN variables. This will be useful in case we provide a functionality to observe the variation of a quantity over periodic DAG runs in future. Presently we don’t have such a functionality in our Dashboard, though providing such a functioanlty shouldn’t be difficult.</p>
 </div>
 <div class="section" id="dag-in-airflow">
 <h2>DAG in airflow<a class="headerlink" href="#dag-in-airflow" title="Permalink to this headline">¶</a></h2>
-<p>Similary we generate the code to specify the dag in airflow something like this.</p>
+<p>To create a DAG in airflow, we need to create a file in the dags folder in the AIRFLOW_HOME directory. So, when the user specifies the DAG through out dashboard, we generate a python file in the metioned folder. The newly created DAG is registered with airflow after sometime(airflow has a heartbeat thread running, which looks for new DAGs in the folder periodically)
+We generate the code to specify the dag in airflow something like this.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_0</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
     <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;node_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;n1&quot;</span><span class="p">),</span>
     <span class="n">python_callable</span><span class="o">=</span><span class="n">execute_query</span><span class="p">,</span>
@@ -277,17 +302,17 @@
 <span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">xcom_pull</span><span class="p">(</span><span class="n">task_ids</span><span class="o">=</span><span class="n">get_task_from_node</span><span class="p">(</span><span class="n">mapp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dag_id</span> <span class="o">=</span> <span class="s2">&quot;active_users_dag&quot;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Further on airflow, different views of the DAG can also be observed, some of the views which are of particular interest to us are the following :</p>
-<div class="section" id="tree-view">
-<h3>Tree view<a class="headerlink" href="#tree-view" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="graph-view">
-<h3>Graph view<a class="headerlink" href="#graph-view" title="Permalink to this headline">¶</a></h3>
-</div>
-<div class="section" id="gant-view">
-<h3>Gant view<a class="headerlink" href="#gant-view" title="Permalink to this headline">¶</a></h3>
-<p>Further airflow provides the functionality to schedule the DAG runs periodically and properly stores the logs of each run. This can be leveraged in scenerios in which the user wants to run the same copositional query periodically.</p>
-</div>
+<p>Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the <code class="docutils literal notranslate"><span class="pre">start_date</span></code> property is specified as the current time.</p>
+<p>Airflow provides certain other useful properties which may be of interest to the user(when the system becomes huge). For example, the user can set an email-address on which a notification will be sent in case of the success and/or failure of tasks. But, taking all these inputs though our dashboard to genereate the DAG, is like create a complete front-end wrapper over the airflow system, which is not out aim. If the user does wish to use the more involved airflow properties, he/she can always edit the source of the generated dag file. Also, if the need arises to provide the user such functionality through our dashboard, then modifying the code to generate an additional line in the dag python file is easy.</p>
+<p>Further on airflow, different views of the DAG can be observed, some of the views which are of particular interest to us are the following :</p>
+<blockquote>
+<div><ul class="simple">
+<li>Tree view - A view which tells the parallel streams in the DAG. We can specify how many parallel worker threads to have in airflow.</li>
+<li>Graph view - A graph view specifying the connections between the nodes of the DAG.</li>
+<li>Gant view - activates after the DAG has been executed, tells how much time taken by each query to execute.</li>
+</ul>
+</div></blockquote>
+<p>Also,airflow provides the functionality to schedule the DAG runs periodically and properly stores the logs of each run. This can be leveraged in scenerios in which the user wants to run the same copositional query periodically.</p>
 </div>
 <div class="section" id="creating-custom-metric">
 <h2>Creating custom metric<a class="headerlink" href="#creating-custom-metric" title="Permalink to this headline">¶</a></h2>
