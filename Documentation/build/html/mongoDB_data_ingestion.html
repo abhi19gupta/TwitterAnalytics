@@ -81,22 +81,25 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ingest_raw">Code Documentation for this section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation">Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
@@ -110,18 +113,43 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#tree-view">Tree view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#graph-view">Graph view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#gant-view">Gant view</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#hashtags">Hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#mentions">Mentions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#urls">URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#alerts">Alerts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#dag">DAG</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-top-10-popular-hashtags">Viewing top 10 popular hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-usage-history-of-hashtag">Viewing usage history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-sentiment-history-of-hashtag">Viewing sentiment history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-a-mongodb-query">Creating a mongoDB query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-neo4j-queries">Creating neo4j queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-post-processing-function">Create Post processing function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-queries">View Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-dag">Create DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-dags">View DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-custom-metric">Create Custom metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-alert">Create Alert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-alerts">View Alerts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environement">Setting up the environement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboards">Running the dashboards</a></li>
+</ul>
+</li>
 </ul>
 
           
@@ -220,8 +248,8 @@ from the database.</p>
 <p>So, even if we decide to store some pseudo-structural information, like the user of the tweet in hashtags collection and then answer queries like the sentiment associated will all the tweets of an user, we expect the query execution time to be atleast as fast as answering the query in neo4j, though in case of neo4j also, answering such query would also take only a single hop, which means that the execution time would be small anyways. This is precisely the reason why we don’t currently store such information in mongoDB.</p>
 <p>But, as the size of the system grows, it would surely be benefitial to store much more condensed data in mongoDB and use it to answer more complex queries.</p>
 </div>
-<div class="section" id="ingesting-the-data-into-database">
-<h2>Ingesting the data into database<a class="headerlink" href="#ingesting-the-data-into-database" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ingesting-the-data-into-mongodb">
+<h2>Ingesting the data into mongoDB<a class="headerlink" href="#ingesting-the-data-into-mongodb" title="Permalink to this headline">¶</a></h2>
 <p>A simple approach would be to ingest a tweet into the database as when it comes in real time. But clearly(and as mentioned in mongoDB documentation)
 this is suboptimal, as we are connecting to the on-disk database frequently.[scheme 1]</p>
 <p>An easy solution to this would be to keep collecting the data in memory and then write it to the database periodically. But observe that, the time it takes the process to open a connection to database and then write the data to it, no new tweeets are being collected in memory.[scheme 2]</p>
@@ -243,157 +271,12 @@ A clear disadvantage of using process over threads will become clear below.</p>
 <p>So in this way the the process of writing to database in connector process is overlapped with the the accumulation of tweets in accumulator process. Note that we have a small gap equivalent to time taken to write to IPC, in which the accummulator process is not collecting the tweets. The whole process can further be made efficient by removing this gap, but since we are getting tweet ingestion rate much more than the rate of tweets coming on twitter and the gain from removing the gap would not be much, we don’t implement it.</p>
 <p>To answer queries like the most popular hastags in total, or most popular hashtags in a large interval. It would be benefitial to have aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector process to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don’t currently use this mechanism.</p>
 </div>
-<div class="section" id="ingestion-rates">
-<h2>Ingestion Rates<a class="headerlink" href="#ingestion-rates" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mongodb-ingestion-rates">
+<h2>MongoDB Ingestion Rates<a class="headerlink" href="#mongodb-ingestion-rates" title="Permalink to this headline">¶</a></h2>
 <p>As expected, the ingestion rate into mongoDB whilw overlapping writing into database and accumulating data is faster than without parallelization. The plot below shows a comparison between scheme 2 and scheme 3 as described above. Observe that as more and more tweets are inserted, the difference between the two scheme grows as the time saved in overlapping inserting the accumulating keeps on adding up in advntage of scheme 3.</p>
 <img alt="The mongoDB ingestion rate" src="_images/image1.png" />
 <p>Clearly the ingestion rate depends on the time after which the interrupt to start write the collected tweets to database is generate(called T above).</p>
 <p>Finally we get an ingestion rate of around 7k-12k tweets/second on average, depending on T.</p>
-</div>
-<div class="section" id="module-ingest_raw">
-<span id="code-documentation-for-this-section"></span><h2>Code Documentation for this section<a class="headerlink" href="#module-ingest_raw" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="ingest_raw.Ingest">
-<em class="property">class </em><code class="descclassname">ingest_raw.</code><code class="descname">Ingest</code><span class="sig-paren">(</span><em>interval</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="method">
-<dt id="ingest_raw.Ingest.aggregate">
-<code class="descname">aggregate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.aggregate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.aggregate" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Ingest.exit">
-<code class="descname">exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.exit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.exit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Ingest.insert_tweet">
-<code class="descname">insert_tweet</code><span class="sig-paren">(</span><em>tweet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.insert_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.insert_tweet" title="Permalink to this definition">¶</a></dt>
-<dd><p>update the in memory dictionaries</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Ingest.populate">
-<code class="descname">populate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.populate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.populate" title="Permalink to this definition">¶</a></dt>
-<dd><p>write to the mongoDB</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Ingest.worker">
-<code class="descname">worker</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Ingest.worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Ingest.worker" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="ingest_raw.Timer">
-<em class="property">class </em><code class="descclassname">ingest_raw.</code><code class="descname">Timer</code><span class="sig-paren">(</span><em>interval</em>, <em>function</em>, <em>args=None</em>, <em>kwargs=None</em>, <em>iterations=1</em>, <em>infinite=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Timer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Timer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">multiprocessing.context.Process</span></code></p>
-<p>Calls a function after a specified number of seconds:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="mf">30.0</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span> <span class="c1">#stops the timer if it is still waiting</span>
-</pre></div>
-</div>
-<dl class="attribute">
-<dt id="ingest_raw.Timer.authkey">
-<code class="descname">authkey</code><a class="headerlink" href="#ingest_raw.Timer.authkey" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Timer.cancel">
-<code class="descname">cancel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Timer.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Timer.cancel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stop the timer if it hasn’t already finished.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="ingest_raw.Timer.daemon">
-<code class="descname">daemon</code><a class="headerlink" href="#ingest_raw.Timer.daemon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return whether process is a daemon</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="ingest_raw.Timer.exitcode">
-<code class="descname">exitcode</code><a class="headerlink" href="#ingest_raw.Timer.exitcode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return exit code of process or <cite>None</cite> if it has yet to stop</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="ingest_raw.Timer.ident">
-<code class="descname">ident</code><a class="headerlink" href="#ingest_raw.Timer.ident" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return identifier (PID) of process or <cite>None</cite> if it has yet to start</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Timer.is_alive">
-<code class="descname">is_alive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.is_alive" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return whether process is alive</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Timer.join">
-<code class="descname">join</code><span class="sig-paren">(</span><em>timeout=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.join" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wait until child process terminates</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="ingest_raw.Timer.name">
-<code class="descname">name</code><a class="headerlink" href="#ingest_raw.Timer.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="ingest_raw.Timer.pid">
-<code class="descname">pid</code><a class="headerlink" href="#ingest_raw.Timer.pid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return identifier (PID) of process or <cite>None</cite> if it has yet to start</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Timer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#Timer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.Timer.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to be run in sub-process; can be overridden in sub-class</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="ingest_raw.Timer.sentinel">
-<code class="descname">sentinel</code><a class="headerlink" href="#ingest_raw.Timer.sentinel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a file descriptor (Unix) or handle (Windows) suitable for
-waiting for process termination.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Timer.start">
-<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start child process</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="ingest_raw.Timer.terminate">
-<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ingest_raw.Timer.terminate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Terminate process; sends SIGTERM signal or uses TerminateProcess()</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="ingest_raw.calculate_sentiment">
-<code class="descclassname">ingest_raw.</code><code class="descname">calculate_sentiment</code><span class="sig-paren">(</span><em>positive_words</em>, <em>negative_words</em>, <em>tweet_text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#calculate_sentiment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.calculate_sentiment" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ingest_raw.getDateFromTimestamp">
-<code class="descclassname">ingest_raw.</code><code class="descname">getDateFromTimestamp</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#getDateFromTimestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.getDateFromTimestamp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ingest_raw.read_tweets">
-<code class="descclassname">ingest_raw.</code><code class="descname">read_tweets</code><span class="sig-paren">(</span><em>path</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#read_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.read_tweets" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="ingest_raw.threaded">
-<code class="descclassname">ingest_raw.</code><code class="descname">threaded</code><span class="sig-paren">(</span><em>fn</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_raw.html#threaded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_raw.threaded" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </div>
 </div>
 

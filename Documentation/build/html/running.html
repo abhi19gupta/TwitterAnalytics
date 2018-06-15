@@ -86,22 +86,19 @@
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for this section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation">Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
@@ -115,12 +112,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#tree-view">Tree view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#graph-view">Graph view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#gant-view">Gant view</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
@@ -135,10 +127,28 @@
 <li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#dag">DAG</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-top-10-popular-hashtags">Viewing top 10 popular hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-usage-history-of-hashtag">Viewing usage history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-sentiment-history-of-hashtag">Viewing sentiment history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-a-mongodb-query">Creating a mongoDB query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-neo4j-queries">Creating neo4j queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-post-processing-function">Create Post processing function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-queries">View Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-dag">Create DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-dags">View DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-custom-metric">Create Custom metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-alert">Create Alert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-alerts">View Alerts</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting the system running</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting the system running</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-the-environement">Setting up the environement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-dashboards">Running the dashboards</a></li>
+</ul>
+</li>
 </ul>
 
           
@@ -176,6 +186,31 @@
             
   <div class="section" id="getting-the-system-running">
 <h1>Getting the system running<a class="headerlink" href="#getting-the-system-running" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="setting-up-the-environement">
+<h2>Setting up the environement<a class="headerlink" href="#setting-up-the-environement" title="Permalink to this headline">¶</a></h2>
+<p>We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the download page itself. After installation of conda, run the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>// create a new virtual environment
+conda create --name twitter_analytics <span class="nv">python</span><span class="o">==</span><span class="m">3</span>.6
+// clone the repo
+git clone https://github.com/abhi19gupta/TwitterAnalytics.git
+// <span class="nb">cd</span> into the repo
+<span class="nb">cd</span> TwitterAnalytics
+// activate the virtual envt
+<span class="nb">source</span> activate twitter_analytics
+// install the required modules.
+pip install -r requirements.txt
+.
+.
+// deactivate the virtual environment
+<span class="nb">source</span> deactivate
+</pre></div>
+</div>
+<p>Apart from these, the user also needs to install mongoDB, neo4j databases and The Apache flink-kafka framework.</p>
+</div>
+<div class="section" id="running-the-dashboards">
+<h2>Running the dashboards<a class="headerlink" href="#running-the-dashboards" title="Permalink to this headline">¶</a></h2>
+<p>To run the website on a local server on your machine, navigate to Dashboard Website/ and run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">runserver</span></code>. Presently the databases will be empty, to insert the new data into the databases see the <a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-data-into-mongodb"><span class="std std-ref">Ingesting data into MongoDB</span></a> and the <a class="reference internal" href="neo4j_data_ingestion.html#ingesting-data-into-neo4j"><span class="std std-ref">Ingesting data into Neo4j</span></a> sections.</p>
+</div>
 </div>
 
 

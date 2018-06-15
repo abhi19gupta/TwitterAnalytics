@@ -43,6 +43,6 @@ Ingestion Rates
 
 
 
-Code Documentation for neo4j data ingestion
---------------------------------------------
+.. Code Documentation for neo4j data ingestion
+.. --------------------------------------------
 

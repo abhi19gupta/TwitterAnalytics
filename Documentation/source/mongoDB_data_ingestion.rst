@@ -44,7 +44,7 @@ So, even if we decide to store some pseudo-structural information, like the user
 
 But, as the size of the system grows, it would surely be benefitial to store much more condensed data in mongoDB and use it to answer more complex queries.
 
-Ingesting the data into database
+Ingesting the data into mongoDB
 ------------------------------------
 A simple approach would be to ingest a tweet into the database as when it comes in real time. But clearly(and as mentioned in mongoDB documentation)
 this is suboptimal, as we are connecting to the on-disk database frequently.[scheme 1]
@@ -74,8 +74,8 @@ So in this way the the process of writing to database in connector process is ov
 To answer queries like the most popular hastags in total, or most popular hashtags in a large interval. It would be benefitial to have aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector process to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don't currently use this mechanism.
 
 
-Ingestion Rates
------------------
+MongoDB Ingestion Rates
+-------------------------
 
 As expected, the ingestion rate into mongoDB whilw overlapping writing into database and accumulating data is faster than without parallelization. The plot below shows a comparison between scheme 2 and scheme 3 as described above. Observe that as more and more tweets are inserted, the difference between the two scheme grows as the time saved in overlapping inserting the accumulating keeps on adding up in advntage of scheme 3.
 
@@ -87,11 +87,11 @@ Clearly the ingestion rate depends on the time after which the interrupt to star
 Finally we get an ingestion rate of around 7k-12k tweets/second on average, depending on T.
 
 
-Code Documentation for this section
--------------------------------------
+.. Code Documentation for this section
+.. -------------------------------------
 
-.. automodule:: ingest_raw
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
+.. .. automodule:: ingest_raw
+..     :members:
+..     :undoc-members:
+..     :inherited-members:
+..     :show-inheritance:

@@ -70,13 +70,13 @@ when a user provides the inputs to specify the query, the following steps are ex
     * Connection is established with the neo4j server and the query is executed on the database.
     * The results obtained are concatenated and are displayed.
 
-Code Documentation
-----------------------
+.. Code Documentation
+.. ----------------------
 
-Here we provide a documentation of the code.
+.. Here we provide a documentation of the code.
 
-.. automodule:: generate_queries
-    :members:
-    :undoc-members:
-    :inherited-members:
-    :show-inheritance:
+.. .. automodule:: generate_queries
+..     :members:
+..     :undoc-members:
+..     :inherited-members:
+..     :show-inheritance:

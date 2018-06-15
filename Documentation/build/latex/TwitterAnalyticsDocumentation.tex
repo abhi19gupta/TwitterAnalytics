@@ -56,7 +56,7 @@
 
 
 \title{Twitter Analytics Documentation}
-\date{Jun 11, 2018}
+\date{Jun 15, 2018}
 \release{0.1}
 \author{Deepak Saini, Abhishek Gupta}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -79,6 +79,35 @@ Here we provide a comprehenstive documentaion of each component of the system al
 
 \chapter{Introduction to twitter analytics system}
 \label{\detokenize{introduction:introduction-to-twitter-analytics-system}}\label{\detokenize{introduction::doc}}
+Nowadays social media generates huge amount of data which can be used to infer a number of trending social events and to understand the connections between different entities. One such useful platform is Twitter where users can follow other users and tweet on any topic, tagging it with hashtags, mentioning other users or using URLs. This creates a complex network of entities (like users, tweets, hashtags and URLs) which are interconnected in complex ways in a temporally evolving fashion.  A number of programming tools are used by developers to answer queries or do analysis on top of this data.
+
+However, there are a lot of people who are not so technically proficient to be able to write and maintain such a system. They generally have to rely on existing systems which either expect them to write queries in SQL (or other query languages) or offer only a partial view into the data through a limited number of available queries. Due to this reason, these people have to rely on developers to make meaning out of this data.
+
+Our system has been designed for people with limited programming expertise. It continuously streams tweets from the Twitter Streaming API and gives users a couple of abstractions to work with. The first is an abstraction over the live stream of tweets allowing them to detect custom live events (Eg. finding hashtags going viral) in the stream and get notified about them. The second is an abstraction over the historical view over the data stored from the stream. The second abstraction looks at the data as a network of users and tweets along with their attributes.
+
+Together, these two abstractions would provide an intuitive analytics platform for the users.
+
+
+\section{Major parts of the system}
+\label{\detokenize{introduction:major-parts-of-the-system}}
+\noindent\sphinxincludegraphics{{5}.png}
+
+Lets begin by describing the major components of the system.
+\begin{itemize}
+\item {} 
+The streaming tweet collector: We have a connection to the twitter streaming API which keeps on collecting tweets from the twitter pipe. For more details refer to the section on twitter stream.
+
+\item {} 
+The alert generation system: The collected tweets are pushed to \sphinxstylestrong{Apache Kafka} for downstream processes. This tweet stream is processed by \sphinxstylestrong{Apache Flink}, which is an open-source, distributed and high-performance stream processing framework, to look for user specified alerts in the tweet stream.
+
+\item {} 
+The datastores: The stream is also persisted in a couple of data stores to make queries later. \sphinxstylestrong{Neo4j}, which is a graph database management system supported by the query language Cypher, is used to store network based information from these tweets. \sphinxstylestrong{MongoDB}, which is a document oriented database, is used to store document based information to answer simpler aggregate queries.
+
+\item {} 
+The dashboard: These alerts and queries are then accessible to the user from a web application based dashboard. Please refer to the section  {\hyperref[\detokenize{dashboard_website:dashboard-website}]{\sphinxcrossref{\DUrole{std,std-ref}{Dashboard Website}}}} in which we explain the functionalities of the system through use cases.
+
+\end{itemize}
+
 
 \chapter{Read data from twitter streaming API}
 \label{\detokenize{twitter_stream:read-data-from-twitter-streaming-api}}\label{\detokenize{twitter_stream::doc}}
@@ -86,8 +115,60 @@ Here we provide a comprehenstive documentaion of each component of the system al
 \chapter{Ingesting data into Neo4j}
 \label{\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}}\label{\detokenize{neo4j_data_ingestion::doc}}
 
-\section{Code Documentation}
-\label{\detokenize{neo4j_data_ingestion:code-documentation}}
+\section{Data stored in neo4j}
+\label{\detokenize{neo4j_data_ingestion:data-stored-in-neo4j}}
+Our aim in the project is to capture the dynamics of an evolving social network. These dynamics can be a combination of :
+\begin{itemize}
+\item {} 
+Spatial dynamics : captured by network based information.
+
+\item {} 
+Temporal dynamics : The spatial information present at some interval of time in the past. This makes sense as the network keeps on changing and the user might want to see the state of some part of it at some point in past.
+
+\end{itemize}
+
+We store the complete twitter network in graph database neo4j.
+
+For sake of understanding, lets divide the complete network into three parts:
+\begin{itemize}
+\item {} 
+User network : Stores the user information and connections between the user nodes
+
+\item {} 
+Tweet network : Stores the tweets, their attributes and interconnections between tweets and their connections with user nodes as well.
+
+\item {} 
+Indexing network : Stores the time indexing structure utilised to answer queries having a temporal dimension. Its instructive to imagine the user and tweet network on a plane and the indexing network on top of this plane.
+
+\end{itemize}
+
+Let’s look at these networks in some detail
+
+
+\section{User network}
+\label{\detokenize{neo4j_data_ingestion:user-network}}
+\noindent\sphinxincludegraphics{{neo_in1}.png}
+
+\noindent\sphinxincludegraphics{{neo_in2}.png}
+
+
+\section{Tweet network}
+\label{\detokenize{neo4j_data_ingestion:tweet-network}}
+\noindent\sphinxincludegraphics{{neo_in3}.png}
+
+
+\section{Indexing network}
+\label{\detokenize{neo4j_data_ingestion:indexing-network}}
+\noindent\sphinxincludegraphics{{neo_in4}.png}
+
+
+\section{Ingesting the data into database}
+\label{\detokenize{neo4j_data_ingestion:ingesting-the-data-into-database}}
+
+\section{Ingestion Rates}
+\label{\detokenize{neo4j_data_ingestion:ingestion-rates}}
+\noindent\sphinxincludegraphics{{neo_in5}.png}
+
 
 \chapter{Ingesting data into MongoDB}
 \label{\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}}\label{\detokenize{mongoDB_data_ingestion::doc}}
@@ -183,8 +264,8 @@ So, even if we decide to store some pseudo-structural information, like the user
 But, as the size of the system grows, it would surely be benefitial to store much more condensed data in mongoDB and use it to answer more complex queries.
 
 
-\section{Ingesting the data into database}
-\label{\detokenize{mongoDB_data_ingestion:ingesting-the-data-into-database}}
+\section{Ingesting the data into mongoDB}
+\label{\detokenize{mongoDB_data_ingestion:ingesting-the-data-into-mongodb}}
 A simple approach would be to ingest a tweet into the database as when it comes in real time. But clearly(and as mentioned in mongoDB documentation)
 this is suboptimal, as we are connecting to the on-disk database frequently.{[}scheme 1{]}
 
@@ -218,8 +299,8 @@ So in this way the the process of writing to database in connector process is ov
 To answer queries like the most popular hastags in total, or most popular hashtags in a large interval. It would be benefitial to have aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector process to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don’t currently use this mechanism.
 
 
-\section{Ingestion Rates}
-\label{\detokenize{mongoDB_data_ingestion:ingestion-rates}}
+\section{MongoDB Ingestion Rates}
+\label{\detokenize{mongoDB_data_ingestion:mongodb-ingestion-rates}}
 As expected, the ingestion rate into mongoDB whilw overlapping writing into database and accumulating data is faster than without parallelization. The plot below shows a comparison between scheme 2 and scheme 3 as described above. Observe that as more and more tweets are inserted, the difference between the two scheme grows as the time saved in overlapping inserting the accumulating keeps on adding up in advntage of scheme 3.
 
 \noindent\sphinxincludegraphics{{image1}.png}
@@ -227,193 +308,6 @@ As expected, the ingestion rate into mongoDB whilw overlapping writing into data
 Clearly the ingestion rate depends on the time after which the interrupt to start write the collected tweets to database is generate(called T above).
 
 Finally we get an ingestion rate of around 7k-12k tweets/second on average, depending on T.
-
-
-\section{Code Documentation}
-\label{\detokenize{mongoDB_data_ingestion:module-ingest_raw}}\label{\detokenize{mongoDB_data_ingestion:code-documentation}}\index{ingest\_raw (module)}\index{Ingest (class in ingest\_raw)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{Ingest}}}{\emph{interval}}{}
-Bases: \sphinxcode{\sphinxupquote{object}}
-\index{aggregate() (ingest\_raw.Ingest method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.aggregate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{aggregate}}}{}{}
-\end{fulllineitems}
-
-\index{exit() (ingest\_raw.Ingest method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.exit}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{exit}}}{}{}
-\end{fulllineitems}
-
-\index{insert\_tweet() (ingest\_raw.Ingest method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.insert_tweet}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{insert\_tweet}}}{\emph{tweet}}{}
-update the in memory dictionaries
-
-\end{fulllineitems}
-
-\index{populate() (ingest\_raw.Ingest method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.populate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{populate}}}{}{}
-write to the mongoDB
-
-\end{fulllineitems}
-
-\index{worker() (ingest\_raw.Ingest method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.worker}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{worker}}}{\emph{q}}{}
-\end{fulllineitems}
-
-
-\end{fulllineitems}
-
-\index{Timer (class in ingest\_raw)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{Timer}}}{\emph{interval}, \emph{function}, \emph{args=None}, \emph{kwargs=None}, \emph{iterations=1}, \emph{infinite=False}}{}
-Bases: \sphinxcode{\sphinxupquote{multiprocessing.context.Process}}
-
-Calls a function after a specified number of seconds:
-
-\fvset{hllines={, ,}}%
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t} \PYG{o}{=} \PYG{n}{Timer}\PYG{p}{(}\PYG{l+m+mf}{30.0}\PYG{p}{,} \PYG{n}{f}\PYG{p}{,} \PYG{n}{args}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{kwargs}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{)}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{cancel}\PYG{p}{(}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}stops the timer if it is still waiting}
-\end{sphinxVerbatim}
-\index{authkey (ingest\_raw.Timer attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.authkey}}\pysigline{\sphinxbfcode{\sphinxupquote{authkey}}}
-\end{fulllineitems}
-
-\index{cancel() (ingest\_raw.Timer method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.cancel}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{cancel}}}{}{}
-Stop the timer if it hasn’t already finished.
-
-\end{fulllineitems}
-
-\index{daemon (ingest\_raw.Timer attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.daemon}}\pysigline{\sphinxbfcode{\sphinxupquote{daemon}}}
-Return whether process is a daemon
-
-\end{fulllineitems}
-
-\index{exitcode (ingest\_raw.Timer attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.exitcode}}\pysigline{\sphinxbfcode{\sphinxupquote{exitcode}}}
-Return exit code of process or \sphinxtitleref{None} if it has yet to stop
-
-\end{fulllineitems}
-
-\index{ident (ingest\_raw.Timer attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.ident}}\pysigline{\sphinxbfcode{\sphinxupquote{ident}}}
-Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to start
-
-\end{fulllineitems}
-
-\index{is\_alive() (ingest\_raw.Timer method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.is_alive}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{is\_alive}}}{}{}
-Return whether process is alive
-
-\end{fulllineitems}
-
-\index{join() (ingest\_raw.Timer method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.join}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{join}}}{\emph{timeout=None}}{}
-Wait until child process terminates
-
-\end{fulllineitems}
-
-\index{name (ingest\_raw.Timer attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.name}}\pysigline{\sphinxbfcode{\sphinxupquote{name}}}
-\end{fulllineitems}
-
-\index{pid (ingest\_raw.Timer attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.pid}}\pysigline{\sphinxbfcode{\sphinxupquote{pid}}}
-Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to start
-
-\end{fulllineitems}
-
-\index{run() (ingest\_raw.Timer method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.run}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{run}}}{}{}
-Method to be run in sub-process; can be overridden in sub-class
-
-\end{fulllineitems}
-
-\index{sentinel (ingest\_raw.Timer attribute)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.sentinel}}\pysigline{\sphinxbfcode{\sphinxupquote{sentinel}}}
-Return a file descriptor (Unix) or handle (Windows) suitable for
-waiting for process termination.
-
-\end{fulllineitems}
-
-\index{start() (ingest\_raw.Timer method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.start}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{start}}}{}{}
-Start child process
-
-\end{fulllineitems}
-
-\index{terminate() (ingest\_raw.Timer method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.terminate}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{terminate}}}{}{}
-Terminate process; sends SIGTERM signal or uses TerminateProcess()
-
-\end{fulllineitems}
-
-
-\end{fulllineitems}
-
-\index{calculate\_sentiment() (in module ingest\_raw)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.calculate_sentiment}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{calculate\_sentiment}}}{\emph{positive\_words}, \emph{negative\_words}, \emph{tweet\_text}}{}
-\end{fulllineitems}
-
-\index{getDateFromTimestamp() (in module ingest\_raw)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.getDateFromTimestamp}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{getDateFromTimestamp}}}{\emph{timestamp}}{}
-\end{fulllineitems}
-
-\index{read\_tweets() (in module ingest\_raw)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.read_tweets}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{read\_tweets}}}{\emph{path}, \emph{filename}}{}
-\end{fulllineitems}
-
-\index{threaded() (in module ingest\_raw)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.threaded}}\pysiglinewithargsret{\sphinxcode{\sphinxupquote{ingest\_raw.}}\sphinxbfcode{\sphinxupquote{threaded}}}{\emph{fn}}{}
-\end{fulllineitems}
-
 
 
 \chapter{Neo4j: API to generate cypher queries}
@@ -551,144 +445,162 @@ The results obtained are concatenated and are displayed.
 \end{itemize}
 
 
-\section{Code Documentation}
-\label{\detokenize{neo4j_query_generation:code-documentation}}
-Here we provide a documentation of the code.
-
-\phantomsection\label{\detokenize{neo4j_query_generation:module-generate_queries}}\index{generate\_queries (module)}
-Module to generate cypher code for inputs taken from user though dashboard API.
-
-The {\hyperref[\detokenize{neo4j_query_generation:module-generate_queries}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries}}}}} module contains the classes:
-\begin{itemize}
-\item {} 
-{\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries.CreateQuery}}}}}
-
-\end{itemize}
-
-One can use the {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries.CreateQuery.create\_query()}}}}} to build a cypher query.
-
-Example illustrating how to create a query which gives the userids and their tweet counts who have used a certian hashtag.
-
-\fvset{hllines={, ,}}%
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{actors}\PYG{o}{=}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{USER}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEET}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEET}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{attributes}\PYG{o}{=}\PYG{p}{[}\PYG{p}{[}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{hashtag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}hash\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{p}{]}\PYG{p}{]}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{relations}\PYG{o}{=}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEETED}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEETED}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cq} \PYG{o}{=} \PYG{n}{CreateQuery}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{return\PYGZus{}values}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u.id,count(t1)}\PYG{l+s+s2}{\PYGZdq{}}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{ret\PYGZus{}dict} \PYG{o}{=} \PYG{n}{cq}\PYG{o}{.}\PYG{n}{create\PYGZus{}query}\PYG{p}{(}\PYG{n}{actors}\PYG{p}{,}\PYG{n}{attributes}\PYG{p}{,}\PYG{n}{relations}\PYG{p}{,}\PYG{n}{return\PYGZus{}values}\PYG{p}{)}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{pprint}\PYG{p}{(}\PYG{n}{ret\PYGZus{}dict}\PYG{p}{,}\PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{150}\PYG{p}{)}
-\end{sphinxVerbatim}
-
-Example of a query which uses time indexing in a relationship:
-
-\fvset{hllines={, ,}}%
-\begin{sphinxVerbatim}[commandchars=\\\{\}]
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{actors} \PYG{o}{=} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{x}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{USER}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{USER}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]} \PYG{o}{+} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEET}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t2}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEET}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{attributes} \PYG{o}{=} \PYG{p}{[}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{id}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{12}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{id}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{]}\PYG{o}{+}\PYG{p}{[}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{hashtag}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{BLUERISING}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{retweet\PYGZus{}of}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{has\PYGZus{}mention}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{]}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{relations} \PYG{o}{=} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{x}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{FOLLOWS}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{x}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEETED}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t2}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{48}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}
-\end{sphinxVerbatim}
-\index{CreateQuery (class in generate\_queries)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery}}\pysigline{\sphinxbfcode{\sphinxupquote{class }}\sphinxcode{\sphinxupquote{generate\_queries.}}\sphinxbfcode{\sphinxupquote{CreateQuery}}}
-Bases: \sphinxcode{\sphinxupquote{object}}
-
-Class containing functions to generate query.
-\index{conditional\_create() (generate\_queries.CreateQuery method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{conditional\_create}}}{\emph{entity}}{}
-Condionally provide the attributes of the node if not already created, else directly use the name of the variable create earlier.
-If already create, pass empty list of properties.
-\begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode
-\sphinxstyleliteralstrong{\sphinxupquote{entity}} \textendash{} the entity which to check and create
-
-\item[{Returns}] \leavevmode
-the code for the node as neo4j node enclosed in ()
-
-\end{description}\end{quote}
-
-\end{fulllineitems}
-
-\index{create\_query() (generate\_queries.CreateQuery method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{create\_query}}}{\emph{actors}, \emph{attributes}, \emph{relations}, \emph{return\_values}}{}
-Takes a list of attributes and relationships between them and return a cypher code as string.
-For the format of the lists see the examples.
-\begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{actors}} \textendash{} the variable names, types of the attributes
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{attributes}} \textendash{} the properties of the actors
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{relations}} \textendash{} the relations between the entities along with time index for the relations
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{return\_values}} \textendash{} a direct string containing the return directive.
-
-\end{itemize}
-
-\item[{Returns}] \leavevmode
-index of the bond in the molecule
-
-\end{description}\end{quote}
-
-\begin{sphinxadmonition}{note}{Note:}
-Here we are expecting that if user has not specified the times on the dashboard, then we pass epmty string. If you
-store some other default in dashboard database then change this accordingly.
-\end{sphinxadmonition}
-
-\begin{sphinxadmonition}{note}{Note:}
-The return \_values is directly used as a string in the cypher query, so the user can use AS and other similar cypher directives while specifying the query.
-\end{sphinxadmonition}
-
-\begin{sphinxadmonition}{note}{\label{neo4j_query_generation:index-0}Todo:}
-Support to compose queries using OR. For example, currently compostion of relationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2, is not supported. Use cypher union for this.
-\end{sphinxadmonition}
-
-\end{fulllineitems}
-
-\index{generate\_node() (generate\_queries.CreateQuery method)}
-
-\begin{fulllineitems}
-\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.generate_node}}\pysiglinewithargsret{\sphinxbfcode{\sphinxupquote{generate\_node}}}{\emph{var}, \emph{type}, \emph{props}}{}
-Helper function for {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}]{\sphinxcrossref{\sphinxcode{\sphinxupquote{generate\_queries.CreateQuery.conditional\_create()}}}}}
-\begin{quote}\begin{description}
-\item[{Parameters}] \leavevmode\begin{itemize}
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{var}} \textendash{} the variable name of the entity
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{type}} \textendash{} the type of the entity. Observe we pass type as :USER and NOT as USER
-
-\item {} 
-\sphinxstyleliteralstrong{\sphinxupquote{props}} \textendash{} the properties of the entity.
-
-\end{itemize}
-
-\item[{Returns}] \leavevmode
-the code for the node as neo4j node enclosed in ()
-
-\end{description}\end{quote}
-
-\end{fulllineitems}
-
-
-\end{fulllineitems}
-
-
-
 \chapter{Generating queries in mongoDB}
 \label{\detokenize{mongoDB_query_generation:generating-queries-in-mongodb}}\label{\detokenize{mongoDB_query_generation::doc}}
+As mentioned in mongoDB ingestion section, in mongoDB we store only the data wihtout any structural information which can be extracted quickly from incoming tweets without much processing. Further, we store in mongoDB to ensure that some very common queries can be answered quickly.
+
+This leads to these important properties of the mongoDB part of datastore:
+\begin{itemize}
+\item {} 
+Only very specific queries can be answered using only the mongoDB. The specific queries further depend on the data which is being stored, which is further decided by which queries are seen frequently and need to be sped up. Given that currently we have the hashtag, url and user mention collection in mongoDB with the entity name, timestamp, the sentiment associated with the tweet in which the mentioned entity occured; we can answer only specific queries like the most popular hashtag(and its sentiment) occuring in an interval(which can be the entire time as well).
+
+\item {} 
+This further means that the mongoDB schema and datastore can easily be modified and extended. For example, if I decide to store the named entites in the tweets as well, all we need is to make a new collection.
+
+\end{itemize}
+
+Contast this with neo4j where the schema is more or less for fixed for all practical purposes and the user can’t easily change it.
+
+Given the above two properties, it makes little sense to develop a complete generic API to input queies from the user as it would certainly be an overkill. So currently we provide APIs only to take only specific queries from the user. The queries which can currently be answered using mongoDB are follows(the things mentioned inside \textless{}\textgreater{} are the inputs to the query):
+\begin{itemize}
+\item {} 
+Give the \textless{}number\textgreater{} most popular hashtags in total
+
+\item {} 
+Give the \textless{}number\textgreater{} most popular hashtags in the time interval \textless{}Begin Time\textgreater{} and \textless{}End Time\textgreater{}
+
+\item {} 
+Give the timetamps at which \textless{}hashtag\textgreater{} is used between \textless{}Begin Time\textgreater{} and \textless{}End Time\textgreater{}
+
+\item {} 
+Give the timetamps, associated positive and negative sentiment of a \textless{}hashtag\textgreater{} between \textless{}Begin Time\textgreater{} and \textless{}End Time\textgreater{}
+
+\end{itemize}
+
+Similarly, queris analogous to the above can also be answered for urls and user mantions.
+
+For sake of completeness we also provide the way to generate a generic API to get mongoDB queries. For example take at this code to answer the query to get the most popular hashtags in an interval:
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{pipeline} \PYG{o}{=} \PYG{p}{[}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}match}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{timestamp}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}gte}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{t1}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}lte}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{t2}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}group}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZus{}id}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}hashtag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}sum}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
+\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}sort}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}limit}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{limit}\PYG{p}{\PYGZcb{}}\PYG{p}{]}
+\PYG{n}{l} \PYG{o}{=}  \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{db}\PYG{o}{.}\PYG{n}{ht\PYGZus{}collection}\PYG{o}{.}\PYG{n}{aggregate}\PYG{p}{(}\PYG{n}{pipeline}\PYG{p}{)}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{result}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}
+\PYG{k}{return} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{hashtag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{[}\PYG{n}{x}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZus{}id}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]} \PYG{k}{for} \PYG{n}{x} \PYG{o+ow}{in} \PYG{n}{l}\PYG{p}{]}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{[}\PYG{n}{x}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]} \PYG{k}{for} \PYG{n}{x} \PYG{o+ow}{in} \PYG{n}{l}\PYG{p}{]}\PYG{p}{\PYGZcb{}}
+\end{sphinxVerbatim}
+
+As can be seen the query answering has three parts :
+\begin{itemize}
+\item {} 
+The aggregation pipeline: This is the part with needs to be input from the user. As we have limited number of constructs that, can be used in aggregation, Taking those as inputs alog with their parameters is not that difficult. Some of the construcut, though can also be filled in automatically.
+
+\item {} 
+Aggregating the collection based on the pipeline: This has fixed code and can ge generated easily.
+
+\item {} 
+Unzipping the result based on the output variables name input by the user: Again, fixed code and thus easily generated.
+
+\end{itemize}
+
+Along with the reasons mentioned above regarding the non requirement of generic monogDB query creator, another reason is that to generate the queries, would invariably require generation of python code, something like the above snippet and then modifying a file with a new function to connect to the database and execute the python code. This would further require modifying the source code in the dashboard website and the DAG execution python functions as well to register the new function, opening several fronts from which bugs can creep in.
+
 
 \chapter{About postprocessing functions}
 \label{\detokenize{postprocessing:about-postprocessing-functions}}\label{\detokenize{postprocessing::doc}}
+
+\section{Need of post processing function}
+\label{\detokenize{postprocessing:need-of-post-processing-function}}
+Some processing can be done in a cypher query in case of neo4j, and further in case of mongoDB, there is functionality to write custom functions to be included in the aggregation pipeline. But we provide the user the ability to create post processing function. The major reasons behind this are:
+\begin{itemize}
+\item {} 
+It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB.
+
+\item {} 
+On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.
+
+\end{itemize}
+
+
+\section{Format of post processing functions}
+\label{\detokenize{postprocessing:format-of-post-processing-functions}}
+We treat the postprocessing functions as queries. The idea behind treating post processing functions as a query is to provide simplistic abstraction while creating a DAG. Thus while creating a DAG, a user has to just compose queries which can either be query to any of the two databases or a post processing function as well. Thus, given the DAG abstraction, the user can feed the output of the query(ies) into a postprocessing node.
+
+Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named “inputs”) and return a dicionary(named “ret”) in same format. The function should further be named as “func”. This requires that the user specifies the input and output varibale names while creating the post processing function. This will be expalined in detail in the DAG section.
+
+Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output varibales. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return varibales. Its easy in case named varibales are returned but the issue is when epressions are returned(for example the code contains \sphinxcode{\sphinxupquote{return l{[}:10{]}}}, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternatve.
+
+Here is an example of a post processing function to output the union of lists input to it:
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n+nb}{input}\PYG{p}{)}\PYG{p}{:}
+    \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+\PYG{l+s+sd}{    Function to take union of two lists.}
+\PYG{l+s+sd}{    :param: input \PYGZhy{} a dictionry with the attribute names as keys and their values as dict\PYGZhy{}values.}
+\PYG{l+s+sd}{    :return: a dictionary with output variables as keys.}
+\PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{l1} \PYG{o}{=} \PYG{n+nb}{input}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{list1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}
+    \PYG{n}{l2} \PYG{o}{=} \PYG{n+nb}{input}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{list2}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}
+    \PYG{k}{for} \PYG{n}{x} \PYG{o+ow}{in} \PYG{n}{l2}\PYG{p}{:}
+        \PYG{k}{if} \PYG{n}{x} \PYG{o+ow}{not} \PYG{o+ow}{in} \PYG{n}{l1}\PYG{p}{:}
+            \PYG{n}{l1}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+
+    \PYG{n}{ret} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{p}{\PYGZcb{}}
+    \PYG{n}{ret}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{l\PYGZus{}out}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{l1}
+    \PYG{k}{return} \PYG{n}{ret}
+\end{sphinxVerbatim}
+
+Post processing functions are also used to display custom metric. To view a custom metric, the user is required to specify a post processing function which accepts as inputs the outputs of any of the queries in the DAG and outputs a x and y coordinates to be used for plotting.
+
+Here is another example of a post processing function to create a custom metric to plot the users with their number of tweets:
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{inputs} \PYG{o}{=} \PYG{n+nb}{list}\PYG{p}{(}\PYG{n+nb}{zip}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{userid}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{,} \PYG{n}{inputs}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
+    \PYG{n}{inputs}\PYG{o}{.}\PYG{n}{sort}\PYG{p}{(}\PYG{n}{key}\PYG{o}{=}\PYG{k}{lambda} \PYG{n}{item}\PYG{p}{:}\PYG{n}{item}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{,} \PYG{n}{reverse}\PYG{o}{=}\PYG{n+nb+bp}{True}\PYG{p}{)}
+    \PYG{n}{x\PYGZus{}vals} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+    \PYG{n}{y\PYGZus{}vals} \PYG{o}{=} \PYG{p}{[}\PYG{p}{]}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{)}\PYG{p}{:}
+        \PYG{n}{x\PYGZus{}vals}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n+nb}{str}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
+        \PYG{n}{y\PYGZus{}vals}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{p}{)}
+
+    \PYG{n}{ret} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{p}{\PYGZcb{}}
+    \PYG{n}{ret}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{x\PYGZus{}vals}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{x\PYGZus{}vals}
+    \PYG{n}{ret}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{y\PYGZus{}vals}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]} \PYG{o}{=} \PYG{n}{y\PYGZus{}vals}
+    \PYG{k}{return} \PYG{n}{ret}
+\end{sphinxVerbatim}
+
+
+\section{Executing post processing function}
+\label{\detokenize{postprocessing:executing-post-processing-function}}
+To execute the post processing function, we just provide include the inputs in the context being passed to the function. The execution requires these three steps:
+\begin{itemize}
+\item {} 
+Compilation : Any code errors are output to the user at this point.
+
+\item {} 
+Passing the inputs to the function and executing its code.
+
+\item {} 
+Obtaining the outputs : The output ret dictionary is pushed on the context by the function.
+
+\end{itemize}
+
+This can be seen in this code snippet used to execute the post processing functions:
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{n}{context} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{inputs}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{copy}\PYG{o}{.}\PYG{n}{deepcopy}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
+\PYG{k}{try}\PYG{p}{:}
+    \PYG{n+nb}{compile}\PYG{p}{(}\PYG{n}{function\PYGZus{}code}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{exec}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}
+    \PYG{k}{exec}\PYG{p}{(}\PYG{n}{functiona\PYGZus{}code} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s+s2}{\PYGZdq{}} \PYG{o}{+} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{ret = func(inputs)}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{n}{context}\PYG{p}{)}
+    \PYG{k}{for} \PYG{n}{out} \PYG{o+ow}{in} \PYG{n}{outputs}\PYG{p}{:}
+        \PYG{n}{ret}\PYG{p}{[}\PYG{n}{out}\PYG{p}{]} \PYG{o}{=} \PYG{n}{context}\PYG{p}{[}\PYG{n}{out}\PYG{p}{]}
+\PYG{k}{except} \PYG{n+ne}{Exception} \PYG{k}{as} \PYG{n}{e}\PYG{p}{:}
+    \PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Exeption while executing Post proc function: }\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n+nb}{type}\PYG{p}{(}\PYG{n}{e}\PYG{p}{)}\PYG{p}{,}\PYG{n}{e}\PYG{p}{)}\PYG{p}{)}
+\end{sphinxVerbatim}
+
 
 \chapter{Composing multiple queries : DAG}
 \label{\detokenize{dag:composing-multiple-queries-dag}}\label{\detokenize{dag::doc}}
@@ -708,7 +620,7 @@ Post processing function : A python function which takes outups of query(ies) as
 
 \end{itemize}
 
-\sphinxstylestrong{DAG} stands for directed acylic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose mutiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. The nodes represent queries.
+\sphinxstylestrong{DAG} stands for directed acylic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose mutiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. Each node as a query associated with it.
 
 
 \section{Idea behind a DAG}
@@ -719,16 +631,16 @@ As mentioned above, our main idea is to provie the user an easy abstraction to b
 Provide an abstraction to build complex queires from simple queries.
 
 \item {} 
-A particular database may be suited to answer particular type of queries. In fact this is the root reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose different queries in sake of efficiency.
+A particular database may be suited to answer particular type of queries. In fact this is the main reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose queries from different databases in sake of efficiency.
 
 \item {} 
-It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.
+It may be easy to do some projection of data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.
 
 \item {} 
 On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.
 
 \item {} 
-Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts to the user instead of waiting for the entire big query to execute.
+Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts(as they are executed) to the user instead of waiting for the entire big query to execute.
 
 \end{itemize}
 
@@ -739,7 +651,7 @@ We store the queries that the user creates through the dashboard. The user can t
 
 \section{Building a DAG from queries}
 \label{\detokenize{dag:building-a-dag-from-queries}}
-A DAG is composition of queries in which we need to specify how the outputs of queries downstrea feed into the inputs of the upstream ones.
+A DAG is composition of queries in which we need to specify how the outputs of queries upstream feed into the inputs of the downstream ones.
 
 We explain how to build the queries with the help on an example. Let us build a DAG to get the most active users. Refer to this image(the green queries represent mongoDB queries and blue ones represent neo4j queries):
 
@@ -789,7 +701,7 @@ This query is demonstrated by the block diagram below also:
 
 \noindent\sphinxincludegraphics{{example_query_detailed}.jpg}
 
-As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the keys are lists and similarly returns a dictionary with list values. The keys in both dictioanry is the name of hte inputs/outputs, as specified in the query generation.
+As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the values are lists and similarly returns a dictionary with list values. The keys in both dictioanry is the name of the inputs/outputs, as specified in the query generation.
 
 The only place where the list input breaks is in case of mongoDB query as they require some basic inputs which can directly be provided as native objects(for example the limit input to the above two mongoDB queries).
 
@@ -812,10 +724,32 @@ The example input file to create the above DAG looks something like this:
 \PYG{n}{n3}\PYG{o}{.}\PYG{n}{count}
 \end{sphinxVerbatim}
 
+Observe the struture of the file.
+\begin{itemize}
+\item {} 
+Line 1 contains the number of nodes in the DAG.
+
+\item {} 
+The following number of nodes lines contain the name of the nodes and  each node corresponds to which query.
+
+\item {} 
+Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the \sphinxcode{\sphinxupquote{n1.hashtag}} variable been taken as an input rather than feefind from the outptut of an upstream query, it would have been specified as \sphinxcode{\sphinxupquote{n1.hashtag {[}"hash1","hash2"{]}}}.
+
+\item {} 
+Then a line containing the keyword “CONNECTION:”. Below the connections in the DAG are specified.
+
+\item {} 
+And finally a line contains the keyword “RETURNS:”. Below, we specifiy the outputs of the queries which are to be returned.
+
+\end{itemize}
+
+Please note that, all the outputs of all the queries can be seen in XComs in airflow and also in the logs of the DAG run. But we provide the user to specify the things of interest to the user, thourgh the RETURN variables. This will be useful in case we provide a functionality to observe the variation of a quantity over periodic DAG runs in future. Presently we don’t have such a functionality in our Dashboard, though providing such a functioanlty shouldn’t be difficult.
+
 
 \section{DAG in airflow}
 \label{\detokenize{dag:dag-in-airflow}}
-Similary we generate the code to specify the dag in airflow something like this.
+To create a DAG in airflow, we need to create a file in the dags folder in the AIRFLOW\_HOME directory. So, when the user specifies the DAG through out dashboard, we generate a python file in the metioned folder. The newly created DAG is registered with airflow after sometime(airflow has a heartbeat thread running, which looks for new DAGs in the folder periodically)
+We generate the code to specify the dag in airflow something like this.
 
 \fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
@@ -853,10 +787,54 @@ In the above code, the execute query is the function in which we execute queries
 \PYG{n}{context}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{task\PYGZus{}instance}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{xcom\PYGZus{}pull}\PYG{p}{(}\PYG{n}{task\PYGZus{}ids}\PYG{o}{=}\PYG{n}{get\PYGZus{}task\PYGZus{}from\PYGZus{}node}\PYG{p}{(}\PYG{n}{mapp}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}\PYG{p}{,}\PYG{n}{dag\PYGZus{}id} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{active\PYGZus{}users\PYGZus{}dag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{key}\PYG{o}{=}\PYG{n}{k}\PYG{p}{)}
 \end{sphinxVerbatim}
 
+Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the \sphinxcode{\sphinxupquote{start\_date}} property is specified as the current time.
+
+Airflow provides certain other useful properties which may be of interest to the user(when the system becomes huge). For example, the user can set an email-address on which a notification will be sent in case of the success and/or failure of tasks. But, taking all these inputs though our dashboard to genereate the DAG, is like create a complete front-end wrapper over the airflow system, which is not out aim. If the user does wish to use the more involved airflow properties, he/she can always edit the source of the generated dag file. Also, if the need arises to provide the user such functionality through our dashboard, then modifying the code to generate an additional line in the dag python file is easy.
+
+Further on airflow, different views of the DAG can be observed, some of the views which are of particular interest to us are the following :
+\begin{itemize}
+\item {} 
+Tree view - A view which tells the parallel streams in the DAG. We can specify how many parallel worker threads to have in airflow.
+
+\item {} 
+Graph view - A graph view specifying the connections between the nodes of the DAG.
+
+\item {} 
+Gant view - activates after the DAG has been executed, tells how much time taken by each query to execute.
+
+\end{itemize}
+
+Also,airflow provides the functionality to schedule the DAG runs periodically and properly stores the logs of each run. This can be leveraged in scenerios in which the user wants to run the same copositional query periodically.
+
 
 \section{Creating custom metric}
 \label{\detokenize{dag:creating-custom-metric}}
-Custom metric can be created on top of the DAG.
+Custom metric can be created on top of the DAG. A custom metric is nothing but a graphical view of the data output from the DAG execution.
+
+To view a custom metric, the user is required to specify the following things:
+\begin{itemize}
+\item {} 
+A DAG : The outputs of any queries in the DAG can be used to create the custom metric.
+
+\item {} 
+A post processing function : accepts as inputs the outputs of any of the queries in the DAG and outputs a x and y coordinates to be used for plotting.
+
+\item {} 
+Either mapping between the inputs of the post processing function and the outputs of the queries in the DAG or fixed native values to the inputs.
+
+\end{itemize}
+
+To display the custom metric, the DAG is executed to feed data into the post processing function. The user can choose to view the metric in either of these formats:
+\begin{itemize}
+\item {} 
+Plot : The x and y coordinates are plotted using plotly through an Ajax call and displayed on the dashboard.
+
+\item {} 
+Table : The values are displayed in table format again using an Ajax call.
+
+\end{itemize}
+
+An example of creating a custom metric will br provided in the {\hyperref[\detokenize{dashboard_website:dashboard-website}]{\sphinxcrossref{\DUrole{std,std-ref}{Dashboard Website}}}} section.
 
 
 \chapter{Generating alerts using flink and kafka}
@@ -867,6 +845,277 @@ Custom metric can be created on top of the DAG.
 
 \chapter{Dashboard Website}
 \label{\detokenize{dashboard_website:dashboard-website}}\label{\detokenize{dashboard_website::doc}}
+
+\section{Major parts of the dashboard website}
+\label{\detokenize{dashboard_website:major-parts-of-the-dashboard-website}}
+We have organised the dashboard website into tabs with each tab containing associated APIs and functionality. Each tab is futher divided into sub tabs. We enlist the major tabs and subtabs and the functionality contained there in, to give an overview of the hierarchy of the website.
+
+
+\subsection{Hashtags}
+\label{\detokenize{dashboard_website:hashtags}}
+This tab contains the functionality to view major statistics associated with hashtags. Though as we will see, the functionality in this tab can entirely be emulated by creating a suitable DAG, but we choose to keep a separate option to get some common stats about the common entities like hastags, user mentions and urls.
+
+The Hashtags tab contains three subtabs:
+\begin{itemize}
+\item {} 
+Top 10 : Takes as inputs the start time and the end time, to output the 10 most popular hashtags in the said interval with the number of tweets containing the hashtag
+
+\item {} 
+Usage Plot : Takes as input a hashtag, start time and end time, to output the plot of how the usage(as number of tweets in which the hashtag occurs) of the hashtag has changed over the interval.
+
+\item {} 
+Sentiment Plot : Takes as input a hashtag, start time and end time, to output the plot of how the sentiment associated with the hashtag has changed over the interval.
+
+\end{itemize}
+
+
+\subsection{Mentions}
+\label{\detokenize{dashboard_website:mentions}}
+The Mentions tab contains the major statistics concerning user mentions. It has the follwoing three subtabs:
+\begin{itemize}
+\item {} 
+Top 10 : Takes as inputs the start time and the end time, to output the 10 most popular users in the said interval with the number of tweets in which the user is mentioned.
+
+\item {} 
+Usage Plot : Takes as input a user, start time and end time, to output the plot of how the mention frequency(as number of tweets in which the user is mentioned) of the user has changed over the interval.
+
+\item {} 
+Sentiment Plot : Takes as input a user, start time and end time, to output the plot of how the sentiment associated with the user has changed over the interval.
+
+\end{itemize}
+
+
+\subsection{URLs}
+\label{\detokenize{dashboard_website:urls}}
+The URLs tab contains the major statistics concerning urls. It has the follwoing three subtabs:
+\begin{itemize}
+\item {} 
+Top 10 : Takes as inputs the start time and the end time, to output the 10 most popular urls in the said interval with the number of tweets containing the url.
+
+\item {} 
+Usage Plot : Takes as input a url, start time and end time, to output the plot of how the usage(as number of tweets in which the url occurs) of the url has changed over the interval.
+
+\item {} 
+Sentiment Plot : Takes as input a url, start time and end time, to output the plot of how the sentiment associated with the url has changed over the interval.
+
+\end{itemize}
+
+
+\subsection{Alerts}
+\label{\detokenize{dashboard_website:alerts}}
+
+\subsection{DAG}
+\label{\detokenize{dashboard_website:dag}}
+We expalin about DAGs in detail in section {\hyperref[\detokenize{dag:composing-multiple-queries-dag}]{\sphinxcrossref{\DUrole{std,std-ref}{Composing multiple queries : DAG}}}}. We assume the reader has read though the section and is aware with the terminology.
+
+This tab contains the functionalities to create and view DAGs. It has the following subtabs:
+\begin{itemize}
+\item {} 
+Create Neo4j Query : Contains the APIs to create a neo4j queries. The user provides the inputs for query cration thorugh a simple form.
+
+\item {} 
+Create MongoDB Query : Contains the APIs to create mongoDB queries.
+
+\item {} 
+Create Post-Processing Function: Contains the APIs to create a post processing function. The form contains a file upload field thorugh which the file containing the python code for the function needs to be uploaded.
+
+\item {} 
+All Queries : A color coded list of all queries created by the user, along with their input and output variables names. The user can delete queries from here.
+
+\item {} 
+Create DAG : Compose the queries seen in the list of queries to create a DAG. The structure need to be specified in a file which needs to be uploaded.
+
+\item {} 
+View DAG : Contains a list of DAGs created by the user. Also contains a button through which the user can go the airflow dashboard. Apart from that, with each DAG there is a “View” button which redirects to a page containg the strucutre code and the plotly graph of the DAG.
+
+\item {} 
+Create Custom Metric : Contains a form in which the user needs to specify a DAG and a post processing function to create metric and view it either in plot/graph format.
+
+\end{itemize}
+
+
+\section{Use Cases}
+\label{\detokenize{dashboard_website:use-cases}}
+Here we walk through some major use cases of the system with snapshots to give the reader some headway on how to use the system. The system has been designed, keeping in mind that the end user may not be much proficient in computer technology and has been strucutured to be intuitive and simple. Nonetheless, the authors feel that these use case should be enough to get the user started.
+
+Also, please notice that the easlier use cases may be used in the later ones. So it’s better the reader goes through these in order.
+
+
+\subsection{Viewing top 10 popular hashtags}
+\label{\detokenize{dashboard_website:viewing-top-10-popular-hashtags}}
+Go to the Hashtags/Top 10, enter the required fields. The list of top 10 most popular hahstags will be displayed below.
+
+\sphinxincludegraphics[scale=0.25]{{hash1}.png}  \sphinxincludegraphics[scale=0.25]{{hash2}.png}
+
+Lets take a hashtag and view its statsitics in below couple of use cases.
+
+
+\subsection{Viewing usage history of  hashtag}
+\label{\detokenize{dashboard_website:viewing-usage-history-of-hashtag}}
+Let’s see how the usage of hashtag “GOT7” has changed over a period of 2 days.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{hash3}.png}
+
+
+\subsection{Viewing sentiment history of  hashtag}
+\label{\detokenize{dashboard_website:viewing-sentiment-history-of-hashtag}}
+Let’s see how the sentiment about hashtag “GOT7” has changed over the same period of 2 days.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{hash4}.png}
+
+
+\subsection{Creating a mongoDB query}
+\label{\detokenize{dashboard_website:creating-a-mongodb-query}}\begin{quote}
+
+Let’s create a mongo DB query named “most\_popular\_hashtags\_20” to give us the 20 most popular hashtags. Specify the variables and click “create” to create the query.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{mongo1}.png}
+\end{quote}
+
+Similarly other mongoDB queries can be created.
+
+
+\subsection{Creating neo4j queries}
+\label{\detokenize{dashboard_website:creating-neo4j-queries}}
+To crate a neo4j query we need to create user and tweet entities and relationships between them. Here we show how to create the neo4j to get userIds and their tweet counts who have used one of the hashtags from a list of hashtags atleast once and have tweeted with one of the popular user mentions from a list of userIds atleast once, mentioned in {\hyperref[\detokenize{dag:building-a-dag-from-queries}]{\sphinxcrossref{\DUrole{std,std-ref}{Building a DAG from queries}}}}.
+
+Create a user variable named user with no attributes. Also create a user variable named user\_mentioned having variable attribute \{um\_id\}. The curly braces specify that the attribute is variable.
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{neo1}.png}
+\end{quote}
+
+Let us now create some tweets. Create a tweet named t1 having variable hashtag \{hashtag\}. Create a tweet t2 which has a mention of user User\_mentioned, which was created above. Also, create a tweet t3 having no attributes.
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{neo2}.png}
+\end{quote}
+
+Lets now create some relation ships. Create the relationships, user tweeted tweet t1, user tweeted tweet t2 and user tweeted t3.
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{neo3}.png}
+\end{quote}
+
+So finally we have 2 user variables, 3 tweet variables and 3 relationships between the entities. This can be seen in this image where a screenshot of the tweets and relationships listing is shown.
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{neo4}.png}
+\end{quote}
+
+To create the query specify the return variables and the query name.
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{neo5}.png}
+\end{quote}
+
+
+\subsection{Create Post processing function}
+\label{\detokenize{dashboard_website:create-post-processing-function}}
+Select a file containing the python code to create a post processing function
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{pp1}.png}
+\end{quote}
+
+
+\subsection{View Queries}
+\label{\detokenize{dashboard_website:view-queries}}
+To view the queries navigate to DAG/All Queries. As you can see here, currently we have 4 queries, 2 mongo DB and 1 neo4j and 1 post processing function. Additionally, you can see the cypher code generated for the neo4j query and the code of the post processing function in this screenshot:
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{queries2}.png}
+\end{quote}
+
+
+\subsection{Create DAG}
+\label{\detokenize{dashboard_website:create-dag}}
+Now let us create the DAG to get the most active users as mentioned in {\hyperref[\detokenize{dag:building-a-dag-from-queries}]{\sphinxcrossref{\DUrole{std,std-ref}{Building a DAG from queries}}}}.
+Input the name of the DAG as “activer\_users\_dag”, optionally the description and the file containing the structure specification of the DAG.
+\begin{quote}
+
+\noindent\sphinxincludegraphics[scale=0.4]{{dag1}.png}
+\end{quote}
+
+
+\subsection{View DAGs}
+\label{\detokenize{dashboard_website:view-dags}}
+Navigate to the View DAG subtab to view all the created DAGs.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{dag2}.png}
+
+We can view a DAG by clicking “View” button against it. You can see how outputs from one query are feeding into the inputs of another query. Beneath in the screenshot you can see the structure of the DAG in code as well.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{dag3}.png}
+
+Now let us view our DAG in airflow. Here you can see the tree view and the graph view of the DAG.
+
+\sphinxincludegraphics[scale=0.25]{{dag5}.png}  \sphinxincludegraphics[scale=0.25]{{dag6}.png}
+
+Execute the DAG in airflow and navigate to XComs list to see the outputs of all the queries. A screensot of the XComs list is provided here.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{dag7}.png}
+
+
+\subsection{Create Custom metric}
+\label{\detokenize{dashboard_website:create-custom-metric}}
+To create the custom metric, we need to specify the DAG which we want to execute, choose a post processing function which outputs the x and y coordinates and create a mapping between the outputs of the DAG and inputs of the post processing function. Shown here is how to create a custom metric on the most active users DAG to plot the 10 top active user Ids with their number of tweets:
+
+\noindent\sphinxincludegraphics[scale=0.4]{{cm1}.png}
+
+When you click Fetch data the DAG will be executed to feed data into the post processing function. You can now view in a plot or table format by clicking on “PLOT GRAPH!” and “CREATE TABLE!” respectively. The table will look something like this:
+
+\noindent\sphinxincludegraphics[scale=0.4]{{cm2}.png}
+
+
+\subsection{Create Alert}
+\label{\detokenize{dashboard_website:create-alert}}
+To create an alert on the tweet stream, we need to specify the alert name, the filter, choose keys on which to generate the filter, the window length, the window slide and the count threshold. Let’s create a hashtag “viral\_hashtags” to notify when a hashtag frequency exceeds 3 in the past window of 60 seconds, the window sliding ahead by 30 seconds.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{alerts1}.png}
+
+
+\subsection{View Alerts}
+\label{\detokenize{dashboard_website:view-alerts}}
+The alerts are generated as real time tweets are put into the kafka queue.
+
+\noindent\sphinxincludegraphics[scale=0.4]{{alerts2}.png}
+
+In the end, the best way to figure out the system is to get your hands dirty with the system! To get the system on your local system, the reader should see {\hyperref[\detokenize{running:getting-the-system-running}]{\sphinxcrossref{\DUrole{std,std-ref}{Getting the system running}}}}
+
+
+\chapter{Getting the system running}
+\label{\detokenize{running:getting-the-system-running}}\label{\detokenize{running::doc}}
+
+\section{Setting up the environement}
+\label{\detokenize{running:setting-up-the-environement}}
+We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the download page itself. After installation of conda, run the following commands:
+
+\fvset{hllines={, ,}}%
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+// create a new virtual environment
+conda create \PYGZhy{}\PYGZhy{}name twitter\PYGZus{}analytics \PYG{n+nv}{python}\PYG{o}{=}\PYG{o}{=}\PYG{l+m}{3}.6
+// clone the repo
+git clone https://github.com/abhi19gupta/TwitterAnalytics.git
+// \PYG{n+nb}{cd} into the repo
+\PYG{n+nb}{cd} TwitterAnalytics
+// activate the virtual envt
+\PYG{n+nb}{source} activate twitter\PYGZus{}analytics
+// install the required modules.
+pip install \PYGZhy{}r requirements.txt
+.
+.
+// deactivate the virtual environment
+\PYG{n+nb}{source} deactivate
+\end{sphinxVerbatim}
+
+Apart from these, the user also needs to install mongoDB, neo4j databases and The Apache flink-kafka framework.
+
+
+\section{Running the dashboards}
+\label{\detokenize{running:running-the-dashboards}}
+To run the website on a local server on your machine, navigate to Dashboard Website/ and run \sphinxcode{\sphinxupquote{python manage.py runserver}}. Presently the databases will be empty, to insert the new data into the databases see the {\hyperref[\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into MongoDB}}}} and the {\hyperref[\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into Neo4j}}}} sections.
+
 
 \chapter{Indices and tables}
 \label{\detokenize{index:indices-and-tables}}\begin{itemize}
@@ -882,15 +1131,6 @@ Custom metric can be created on top of the DAG.
 \end{itemize}
 
 
-\renewcommand{\indexname}{Python Module Index}
-\begin{sphinxtheindex}
-\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
-\bigletter{g}
-\item {\sphinxstyleindexentry{generate\_queries}}\sphinxstyleindexpageref{neo4j_query_generation:\detokenize{module-generate_queries}}
-\indexspace
-\bigletter{i}
-\item {\sphinxstyleindexentry{ingest\_raw}}\sphinxstyleindexpageref{mongoDB_data_ingestion:\detokenize{module-ingest_raw}}
-\end{sphinxtheindex}
 
 \renewcommand{\indexname}{Index}
 \printindex

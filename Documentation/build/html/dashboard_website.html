@@ -94,8 +94,8 @@
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for this section</a></li>
 </ul>
 </li>
@@ -116,12 +116,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#tree-view">Tree view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#graph-view">Graph view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#gant-view">Gant view</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
@@ -136,7 +131,21 @@
 <li class="toctree-l3"><a class="reference internal" href="#dag">DAG</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-top-10-popular-hashtags">Viewing top 10 popular hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-usage-history-of-hashtag">Viewing usage history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-sentiment-history-of-hashtag">Viewing sentiment history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-mongodb-query">Creating a mongoDB query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-neo4j-queries">Creating neo4j queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-post-processing-function">Create Post processing function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-queries">View Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-dag">Create DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-dags">View DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-custom-metric">Create Custom metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-alert">Create Alert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-alerts">View Alerts</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a></li>
@@ -238,6 +247,105 @@
 <h2>Use Cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h2>
 <p>Here we walk through some major use cases of the system with snapshots to give the reader some headway on how to use the system. The system has been designed, keeping in mind that the end user may not be much proficient in computer technology and has been strucutured to be intuitive and simple. Nonetheless, the authors feel that these use case should be enough to get the user started.</p>
 <p>Also, please notice that the easlier use cases may be used in the later ones. So it’s better the reader goes through these in order.</p>
+<div class="section" id="viewing-top-10-popular-hashtags">
+<h3>Viewing top 10 popular hashtags<a class="headerlink" href="#viewing-top-10-popular-hashtags" title="Permalink to this headline">¶</a></h3>
+<p>Go to the Hashtags/Top 10, enter the required fields. The list of top 10 most popular hahstags will be displayed below.</p>
+<p><a class="reference internal" href="_images/hash1.png"><img alt="pic1" src="_images/hash1.png" style="width: 341.5px; height: 192.0px;" /></a>  <a class="reference internal" href="_images/hash2.png"><img alt="pic2" src="_images/hash2.png" style="width: 341.5px; height: 192.0px;" /></a></p>
+<p>Lets take a hashtag and view its statsitics in below couple of use cases.</p>
+</div>
+<div class="section" id="viewing-usage-history-of-hashtag">
+<h3>Viewing usage history of  hashtag<a class="headerlink" href="#viewing-usage-history-of-hashtag" title="Permalink to this headline">¶</a></h3>
+<p>Let’s see how the usage of hashtag “GOT7” has changed over a period of 2 days.</p>
+<a class="reference internal image-reference" href="_images/hash3.png"><img alt="_images/hash3.png" src="_images/hash3.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div>
+<div class="section" id="viewing-sentiment-history-of-hashtag">
+<h3>Viewing sentiment history of  hashtag<a class="headerlink" href="#viewing-sentiment-history-of-hashtag" title="Permalink to this headline">¶</a></h3>
+<p>Let’s see how the sentiment about hashtag “GOT7” has changed over the same period of 2 days.</p>
+<a class="reference internal image-reference" href="_images/hash4.png"><img alt="_images/hash4.png" src="_images/hash4.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div>
+<div class="section" id="creating-a-mongodb-query">
+<h3>Creating a mongoDB query<a class="headerlink" href="#creating-a-mongodb-query" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Let’s create a mongo DB query named “most_popular_hashtags_20” to give us the 20 most popular hashtags. Specify the variables and click “create” to create the query.</p>
+<a class="reference internal image-reference" href="_images/mongo1.png"><img alt="_images/mongo1.png" src="_images/mongo1.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+<p>Similarly other mongoDB queries can be created.</p>
+</div>
+<div class="section" id="creating-neo4j-queries">
+<h3>Creating neo4j queries<a class="headerlink" href="#creating-neo4j-queries" title="Permalink to this headline">¶</a></h3>
+<p>To crate a neo4j query we need to create user and tweet entities and relationships between them. Here we show how to create the neo4j to get userIds and their tweet counts who have used one of the hashtags from a list of hashtags atleast once and have tweeted with one of the popular user mentions from a list of userIds atleast once, mentioned in <a class="reference internal" href="dag.html#building-a-dag-from-queries"><span class="std std-ref">Building a DAG from queries</span></a>.</p>
+<p>Create a user variable named user with no attributes. Also create a user variable named user_mentioned having variable attribute {um_id}. The curly braces specify that the attribute is variable.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/neo1.png"><img alt="_images/neo1.png" src="_images/neo1.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+<p>Let us now create some tweets. Create a tweet named t1 having variable hashtag {hashtag}. Create a tweet t2 which has a mention of user User_mentioned, which was created above. Also, create a tweet t3 having no attributes.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/neo2.png"><img alt="_images/neo2.png" src="_images/neo2.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+<p>Lets now create some relation ships. Create the relationships, user tweeted tweet t1, user tweeted tweet t2 and user tweeted t3.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/neo3.png"><img alt="_images/neo3.png" src="_images/neo3.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+<p>So finally we have 2 user variables, 3 tweet variables and 3 relationships between the entities. This can be seen in this image where a screenshot of the tweets and relationships listing is shown.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/neo4.png"><img alt="_images/neo4.png" src="_images/neo4.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+<p>To create the query specify the return variables and the query name.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/neo5.png"><img alt="_images/neo5.png" src="_images/neo5.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+</div>
+<div class="section" id="create-post-processing-function">
+<h3>Create Post processing function<a class="headerlink" href="#create-post-processing-function" title="Permalink to this headline">¶</a></h3>
+<p>Select a file containing the python code to create a post processing function</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/pp1.png"><img alt="_images/pp1.png" src="_images/pp1.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+</div>
+<div class="section" id="view-queries">
+<h3>View Queries<a class="headerlink" href="#view-queries" title="Permalink to this headline">¶</a></h3>
+<p>To view the queries navigate to DAG/All Queries. As you can see here, currently we have 4 queries, 2 mongo DB and 1 neo4j and 1 post processing function. Additionally, you can see the cypher code generated for the neo4j query and the code of the post processing function in this screenshot:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/queries2.png"><img alt="_images/queries2.png" src="_images/queries2.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+</div>
+<div class="section" id="create-dag">
+<h3>Create DAG<a class="headerlink" href="#create-dag" title="Permalink to this headline">¶</a></h3>
+<p>Now let us create the DAG to get the most active users as mentioned in <a class="reference internal" href="dag.html#building-a-dag-from-queries"><span class="std std-ref">Building a DAG from queries</span></a>.
+Input the name of the DAG as “activer_users_dag”, optionally the description and the file containing the structure specification of the DAG.</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/dag1.png"><img alt="_images/dag1.png" src="_images/dag1.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div></blockquote>
+</div>
+<div class="section" id="view-dags">
+<h3>View DAGs<a class="headerlink" href="#view-dags" title="Permalink to this headline">¶</a></h3>
+<p>Navigate to the View DAG subtab to view all the created DAGs.</p>
+<a class="reference internal image-reference" href="_images/dag2.png"><img alt="_images/dag2.png" src="_images/dag2.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+<p>We can view a DAG by clicking “View” button against it. You can see how outputs from one query are feeding into the inputs of another query. Beneath in the screenshot you can see the structure of the DAG in code as well.</p>
+<a class="reference internal image-reference" href="_images/dag3.png"><img alt="_images/dag3.png" src="_images/dag3.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+<p>Now let us view our DAG in airflow. Here you can see the tree view and the graph view of the DAG.</p>
+<p><a class="reference internal" href="_images/dag5.png"><img alt="pic3" src="_images/dag5.png" style="width: 341.5px; height: 192.0px;" /></a>  <a class="reference internal" href="_images/dag6.png"><img alt="pic4" src="_images/dag6.png" style="width: 341.5px; height: 192.0px;" /></a></p>
+<p>Execute the DAG in airflow and navigate to XComs list to see the outputs of all the queries. A screensot of the XComs list is provided here.</p>
+<a class="reference internal image-reference" href="_images/dag7.png"><img alt="_images/dag7.png" src="_images/dag7.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div>
+<div class="section" id="create-custom-metric">
+<h3>Create Custom metric<a class="headerlink" href="#create-custom-metric" title="Permalink to this headline">¶</a></h3>
+<p>To create the custom metric, we need to specify the DAG which we want to execute, choose a post processing function which outputs the x and y coordinates and create a mapping between the outputs of the DAG and inputs of the post processing function. Shown here is how to create a custom metric on the most active users DAG to plot the 10 top active user Ids with their number of tweets:</p>
+<a class="reference internal image-reference" href="_images/cm1.png"><img alt="_images/cm1.png" src="_images/cm1.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+<p>When you click Fetch data the DAG will be executed to feed data into the post processing function. You can now view in a plot or table format by clicking on “PLOT GRAPH!” and “CREATE TABLE!” respectively. The table will look something like this:</p>
+<a class="reference internal image-reference" href="_images/cm2.png"><img alt="_images/cm2.png" src="_images/cm2.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div>
+<div class="section" id="create-alert">
+<h3>Create Alert<a class="headerlink" href="#create-alert" title="Permalink to this headline">¶</a></h3>
+<p>To create an alert on the tweet stream, we need to specify the alert name, the filter, choose keys on which to generate the filter, the window length, the window slide and the count threshold. Let’s create a hashtag “viral_hashtags” to notify when a hashtag frequency exceeds 3 in the past window of 60 seconds, the window sliding ahead by 30 seconds.</p>
+<a class="reference internal image-reference" href="_images/alerts1.png"><img alt="_images/alerts1.png" src="_images/alerts1.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+</div>
+<div class="section" id="view-alerts">
+<h3>View Alerts<a class="headerlink" href="#view-alerts" title="Permalink to this headline">¶</a></h3>
+<p>The alerts are generated as real time tweets are put into the kafka queue.</p>
+<a class="reference internal image-reference" href="_images/alerts2.png"><img alt="_images/alerts2.png" src="_images/alerts2.png" style="width: 546.4px; height: 307.20000000000005px;" /></a>
+<p>In the end, the best way to figure out the system is to get your hands dirty with the system! To get the system on your local system, the reader should see <a class="reference internal" href="running.html#getting-the-system-running"><span class="std std-ref">Getting the system running</span></a></p>
+</div>
 </div>
 </div>
 

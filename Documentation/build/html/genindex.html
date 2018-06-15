@@ -86,22 +86,19 @@
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for this section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation">Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
@@ -130,10 +127,28 @@
 <li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#dag">DAG</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-top-10-popular-hashtags">Viewing top 10 popular hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-usage-history-of-hashtag">Viewing usage history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-sentiment-history-of-hashtag">Viewing sentiment history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-a-mongodb-query">Creating a mongoDB query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-neo4j-queries">Creating neo4j queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-post-processing-function">Create Post processing function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-queries">View Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-dag">Create DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-dags">View DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-custom-metric">Create Custom metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-alert">Create Alert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-alerts">View Alerts</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environement">Setting up the environement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboards">Running the dashboards</a></li>
+</ul>
+</li>
 </ul>
 
           
@@ -173,18 +188,7 @@
  <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
- | <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#I"><strong>I</strong></a>
- | <a href="#J"><strong>J</strong></a>
  | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
- | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -192,15 +196,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="example.html#chemistry.Molecule.add_atom">add_atom() (chemistry.Molecule method)</a>
 </li>
-      <li><a href="example.html#chemistry.Molecule.add_bond">add_bond() (chemistry.Molecule method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.aggregate">aggregate() (ingest_raw.Ingest method)</a>
+      <li><a href="example.html#chemistry.Molecule.add_bond">add_bond() (chemistry.Molecule method)</a>
 </li>
       <li><a href="example.html#chemistry.Atom">Atom (class in chemistry)</a>
-</li>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.authkey">authkey (ingest_raw.Timer attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -220,79 +220,7 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.calculate_sentiment">calculate_sentiment() (in module ingest_raw)</a>
-</li>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.cancel">cancel() (ingest_raw.Timer method)</a>
-</li>
       <li><a href="example.html#module-chemistry">chemistry (module)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery.conditional_create">conditional_create() (generate_queries.CreateQuery method)</a>
-</li>
-      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery.create_query">create_query() (generate_queries.CreateQuery method)</a>
-</li>
-      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery">CreateQuery (class in generate_queries)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="D">D</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.daemon">daemon (ingest_raw.Timer attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.exit">exit() (ingest_raw.Ingest method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.exitcode">exitcode (ingest_raw.Timer attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery.generate_node">generate_node() (generate_queries.CreateQuery method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="neo4j_query_generation.html#module-generate_queries">generate_queries (module)</a>
-</li>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.getDateFromTimestamp">getDateFromTimestamp() (in module ingest_raw)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="I">I</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.ident">ident (ingest_raw.Timer attribute)</a>
-</li>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest">Ingest (class in ingest_raw)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#module-ingest_raw">ingest_raw (module)</a>
-</li>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.insert_tweet">insert_tweet() (ingest_raw.Ingest method)</a>
-</li>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.is_alive">is_alive() (ingest_raw.Timer method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="J">J</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.join">join() (ingest_raw.Timer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -301,72 +229,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="example.html#chemistry.Molecule">Molecule (class in chemistry)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.name">name (ingest_raw.Timer attribute)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.pid">pid (ingest_raw.Timer attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.populate">populate() (ingest_raw.Ingest method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.read_tweets">read_tweets() (in module ingest_raw)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.run">run() (ingest_raw.Timer method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.sentinel">sentinel (ingest_raw.Timer attribute)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.start">start() (ingest_raw.Timer method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.terminate">terminate() (ingest_raw.Timer method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.threaded">threaded() (in module ingest_raw)</a>
-</li>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer">Timer (class in ingest_raw)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.worker">worker() (ingest_raw.Ingest method)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -79,7 +79,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
@@ -88,7 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for this section</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -108,18 +114,39 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#basic-terminology">Basic terminology</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#tree-view">Tree view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#graph-view">Graph view</a></li>
-<li class="toctree-l3"><a class="reference internal" href="dag.html#gant-view">Gant view</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#hashtags">Hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#mentions">Mentions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#urls">URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#alerts">Alerts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#dag">DAG</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-top-10-popular-hashtags">Viewing top 10 popular hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-usage-history-of-hashtag">Viewing usage history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#viewing-sentiment-history-of-hashtag">Viewing sentiment history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-a-mongodb-query">Creating a mongoDB query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#creating-neo4j-queries">Creating neo4j queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-post-processing-function">Create Post processing function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-queries">View Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-dag">Create DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-dags">View DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-custom-metric">Create Custom metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#create-alert">Create Alert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#view-alerts">View Alerts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a></li>
 </ul>
 
           
