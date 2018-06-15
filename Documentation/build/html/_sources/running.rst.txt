@@ -1,9 +1,9 @@
 Getting the system running
 ============================
 
-Setting up the environement
+Setting up the environment
 -----------------------------
-We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the download page itself. After installation of conda, run the following commands:
+We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the `download page <https://conda.io/docs/user-guide/install/download.html>`_ itself. After installation of conda, run the following commands:
 
 .. code-block:: bash
 
@@ -22,8 +22,8 @@ We recommend getting conda(or miniconda if you are low on disk space). Installin
     // deactivate the virtual environment
     source deactivate
 
-Apart from these, the user also needs to install mongoDB, neo4j databases and The Apache flink-kafka framework.
+Apart from these, the user also needs to install mongoDB, neo4j databases and The Apache flink-kafka framework. Again instructions on how to install each specific to your system can be seen on their corresponsing documentations.
 
-Running the dashboards
+Running the dashboard
 ------------------------
 To run the website on a local server on your machine, navigate to Dashboard Website/ and run ``python manage.py runserver``. Presently the databases will be empty, to insert the new data into the databases see the :ref:`Ingesting data into MongoDB` and the :ref:`Ingesting data into Neo4j` sections.

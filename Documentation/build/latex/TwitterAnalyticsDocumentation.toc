@@ -1,20 +1,25 @@
 \select@language {english}
 \contentsline {chapter}{\numberline {1}Introduction to twitter analytics system}{3}{chapter.1}
 \contentsline {section}{\numberline {1.1}Major parts of the system}{4}{section.1.1}
-\contentsline {chapter}{\numberline {2}Read data from twitter streaming API}{5}{chapter.2}
+\contentsline {chapter}{\numberline {2}Read data from Twitter API}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}User Timeline API}{5}{section.2.1}
+\contentsline {section}{\numberline {2.2}Stream Sample API}{5}{section.2.2}
 \contentsline {chapter}{\numberline {3}Ingesting data into Neo4j}{7}{chapter.3}
 \contentsline {section}{\numberline {3.1}Data stored in neo4j}{7}{section.3.1}
 \contentsline {section}{\numberline {3.2}User network}{7}{section.3.2}
 \contentsline {section}{\numberline {3.3}Tweet network}{8}{section.3.3}
 \contentsline {section}{\numberline {3.4}Indexing network}{9}{section.3.4}
-\contentsline {section}{\numberline {3.5}Ingesting the data into database}{10}{section.3.5}
-\contentsline {section}{\numberline {3.6}Ingestion Rates}{10}{section.3.6}
+\contentsline {section}{\numberline {3.5}Ingesting the data into mongoDB : Logic}{9}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}Indexing}{9}{subsection.3.5.1}
+\contentsline {section}{\numberline {3.6}Ingesting the data into mongoDB : Practical side}{10}{section.3.6}
+\contentsline {section}{\numberline {3.7}Neo4j Ingestion Rates}{10}{section.3.7}
 \contentsline {chapter}{\numberline {4}Ingesting data into MongoDB}{11}{chapter.4}
 \contentsline {section}{\numberline {4.1}Why store in MongoDB}{11}{section.4.1}
 \contentsline {section}{\numberline {4.2}Data Format in mongoDB}{11}{section.4.2}
 \contentsline {section}{\numberline {4.3}mongoDB v/s neo4j}{12}{section.4.3}
-\contentsline {section}{\numberline {4.4}Ingesting the data into mongoDB}{12}{section.4.4}
-\contentsline {section}{\numberline {4.5}MongoDB Ingestion Rates}{13}{section.4.5}
+\contentsline {section}{\numberline {4.4}Ingesting the data into mongoDB : Logic}{12}{section.4.4}
+\contentsline {section}{\numberline {4.5}Ingesting the data into mongoDB : Practical side}{13}{section.4.5}
+\contentsline {section}{\numberline {4.6}MongoDB Ingestion Rates}{14}{section.4.6}
 \contentsline {chapter}{\numberline {5}Neo4j: API to generate cypher queries}{15}{chapter.5}
 \contentsline {section}{\numberline {5.1}Template of a general query}{15}{section.5.1}
 \contentsline {section}{\numberline {5.2}Creating a custom query through dashboard API : Behind the scenes}{16}{section.5.2}
@@ -29,29 +34,33 @@
 \contentsline {section}{\numberline {8.3}Building a DAG from queries}{22}{section.8.3}
 \contentsline {section}{\numberline {8.4}DAG in airflow}{24}{section.8.4}
 \contentsline {section}{\numberline {8.5}Creating custom metric}{25}{section.8.5}
-\contentsline {chapter}{\numberline {9}Generating alerts using flink and kafka}{27}{chapter.9}
+\contentsline {chapter}{\numberline {9}Generating alerts using Apache Flink and Kafka}{27}{chapter.9}
 \contentsline {chapter}{\numberline {10}Benchmarking the query answering}{29}{chapter.10}
-\contentsline {chapter}{\numberline {11}Dashboard Website}{31}{chapter.11}
-\contentsline {section}{\numberline {11.1}Major parts of the dashboard website}{31}{section.11.1}
-\contentsline {subsection}{\numberline {11.1.1}Hashtags}{31}{subsection.11.1.1}
-\contentsline {subsection}{\numberline {11.1.2}Mentions}{31}{subsection.11.1.2}
-\contentsline {subsection}{\numberline {11.1.3}URLs}{31}{subsection.11.1.3}
-\contentsline {subsection}{\numberline {11.1.4}Alerts}{32}{subsection.11.1.4}
-\contentsline {subsection}{\numberline {11.1.5}DAG}{32}{subsection.11.1.5}
-\contentsline {section}{\numberline {11.2}Use Cases}{32}{section.11.2}
-\contentsline {subsection}{\numberline {11.2.1}Viewing top 10 popular hashtags}{32}{subsection.11.2.1}
-\contentsline {subsection}{\numberline {11.2.2}Viewing usage history of hashtag}{33}{subsection.11.2.2}
-\contentsline {subsection}{\numberline {11.2.3}Viewing sentiment history of hashtag}{34}{subsection.11.2.3}
-\contentsline {subsection}{\numberline {11.2.4}Creating a mongoDB query}{35}{subsection.11.2.4}
-\contentsline {subsection}{\numberline {11.2.5}Creating neo4j queries}{35}{subsection.11.2.5}
-\contentsline {subsection}{\numberline {11.2.6}Create Post processing function}{38}{subsection.11.2.6}
-\contentsline {subsection}{\numberline {11.2.7}View Queries}{38}{subsection.11.2.7}
-\contentsline {subsection}{\numberline {11.2.8}Create DAG}{39}{subsection.11.2.8}
-\contentsline {subsection}{\numberline {11.2.9}View DAGs}{39}{subsection.11.2.9}
-\contentsline {subsection}{\numberline {11.2.10}Create Custom metric}{42}{subsection.11.2.10}
-\contentsline {subsection}{\numberline {11.2.11}Create Alert}{43}{subsection.11.2.11}
-\contentsline {subsection}{\numberline {11.2.12}View Alerts}{44}{subsection.11.2.12}
-\contentsline {chapter}{\numberline {12}Getting the system running}{45}{chapter.12}
-\contentsline {section}{\numberline {12.1}Setting up the environement}{45}{section.12.1}
-\contentsline {section}{\numberline {12.2}Running the dashboards}{45}{section.12.2}
-\contentsline {chapter}{\numberline {13}Indices and tables}{47}{chapter.13}
+\contentsline {section}{\numberline {10.1}Neo4j queries}{29}{section.10.1}
+\contentsline {subsection}{\numberline {10.1.1}Simple Queries}{29}{subsection.10.1.1}
+\contentsline {subsection}{\numberline {10.1.2}Complex Queries}{30}{subsection.10.1.2}
+\contentsline {section}{\numberline {10.2}MongoDB queries}{32}{section.10.2}
+\contentsline {chapter}{\numberline {11}Dashboard Website}{33}{chapter.11}
+\contentsline {section}{\numberline {11.1}Major parts of the dashboard website}{33}{section.11.1}
+\contentsline {subsection}{\numberline {11.1.1}Hashtags}{33}{subsection.11.1.1}
+\contentsline {subsection}{\numberline {11.1.2}Mentions}{33}{subsection.11.1.2}
+\contentsline {subsection}{\numberline {11.1.3}URLs}{33}{subsection.11.1.3}
+\contentsline {subsection}{\numberline {11.1.4}Alerts}{34}{subsection.11.1.4}
+\contentsline {subsection}{\numberline {11.1.5}DAG}{34}{subsection.11.1.5}
+\contentsline {section}{\numberline {11.2}Use Cases}{34}{section.11.2}
+\contentsline {subsection}{\numberline {11.2.1}Viewing top 10 popular hashtags}{34}{subsection.11.2.1}
+\contentsline {subsection}{\numberline {11.2.2}Viewing usage history of hashtag}{35}{subsection.11.2.2}
+\contentsline {subsection}{\numberline {11.2.3}Viewing sentiment history of hashtag}{36}{subsection.11.2.3}
+\contentsline {subsection}{\numberline {11.2.4}Creating a mongoDB query}{37}{subsection.11.2.4}
+\contentsline {subsection}{\numberline {11.2.5}Creating neo4j queries}{37}{subsection.11.2.5}
+\contentsline {subsection}{\numberline {11.2.6}Create Post processing function}{40}{subsection.11.2.6}
+\contentsline {subsection}{\numberline {11.2.7}View Queries}{40}{subsection.11.2.7}
+\contentsline {subsection}{\numberline {11.2.8}Create DAG}{41}{subsection.11.2.8}
+\contentsline {subsection}{\numberline {11.2.9}View DAGs}{41}{subsection.11.2.9}
+\contentsline {subsection}{\numberline {11.2.10}Create Custom metric}{44}{subsection.11.2.10}
+\contentsline {subsection}{\numberline {11.2.11}Create Alert}{45}{subsection.11.2.11}
+\contentsline {subsection}{\numberline {11.2.12}View Alerts}{46}{subsection.11.2.12}
+\contentsline {chapter}{\numberline {12}Getting the system running}{47}{chapter.12}
+\contentsline {section}{\numberline {12.1}Setting up the environment}{47}{section.12.1}
+\contentsline {section}{\numberline {12.2}Running the dashboard}{47}{section.12.2}
+\contentsline {chapter}{\numberline {13}Indices and tables}{49}{chapter.13}

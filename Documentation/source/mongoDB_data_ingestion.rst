@@ -44,8 +44,8 @@ So, even if we decide to store some pseudo-structural information, like the user
 
 But, as the size of the system grows, it would surely be benefitial to store much more condensed data in mongoDB and use it to answer more complex queries.
 
-Ingesting the data into mongoDB
-------------------------------------
+Ingesting the data into mongoDB : Logic
+-----------------------------------------
 A simple approach would be to ingest a tweet into the database as when it comes in real time. But clearly(and as mentioned in mongoDB documentation)
 this is suboptimal, as we are connecting to the on-disk database frequently.[scheme 1]
 
@@ -73,6 +73,11 @@ So in this way the the process of writing to database in connector process is ov
 
 To answer queries like the most popular hastags in total, or most popular hashtags in a large interval. It would be benefitial to have aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector process to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don't currently use this mechanism.
 
+Ingesting the data into mongoDB : Practical side
+-------------------------------------------------
+On practical side, to ingest data into mongoDB, navigate to the Ingestion/MonogDB and make changes to the file ingest_raw.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can't possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file `python ingest_raw.py` to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate. 
+
+Please observe that the process of ingesting into neo4j and mongoDB are similar, with just variations in which code to run.
 
 MongoDB Ingestion Rates
 -------------------------
@@ -84,7 +89,7 @@ As expected, the ingestion rate into mongoDB whilw overlapping writing into data
 
 Clearly the ingestion rate depends on the time after which the interrupt to start write the collected tweets to database is generate(called T above).
 
-Finally we get an ingestion rate of around 7k-12k tweets/second on average, depending on T.
+Finally we get an ingestion rate of around 7k-12k(around x10 of that of neo4j) tweets/second on average, depending on T.
 
 
 .. Code Documentation for this section

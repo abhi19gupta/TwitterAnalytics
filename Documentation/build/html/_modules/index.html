@@ -77,21 +77,30 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../twitter_stream.html">Read data from twitter streaming API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter_stream.html">Read data from Twitter API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#user-timeline-api">User Timeline API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#user-network">User network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing">Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
@@ -115,8 +124,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../flink.html">Generating alerts using flink and kafka</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking the query answering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flink.html">Generating alerts using Apache Flink and Kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking the query answering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#simple-queries">Simple Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#complex-queries">Complex Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#hashtags">Hashtags</a></li>
@@ -144,8 +161,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../running.html">Getting the system running</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../running.html#setting-up-the-environement">Setting up the environement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../running.html#running-the-dashboards">Running the dashboards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#setting-up-the-environment">Setting up the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#running-the-dashboard">Running the dashboard</a></li>
 </ul>
 </li>
 </ul>
@@ -182,9 +199,6 @@
             
   <h1>All modules for which code is available</h1>
 <ul><li><a href="chemistry.html">chemistry</a></li>
-<li><a href="generate_queries.html">generate_queries</a></li>
-<li><a href="ingest_raw.html">ingest_raw</a></li>
-<li><a href="multiprocessing/process.html">multiprocessing.process</a></li>
 </ul>
 
            </div><!-- /.toBeIndexed -->

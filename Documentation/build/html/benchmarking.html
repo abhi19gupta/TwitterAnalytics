@@ -33,7 +33,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
         <link rel="next" title="Dashboard Website" href="dashboard_website.html"/>
-        <link rel="prev" title="Generating alerts using flink and kafka" href="flink.html"/> 
+        <link rel="prev" title="Generating alerts using Apache Flink and Kafka" href="flink.html"/> 
   <script src="_static/js/modernizr.min.js"></script>
 </head>
 
@@ -79,7 +79,11 @@
 <li class="toctree-l2"><a class="reference internal" href="introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from twitter streaming API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from Twitter API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api">User Timeline API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
@@ -87,22 +91,19 @@
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for this section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation">Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
@@ -120,8 +121,16 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using flink and kafka</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarking the query answering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarking the query answering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#neo4j-queries">Neo4j queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simple-queries">Simple Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#complex-queries">Complex Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mongodb-queries">MongoDB queries</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="dashboard_website.html#hashtags">Hashtags</a></li>
@@ -148,7 +157,11 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environement">Setting up the environement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboards">Running the dashboards</a></li>
+</ul>
+</li>
 </ul>
 
           
@@ -186,6 +199,116 @@
             
   <div class="section" id="benchmarking-the-query-answering">
 <h1>Benchmarking the query answering<a class="headerlink" href="#benchmarking-the-query-answering" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="neo4j-queries">
+<h2>Neo4j queries<a class="headerlink" href="#neo4j-queries" title="Permalink to this headline">¶</a></h2>
+<p>We divide the number queries to be answered into two types. Simple  neo4j queries and complex neo4j queries. We have these queries and a set list of hashtags and userIds present in the system. We generate a list of queries to be answered by randomly picking attribute to create the query. Thus creating a single query consists of these two steps:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Pick a templated cypher query</li>
+<li>Randomly pick the values of inputs to the query from a static list to create the query.</li>
+</ul>
+</div></blockquote>
+<p>Similarly, we create a list of queries. The templated cypher queries are put into the simple or complex basket by seeing the time taken to answer a single query.</p>
+<p>Having obtained the queries, we spawn multiple threads each of which opens a connection to the neo4j database in form of a session. Pops a query from the queue and delegates it to be answered by the database. To observe the optimal number of connections to be opened to the database, we plot the query answering rate verses the number of parallel connections.</p>
+<div class="section" id="simple-queries">
+<h3>Simple Queries<a class="headerlink" href="#simple-queries" title="Permalink to this headline">¶</a></h3>
+<p>The simple queries considered are these:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Return count of distinct users who have used a hashtag</li>
+<li>Return count of ditinct users who follow a certain user</li>
+<li>Return the number of times a user was followed in a given interval</li>
+<li>Find the number of current followers of users who have used certain</li>
+<li>Find the count of users who tweeted in a given interval</li>
+</ul>
+</div></blockquote>
+<p>The cypher code of these queries can also be seen here.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Return count of distinct users who have used a hashtag</span>
+<span class="n">q1</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;match (u:USER)-[:TWEETED]-&gt;(t:TWEET)-[:HAS_HASHTAG]-&gt;(:HASHTAG{text:&quot;{{h}}&quot;})</span>
+<span class="s2">with distinct u as u1 return count(u1)&quot;&quot;&quot;</span>
+
+<span class="c1"># Return count of ditinct users who follow a certain user</span>
+<span class="n">q2</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;match (x:USER)-[:FOLLOWS]-&gt;(:USER {id:{{u1}}}), (x)-[:FOLLOWS]-&gt;(:USER {id:{{u2}}})</span>
+<span class="s2">with distinct x as x1 return count(x1)&quot;&quot;&quot;</span>
+
+<span class="c1"># Return the number of times a user was followed in a given interval</span>
+<span class="n">q3</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">match (fe:FOLLOW_EVENT)-[:FE_FOLLOWED]-&gt;(u:USER {id:{{u}}})</span>
+<span class="s2">where fe.timestamp &gt; {{t1}} and fe.timestamp &lt; {{t2}}</span>
+<span class="s2">return count(fe)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Find the number of current followers of users who have used certain hahstag</span>
+<span class="n">q4</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">match (x:USER {id:{{u}}})-[:TWEETED]-&gt;(:TWEET)-[:HAS_HASHTAG]-&gt;(h:HASHTAG), (f:USER)-[:FOLLOWS]-&gt;(x), (f)-[:TWEETED]-&gt;(:TWEET)-[:HAS_HASHTAG]-&gt;(h)</span>
+<span class="s2">with distinct f as f1 return count(f1)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Find the count of users who tweeted in a given interval</span>
+<span class="n">q5</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">match (te:TWEET_EVENT)-[:TE_TWEET]-&gt;(:TWEET)-[:RETWEET_OF]-&gt;(t:TWEET), (te)-[:TE_USER]-&gt;(:USER {id:{{u}}}), (x:USER)-[:TWEETED]-&gt;(t)</span>
+<span class="s2">where te.timestamp &lt; {{t1}} and te.timestamp &gt; {{t2}}</span>
+<span class="s2">with distinct x as x1 return count(x1)</span>
+</pre></div>
+</div>
+<p>Using these templated queries we generate the list of simple queries to be fired as described above and observe the query ansering rate with number of parallel sessions. This graph is obtained:</p>
+<img alt="_images/simple.png" src="_images/simple.png" />
+<p>As we obtain the best query rate is obtained on opening 4 parallel sessions of about 1100 queries/second in answering of simple queries.</p>
+</div>
+<div class="section" id="complex-queries">
+<h3>Complex Queries<a class="headerlink" href="#complex-queries" title="Permalink to this headline">¶</a></h3>
+<p>For complex queries we try to consider those queries which require more than one hop in the network. The complex queries considered are these:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Find common followers of two users</li>
+<li>Return the users which follow a user u and tweeted t(which mentions same u) b/w t1 and t2</li>
+<li>Find users which have tweeted tweet t1(retweet of another tweet t containing hashtag hash AND such that t1 itself contains the same hashtag hash) b/w time1 and time2 and follows u</li>
+<li>Find users which follow user with id u1 and follow user u which tweeted b/w t1 and t2 containing hashtag hash</li>
+</ul>
+</div></blockquote>
+<p>The cypher code of these queries is as follows.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Find common followers of two users</span>
+<span class="n">q6</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">MATCH (u1 :USER {id:{{id1}}}),(u2 :USER {id:{{id2}}}), (user :USER)</span>
+<span class="s2">WHERE (u1) &lt;-[:FOLLOWS]- (user) AND (user) -[:FOLLOWS]-&gt; (u2)</span>
+<span class="s2">RETURN count(user)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Find the users which follow a user u and tweeted t(which mentions same u) b/w t1 and t2</span>
+<span class="n">q7</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">MATCH (run:RUN) -[:HAS_FRAME]-&gt; (frame1:FRAME)</span>
+<span class="s2">WHERE  frame1.end_t &gt;= {{t1}} AND frame1.start_t &lt;= {{t2}}</span>
+<span class="s2">MATCH (frame1) -[:HAS_TWEET]-&gt; (event1 :TWEET_EVENT), (event1) -[:TE_USER]-&gt; (x :USER {}), (event1) -[:TE_TWEET]-&gt; (t :TWEET {}), (x :USER {}) -[:FOLLOWS]-&gt; (u :USER {id:{{u}}}), (t) -[:HAS_MENTION]-&gt; (u :USER {id:{{u}}})</span>
+<span class="s2">RETURN  COUNT(x)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Find users which have tweeted tweet t1(retweet of another tweet t containing hashtag hash AND such that t1 itself contains the same hashtag hash) b/w time1 and time2 and follows u</span>
+<span class="n">q8</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">MATCH (run:RUN) -[:HAS_FRAME]-&gt; (frame1:FRAME)</span>
+<span class="s2">WHERE  frame1.end_t &gt;= {{time1}} AND frame1.start_t &lt;= {{time2}}</span>
+<span class="s2">MATCH (frame1) -[:HAS_TWEET]-&gt; (event1 :TWEET_EVENT), (event1) -[:TE_USER]-&gt; (x :USER {}), (event1) -[:TE_TWEET]-&gt; (t1 :TWEET {}), (x :USER {}) -[:FOLLOWS]-&gt; (u :USER {id:{{u}}}), (t :TWEET {}) -[:HAS_HASHTAG]-&gt; (:HASHTAG {text:&#39;{{hash}}&#39;}), (t1 :TWEET {}) -[:HAS_HASHTAG]-&gt; (:HASHTAG {text:&#39;{{hash}}&#39;}), (t1) -[:RETWEET_OF]-&gt; (t)</span>
+<span class="s2">RETURN  COUNT(x)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># Find users which follow user with id u1 and follow user u which tweeted b/w t1 and t2 containing hashtag hash</span>
+<span class="n">q9</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">MATCH (run:RUN) -[:HAS_FRAME]-&gt; (frame1:FRAME)</span>
+<span class="s2">WHERE  frame1.end_t &gt;= {{t1}} AND frame1.start_t &lt;= {{t2}}</span>
+<span class="s2">MATCH (frame1) -[:HAS_TWEET]-&gt; (event1 :TWEET_EVENT), (event1) -[:TE_USER]-&gt; (u :USER {}), (event1) -[:TE_TWEET]-&gt; (t :TWEET {}), (x :USER {}) -[:FOLLOWS]-&gt; (u1 :USER {id:{{u1}}}), (x) -[:FOLLOWS]-&gt; (u), (t :TWEET {}) -[:HAS_HASHTAG]-&gt; (:HASHTAG {text:&#39;{{hash}}&#39;})</span>
+<span class="s2">RETURN  COUNT(x)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>Using these templated queries we generate the list of complex queries to be fired as described above and observe the query answering rate with number of parallel sessions. The following graph is obtained:</p>
+<img alt="_images/complex.png" src="_images/complex.png" />
+<p>As we obtain the best query rate is obtained on opening 10 parallel sessions of about 65 queries/second in answering of complex queries.</p>
+<p>Further observe that the peak performance in query answering is obtained at lesser number of parallel connections as compared to the compex case. This is because there is overhead in maintaining parallel connections in neo4j, which involves maintaining the sesions and delegating the queries to the database. This overhead is much more prominent in case when the queries itself take much less time in answering them as compared to the complex case where the overhead gets ammortised better.</p>
+</div>
+</div>
+<div class="section" id="mongodb-queries">
+<h2>MongoDB queries<a class="headerlink" href="#mongodb-queries" title="Permalink to this headline">¶</a></h2>
+<p>MongoDB queries are generally answered very fast in comparison to the neo4j queries, which is owing to the intended schemas of the two databases. Thus, no further observations were made in mongoDB query answering apart from observing that all the queries are answered in mili second scale.</p>
+</div>
 </div>
 
 
