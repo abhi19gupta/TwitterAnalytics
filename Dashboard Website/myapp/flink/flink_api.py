@@ -1,10 +1,23 @@
+"""
+Module to communicate with the Flink server running locally to do tasks like uploading an alert's jar, running the jar as a Flink job,
+cancelling a running job and checking the status of jobs.
+"""
+
 import requests, os, json
 
 class FlinkAPI:
-
+	"""
+	Class to communicate with Flink server.
+	"""
 	def __init__(self, hostname="localhost", port=8081):
 		self.base_url = "http://%s:%d/"%(hostname,port)
 
+	"""
+	Uploads the jar of the alert to the Flink server running locally.
+
+	:param jar_path: Path of the jar file to upload.
+	:returns: The jar_id as returned by Flink server.
+	"""
 	def upload_jar(self, jar_path):
 		try:
 			r = requests.post(
@@ -25,6 +38,13 @@ class FlinkAPI:
 		except Exception as e:
 			raise Exception('Failed to upload jar. Error: %s, %s'%(str(type(e)),str(e)))
 
+	"""
+	Runs the given jar_id on Flink.
+
+	:param alert_name: Name of the alert to which the jar_id belongs.
+	:param flink_jar_id: jar_id to be run on Flink.
+	:returns: The job_id of the Flink job started as returned by the Flink server.
+	"""
 	def run_jar(self, alert_name, flink_jar_id):
 		try:
 			r = requests.post(self.base_url + "jars/%s/run?entry-class=%s&program-args=%s"%(flink_jar_id, "org.myorg.quickstart.StreamingJob",alert_name))
@@ -36,6 +56,11 @@ class FlinkAPI:
 		except Exception as e:
 			raise Exception('Failed to run jar. Error: %s, %s'%(str(type(e)),str(e)))
 
+	"""
+	Cancels the Flink job with the given job_id.
+
+	:param job_id: job_id of the Flink job to cancel.
+	"""
 	def cancel_job(self, job_id):
 		try:
 			r = requests.delete(self.base_url + "jobs/%s/cancel"%job_id)
@@ -46,6 +71,11 @@ class FlinkAPI:
 		except Exception as e:
 			raise Exception('Failed to pause job. Error: %s, %s'%(str(type(e)),str(e)))
 
+	"""
+	Check the status of all jobs run in the past.
+
+	:returns: Dictionary having key as alert_name (which was supplied in run_jar) and value as status of the last job of that alert.
+	"""
 	def check_job_status_all(self):
 		try:
 			# r = requests.get(self.base_url + "jobs")
@@ -55,7 +85,7 @@ class FlinkAPI:
 			response = json.loads(r.text)
 			ret = {}
 			# put the latest status in the ret
-			for x in response['finished']: 
+			for x in response['finished']:
 				alert_name = x['name']
 				latest_time_seen = float('inf') if alert_name not in ret else ret[alert_name]['start-time']
 				if x['start-time'] < latest_time_seen:
@@ -63,7 +93,7 @@ class FlinkAPI:
 			# remove the start-time as we need just the state
 			for alert_name in ret:
 				ret[alert_name] = 'FINISHED - ' + ret[alert_name]['status']
-			for x in response['running']: 
+			for x in response['running']:
 				ret[x['name']] = 'RUNNING'
 			return ret
 		except Exception as e:
