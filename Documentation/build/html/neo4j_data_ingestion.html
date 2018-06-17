@@ -89,11 +89,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#user-network">User network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tweet-network">Tweet network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-neo4j-practical-side">Ingesting the data into neo4j : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 </ul>
 </li>
@@ -107,7 +107,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#naming-entities">Naming entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
 </ul>
 </li>
@@ -233,19 +238,19 @@
 <li>USER_INFO node: It contains the user info. These nodes forma link list in which new nodes are added, when information of the user is collected.</li>
 </ul>
 </div></blockquote>
-<img alt="_images/neo_in1.png" src="_images/neo_in1.png" />
+<img alt="_images/neo_in3.png" src="_images/neo_in3.png" />
 <img alt="_images/neo_in2.png" src="_images/neo_in2.png" />
 </div>
 <div class="section" id="tweet-network">
 <h2>Tweet network<a class="headerlink" href="#tweet-network" title="Permalink to this headline">¶</a></h2>
-<img alt="_images/neo_in3.png" src="_images/neo_in3.png" />
+<img alt="_images/neo_in1.png" src="_images/neo_in1.png" />
 </div>
 <div class="section" id="indexing-network">
 <h2>Indexing network<a class="headerlink" href="#indexing-network" title="Permalink to this headline">¶</a></h2>
 <img alt="_images/neo_in4.png" src="_images/neo_in4.png" />
 </div>
-<div class="section" id="ingesting-the-data-into-mongodb-logic">
-<h2>Ingesting the data into mongoDB : Logic<a class="headerlink" href="#ingesting-the-data-into-mongodb-logic" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ingesting-the-data-into-neo4j-logic">
+<h2>Ingesting the data into neo4j : Logic<a class="headerlink" href="#ingesting-the-data-into-neo4j-logic" title="Permalink to this headline">¶</a></h2>
 <p>We get a tweet from the twitter firehose. One simple thing could be to make a connection to the on-disk database and insert the tweet. This can be achieved using <cite>session.run(&lt;cypher tweet insertion query&gt;)</cite>, because run in neo4j emulates a auto-commit transaction.</p>
 <p>A simple way to make this more efficient would be the use of transactions. The idea behind using transactions is to keep on accumulating the incoming tweets in a graph in memory. After some fixed number of tweets, the transaction is commited to the disk. Clearly this leads to faster ingestion rate:</p>
 <blockquote>
@@ -288,8 +293,8 @@
 </table>
 </div>
 </div>
-<div class="section" id="ingesting-the-data-into-mongodb-practical-side">
-<h2>Ingesting the data into mongoDB : Practical side<a class="headerlink" href="#ingesting-the-data-into-mongodb-practical-side" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ingesting-the-data-into-neo4j-practical-side">
+<h2>Ingesting the data into neo4j : Practical side<a class="headerlink" href="#ingesting-the-data-into-neo4j-practical-side" title="Permalink to this headline">¶</a></h2>
 <p>To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file <cite>python ingest_neo4j.py</cite> to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate.</p>
 </div>
 <div class="section" id="neo4j-ingestion-rates">

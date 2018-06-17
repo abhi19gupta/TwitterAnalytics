@@ -6,6 +6,8 @@ Here we expalin the API to generate cypher queries for Neo4j.
 Template of a general query
 ----------------------------------
 
+Basic Abstraction
+''''''''''''''''''''
 Any query can be thought of as a 2 step process -
 
     * Extract the relevant sub-graph satisfying the query constraints (Eg. Users and their tweets that use a certain hashtag)
@@ -46,8 +48,10 @@ We now specify the 2nd constraint using our entity-attribute abstraction.
     * Destination entity - Tweet, Attributes - hashtag:"h"
     * Relationship - Follows, Attributes - b/w t1,t2
 
+Naming entities
+'''''''''''''''''''
 
-The missing thing in this abstraction is that we have not taken into account that the source entity in both the constraints refers to the same User. To do so, we "name" each entity (like a variable). So we have:
+The missing thing in this abstraction is that we need to be able to distinguish that the Users in the two constraints above refer to different users. To do so, we "name" each entity (like a variable). So we have:
 
     * Constraint 1:
         - Source entity - u1:User, Attributes - None
@@ -58,6 +62,11 @@ The missing thing in this abstraction is that we have not taken into account tha
         - Destination entity - u3:Tweet, Attributes - hashtag:"h"
         - Relationship - Follows, Attributes - b/w t1,t2
 
+Variable attributes
+''''''''''''''''''''
+In the example above, we considered a fixed hashtag "h". But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces `{}`. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as `{hash1}`, it means that out query has a varibale named "hash1".
+
+
 Creating a custom query through dashboard API : Behind the scenes
 --------------------------------------------------------------------
 
@@ -66,9 +75,15 @@ when a user provides the inputs to specify the query, the following steps are ex
 
     * Cleanup and processing of the inputs provided by the user.
     * The variables(User/Tweet) and the relations are stored in a database. These stored objects can be later used by the user.
-    * The query specified by the user is converted into a Cypher neo4j graph mining query.
-    * Connection is established with the neo4j server and the query is executed on the database.
-    * The results obtained are concatenated and are displayed.
+
+Finally, to create the query the user need to specify the query name and the return variables. The query specified by the user in terms of constraints is converted into a Cypher neo4j graph mining query:
+
+    * All variable attributes are unwinded. This connects to thw fact that we are expecting inputs as a list of native objects, hence the unwind for all inputs to the query. This ensures a cartesian cross in the query.
+    * The time indexed part of the query is generated through the time indexing structure with frames and events.
+    * The network part is generated through the user network and tweet network based on the relationships.
+    * The return variables specified by the user are just concatenated with a return statement in the cypher.
+
+It is to be noted here, that we don't do any kind of checking if the constraints specified by the user to build the query are valid. Checking this in a generic manner without executing the query is difficult. So, this is delegated to the neo4j query engine itself and the user will get empty result in case the constrains are invalid.
 
 .. Code Documentation
 .. ----------------------

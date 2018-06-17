@@ -89,20 +89,30 @@
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#naming-entities">Naming entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
 </ul>
 </li>
@@ -158,8 +168,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environement">Setting up the environement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboards">Running the dashboards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environment">Setting up the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboard">Running the dashboard</a></li>
 </ul>
 </li>
 </ul>
@@ -223,7 +233,7 @@
 </ul>
 </div></blockquote>
 <p>The cypher code of these queries can also be seen here.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Return count of distinct users who have used a hashtag</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return count of distinct users who have used a hashtag</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;match (u:USER)-[:TWEETED]-&gt;(t:TWEET)-[:HAS_HASHTAG]-&gt;(:HASHTAG{text:&quot;{{h}}&quot;})</span>
 <span class="s2">with distinct u as u1 return count(u1)&quot;&quot;&quot;</span>
 
@@ -267,7 +277,7 @@
 </ul>
 </div></blockquote>
 <p>The cypher code of these queries is as follows.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Find common followers of two users</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find common followers of two users</span>
 <span class="n">q6</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">MATCH (u1 :USER {id:{{id1}}}),(u2 :USER {id:{{id2}}}), (user :USER)</span>
 <span class="s2">WHERE (u1) &lt;-[:FOLLOWS]- (user) AND (user) -[:FOLLOWS]-&gt; (u2)</span>

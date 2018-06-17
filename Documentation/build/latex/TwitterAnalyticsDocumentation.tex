@@ -5,6 +5,7 @@
    \let\sphinxpxdimen\pdfpxdimen\else\newdimen\sphinxpxdimen
 \fi \sphinxpxdimen=.75bp\relax
 
+\PassOptionsToPackage{warn}{textcomp}
 \usepackage[utf8]{inputenc}
 \ifdefined\DeclareUnicodeCharacter
  \ifdefined\DeclareUnicodeCharacterAsOptional
@@ -29,7 +30,7 @@
 \usepackage{babel}
 \usepackage{times}
 \usepackage[Bjarne]{fncychap}
-\usepackage[dontkeepoldnames]{sphinx}
+\usepackage{sphinx}
 
 \usepackage{geometry}
 
@@ -55,7 +56,7 @@
 
 
 \title{Twitter Analytics Documentation}
-\date{Jun 15, 2018}
+\date{Jun 17, 2018}
 \release{0.1}
 \author{Deepak Saini, Abhishek Gupta}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -77,7 +78,7 @@ NOTE : For all experiments mentioned in this document, we use a Intel i7 process
 
 
 \chapter{Introduction to twitter analytics system}
-\label{\detokenize{introduction:introduction-to-twitter-analytics-system}}\label{\detokenize{introduction:welcome-to-twitter-analytics-documentation}}\label{\detokenize{introduction::doc}}
+\label{\detokenize{introduction:introduction-to-twitter-analytics-system}}\label{\detokenize{introduction::doc}}
 Nowadays social media generates huge amount of data which can be used to infer a number of trending social events and to understand the connections between different entities. One such useful platform is Twitter where users can follow other users and tweet on any topic, tagging it with hashtags, mentioning other users or using URLs. This data can be spatially represented as a network of entities (like users, tweets, hashtags and URLs) which are interconnected in complex ways. A number of programming tools are often used by developers to perform various tasks on a subset of this data.
 
 However, in reality, this data is not static with time, giving it a temporal dimension as well. The system thus needs to capture both the spatially and temporally evolving aspects of this network in its database schema. The same abstraction also needs to be extended to the query specification process, making it easier to specify queries without writing queries in complex database specific languages. Hence, instead of limiting the users to a limited set of APIs, this system would allow any complex query to be specified.
@@ -155,7 +156,7 @@ Refer to the file ‘Read Twitter Stream/streaming.py’ for the code. The code 
 
 
 \chapter{Ingesting data into Neo4j}
-\label{\detokenize{neo4j_data_ingestion::doc}}\label{\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}}
+\label{\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}}\label{\detokenize{neo4j_data_ingestion::doc}}
 
 \section{Data stored in neo4j}
 \label{\detokenize{neo4j_data_ingestion:data-stored-in-neo4j}}
@@ -199,14 +200,14 @@ USER\_INFO node: It contains the user info. These nodes forma link list in which
 
 \end{itemize}
 
-\noindent\sphinxincludegraphics{{neo_in1}.png}
+\noindent\sphinxincludegraphics{{neo_in3}.png}
 
 \noindent\sphinxincludegraphics{{neo_in2}.png}
 
 
 \section{Tweet network}
 \label{\detokenize{neo4j_data_ingestion:tweet-network}}
-\noindent\sphinxincludegraphics{{neo_in3}.png}
+\noindent\sphinxincludegraphics{{neo_in1}.png}
 
 
 \section{Indexing network}
@@ -214,8 +215,8 @@ USER\_INFO node: It contains the user info. These nodes forma link list in which
 \noindent\sphinxincludegraphics{{neo_in4}.png}
 
 
-\section{Ingesting the data into mongoDB : Logic}
-\label{\detokenize{neo4j_data_ingestion:ingesting-the-data-into-mongodb-logic}}
+\section{Ingesting the data into neo4j : Logic}
+\label{\detokenize{neo4j_data_ingestion:ingesting-the-data-into-neo4j-logic}}
 We get a tweet from the twitter firehose. One simple thing could be to make a connection to the on-disk database and insert the tweet. This can be achieved using \sphinxtitleref{session.run(\textless{}cypher tweet insertion query\textgreater{})}, because run in neo4j emulates a auto-commit transaction.
 
 A simple way to make this more efficient would be the use of transactions. The idea behind using transactions is to keep on accumulating the incoming tweets in a graph in memory. After some fixed number of tweets, the transaction is commited to the disk. Clearly this leads to faster ingestion rate:
@@ -240,11 +241,11 @@ We create uniqueness constraints on the following attributes of these nodes:
 \centering
 \begin{tabulary}{\linewidth}[t]{|T|T|}
 \hline
-\sphinxstylethead{\sphinxstyletheadfamily 
+\sphinxstyletheadfamily 
 Node
-\unskip}\relax &\sphinxstylethead{\sphinxstyletheadfamily 
+&\sphinxstyletheadfamily 
 Attribute
-\unskip}\relax \\
+\\
 \hline
 FRAME
 &
@@ -276,8 +277,8 @@ url
 \sphinxattableend\end{savenotes}
 
 
-\section{Ingesting the data into mongoDB : Practical side}
-\label{\detokenize{neo4j_data_ingestion:ingesting-the-data-into-mongodb-practical-side}}
+\section{Ingesting the data into neo4j : Practical side}
+\label{\detokenize{neo4j_data_ingestion:ingesting-the-data-into-neo4j-practical-side}}
 To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest\_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file \sphinxtitleref{python ingest\_neo4j.py} to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate.
 
 
@@ -442,6 +443,9 @@ Here we expalin the API to generate cypher queries for Neo4j.
 
 \section{Template of a general query}
 \label{\detokenize{neo4j_query_generation:template-of-a-general-query}}
+
+\subsection{Basic Abstraction}
+\label{\detokenize{neo4j_query_generation:basic-abstraction}}
 Any query can be thought of as a 2 step process -
 \begin{itemize}
 \item {} 
@@ -512,7 +516,10 @@ Relationship - Follows, Attributes - b/w t1,t2
 
 \end{itemize}
 
-The missing thing in this abstraction is that we have not taken into account that the source entity in both the constraints refers to the same User. To do so, we “name” each entity (like a variable). So we have:
+
+\subsection{Naming entities}
+\label{\detokenize{neo4j_query_generation:naming-entities}}
+The missing thing in this abstraction is that we need to be able to distinguish that the Users in the two constraints above refer to different users. To do so, we “name” each entity (like a variable). So we have:
 \begin{itemize}
 \item {} \begin{description}
 \item[{Constraint 1:}] \leavevmode\begin{itemize}
@@ -547,6 +554,11 @@ Relationship - Follows, Attributes - b/w t1,t2
 \end{itemize}
 
 
+\subsection{Variable attributes}
+\label{\detokenize{neo4j_query_generation:variable-attributes}}
+In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces \sphinxtitleref{\{\}}. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as \sphinxtitleref{\{hash1\}}, it means that out query has a varibale named “hash1”.
+
+
 \section{Creating a custom query through dashboard API : Behind the scenes}
 \label{\detokenize{neo4j_query_generation:creating-a-custom-query-through-dashboard-api-behind-the-scenes}}
 A user can follow the general template of a query as provided above to build a query.
@@ -558,16 +570,25 @@ Cleanup and processing of the inputs provided by the user.
 \item {} 
 The variables(User/Tweet) and the relations are stored in a database. These stored objects can be later used by the user.
 
+\end{itemize}
+
+Finally, to create the query the user need to specify the query name and the return variables. The query specified by the user in terms of constraints is converted into a Cypher neo4j graph mining query:
+\begin{itemize}
 \item {} 
-The query specified by the user is converted into a Cypher neo4j graph mining query.
+All variable attributes are unwinded. This connects to thw fact that we are expecting inputs as a list of native objects, hence the unwind for all inputs to the query. This ensures a cartesian cross in the query.
 
 \item {} 
-Connection is established with the neo4j server and the query is executed on the database.
+The time indexed part of the query is generated through the time indexing structure with frames and events.
 
 \item {} 
-The results obtained are concatenated and are displayed.
+The network part is generated through the user network and tweet network based on the relationships.
+
+\item {} 
+The return variables specified by the user are just concatenated with a return statement in the cypher.
 
 \end{itemize}
+
+It is to be noted here, that we don’t do any kind of checking if the constraints specified by the user to build the query are valid. Checking this in a generic manner without executing the query is difficult. So, this is delegated to the neo4j query engine itself and the user will get empty result in case the constrains are invalid.
 
 
 \chapter{Generating queries in mongoDB}
@@ -606,6 +627,7 @@ Similarly, queris analogous to the above can also be answered for urls and user 
 
 For sake of completeness we also provide the way to generate a generic API to get mongoDB queries. For example take at this code to answer the query to get the most popular hashtags in an interval:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{pipeline} \PYG{o}{=} \PYG{p}{[}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}match}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{timestamp}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}gte}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{t1}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}lte}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{t2}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}group}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZus{}id}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}hashtag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}sum}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
 \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}sort}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}limit}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{limit}\PYG{p}{\PYGZcb{}}\PYG{p}{]}
@@ -651,10 +673,11 @@ We treat the postprocessing functions as queries. The idea behind treating post 
 
 Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named “inputs”) and return a dicionary(named “ret”) in same format. The function should further be named as “func”. This requires that the user specifies the input and output varibale names while creating the post processing function. This will be expalined in detail in the DAG section.
 
-Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output varibales. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return varibales. Its easy in case named varibales are returned but the issue is when epressions are returned(for example the code contains \sphinxcode{return l{[}:10{]}}, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternatve.
+Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output varibales. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return varibales. Its easy in case named varibales are returned but the issue is when epressions are returned(for example the code contains \sphinxcode{\sphinxupquote{return l{[}:10{]}}}, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternatve.
 
 Here is an example of a post processing function to output the union of lists input to it:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n+nb}{input}\PYG{p}{)}\PYG{p}{:}
     \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
@@ -677,6 +700,7 @@ Post processing functions are also used to display custom metric. To view a cust
 
 Here is another example of a post processing function to create a custom metric to plot the users with their number of tweets:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}\PYG{p}{:}
     \PYG{n}{inputs} \PYG{o}{=} \PYG{n+nb}{list}\PYG{p}{(}\PYG{n+nb}{zip}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{userid}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{,} \PYG{n}{inputs}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
@@ -711,6 +735,7 @@ Obtaining the outputs : The output ret dictionary is pushed on the context by th
 
 This can be seen in this code snippet used to execute the post processing functions:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{context} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{inputs}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{copy}\PYG{o}{.}\PYG{n}{deepcopy}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
 \PYG{k}{try}\PYG{p}{:}
@@ -724,7 +749,7 @@ This can be seen in this code snippet used to execute the post processing functi
 
 
 \chapter{Composing multiple queries : DAG}
-\label{\detokenize{dag::doc}}\label{\detokenize{dag:composing-multiple-queries-dag}}
+\label{\detokenize{dag:composing-multiple-queries-dag}}\label{\detokenize{dag::doc}}
 
 \section{Basic terminology}
 \label{\detokenize{dag:basic-terminology}}
@@ -830,6 +855,7 @@ Further we need to specify which outputs of the queries are to be returned.
 
 The example input file to create the above DAG looks something like this:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{l+m+mi}{3}
 \PYG{n}{n1} \PYG{n}{most\PYGZus{}popular\PYGZus{}hashtags\PYGZus{}20}
@@ -853,7 +879,7 @@ Line 1 contains the number of nodes in the DAG.
 The following number of nodes lines contain the name of the nodes and  each node corresponds to which query.
 
 \item {} 
-Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the \sphinxcode{n1.hashtag} variable been taken as an input rather than feefind from the outptut of an upstream query, it would have been specified as \sphinxcode{n1.hashtag {[}"hash1","hash2"{]}}.
+Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the \sphinxcode{\sphinxupquote{n1.hashtag}} variable been taken as an input rather than feefind from the outptut of an upstream query, it would have been specified as \sphinxcode{\sphinxupquote{n1.hashtag {[}"hash1","hash2"{]}}}.
 
 \item {} 
 Then a line containing the keyword “CONNECTION:”. Below the connections in the DAG are specified.
@@ -871,6 +897,7 @@ Please note that, all the outputs of all the queries can be seen in XComs in air
 To create a DAG in airflow, we need to create a file in the dags folder in the AIRFLOW\_HOME directory. So, when the user specifies the DAG through out dashboard, we generate a python file in the metioned folder. The newly created DAG is registered with airflow after sometime(airflow has a heartbeat thread running, which looks for new DAGs in the folder periodically)
 We generate the code to specify the dag in airflow something like this.
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{task\PYGZus{}0} \PYG{o}{=} \PYG{n}{PythonOperator}\PYG{p}{(}
     \PYG{n}{task\PYGZus{}id}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}\PYGZob{}\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{o}{.}\PYG{n}{format}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
@@ -898,6 +925,7 @@ We generate the code to specify the dag in airflow something like this.
 
 In the above code, the execute query is the function in which we execute queries and pass on their outputs to XComs to be used by the downstream nodes.
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Pushing onto XComs}
 \PYG{n}{context}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{task\PYGZus{}instance}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{xcom\PYGZus{}push}\PYG{p}{(}\PYG{n}{k}\PYG{p}{,}\PYG{n}{v}\PYG{p}{)}
@@ -905,7 +933,7 @@ In the above code, the execute query is the function in which we execute queries
 \PYG{n}{context}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{task\PYGZus{}instance}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{xcom\PYGZus{}pull}\PYG{p}{(}\PYG{n}{task\PYGZus{}ids}\PYG{o}{=}\PYG{n}{get\PYGZus{}task\PYGZus{}from\PYGZus{}node}\PYG{p}{(}\PYG{n}{mapp}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}\PYG{p}{,}\PYG{n}{dag\PYGZus{}id} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{active\PYGZus{}users\PYGZus{}dag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{key}\PYG{o}{=}\PYG{n}{k}\PYG{p}{)}
 \end{sphinxVerbatim}
 
-Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the \sphinxcode{start\_date} property is specified as the current time.
+Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the \sphinxcode{\sphinxupquote{start\_date}} property is specified as the current time.
 
 Airflow provides certain other useful properties which may be of interest to the user(when the system becomes huge). For example, the user can set an email-address on which a notification will be sent in case of the success and/or failure of tasks. But, taking all these inputs though our dashboard to genereate the DAG, is like create a complete front-end wrapper over the airflow system, which is not out aim. If the user does wish to use the more involved airflow properties, he/she can always edit the source of the generated dag file. Also, if the need arises to provide the user such functionality through our dashboard, then modifying the code to generate an additional line in the dag python file is easy.
 
@@ -957,7 +985,52 @@ An example of creating a custom metric will br provided in the {\hyperref[\detok
 
 \chapter{Generating alerts using Apache Flink and Kafka}
 \label{\detokenize{flink:generating-alerts-using-apache-flink-and-kafka}}\label{\detokenize{flink::doc}}
-Apache Flink is an open-source, distributed and high performing stream processing tool. Apache Kafka, also open-source, is another streaming tool which can be used as a message queue for communication between programs in a highly available distributed fashion.
+We leverage a couple of open-source technologies to detect user specified alerts in the Twitter stream. Apache Flink is an open-source, distributed and high performing stream processing tool. Apache Kafka, also open-source, is another streaming tool which can be used as a message queue for communication between programs in a highly available distributed fashion.
+
+Tweets are continuously streamed from Twitter using the Twitter Streaming API and pushed to a Kafka topic (“tweets\_topic”) for downstream processes. This tweet stream is processed by Flink programs to detect the specified alerts (one Flink program per alert specification). Alert specifications are given by the user using an abstraction that we describe next.
+
+Our alert specification abstraction is inspired from Flink’s own specification. Each tweet is considered to have 3 attributes - Hashtags, URLs and User mentions. To specify an alert, user needs to specify the following:
+\begin{itemize}
+\item {} 
+Filter - values of 0 or more tweet attributes to filter the tweets relevant for the alert.
+
+\item {} 
+Group keys - 0 or more of tweet attributes on which to group and split the tweet stream (1 sub-stream per group).
+
+\item {} 
+Window length (in seconds) - to divide each sub-stream into multiple windows, each of fixed length.
+
+\item {} 
+Window slide (in seconds) - to specify how often to start a new window (windows may overlap if slide \textless{} length).
+
+\item {} 
+Count - threshold of count of tweets in any window.
+
+\end{itemize}
+
+As soon as the count is reached in any window, an alert is generated.
+
+This abstraction is translated to a Flink Java application, compiled, uploaded and run by Flink server running locally. It continuously streams the tweets, processes them according to the specification and posts any alerts on a different Kafka topic (“alerts\_topic”). There is a simple Python application which continuously polls for alerts on this Kafka topic and persists any found alerts to MongoDB to be displayed by the dashboard.
+\begin{description}
+\item[{Example: Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:}] \leavevmode\begin{itemize}
+\item {} 
+Filter = None; as we need to consider all tweets.
+
+\item {} 
+Group keys = Hashtag; as we need to create a sub-stream for each hashtag.
+
+\item {} 
+Window length = 60
+
+\item {} 
+Window slide = 60; say, for non-overlapping windows
+
+\item {} 
+Count = 100
+
+\end{itemize}
+
+\end{description}
 
 
 \chapter{Benchmarking the query answering}
@@ -1003,6 +1076,7 @@ Find the count of users who tweeted in a given interval
 
 The cypher code of these queries can also be seen here.
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Return count of distinct users who have used a hashtag}
 \PYG{n}{q1} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}\PYG{l+s+s2}{match (u:USER)\PYGZhy{}[:TWEETED]\PYGZhy{}\PYGZgt{}(t:TWEET)\PYGZhy{}[:HAS\PYGZus{}HASHTAG]\PYGZhy{}\PYGZgt{}(:HASHTAG\PYGZob{}text:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZob{}\PYGZob{}h\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZcb{})}
@@ -1059,6 +1133,7 @@ Find users which follow user with id u1 and follow user u which tweeted b/w t1 a
 
 The cypher code of these queries is as follows.
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Find common followers of two users}
 \PYG{n}{q6} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
@@ -1354,6 +1429,7 @@ In the end, the best way to figure out the system is to get your hands dirty wit
 \label{\detokenize{running:setting-up-the-environment}}
 We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the \sphinxhref{https://conda.io/docs/user-guide/install/download.html}{download page} itself. After installation of conda, run the following commands:
 
+\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 // create a new virtual environment
 conda create \PYGZhy{}\PYGZhy{}name twitter\PYGZus{}analytics \PYG{n+nv}{python}\PYG{o}{=}\PYG{o}{=}\PYG{l+m}{3}.6
@@ -1376,7 +1452,7 @@ Apart from these, the user also needs to install mongoDB, neo4j databases and Th
 
 \section{Running the dashboard}
 \label{\detokenize{running:running-the-dashboard}}
-To run the website on a local server on your machine, navigate to Dashboard Website/ and run \sphinxcode{python manage.py runserver}. Presently the databases will be empty, to insert the new data into the databases see the {\hyperref[\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into MongoDB}}}} and the {\hyperref[\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into Neo4j}}}} sections.
+To run the website on a local server on your machine, navigate to Dashboard Website/ and run \sphinxcode{\sphinxupquote{python manage.py runserver}}. Presently the databases will be empty, to insert the new data into the databases see the {\hyperref[\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into MongoDB}}}} and the {\hyperref[\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into Neo4j}}}} sections.
 
 
 \chapter{Indices and tables}

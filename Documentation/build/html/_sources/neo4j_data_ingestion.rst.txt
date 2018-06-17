@@ -25,30 +25,30 @@ The user network contains following nodes:
 
 	* USER node : It contains the user info.
 	* USER_INFO node: It contains the user info. These nodes forma link list in which new nodes are added, when information of the user is collected.
-	
-.. image:: /images/neo_in1.png
+
+.. image:: /images/neo_in3.png
 .. image:: /images/neo_in2.png
 
 Tweet network
 ----------------
-.. image:: /images/neo_in3.png
+.. image:: /images/neo_in1.png
 
 Indexing network
 -------------------
 .. image:: /images/neo_in4.png
 
 
-Ingesting the data into mongoDB : Logic
+Ingesting the data into neo4j : Logic
 ----------------------------------------
 
-We get a tweet from the twitter firehose. One simple thing could be to make a connection to the on-disk database and insert the tweet. This can be achieved using `session.run(<cypher tweet insertion query>)`, because run in neo4j emulates a auto-commit transaction. 
+We get a tweet from the twitter firehose. One simple thing could be to make a connection to the on-disk database and insert the tweet. This can be achieved using `session.run(<cypher tweet insertion query>)`, because run in neo4j emulates a auto-commit transaction.
 
 A simple way to make this more efficient would be the use of transactions. The idea behind using transactions is to keep on accumulating the incoming tweets in a graph in memory. After some fixed number of tweets, the transaction is commited to the disk. Clearly this leads to faster ingestion rate:
 
 	* Accumulating to memory and then writing the batch to disk is faster as comapred to writing tweet by tweet to disk due to the efficieny in disk head seaks.
 	* Further, when creating the in-memory local graph from the transaction batch, neo4j does some changes in the order in which to write the changes to ensure efficiency.
 
-But, the clear downside of this is that the queries being answered will lag behind at most the transaction size. This happens becasue the tweets are being inserted in real time manner and the queries are also being answered simulataneoulsy. But this is not a major issue as it induces a lag of only <10 secs(assuming transaction size of ~30k). 
+But, the clear downside of this is that the queries being answered will lag behind at most the transaction size. This happens becasue the tweets are being inserted in real time manner and the queries are also being answered simulataneoulsy. But this is not a major issue as it induces a lag of only <10 secs(assuming transaction size of ~30k).
 
 Indexing
 ''''''''''
@@ -67,11 +67,11 @@ We create uniqueness constraints on the following attributes of these nodes:
 +------------+------------+
 |     URL    |    url     |
 +------------+------------+
-	
 
-Ingesting the data into mongoDB : Practical side
+
+Ingesting the data into neo4j : Practical side
 -------------------------------------------------
-To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can't possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file `python ingest_neo4j.py` to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate. 
+To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can't possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file `python ingest_neo4j.py` to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate.
 
 Neo4j Ingestion Rates
 ---------------------------
