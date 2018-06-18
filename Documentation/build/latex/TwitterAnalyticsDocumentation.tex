@@ -56,7 +56,7 @@
 
 
 \title{Twitter Analytics Documentation}
-\date{Jun 17, 2018}
+\date{Jun 18, 2018}
 \release{0.1}
 \author{Deepak Saini, Abhishek Gupta}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -181,22 +181,22 @@ User network : Stores the user information and connections between the user node
 Tweet network : Stores the tweets, their attributes and interconnections between tweets and their connections with user nodes as well.
 
 \item {} 
-Indexing network : Stores the time indexing structure utilised to answer queries having a temporal dimension. Its instructive to imagine the user and tweet network on a plane and the indexing network on top of this plane.
+Indexing network : Stores the time indexing structure utilized to answer queries having a temporal dimension. Its instructive to imagine the user and tweet network on a plane and the indexing network on top of this plane.
 
 \end{itemize}
 
 Let’s look at these networks in some detail
 
 
-\section{User network}
+\subsection{User network}
 \label{\detokenize{neo4j_data_ingestion:user-network}}
 The user network contains following nodes:
 \begin{itemize}
 \item {} 
-USER node : It contains the user info.
+USER node : It contains user\_id and screen\_name.
 
 \item {} 
-USER\_INFO node: It contains the user info. These nodes forma link list in which new nodes are added, when information of the user is collected.
+USER\_INFO node: It contains the user info like number of followers/friends, number of tweets, location and other meta data. These nodes form a link list in which new nodes are added, when information of the user is collected.
 
 \end{itemize}
 
@@ -205,13 +205,45 @@ USER\_INFO node: It contains the user info. These nodes forma link list in which
 \noindent\sphinxincludegraphics{{neo_in2}.png}
 
 
-\section{Tweet network}
+\subsection{Tweet network}
 \label{\detokenize{neo4j_data_ingestion:tweet-network}}
+The tweet network contains following nodes:
+\begin{itemize}
+\item {} 
+TWEET node : It contains the tweet info like its id, the raw text of the tweet, the location from which the tweet is made(currently we are storing it in raw fashion, which in future can be extended by creating LOCATION nodes just like HASHTAG et al.)
+
+\item {} 
+HASHTAG node : It contains the text of the hashtag.
+
+\item {} 
+URL node : Contains the full and the shortened url.
+
+\end{itemize}
+
 \noindent\sphinxincludegraphics{{neo_in1}.png}
 
 
-\section{Indexing network}
+\subsection{Indexing network}
 \label{\detokenize{neo4j_data_ingestion:indexing-network}}
+The Indexing network contains:
+\begin{itemize}
+\item {} 
+RUN node : It is a unique node in the entire network. Just a starting placeholder for the root of the indexing structure.
+
+\item {} 
+FRAME node : A frame time interval is to be specified by the user. Each frame indexes time slices equal to the specified interval.
+
+\item {} 
+FOLLOW\_EVENT node : represents that Follower started following Followee.
+
+\item {} 
+UNFOLLOW\_EVENT node : represents that Unfollower stopped following Unfollowee.
+
+\item {} 
+TWEET\_EVENT node : represents that user tweeted tweet.
+
+\end{itemize}
+
 \noindent\sphinxincludegraphics{{neo_in4}.png}
 
 
@@ -219,17 +251,20 @@ USER\_INFO node: It contains the user info. These nodes forma link list in which
 \label{\detokenize{neo4j_data_ingestion:ingesting-the-data-into-neo4j-logic}}
 We get a tweet from the twitter firehose. One simple thing could be to make a connection to the on-disk database and insert the tweet. This can be achieved using \sphinxtitleref{session.run(\textless{}cypher tweet insertion query\textgreater{})}, because run in neo4j emulates a auto-commit transaction.
 
-A simple way to make this more efficient would be the use of transactions. The idea behind using transactions is to keep on accumulating the incoming tweets in a graph in memory. After some fixed number of tweets, the transaction is commited to the disk. Clearly this leads to faster ingestion rate:
+
+\subsection{Improving ingestion rate using transaction}
+\label{\detokenize{neo4j_data_ingestion:improving-ingestion-rate-using-transaction}}
+A simple way to make this more efficient would be the use of transactions. The idea behind using transactions is to keep on accumulating the incoming tweets in a graph in memory. After some fixed number of tweets, the transaction is committed to the disk. Clearly this leads to faster ingestion rate:
 \begin{itemize}
 \item {} 
-Accumulating to memory and then writing the batch to disk is faster as comapred to writing tweet by tweet to disk due to the efficieny in disk head seaks.
+Accumulating to memory and then writing the batch to disk is faster as compared to writing tweet by tweet to disk due to the efficiency in disk head seaks.
 
 \item {} 
 Further, when creating the in-memory local graph from the transaction batch, neo4j does some changes in the order in which to write the changes to ensure efficiency.
 
 \end{itemize}
 
-But, the clear downside of this is that the queries being answered will lag behind at most the transaction size. This happens becasue the tweets are being inserted in real time manner and the queries are also being answered simulataneoulsy. But this is not a major issue as it induces a lag of only \textless{}10 secs(assuming transaction size of \textasciitilde{}30k).
+But, the clear downside of this is that the queries being answered will lag behind at most the transaction size. This happens because the tweets are being inserted in real time manner and the queries are also being answered simultaneously. But this is not a major issue as it induces a lag of only \textless{}10 secs(assuming transaction size of \textasciitilde{}30k).
 
 
 \subsection{Indexing}
@@ -277,16 +312,16 @@ url
 \sphinxattableend\end{savenotes}
 
 
-\section{Ingesting the data into neo4j : Practical side}
-\label{\detokenize{neo4j_data_ingestion:ingesting-the-data-into-neo4j-practical-side}}
-To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest\_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file \sphinxtitleref{python ingest\_neo4j.py} to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate.
+\section{Running the ingestion script}
+\label{\detokenize{neo4j_data_ingestion:running-the-ingestion-script}}
+To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest\_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file \sphinxtitleref{python ingest\_neo4j.py} to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.
 
 
 \section{Neo4j Ingestion Rates}
 \label{\detokenize{neo4j_data_ingestion:neo4j-ingestion-rates}}
 \noindent\sphinxincludegraphics{{neo_in5}.png}
 
-Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size of around 35k. This is mainly due to the limitation of memory size. The authors observe that keeping a larger transaction size leads to lag on the system indicative of use of swap space. Thus, the maximum ingestion rate can be enhanced just by putting in more memory, albiet with decreasing returns.
+Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size of around 35k. This is mainly due to the limitation of memory size. The authors observe that keeping a larger transaction size leads to lag on the system indicative of use of swap space. Thus, the maximum ingestion rate can be enhanced just by putting in more memory, albeit with decreasing returns.
 
 
 \chapter{Ingesting data into MongoDB}
@@ -294,9 +329,9 @@ Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size o
 
 \section{Why store in MongoDB}
 \label{\detokenize{mongoDB_data_ingestion:why-store-in-mongodb}}
-In mongoDB we store only the data which can be extracted quickly from incoming tweets without much processing.
+In mongoDB we store only the data which can be extracted quickly from incoming tweets without much processing. We answer “non-network” based i.e. simple aggregate queries using MongoDB instead of Neo4j.
 
-This means that any query which can be answered using mongoDB can also be answered using the network data in neo4j. This has been done to ensure that some very common queries can be answered quickly. Also, neo4j has a limit on the parallel sessions that can be made to the database, so in case we decide to do away with mongoDB, those queries would have to be answered from neo4j and would unnecesarily take up the sessions.
+This means that any query which can be answered using mongoDB can also be answered using the network data in neo4j. This has been done to ensure that some very common queries can be answered quickly. Also, neo4j has a limit on the parallel sessions that can be made to the database, so in case we decide to do away with mongoDB, those queries would have to be answered from neo4j and would unnecessarily take up the sessions.
 
 
 \section{Data Format in mongoDB}
@@ -304,7 +339,7 @@ This means that any query which can be answered using mongoDB can also be answer
 We have three collections in mongoDB:
 \begin{itemize}
 \item {} \begin{description}
-\item[{To store the hashtags. Each document in this collection stores the following infomration:}] \leavevmode\begin{itemize}
+\item[{To store the hashtags. Each document in this collection stores the following information:}] \leavevmode\begin{itemize}
 \item {} 
 the hashtag
 
@@ -380,27 +415,34 @@ from the database.
 
 So, even if we decide to store some pseudo-structural information, like the user of the tweet in hashtags collection and then answer queries like the sentiment associated will all the tweets of an user, we expect the query execution time to be atleast as fast as answering the query in neo4j, though in case of neo4j also, answering such query would also take only a single hop, which means that the execution time would be small anyways. This is precisely the reason why we don’t currently store such information in mongoDB.
 
-But, as the size of the system grows, it would surely be benefitial to store much more condensed data in mongoDB and use it to answer more complex queries.
+But, as the size of the system grows, it would surely be beneficial to store much more condensed data in mongoDB and use it to answer more complex queries.
 
 
 \section{Ingesting the data into mongoDB : Logic}
 \label{\detokenize{mongoDB_data_ingestion:ingesting-the-data-into-mongodb-logic}}
-A simple approach would be to ingest a tweet into the database as when it comes in real time. But clearly(and as mentioned in mongoDB documentation)
-this is suboptimal, as we are connecting to the on-disk database frequently.{[}scheme 1{]}
+{[}scheme 1{]} A simple approach would be to ingest a tweet into the database as and when it comes in real time. But clearly(and as mentioned in mongoDB documentation) this is suboptimal, as we are connecting to the on-disk database frequently.
 
-An easy solution to this would be to keep collecting the data in memory and then write it to the database periodically. But observe that, the time it takes the process to open a connection to database and then write the data to it, no new tweeets are being collected in memory.{[}scheme 2{]}
 
-So finally we the approach of utilising multiple processes to write data to mongoDB.{[}scheme 3{]}
+\subsection{Improving ingestion rate using transactions}
+\label{\detokenize{mongoDB_data_ingestion:improving-ingestion-rate-using-transactions}}
+{[}scheme 2{]} An easy solution to this would be to keep collecting the data in memory and then write it to the database periodically in batches.
+
+But observe that, the time it takes the process to open a connection to database and then write the data to it, no new tweets are being collected in memory.
+
+
+\subsection{Improving ingestion rate using parallel multiple process}
+\label{\detokenize{mongoDB_data_ingestion:improving-ingestion-rate-using-parallel-multiple-process}}
+{[}scheme 3{]} So finally we take the approach of utilizing multiple processes to write data to mongoDB.
 
 Observe here the distinction between a thread and a process.
 While using multiple threads, the threads are run(usually, if we discount the kernel threads spawned by python) on a single core in python, due to Global Interpreter Lock and thus, though we get virtual parallelism,
-we don’t get real parallelism. Thus, due to the limitation of the language, we are using process to get the parallelism between wriing to database and collecitng new tweets.
+we don’t get real parallelism. Thus, due to the limitation of the language, we are using process to get the parallelism between writing to database and collecting new tweets.
 A clear disadvantage of using process over threads will become clear below.
 
-To explain the final multi-process approach, we have three processes running:
+To explain the final multi-process approach, we have two processes running:
 \begin{itemize}
 \item {} 
-Accumulator process - It collects the tweets in an in-memory data structure. Also, in the begining at t=0, it spawns a timer thread, which generates an interrupt after every pre-specified T time.
+Accumulator process - It collects the tweets in an in-memory data structure. Also, in the beginning at t=0, it spawns a timer thread, which generates an interrupt after every pre-specified T time.
 
 \item {} 
 Connector process - It takes a list of tweets through a pipe, opens connection to the database and writes the tweets to the database.
@@ -411,34 +453,34 @@ How the system works can be understood through this image:
 
 \noindent\sphinxincludegraphics{{mongo_ingestion}.jpg}
 
-So, the timer process in the accumulator process genertes an interrupt after every T seconds, at this instant, the accumulator stops collecting tweets and writes those to Inter process communication(IPC) pipe. This is generally fast as IPC pipe are implemented in memory. Now, the other end of the pipe is in the connector process. After the writing process has been complete, it recieves the tweets and starts writing those to the on-disk database as a batch, which again ensures that the process is faster as compared to writing single tweet at a time in a loop. Concurrently, while the connector process is writing the tweets, the acuumulator process starts accumulating new tweets.
+So, the timer process in the accumulator process generates an interrupt after every T seconds, at this instant, the accumulator stops collecting tweets and writes those to Inter process communication(IPC) pipe. This is generally fast as IPC pipe are implemented in memory. Now, the other end of the pipe is in the connector process. After the writing process has been complete, it receives the tweets and starts writing those to the on-disk database as a batch, which again ensures that the process is faster as compared to writing single tweet at a time in a loop. Concurrently, while the connector process is writing the tweets, the accumulator process starts accumulating new tweets.
 
-So in this way the the process of writing to database in connector process is overlapped with the the accumulation of tweets in accumulator process. Note that we have a small gap equivalent to time taken to write to IPC, in which the accummulator process is not collecting the tweets. The whole process can further be made efficient by removing this gap, but since we are getting tweet ingestion rate much more than the rate of tweets coming on twitter and the gain from removing the gap would not be much, we don’t implement it.
+So in this way the the process of writing to database in connector process is overlapped with the the accumulation of tweets in accumulator process. Note that we have a small gap equivalent to time taken to write to IPC, in which the accumulator process is not collecting the tweets. The whole process can further be made efficient by removing this gap, but since we are getting tweet ingestion rate much more than the rate of tweets coming on twitter and the gain from removing the gap would not be much, we don’t implement it.
 
-To answer queries like the most popular hastags in total, or most popular hashtags in a large interval. It would be benefitial to have aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector process to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don’t currently use this mechanism.
+To answer queries like the most popular hashtags in total, or most popular hashtags in a large interval. It would be beneficial to have aggregates over a larger interval. For example, say we want to get the most popular hashtags in an year, it would be helpful in that setting to have an aggregated document containing 100 most popular hashtags in each month, then we can consider a union of these 12 documents plus some counting from the interval edges to get the most popular hashtags. Clearly, this will fasten the query answering rate. Though, this would not always give the exactly accurate results and can also not be used to get the counts of hashtags, but can be used to get most popular k hashtags as the size of data grows. To implement it, simply spawn another thread in the connector process to read data from the hashtags collection at a specific time interval(like 1 week), aggregate the data and store the aggregated information into a new collection. We provide the code for this, but don’t currently use this mechanism.
 
 
 \section{Ingesting the data into mongoDB : Practical side}
 \label{\detokenize{mongoDB_data_ingestion:ingesting-the-data-into-mongodb-practical-side}}
-On practical side, to ingest data into mongoDB, navigate to the Ingestion/MonogDB and make changes to the file ingest\_raw.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file \sphinxtitleref{python ingest\_raw.py} to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate.
+On practical side, to ingest data into mongoDB, navigate to the Ingestion/MonogDB and make changes to the file ingest\_raw.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file \sphinxtitleref{python ingest\_raw.py} to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.
 
 Please observe that the process of ingesting into neo4j and mongoDB are similar, with just variations in which code to run.
 
 
 \section{MongoDB Ingestion Rates}
 \label{\detokenize{mongoDB_data_ingestion:mongodb-ingestion-rates}}
-As expected, the ingestion rate into mongoDB whilw overlapping writing into database and accumulating data is faster than without parallelization. The plot below shows a comparison between scheme 2 and scheme 3 as described above. Observe that as more and more tweets are inserted, the difference between the two scheme grows as the time saved in overlapping inserting the accumulating keeps on adding up in advntage of scheme 3.
+As expected, the ingestion rate into mongoDB while overlapping writing into database and accumulating data is faster than without parallelization. The plot below shows a comparison between scheme 2 and scheme 3 as described above. Observe that as more and more tweets are inserted, the difference between the two scheme grows as the time saved in overlapping inserting the accumulating keeps on adding up in advantage of scheme 3.
 
 \noindent\sphinxincludegraphics{{image1}.png}
 
-Clearly the ingestion rate depends on the time after which the interrupt to start write the collected tweets to database is generate(called T above).
+Clearly the ingestion rate depends on the time after which the interrupt to start write the collected tweets to database is generate(called T in {\hyperref[\detokenize{mongoDB_data_ingestion:improving-ingestion-rate-using-parallel-multiple-process}]{\sphinxcrossref{\DUrole{std,std-ref}{Improving ingestion rate using parallel multiple process}}}}).
 
 Finally we get an ingestion rate of around 7k-12k(around x10 of that of neo4j) tweets/second on average, depending on T.
 
 
 \chapter{Neo4j: API to generate cypher queries}
 \label{\detokenize{neo4j_query_generation:neo4j-api-to-generate-cypher-queries}}\label{\detokenize{neo4j_query_generation::doc}}
-Here we expalin the API to generate cypher queries for Neo4j.
+Here we explain the API to generate cypher queries for Neo4j.
 
 
 \section{Template of a general query}
@@ -456,7 +498,7 @@ Post-processing of this sub-graph to return desired result (Eg. Return “names�
 
 \end{itemize}
 
-In a generic way, the 1st step can be constructed using AND,OR,NOT of multiple constraints. We now specify how each such constraint can be built.
+In a generic way, the 1st step can be constructed using AND,OR,NOT of multiple constraints(Though in our code right now, only AND is supported as Neo4j doesn’t support OR and NOT directly).We now specify how each such constraint can be built.
 
 We look at the network in an abstract in two dimensions.
 \begin{itemize}
@@ -556,7 +598,14 @@ Relationship - Follows, Attributes - b/w t1,t2
 
 \subsection{Variable attributes}
 \label{\detokenize{neo4j_query_generation:variable-attributes}}
-In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces \sphinxtitleref{\{\}}. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as \sphinxtitleref{\{hash1\}}, it means that out query has a varibale named “hash1”.
+In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces \sphinxcode{\sphinxupquote{\{\}}}. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as \sphinxcode{\sphinxupquote{\{hash1\}}}, it means that our query has a variable named “hash1”.
+
+
+\subsection{Returns}
+\label{\detokenize{neo4j_query_generation:returns}}
+The user can write a comma separated list of entities/attributes to return. An entity can be specified directly by its name. Eg. \sphinxcode{\sphinxupquote{my\_tweet\_entity}}. An entity’s attribute can be specified as \sphinxcode{\sphinxupquote{\textless{}entitiy\_name\textgreater{}.\textless{}attribute\textgreater{}}}. Eg. \sphinxcode{\sphinxupquote{u.screen\_name}}.
+
+The user can also group on certain entity/attribute by using an aggregate function on some other entity/attribute. Eg. \sphinxcode{\sphinxupquote{return u.id, count(distinct h)}} will group on u.id and return count of distinct h among all records returned for each u.id.
 
 
 \section{Creating a custom query through dashboard API : Behind the scenes}
@@ -568,14 +617,14 @@ when a user provides the inputs to specify the query, the following steps are ex
 Cleanup and processing of the inputs provided by the user.
 
 \item {} 
-The variables(User/Tweet) and the relations are stored in a database. These stored objects can be later used by the user.
+The variables(User/Tweet), their attributes and the relations are stored in a database. These stored objects can be later used by the user.
 
 \end{itemize}
 
 Finally, to create the query the user need to specify the query name and the return variables. The query specified by the user in terms of constraints is converted into a Cypher neo4j graph mining query:
 \begin{itemize}
 \item {} 
-All variable attributes are unwinded. This connects to thw fact that we are expecting inputs as a list of native objects, hence the unwind for all inputs to the query. This ensures a cartesian cross in the query.
+All variable attributes are unwinded. This connects to the fact that we are expecting inputs as a list of native objects, hence the unwind for all inputs to the query. This ensures a Cartesian cross in the query.
 
 \item {} 
 The time indexed part of the query is generated through the time indexing structure with frames and events.
@@ -593,21 +642,21 @@ It is to be noted here, that we don’t do any kind of checking if the constrain
 
 \chapter{Generating queries in mongoDB}
 \label{\detokenize{mongoDB_query_generation:generating-queries-in-mongodb}}\label{\detokenize{mongoDB_query_generation::doc}}
-As mentioned in mongoDB ingestion section, in mongoDB we store only the data wihtout any structural information which can be extracted quickly from incoming tweets without much processing. Further, we store in mongoDB to ensure that some very common queries can be answered quickly.
+As mentioned in mongoDB ingestion section, in mongoDB we store only the data without any structural information which can be extracted quickly from incoming tweets without much processing. Further, we store in mongoDB to ensure that some very common queries can be answered quickly.
 
 This leads to these important properties of the mongoDB part of datastore:
 \begin{itemize}
 \item {} 
-Only very specific queries can be answered using only the mongoDB. The specific queries further depend on the data which is being stored, which is further decided by which queries are seen frequently and need to be sped up. Given that currently we have the hashtag, url and user mention collection in mongoDB with the entity name, timestamp, the sentiment associated with the tweet in which the mentioned entity occured; we can answer only specific queries like the most popular hashtag(and its sentiment) occuring in an interval(which can be the entire time as well).
+Only very specific queries can be answered using only the mongoDB. The specific queries further depend on the data which is being stored, which is further decided by which queries are seen frequently and need to be sped up. Given that currently we have the hashtag, url and user mention collection in mongoDB with the entity name, timestamp, the sentiment associated with the tweet in which the mentioned entity occurred; we can answer only specific queries like the most popular hashtag(and its sentiment) occurring in an interval(which can be the entire time as well).
 
 \item {} 
-This further means that the mongoDB schema and datastore can easily be modified and extended. For example, if I decide to store the named entites in the tweets as well, all we need is to make a new collection.
+This further means that the mongoDB schema and datastore can easily be modified and extended. For example, if I decide to store the named entities in the tweets as well, all we need is to make a new collection.
 
 \end{itemize}
 
-Contast this with neo4j where the schema is more or less for fixed for all practical purposes and the user can’t easily change it.
+Contrast this with neo4j where the schema is more or less for fixed for all practical purposes and the user can’t easily change it.
 
-Given the above two properties, it makes little sense to develop a complete generic API to input queies from the user as it would certainly be an overkill. So currently we provide APIs only to take only specific queries from the user. The queries which can currently be answered using mongoDB are follows(the things mentioned inside \textless{}\textgreater{} are the inputs to the query):
+Given the above two properties, it makes little sense to develop a complete generic API to input queries from the user as it would certainly be an overkill. So currently we provide APIs only to take only specific queries from the user. The queries which can currently be answered using mongoDB are follows(the things mentioned inside \textless{}\textgreater{} are the inputs to the query):
 \begin{itemize}
 \item {} 
 Give the \textless{}number\textgreater{} most popular hashtags in total
@@ -623,8 +672,11 @@ Give the timetamps, associated positive and negative sentiment of a \textless{}h
 
 \end{itemize}
 
-Similarly, queris analogous to the above can also be answered for urls and user mantions.
+Similarly, queries analogous to the above can also be answered for urls and user mentions.
 
+
+\section{Generic API for mongoDB : Idea}
+\label{\detokenize{mongoDB_query_generation:generic-api-for-mongodb-idea}}
 For sake of completeness we also provide the way to generate a generic API to get mongoDB queries. For example take at this code to answer the query to get the most popular hashtags in an interval:
 
 \fvset{hllines={, ,}}%
@@ -638,10 +690,10 @@ For sake of completeness we also provide the way to generate a generic API to ge
 As can be seen the query answering has three parts :
 \begin{itemize}
 \item {} 
-The aggregation pipeline: This is the part with needs to be input from the user. As we have limited number of constructs that, can be used in aggregation, Taking those as inputs alog with their parameters is not that difficult. Some of the construcut, though can also be filled in automatically.
+The aggregation pipeline: This is the part with needs to be input from the user. As we have limited number of constructs that, can be used in aggregation, Taking those as inputs along with their parameters is not that difficult. Some of the construct, though can also be filled in automatically.
 
 \item {} 
-Aggregating the collection based on the pipeline: This has fixed code and can ge generated easily.
+Aggregating the collection based on the pipeline: This has fixed code and can be generated easily.
 
 \item {} 
 Unzipping the result based on the output variables name input by the user: Again, fixed code and thus easily generated.
@@ -651,8 +703,8 @@ Unzipping the result based on the output variables name input by the user: Again
 Along with the reasons mentioned above regarding the non requirement of generic monogDB query creator, another reason is that to generate the queries, would invariably require generation of python code, something like the above snippet and then modifying a file with a new function to connect to the database and execute the python code. This would further require modifying the source code in the dashboard website and the DAG execution python functions as well to register the new function, opening several fronts from which bugs can creep in.
 
 
-\chapter{About postprocessing functions}
-\label{\detokenize{postprocessing:about-postprocessing-functions}}\label{\detokenize{postprocessing::doc}}
+\chapter{About Post processing functions}
+\label{\detokenize{postprocessing:about-post-processing-functions}}\label{\detokenize{postprocessing::doc}}
 
 \section{Need of post processing function}
 \label{\detokenize{postprocessing:need-of-post-processing-function}}
@@ -662,18 +714,18 @@ Some processing can be done in a cypher query in case of neo4j, and further in c
 It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB.
 
 \item {} 
-On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.
+On similar lines as above, the user may need to aggregate multiple outputs from different queries in a post processing function in a custom manner not supported by the query mechanism of the databases.
 
 \end{itemize}
 
 
 \section{Format of post processing functions}
 \label{\detokenize{postprocessing:format-of-post-processing-functions}}
-We treat the postprocessing functions as queries. The idea behind treating post processing functions as a query is to provide simplistic abstraction while creating a DAG. Thus while creating a DAG, a user has to just compose queries which can either be query to any of the two databases or a post processing function as well. Thus, given the DAG abstraction, the user can feed the output of the query(ies) into a postprocessing node.
+We treat the post processing functions as queries. The idea behind treating post processing functions as a query is to provide simplistic abstraction while creating a DAG. Thus while creating a DAG, a user has to just compose queries which can either be query to any of the two databases or a post processing function as well. Thus, given the DAG abstraction, the user can feed the output of the query(ies) into a post processing node.
 
-Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named “inputs”) and return a dicionary(named “ret”) in same format. The function should further be named as “func”. This requires that the user specifies the input and output varibale names while creating the post processing function. This will be expalined in detail in the DAG section.
+Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named “inputs”) and return a dictionary(named “ret”) in same format. The function should further be named as “func”. This requires that the user specifies the input and output variable names while creating the post processing function. This will be explained in detail in the DAG section.
 
-Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output varibales. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return varibales. Its easy in case named varibales are returned but the issue is when epressions are returned(for example the code contains \sphinxcode{\sphinxupquote{return l{[}:10{]}}}, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternatve.
+Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output variables. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return variables. Its easy in case named variables are returned but the issue is when expressions are returned(for example the code contains \sphinxcode{\sphinxupquote{return l{[}:10{]}}}, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternative.
 
 Here is an example of a post processing function to output the union of lists input to it:
 
@@ -682,7 +734,7 @@ Here is an example of a post processing function to output the union of lists in
 \PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n+nb}{input}\PYG{p}{)}\PYG{p}{:}
     \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
 \PYG{l+s+sd}{    Function to take union of two lists.}
-\PYG{l+s+sd}{    :param: input \PYGZhy{} a dictionry with the attribute names as keys and their values as dict\PYGZhy{}values.}
+\PYG{l+s+sd}{    :param: input \PYGZhy{} a dictionary with the attribute names as keys and their values as dict\PYGZhy{}values.}
 \PYG{l+s+sd}{    :return: a dictionary with output variables as keys.}
 \PYG{l+s+sd}{    \PYGZdq{}\PYGZdq{}\PYGZdq{}}
     \PYG{n}{l1} \PYG{o}{=} \PYG{n+nb}{input}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{list1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}
@@ -744,7 +796,7 @@ This can be seen in this code snippet used to execute the post processing functi
     \PYG{k}{for} \PYG{n}{out} \PYG{o+ow}{in} \PYG{n}{outputs}\PYG{p}{:}
         \PYG{n}{ret}\PYG{p}{[}\PYG{n}{out}\PYG{p}{]} \PYG{o}{=} \PYG{n}{context}\PYG{p}{[}\PYG{n}{out}\PYG{p}{]}
 \PYG{k}{except} \PYG{n+ne}{Exception} \PYG{k}{as} \PYG{n}{e}\PYG{p}{:}
-    \PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Exeption while executing Post proc function: }\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n+nb}{type}\PYG{p}{(}\PYG{n}{e}\PYG{p}{)}\PYG{p}{,}\PYG{n}{e}\PYG{p}{)}\PYG{p}{)}
+    \PYG{k}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{Exception while executing Post proc function: }\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s+s2}{, }\PYG{l+s+si}{\PYGZpc{}s}\PYG{l+s+s2}{\PYGZdq{}}\PYG{o}{\PYGZpc{}}\PYG{p}{(}\PYG{n+nb}{type}\PYG{p}{(}\PYG{n}{e}\PYG{p}{)}\PYG{p}{,}\PYG{n}{e}\PYG{p}{)}\PYG{p}{)}
 \end{sphinxVerbatim}
 
 
@@ -762,37 +814,37 @@ MongoDB query : A query not capable of giving any network information
 Neo4j query : A network based and/or time indexed query on the twitter network
 
 \item {} 
-Post processing function : A python function which takes outups of query(ies) as inputs and transforms them to give the output
+Post processing function : A python function which takes outputs of query(ies) as inputs and transforms them to give the output
 
 \end{itemize}
 
-\sphinxstylestrong{DAG} stands for directed acylic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose mutiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. Each node as a query associated with it.
+\sphinxstylestrong{DAG} stands for directed acyclic graph. Thus it a directed graph with no cycles. The idea behind a DAG is to compose multiple queries to build a complex queries. A DAG has nodes and has directed connections connections between the nodes. Each node as a query associated with it.
 
 
 \section{Idea behind a DAG}
 \label{\detokenize{dag:idea-behind-a-dag}}
-As mentioned above, our main idea is to provie the user an easy abstraction to build complex queries. But apart from this there are several functions that the abstraction of a DAG seems to serve, which we list below:
+As mentioned above, our main idea is to provide the user an easy abstraction to build complex queries. But apart from this there are several functions that the abstraction of a DAG seems to serve, which we list below:
 \begin{itemize}
 \item {} 
-Provide an abstraction to build complex queires from simple queries.
+Provide an abstraction to build complex queries from simple queries.
 
 \item {} 
 A particular database may be suited to answer particular type of queries. In fact this is the main reason behind storing data in mongoDB to answer commonly encountered queries. We expect the user to have a basic understanding of the database schemas and thus be able to have an idea of efficiency of the two databases in answering specific queries. Having such knowledge, the user can compose queries from different databases in sake of efficiency.
 
 \item {} 
-It may be easy to do some projection of data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed te output of the query into a postprocessing node.
+It may be easy to do some projection of data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB. Thus, given the DAG abstraction, the user can feed the output of the query into a postprocessing node.
 
 \item {} 
 On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.
 
 \item {} 
-Breaking a big query into smaller ones may be benefitial from the end user point of view because by doing so we can show the incremental results of the smaller parts(as they are executed) to the user instead of waiting for the entire big query to execute.
+Breaking a big query into smaller ones may be beneficial from the end user point of view because by doing so we can show the incremental results of the smaller parts(as they are executed) to the user instead of waiting for the entire big query to execute.
 
 \end{itemize}
 
 In this abstraction, a single query can also be treated as a DAG, one having a single node and no connections.
 
-We store the queries that the user creates through the dashboard. The user can then specify the structure of the DAG network by uploading a file in which he specifies how ouputs and inputs of queries are connected. We provide the details in the next section.
+We store the queries that the user creates through the dashboard. The user can then specify the structure of the DAG network by uploading a file in which he specifies how outputs and inputs of queries are connected. We provide the details in the next section.
 
 
 \section{Building a DAG from queries}
@@ -847,7 +899,7 @@ This query is demonstrated by the block diagram below also:
 
 \noindent\sphinxincludegraphics{{example_query_detailed}.jpg}
 
-As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the values are lists and similarly returns a dictionary with list values. The keys in both dictioanry is the name of the inputs/outputs, as specified in the query generation.
+As mentioned in neo4j query generation section, we expect all the inputs to the neo4j query to be  list of native objects. We put a similar constraint on the inputs to post processing function. Keeping this in mind, to ensure consistency and a seamless flow of information, the outputs of each query(mongoDB, neo4j or postprocessing function) is expected to be a list. Thus each node in the DAG accepts a dictionary as input in which the values are lists and similarly returns a dictionary with list values. The keys in both dictionary is the name of the inputs/outputs, as specified in the query generation.
 
 The only place where the list input breaks is in case of mongoDB query as they require some basic inputs which can directly be provided as native objects(for example the limit input to the above two mongoDB queries).
 
@@ -870,7 +922,7 @@ The example input file to create the above DAG looks something like this:
 \PYG{n}{n3}\PYG{o}{.}\PYG{n}{count}
 \end{sphinxVerbatim}
 
-Observe the struture of the file.
+Observe the structure of the file.
 \begin{itemize}
 \item {} 
 Line 1 contains the number of nodes in the DAG.
@@ -879,22 +931,22 @@ Line 1 contains the number of nodes in the DAG.
 The following number of nodes lines contain the name of the nodes and  each node corresponds to which query.
 
 \item {} 
-Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the \sphinxcode{\sphinxupquote{n1.hashtag}} variable been taken as an input rather than feefind from the outptut of an upstream query, it would have been specified as \sphinxcode{\sphinxupquote{n1.hashtag {[}"hash1","hash2"{]}}}.
+Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the \sphinxcode{\sphinxupquote{n1.hashtag}} variable been taken as an input rather than feeding from the output of an upstream query, it would have been specified as \sphinxcode{\sphinxupquote{n1.hashtag {[}"hash1","hash2"{]}}}.
 
 \item {} 
 Then a line containing the keyword “CONNECTION:”. Below the connections in the DAG are specified.
 
 \item {} 
-And finally a line contains the keyword “RETURNS:”. Below, we specifiy the outputs of the queries which are to be returned.
+And finally a line contains the keyword “RETURNS:”. Below, we specify the outputs of the queries which are to be returned.
 
 \end{itemize}
 
-Please note that, all the outputs of all the queries can be seen in XComs in airflow and also in the logs of the DAG run. But we provide the user to specify the things of interest to the user, thourgh the RETURN variables. This will be useful in case we provide a functionality to observe the variation of a quantity over periodic DAG runs in future. Presently we don’t have such a functionality in our Dashboard, though providing such a functioanlty shouldn’t be difficult.
+Please note that, all the outputs of all the queries can be seen in XComs in airflow and also in the logs of the DAG run. But we provide the user to specify the things of interest to the user, through the RETURN variables. This will be useful in case we provide a functionality to observe the variation of a quantity over periodic DAG runs in future. Presently we don’t have such a functionality in our Dashboard, though providing such a functionality shouldn’t be difficult.
 
 
 \section{DAG in airflow}
 \label{\detokenize{dag:dag-in-airflow}}
-To create a DAG in airflow, we need to create a file in the dags folder in the AIRFLOW\_HOME directory. So, when the user specifies the DAG through out dashboard, we generate a python file in the metioned folder. The newly created DAG is registered with airflow after sometime(airflow has a heartbeat thread running, which looks for new DAGs in the folder periodically)
+To create a DAG in airflow, we need to create a file in the dags folder in the AIRFLOW\_HOME directory. So, when the user specifies the DAG through out dashboard, we generate a python file in the mentioned folder. The newly created DAG is registered with airflow after sometime(airflow has a heartbeat thread running, which looks for new DAGs in the folder periodically)
 We generate the code to specify the dag in airflow something like this.
 
 \fvset{hllines={, ,}}%
@@ -935,7 +987,7 @@ In the above code, the execute query is the function in which we execute queries
 
 Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the \sphinxcode{\sphinxupquote{start\_date}} property is specified as the current time.
 
-Airflow provides certain other useful properties which may be of interest to the user(when the system becomes huge). For example, the user can set an email-address on which a notification will be sent in case of the success and/or failure of tasks. But, taking all these inputs though our dashboard to genereate the DAG, is like create a complete front-end wrapper over the airflow system, which is not out aim. If the user does wish to use the more involved airflow properties, he/she can always edit the source of the generated dag file. Also, if the need arises to provide the user such functionality through our dashboard, then modifying the code to generate an additional line in the dag python file is easy.
+Airflow provides certain other useful properties which may be of interest to the user(when the system becomes huge). For example, the user can set an email-address on which a notification will be sent in case of the success and/or failure of tasks. But, taking all these inputs though our dashboard to generate the DAG, is like create a complete front-end wrapper over the airflow system, which is not out aim. If the user does wish to use the more involved airflow properties, he/she can always edit the source of the generated dag file. Also, if the need arises to provide the user such functionality through our dashboard, then modifying the code to generate an additional line in the dag python file is easy.
 
 Further on airflow, different views of the DAG can be observed, some of the views which are of particular interest to us are the following :
 \begin{itemize}
@@ -950,7 +1002,7 @@ Gant view - activates after the DAG has been executed, tells how much time taken
 
 \end{itemize}
 
-Also,airflow provides the functionality to schedule the DAG runs periodically and properly stores the logs of each run. This can be leveraged in scenerios in which the user wants to run the same copositional query periodically.
+Also,airflow provides the functionality to schedule the DAG runs periodically and properly stores the logs of each run. This can be leveraged in scenarios in which the user wants to run the same compositional query periodically.
 
 
 \section{Creating custom metric}
@@ -980,7 +1032,7 @@ Table : The values are displayed in table format again using an Ajax call.
 
 \end{itemize}
 
-An example of creating a custom metric will br provided in the {\hyperref[\detokenize{dashboard_website:dashboard-website}]{\sphinxcrossref{\DUrole{std,std-ref}{Dashboard Website}}}} section.
+An example of creating a custom metric will be provided in the {\hyperref[\detokenize{dashboard_website:dashboard-website}]{\sphinxcrossref{\DUrole{std,std-ref}{Dashboard Website}}}} section.
 
 
 \chapter{Generating alerts using Apache Flink and Kafka}
@@ -1011,8 +1063,9 @@ Count - threshold of count of tweets in any window.
 As soon as the count is reached in any window, an alert is generated.
 
 This abstraction is translated to a Flink Java application, compiled, uploaded and run by Flink server running locally. It continuously streams the tweets, processes them according to the specification and posts any alerts on a different Kafka topic (“alerts\_topic”). There is a simple Python application which continuously polls for alerts on this Kafka topic and persists any found alerts to MongoDB to be displayed by the dashboard.
-\begin{description}
-\item[{Example: Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:}] \leavevmode\begin{itemize}
+
+Example: Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:
+\begin{itemize}
 \item {} 
 Filter = None; as we need to consider all tweets.
 
@@ -1029,8 +1082,6 @@ Window slide = 60; say, for non-overlapping windows
 Count = 100
 
 \end{itemize}
-
-\end{description}
 
 
 \chapter{Benchmarking the query answering}
@@ -1408,7 +1459,7 @@ When you click Fetch data the DAG will be executed to feed data into the post pr
 
 \subsection{Create Alert}
 \label{\detokenize{dashboard_website:create-alert}}
-To create an alert on the tweet stream, we need to specify the alert name, the filter, choose keys on which to generate the filter, the window length, the window slide and the count threshold. Let’s create a hashtag “viral\_hashtags” to notify when a hashtag frequency exceeds 3 in the past window of 60 seconds, the window sliding ahead by 30 seconds.
+To create an alert on the tweet stream, we need to specify the alert name, the filter, choose keys on which to group and partition the tweet stream, the window length, the window slide and the count threshold. Let’s create a hashtag “viral\_hashtags” to notify when a hashtag frequency exceeds 3 in the past window of 60 seconds, the window sliding ahead by 30 seconds.
 
 \noindent\sphinxincludegraphics[scale=0.4]{{alerts1}.png}
 

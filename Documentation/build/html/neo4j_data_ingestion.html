@@ -85,15 +85,18 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#data-stored-in-neo4j">Data stored in neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#user-network">User network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tweet-network">Tweet network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#indexing-network">Indexing network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-stored-in-neo4j">Data stored in neo4j</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#user-network">User network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tweet-network">Tweet network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#indexing-network">Indexing network</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#improving-ingestion-rate-using-transaction">Improving ingestion rate using transaction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#ingesting-the-data-into-neo4j-practical-side">Ingesting the data into neo4j : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-ingestion-script">Running the ingestion script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 </ul>
 </li>
@@ -101,7 +104,11 @@
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-transactions">Improving ingestion rate using transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-parallel-multiple-process">Improving ingestion rate using parallel multiple process</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
@@ -111,13 +118,17 @@
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#naming-entities">Naming entities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#returns">Returns</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
@@ -224,42 +235,63 @@
 <div><ul class="simple">
 <li>User network : Stores the user information and connections between the user nodes</li>
 <li>Tweet network : Stores the tweets, their attributes and interconnections between tweets and their connections with user nodes as well.</li>
-<li>Indexing network : Stores the time indexing structure utilised to answer queries having a temporal dimension. Its instructive to imagine the user and tweet network on a plane and the indexing network on top of this plane.</li>
+<li>Indexing network : Stores the time indexing structure utilized to answer queries having a temporal dimension. Its instructive to imagine the user and tweet network on a plane and the indexing network on top of this plane.</li>
 </ul>
 </div></blockquote>
 <p>Let’s look at these networks in some detail</p>
-</div>
 <div class="section" id="user-network">
-<h2>User network<a class="headerlink" href="#user-network" title="Permalink to this headline">¶</a></h2>
+<h3>User network<a class="headerlink" href="#user-network" title="Permalink to this headline">¶</a></h3>
 <p>The user network contains following nodes:</p>
 <blockquote>
 <div><ul class="simple">
-<li>USER node : It contains the user info.</li>
-<li>USER_INFO node: It contains the user info. These nodes forma link list in which new nodes are added, when information of the user is collected.</li>
+<li>USER node : It contains user_id and screen_name.</li>
+<li>USER_INFO node: It contains the user info like number of followers/friends, number of tweets, location and other meta data. These nodes form a link list in which new nodes are added, when information of the user is collected.</li>
 </ul>
 </div></blockquote>
 <img alt="_images/neo_in3.png" src="_images/neo_in3.png" />
 <img alt="_images/neo_in2.png" src="_images/neo_in2.png" />
 </div>
 <div class="section" id="tweet-network">
-<h2>Tweet network<a class="headerlink" href="#tweet-network" title="Permalink to this headline">¶</a></h2>
+<h3>Tweet network<a class="headerlink" href="#tweet-network" title="Permalink to this headline">¶</a></h3>
+<p>The tweet network contains following nodes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>TWEET node : It contains the tweet info like its id, the raw text of the tweet, the location from which the tweet is made(currently we are storing it in raw fashion, which in future can be extended by creating LOCATION nodes just like HASHTAG et al.)</li>
+<li>HASHTAG node : It contains the text of the hashtag.</li>
+<li>URL node : Contains the full and the shortened url.</li>
+</ul>
+</div></blockquote>
 <img alt="_images/neo_in1.png" src="_images/neo_in1.png" />
 </div>
 <div class="section" id="indexing-network">
-<h2>Indexing network<a class="headerlink" href="#indexing-network" title="Permalink to this headline">¶</a></h2>
+<h3>Indexing network<a class="headerlink" href="#indexing-network" title="Permalink to this headline">¶</a></h3>
+<p>The Indexing network contains:</p>
+<blockquote>
+<div><ul class="simple">
+<li>RUN node : It is a unique node in the entire network. Just a starting placeholder for the root of the indexing structure.</li>
+<li>FRAME node : A frame time interval is to be specified by the user. Each frame indexes time slices equal to the specified interval.</li>
+<li>FOLLOW_EVENT node : represents that Follower started following Followee.</li>
+<li>UNFOLLOW_EVENT node : represents that Unfollower stopped following Unfollowee.</li>
+<li>TWEET_EVENT node : represents that user tweeted tweet.</li>
+</ul>
+</div></blockquote>
 <img alt="_images/neo_in4.png" src="_images/neo_in4.png" />
+</div>
 </div>
 <div class="section" id="ingesting-the-data-into-neo4j-logic">
 <h2>Ingesting the data into neo4j : Logic<a class="headerlink" href="#ingesting-the-data-into-neo4j-logic" title="Permalink to this headline">¶</a></h2>
 <p>We get a tweet from the twitter firehose. One simple thing could be to make a connection to the on-disk database and insert the tweet. This can be achieved using <cite>session.run(&lt;cypher tweet insertion query&gt;)</cite>, because run in neo4j emulates a auto-commit transaction.</p>
-<p>A simple way to make this more efficient would be the use of transactions. The idea behind using transactions is to keep on accumulating the incoming tweets in a graph in memory. After some fixed number of tweets, the transaction is commited to the disk. Clearly this leads to faster ingestion rate:</p>
+<div class="section" id="improving-ingestion-rate-using-transaction">
+<h3>Improving ingestion rate using transaction<a class="headerlink" href="#improving-ingestion-rate-using-transaction" title="Permalink to this headline">¶</a></h3>
+<p>A simple way to make this more efficient would be the use of transactions. The idea behind using transactions is to keep on accumulating the incoming tweets in a graph in memory. After some fixed number of tweets, the transaction is committed to the disk. Clearly this leads to faster ingestion rate:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Accumulating to memory and then writing the batch to disk is faster as comapred to writing tweet by tweet to disk due to the efficieny in disk head seaks.</li>
+<li>Accumulating to memory and then writing the batch to disk is faster as compared to writing tweet by tweet to disk due to the efficiency in disk head seaks.</li>
 <li>Further, when creating the in-memory local graph from the transaction batch, neo4j does some changes in the order in which to write the changes to ensure efficiency.</li>
 </ul>
 </div></blockquote>
-<p>But, the clear downside of this is that the queries being answered will lag behind at most the transaction size. This happens becasue the tweets are being inserted in real time manner and the queries are also being answered simulataneoulsy. But this is not a major issue as it induces a lag of only &lt;10 secs(assuming transaction size of ~30k).</p>
+<p>But, the clear downside of this is that the queries being answered will lag behind at most the transaction size. This happens because the tweets are being inserted in real time manner and the queries are also being answered simultaneously. But this is not a major issue as it induces a lag of only &lt;10 secs(assuming transaction size of ~30k).</p>
+</div>
 <div class="section" id="indexing">
 <h3>Indexing<a class="headerlink" href="#indexing" title="Permalink to this headline">¶</a></h3>
 <p>We create uniqueness constraints on the following attributes of these nodes:</p>
@@ -293,14 +325,14 @@
 </table>
 </div>
 </div>
-<div class="section" id="ingesting-the-data-into-neo4j-practical-side">
-<h2>Ingesting the data into neo4j : Practical side<a class="headerlink" href="#ingesting-the-data-into-neo4j-practical-side" title="Permalink to this headline">¶</a></h2>
-<p>To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file <cite>python ingest_neo4j.py</cite> to start ingesting. A logs file will be created which will keep on updating to help the user gauge the ingestion rate.</p>
+<div class="section" id="running-the-ingestion-script">
+<h2>Running the ingestion script<a class="headerlink" href="#running-the-ingestion-script" title="Permalink to this headline">¶</a></h2>
+<p>To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file <cite>python ingest_neo4j.py</cite> to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.</p>
 </div>
 <div class="section" id="neo4j-ingestion-rates">
 <h2>Neo4j Ingestion Rates<a class="headerlink" href="#neo4j-ingestion-rates" title="Permalink to this headline">¶</a></h2>
 <img alt="_images/neo_in5.png" src="_images/neo_in5.png" />
-<p>Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size of around 35k. This is mainly due to the limitation of memory size. The authors observe that keeping a larger transaction size leads to lag on the system indicative of use of swap space. Thus, the maximum ingestion rate can be enhanced just by putting in more memory, albiet with decreasing returns.</p>
+<p>Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size of around 35k. This is mainly due to the limitation of memory size. The authors observe that keeping a larger transaction size leads to lag on the system indicative of use of swap space. Thus, the maximum ingestion rate can be enhanced just by putting in more memory, albeit with decreasing returns.</p>
 </div>
 </div>
 

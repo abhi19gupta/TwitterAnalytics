@@ -1,10 +1,10 @@
 # Fdb version 3
-["makeindex TwitterAnalyticsDocumentation.idx"] 1529047162 "TwitterAnalyticsDocumentation.idx" "TwitterAnalyticsDocumentation.ind" "TwitterAnalyticsDocumentation" 1529220170
-  "TwitterAnalyticsDocumentation.idx" 1529220167 0 d41d8cd98f00b204e9800998ecf8427e ""
+["makeindex TwitterAnalyticsDocumentation.idx"] 1529047162 "TwitterAnalyticsDocumentation.idx" "TwitterAnalyticsDocumentation.ind" "TwitterAnalyticsDocumentation" 1529341399
+  "TwitterAnalyticsDocumentation.idx" 1529341396 0 d41d8cd98f00b204e9800998ecf8427e ""
   (generated)
-  "TwitterAnalyticsDocumentation.ilg"
   "TwitterAnalyticsDocumentation.ind"
-["pdflatex"] 1529220167 "TwitterAnalyticsDocumentation.tex" "TwitterAnalyticsDocumentation.pdf" "TwitterAnalyticsDocumentation" 1529220170
+  "TwitterAnalyticsDocumentation.ilg"
+["pdflatex"] 1529341396 "TwitterAnalyticsDocumentation.tex" "TwitterAnalyticsDocumentation.pdf" "TwitterAnalyticsDocumentation" 1529341399
   "/etc/texmf/web2c/texmf.cnf" 1480178403 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
@@ -159,11 +159,11 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1503657773 127805 5c3c5fac7370b5e0b4000550316abe76 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1503657771 718487 04e3008780c35b39e9bb90600f4d3636 ""
   "5.png" 1528345541 51746 e5f3c48fd03f4203400279e720dab2ed ""
-  "TwitterAnalyticsDocumentation.aux" 1529220170 17083 3bda25c481824cce410d78a1048484bf ""
+  "TwitterAnalyticsDocumentation.aux" 1529341399 18395 a4582a6b8bd6b84cc93711db44cf9366 ""
   "TwitterAnalyticsDocumentation.ind" 1529047162 0 d41d8cd98f00b204e9800998ecf8427e "makeindex TwitterAnalyticsDocumentation.idx"
-  "TwitterAnalyticsDocumentation.out" 1529220170 12112 b539b1973ae94772262d4bf5a9600932 ""
-  "TwitterAnalyticsDocumentation.tex" 1529220160 90023 d555f087575754d253eb45a085ca7c5e ""
-  "TwitterAnalyticsDocumentation.toc" 1529220170 5892 9ef4addac15519cbc029379762d38857 ""
+  "TwitterAnalyticsDocumentation.out" 1529341399 13289 0ac7cd1a4660dcb69ed22ee509ad050e ""
+  "TwitterAnalyticsDocumentation.tex" 1529341396 92879 9fded4254a31741530fdda8975705d8a ""
+  "TwitterAnalyticsDocumentation.toc" 1529341399 6425 ebc283454bdb750f21008093864913fb ""
   "alerts1.png" 1529042095 85753 2cd4f7ef021362469dc67e6538fe476c ""
   "alerts2.png" 1529042211 425625 f84ed6e5f255217f54380cc4e4e788f8 ""
   "cm1.png" 1529041793 132437 be2e6264ee482f3205261f779d863b58 ""
@@ -199,13 +199,13 @@
   "queries2.png" 1529040908 262438 0d99510b4da5770de879f190e8bd7962 ""
   "simple.png" 1529217813 24445 040ee480efde36859c21b76661c3028d ""
   "sphinx.sty" 1528375074 67813 626684f1806f65c5b33d5f8b01540dad ""
-  "sphinxhighlight.sty" 1529220160 8137 4243cb6b9f7cb21b3acff29e421b69d3 ""
+  "sphinxhighlight.sty" 1529341396 8137 43142b300fbcb2e45219aef101a06814 ""
   "sphinxmanual.cls" 1528375074 3589 0b0aac49c6f36925cf5f9d524a75a978 ""
   "sphinxmulticell.sty" 1528375074 14618 0defbdc8536ad2e67f1eac6a1431bc55 ""
   (generated)
-  "TwitterAnalyticsDocumentation.out"
-  "TwitterAnalyticsDocumentation.toc"
   "TwitterAnalyticsDocumentation.idx"
   "TwitterAnalyticsDocumentation.pdf"
-  "TwitterAnalyticsDocumentation.log"
   "TwitterAnalyticsDocumentation.aux"
+  "TwitterAnalyticsDocumentation.toc"
+  "TwitterAnalyticsDocumentation.log"
+  "TwitterAnalyticsDocumentation.out"

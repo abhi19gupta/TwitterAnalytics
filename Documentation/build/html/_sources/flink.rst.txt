@@ -18,6 +18,7 @@ As soon as the count is reached in any window, an alert is generated.
 This abstraction is translated to a Flink Java application, compiled, uploaded and run by Flink server running locally. It continuously streams the tweets, processes them according to the specification and posts any alerts on a different Kafka topic ("alerts_topic"). There is a simple Python application which continuously polls for alerts on this Kafka topic and persists any found alerts to MongoDB to be displayed by the dashboard.
 
 Example: Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:
+
    * Filter = None; as we need to consider all tweets.
    * Group keys = Hashtag; as we need to create a sub-stream for each hashtag.
    * Window length = 60

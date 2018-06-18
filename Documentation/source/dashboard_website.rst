@@ -192,7 +192,7 @@ When you click Fetch data the DAG will be executed to feed data into the post pr
 
 Create Alert
 '''''''''''''''
-To create an alert on the tweet stream, we need to specify the alert name, the filter, choose keys on which to generate the filter, the window length, the window slide and the count threshold. Let's create a hashtag "viral_hashtags" to notify when a hashtag frequency exceeds 3 in the past window of 60 seconds, the window sliding ahead by 30 seconds.
+To create an alert on the tweet stream, we need to specify the alert name, the filter, choose keys on which to group and partition the tweet stream, the window length, the window slide and the count threshold. Let's create a hashtag "viral_hashtags" to notify when a hashtag frequency exceeds 3 in the past window of 60 seconds, the window sliding ahead by 30 seconds.
 
 .. image:: /images/alerts1.png
    :scale: 40 %
