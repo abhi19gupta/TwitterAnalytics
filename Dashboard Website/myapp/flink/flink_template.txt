@@ -63,6 +63,7 @@ public class StreamingJob {
 		kafkaConsumerProperties.setProperty("bootstrap.servers", "localhost:9092");
 		kafkaConsumerProperties.setProperty("zookeeper.connect", "localhost:2181");
 		kafkaConsumerProperties.setProperty("group.id", jobName);
+		kafkaConsumerProperties.setProperty("auto.offset.reset", "latest");
 
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);

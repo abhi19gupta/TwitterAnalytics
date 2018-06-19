@@ -28,8 +28,6 @@ def flatten_json(json_obj):
 	json_obj["json_fields"] = json_fields # while fetching convert these fields back to jsons
 
 log_file = "neo4j_logs.txt"
-driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
-session = driver.session()
 def log(text):
 	f = open(log_file,'a')
 	f.write(text)
@@ -40,6 +38,8 @@ class Twitter:
 	def __init__(self,batch_size=200,):
 		self.batch_size = batch_size
 		self.tweet_counter = 0
+		self.driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
+		self.session = self.driver.session()
 		self.graph = Graph("bolt://localhost:7687",password="password")
 		self.tweet_tx = self.graph.begin()
 		self.time = time.time()
@@ -48,13 +48,15 @@ class Twitter:
 		# self.q = Queue()
 		# self.proc = Process(target = self.worker,args=(self.q,))
 		# self.proc.start()
+		
 	def clear_graph(self):
 		print("Clearing out the complete graph....")
 		# self.graph.delete_all()
-		session.run("MATCH (n) DETACH DELETE n")
+		self.session.run("MATCH (n) DETACH DELETE n")
 		# for index in session.run("CALL db.indexes()"):
 		# 	session.run("DROP "+index["description"])
 		print("Graph deleted")
+
 	def get_constraints(self):
 		print(self.graph.schema.get_uniqueness_constraints("FRAME"))
 		# print(self.graph.schema.get_uniqueness_constraints("TWEET_EVENT"))
@@ -62,8 +64,10 @@ class Twitter:
 		print(self.graph.schema.get_uniqueness_constraints("TWEET"))
 		print(self.graph.schema.get_uniqueness_constraints("HASHTAG"))
 		print(self.graph.schema.get_uniqueness_constraints("URL"))
+
 	def drop_constraint(self,node,attrib):
 		self.graph.schema.drop_uniqueness_constraint(node,attrib)
+
 	def create_constraints(self):
 		self.create_constraint("FRAME","start_t")
 		self.create_constraint("TWEET","id")
@@ -73,11 +77,12 @@ class Twitter:
 
 	def create_constraint(self,node,attrib):
 		self.graph.schema.create_uniqueness_constraint(node,attrib)
+
 	def get_profile(self):
-		total = list(session.run("MATCH(n) RETURN COUNT(n)"))[0]
-		tweets = list(session.run("MATCH(n:TWEET) RETURN COUNT(n)"))[0]
-		users = list(session.run("MATCH(n:USER) RETURN COUNT(n)"))[0]
-		hashtags = list(session.run("MATCH(n:HASHTAG) RETURN COUNT(n)"))[0]
+		total = list(self.session.run("MATCH(n) RETURN COUNT(n)"))[0]
+		tweets = list(self.session.run("MATCH(n:TWEET) RETURN COUNT(n)"))[0]
+		users = list(self.session.run("MATCH(n:USER) RETURN COUNT(n)"))[0]
+		hashtags = list(self.session.run("MATCH(n:HASHTAG) RETURN COUNT(n)"))[0]
 		print("Count of total = ",total,"tweets = ",tweets,"users=",users)
 
 	def close(self):
@@ -85,6 +90,10 @@ class Twitter:
 			print("cleaning up")
 			self.tweet_tx.commit()
 			self.tweet_tx = self.graph.begin()
+
+	def close_session(self):
+		self.session.close()
+
 	# @profile
 	def insert_tweet(self,tweet, favourited_by=None, fav_timestamp=None):
 		# print("came here")
@@ -222,35 +231,32 @@ class Twitter:
 			self.tweet_counter = 0
 			self.tweet_tx = self.graph.begin()
 
-def read_tweets(path, filename):
+def read_tweets(path, twitter, filename=""):
 	global count
-	ll = []
-	# fout = open("ll.txt","w")
-	for file in os.listdir(path):
-		if (file!=filename):
-			continue
-		# print(len(ll))
+	files = [x for x in os.listdir(path)]
+	files.sort()
+	print("Starting to ingest tweets in Neo4j")
+	for file in files:
+		print("Reading file: %s"%file)
+		# if (file!=filename):
+		# 	continue
 		fin = open(path+"/"+file)
 		# s = fin.read().replace("null","'null'").replace("false","False").replace("true","True")
 		l = json.loads(fin.read())
-		# ll += [twt for sl in l for twt in sl]
-		# if(len(ll)>500000):
-		# 	break
-	print("We have total tweets ",len(ll))
-	print("Starting to simulate the process")
-	print(len(l))
-	t = Twitter(5000)
-	for i,twt in enumerate(l):
-		# if (i < 260000):
-		# 	continue
-		if (i%10000 == 0):
-			print(i)
-		if ("delete" in twt or "status_withheld" in twt):
-			continue
-		t.insert_tweet(twt)
-		count+=1
-	t.close()
-	print(count)
+		print("Number of tweets ",len(l))
+		for i,twt in enumerate(l):
+			if (i%10000 == 0):
+				print(i, count)
+			if ("delete" in twt or "status_withheld" in twt):
+				continue
+			try:
+				twitter.insert_tweet(twt)
+			except Exception as e:
+				log("Failed to insert tweet: %s, %s, %s"%(type(e),e,twt))
+			count+=1
+		l.clear()
+		print("Completed the file. Number of tweets till now: %d"%count)
+	twitter.close()
 	print("Ingestion process is done")
 
 
@@ -260,12 +266,13 @@ def read_tweets(path, filename):
 # 	consumer.assign([partition])
 # 	print(consumer.assignment())
 
-t = Twitter()
+
+t = Twitter(50000)
 # t.clear_graph()
 # t.create_constraints()
 t.get_constraints()
 t.get_profile()
 # read_tweets("/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets")
-read_tweets("/home/db1/Documents/data_collection/data", "stream_out_2018-05-08 20-55-45.867977.txt")
+# read_tweets("/home/db1/Documents/data_collection/data_splitted", t)
 t.get_profile()
-session.close()
+t.close_session()
