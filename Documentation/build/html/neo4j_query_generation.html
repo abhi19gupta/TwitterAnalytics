@@ -85,29 +85,50 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#improving-ingestion-rate-using-transaction">Improving ingestion rate using transaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-transactions">Improving ingestion rate using transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-parallel-multiple-process">Improving ingestion rate using parallel multiple process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Neo4j: API to generate cypher queries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#template-of-a-general-query">Template of a general query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#template-of-a-general-query">Template of a general query</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-abstraction">Basic Abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#naming-entities">Naming entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-attributes">Variable attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#returns">Returns</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
@@ -158,8 +179,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environement">Setting up the environement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboards">Running the dashboards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environment">Setting up the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboard">Running the dashboard</a></li>
 </ul>
 </li>
 </ul>
@@ -199,9 +220,11 @@
             
   <div class="section" id="neo4j-api-to-generate-cypher-queries">
 <h1>Neo4j: API to generate cypher queries<a class="headerlink" href="#neo4j-api-to-generate-cypher-queries" title="Permalink to this headline">¶</a></h1>
-<p>Here we expalin the API to generate cypher queries for Neo4j.</p>
+<p>Here we explain the API to generate cypher queries for Neo4j.</p>
 <div class="section" id="template-of-a-general-query">
 <h2>Template of a general query<a class="headerlink" href="#template-of-a-general-query" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basic-abstraction">
+<h3>Basic Abstraction<a class="headerlink" href="#basic-abstraction" title="Permalink to this headline">¶</a></h3>
 <p>Any query can be thought of as a 2 step process -</p>
 <blockquote>
 <div><ul class="simple">
@@ -209,7 +232,7 @@
 <li>Post-processing of this sub-graph to return desired result (Eg. Return “names” of such users, Return “number” of such users)</li>
 </ul>
 </div></blockquote>
-<p>In a generic way, the 1st step can be constructed using AND,OR,NOT of multiple constraints. We now specify how each such constraint can be built.</p>
+<p>In a generic way, the 1st step can be constructed using AND,OR,NOT of multiple constraints(Though in our code right now, only AND is supported as Neo4j doesn’t support OR and NOT directly).We now specify how each such constraint can be built.</p>
 <p>We look at the network in an abstract in two dimensions.</p>
 <blockquote>
 <div><ul class="simple">
@@ -249,7 +272,10 @@ We first break this into AND of two constraints:</p>
 <li>Relationship - Follows, Attributes - b/w t1,t2</li>
 </ul>
 </div></blockquote>
-<p>The missing thing in this abstraction is that we have not taken into account that the source entity in both the constraints refers to the same User. To do so, we “name” each entity (like a variable). So we have:</p>
+</div>
+<div class="section" id="naming-entities">
+<h3>Naming entities<a class="headerlink" href="#naming-entities" title="Permalink to this headline">¶</a></h3>
+<p>The missing thing in this abstraction is that we need to be able to distinguish that the Users in the two constraints above refer to different users. To do so, we “name” each entity (like a variable). So we have:</p>
 <blockquote>
 <div><ul class="simple">
 <li><dl class="first docutils">
@@ -275,6 +301,16 @@ We first break this into AND of two constraints:</p>
 </ul>
 </div></blockquote>
 </div>
+<div class="section" id="variable-attributes">
+<h3>Variable attributes<a class="headerlink" href="#variable-attributes" title="Permalink to this headline">¶</a></h3>
+<p>In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces <code class="docutils literal notranslate"><span class="pre">{}</span></code>. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as <code class="docutils literal notranslate"><span class="pre">{hash1}</span></code>, it means that our query has a variable named “hash1”.</p>
+</div>
+<div class="section" id="returns">
+<h3>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h3>
+<p>The user can write a comma separated list of entities/attributes to return. An entity can be specified directly by its name. Eg. <code class="docutils literal notranslate"><span class="pre">my_tweet_entity</span></code>. An entity’s attribute can be specified as <code class="docutils literal notranslate"><span class="pre">&lt;entitiy_name&gt;.&lt;attribute&gt;</span></code>. Eg. <code class="docutils literal notranslate"><span class="pre">u.screen_name</span></code>.</p>
+<p>The user can also group on certain entity/attribute by using an aggregate function on some other entity/attribute. Eg. <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">u.id,</span> <span class="pre">count(distinct</span> <span class="pre">h)</span></code> will group on u.id and return count of distinct h among all records returned for each u.id.</p>
+</div>
+</div>
 <div class="section" id="creating-a-custom-query-through-dashboard-api-behind-the-scenes">
 <h2>Creating a custom query through dashboard API : Behind the scenes<a class="headerlink" href="#creating-a-custom-query-through-dashboard-api-behind-the-scenes" title="Permalink to this headline">¶</a></h2>
 <p>A user can follow the general template of a query as provided above to build a query.
@@ -282,12 +318,19 @@ when a user provides the inputs to specify the query, the following steps are ex
 <blockquote>
 <div><ul class="simple">
 <li>Cleanup and processing of the inputs provided by the user.</li>
-<li>The variables(User/Tweet) and the relations are stored in a database. These stored objects can be later used by the user.</li>
-<li>The query specified by the user is converted into a Cypher neo4j graph mining query.</li>
-<li>Connection is established with the neo4j server and the query is executed on the database.</li>
-<li>The results obtained are concatenated and are displayed.</li>
+<li>The variables(User/Tweet), their attributes and the relations are stored in a database. These stored objects can be later used by the user.</li>
 </ul>
 </div></blockquote>
+<p>Finally, to create the query the user need to specify the query name and the return variables. The query specified by the user in terms of constraints is converted into a Cypher neo4j graph mining query:</p>
+<blockquote>
+<div><ul class="simple">
+<li>All variable attributes are unwinded. This connects to the fact that we are expecting inputs as a list of native objects, hence the unwind for all inputs to the query. This ensures a Cartesian cross in the query.</li>
+<li>The time indexed part of the query is generated through the time indexing structure with frames and events.</li>
+<li>The network part is generated through the user network and tweet network based on the relationships.</li>
+<li>The return variables specified by the user are just concatenated with a return statement in the cypher.</li>
+</ul>
+</div></blockquote>
+<p>It is to be noted here, that we don’t do any kind of checking if the constraints specified by the user to build the query are valid. Checking this in a generic manner without executing the query is difficult. So, this is delegated to the neo4j query engine itself and the user will get empty result in case the constrains are invalid.</p>
 </div>
 </div>
 

@@ -1,4 +1,4 @@
-About postprocessing functions
+About Post processing functions
 ====================================
 
 Need of post processing function
@@ -7,15 +7,15 @@ Need of post processing function
 Some processing can be done in a cypher query in case of neo4j, and further in case of mongoDB, there is functionality to write custom functions to be included in the aggregation pipeline. But we provide the user the ability to create post processing function. The major reasons behind this are:
 
     *  It may be easy to do some projection on data output by a query post the execution, rather than coding it in the cypher in case of neo4j, or the aggregation pipeline in case of mongoDB.
-    * On similar lines as above, the user may need to aggregate multiple outputs from different queries in a postprocessing function in a custom manner not supported by the query mechanism of the databases.
+    * On similar lines as above, the user may need to aggregate multiple outputs from different queries in a post processing function in a custom manner not supported by the query mechanism of the databases.
 
 Format of post processing functions
 --------------------------------------
-We treat the postprocessing functions as queries. The idea behind treating post processing functions as a query is to provide simplistic abstraction while creating a DAG. Thus while creating a DAG, a user has to just compose queries which can either be query to any of the two databases or a post processing function as well. Thus, given the DAG abstraction, the user can feed the output of the query(ies) into a postprocessing node.
+We treat the post processing functions as queries. The idea behind treating post processing functions as a query is to provide simplistic abstraction while creating a DAG. Thus while creating a DAG, a user has to just compose queries which can either be query to any of the two databases or a post processing function as well. Thus, given the DAG abstraction, the user can feed the output of the query(ies) into a post processing node.
 
-Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named "inputs") and return a dicionary(named "ret") in same format. The function should further be named as "func". This requires that the user specifies the input and output varibale names while creating the post processing function. This will be expalined in detail in the DAG section.
+Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named "inputs") and return a dictionary(named "ret") in same format. The function should further be named as "func". This requires that the user specifies the input and output variable names while creating the post processing function. This will be explained in detail in the DAG section.
 
-Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output varibales. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return varibales. Its easy in case named varibales are returned but the issue is when epressions are returned(for example the code contains ``return l[:10]``, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternatve.
+Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output variables. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return variables. Its easy in case named variables are returned but the issue is when expressions are returned(for example the code contains ``return l[:10]``, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternative.
 
 Here is an example of a post processing function to output the union of lists input to it:
 
@@ -24,7 +24,7 @@ Here is an example of a post processing function to output the union of lists in
     def func(input):
         """
         Function to take union of two lists.
-        :param: input - a dictionry with the attribute names as keys and their values as dict-values.
+        :param: input - a dictionary with the attribute names as keys and their values as dict-values.
         :return: a dictionary with output variables as keys.
         """
         l1 = input["list1"]
@@ -78,4 +78,4 @@ This can be seen in this code snippet used to execute the post processing functi
         for out in outputs:
             ret[out] = context[out]
     except Exception as e:
-        print("Exeption while executing Post proc function: %s, %s"%(type(e),e))
+        print("Exception while executing Post proc function: %s, %s"%(type(e),e))

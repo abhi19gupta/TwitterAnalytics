@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.6.8)  15 JUN 2018 16:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.8.25)  18 JUN 2018 22:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **TwitterAnalyticsDocumentation.tex
 (./TwitterAnalyticsDocumentation.tex
 LaTeX2e <2016/02/01>
-Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
+Babel <3.9q> and hyphenation patterns for 3 language(s) loaded.
 (./sphinxmanual.cls
 Document Class: sphinxmanual 2017/03/26 v1.6 Document class (Sphinx manual)
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -432,6 +432,8 @@ File: babel.def 2016/02/24 3.9q Babel common definitions
 \babel@savecnt=\count100
 \U@D=\dimen112
 )
+\l@british = a dialect from \language\l@english 
+\l@UKenglish = a dialect from \language\l@english 
 \l@canadian = a dialect from \language\l@american 
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
@@ -451,7 +453,7 @@ Package: fncychap 2007/07/30 v1.34 LaTeX package (Revised chapters)
 \c@AlphaCnt=\count101
 \c@AlphaDecCnt=\count102
 ) (./sphinx.sty
-Package: sphinx 2017/06/17 v1.6.3 LaTeX package (Sphinx markup)
+Package: sphinx 2018/03/11 v1.7.2 LaTeX package (Sphinx markup)
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
@@ -759,7 +761,7 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 \FV@StepNumber=\count114
 \FV@OutFile=\write3
 ) (./footnotehyper-sphinx.sty
-Package: footnotehyper-sphinx 2017/03/07 v1.6 hyperref aware footnote.sty for s
+Package: footnotehyper-sphinx 2017/10/27 v1.7 hyperref aware footnote.sty for s
 phinx (JFB)
 \FNH@notes=\box35
 \FNH@width=\dimen134
@@ -796,6 +798,7 @@ Package: capt-of 2009/12/29 v0.2 standard captions outside of floats
 (/usr/share/texlive/texmf-dist/tex/latex/needspace/needspace.sty
 Package: needspace 2010/09/12 v1.3d reserve vertical space
 )
+(/usr/share/texlive/texmf-dist/tex/latex/carlisle/remreset.sty)
 (./sphinxhighlight.sty
 Package: sphinxhighlight 2016/05/29 stylesheet for highlighting with pygments
 )
@@ -825,9 +828,9 @@ Package etexcmds Info: Could not find \expanded.
 \spx@notice@border=\dimen142
 \spx@image@box=\box39
 \c@literalblock=\count117
-\spx@Verbatim@TitleBox=\box40
-\sphinxcontinuationbox=\box41
-\sphinxvisiblespacebox=\box42
+\sphinxcontinuationbox=\box40
+\sphinxvisiblespacebox=\box41
+\sphinxVerbatim@TitleBox=\box42
 \py@argswidth=\skip71
 \lineblockindentation=\skip72
 \DUlineblockindent=\skip73
@@ -982,30 +985,30 @@ Writing index file TwitterAnalyticsDocumentation.idx
 (./TwitterAnalyticsDocumentation.aux)
 \openout1 = `TwitterAnalyticsDocumentation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 65.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 65.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 66.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 65.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 66.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
@@ -1073,7 +1076,7 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \AtBeginShipoutBox=\box44
-Package hyperref Info: Link coloring ON on input line 65.
+Package hyperref Info: Link coloring ON on input line 66.
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
@@ -1082,54 +1085,54 @@ Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count137
 )
-LaTeX Info: Redefining \ref on input line 65.
-LaTeX Info: Redefining \pageref on input line 65.
-LaTeX Info: Redefining \nameref on input line 65.
+LaTeX Info: Redefining \ref on input line 66.
+LaTeX Info: Redefining \pageref on input line 66.
+LaTeX Info: Redefining \nameref on input line 66.
 
 (./TwitterAnalyticsDocumentation.out) (./TwitterAnalyticsDocumentation.out)
 \@outlinefile=\write5
 \openout5 = `TwitterAnalyticsDocumentation.out'.
 
-Package hyperref Info: Option `pageanchor' set `false' on input line 68.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 68.
+Package hyperref Info: Option `pageanchor' set `false' on input line 69.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 69.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <10> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <10> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/it' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/it' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/b/it' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/sl' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/sl' tried instead on input line 69.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
 <<ot1.cmap>><<oml.cmap>><<oms.cmap>><<omx.cmap>>
-LaTeX Font Info:    Try loading font information for U+msa on input line 68.
+LaTeX Font Info:    Try loading font information for U+msa on input line 69.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 68.
+LaTeX Font Info:    Try loading font information for U+msb on input line 69.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
 
 ]
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 68.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 69.
  (./TwitterAnalyticsDocumentation.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
@@ -1146,18 +1149,18 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 
 ]
 Chapter 1.
-<5.png, id=365, 706.64pt x 637.38126pt>
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 92.
+<5.png, id=405, 706.64pt x 637.38126pt>
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 93.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 )
 File: 5.png Graphic file (type png)
  <use 5.png>
-Package pdftex.def Info: 5.png used on input line 92.
+Package pdftex.def Info: 5.png used on input line 93.
 (pdftex.def)             Requested size: 469.75502pt x 423.71706pt.
  [3]
-LaTeX Font Info:    Try loading font information for TS1+ptm on input line 96.
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 97.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
@@ -1167,295 +1170,295 @@ Chapter 2.
 
 ] [6]
 Chapter 3.
-<neo_in1.png, id=389, 773.89125pt x 302.12875pt>
-File: neo_in1.png Graphic file (type png)
- <use neo_in1.png>
-Package pdftex.def Info: neo_in1.png used on input line 202.
-(pdftex.def)             Requested size: 469.75502pt x 183.39468pt.
+<neo_in3.png, id=429, 512.91624pt x 221.82875pt>
+File: neo_in3.png Graphic file (type png)
+ <use neo_in3.png>
+Package pdftex.def Info: neo_in3.png used on input line 203.
+(pdftex.def)             Requested size: 469.75502pt x 203.16423pt.
  [7
 
 ]
-<neo_in2.png, id=394, 633.36626pt x 221.82875pt>
+<neo_in2.png, id=434, 633.36626pt x 221.82875pt>
 File: neo_in2.png Graphic file (type png)
  <use neo_in2.png>
-Package pdftex.def Info: neo_in2.png used on input line 204.
+Package pdftex.def Info: neo_in2.png used on input line 205.
 (pdftex.def)             Requested size: 469.75502pt x 164.52979pt.
 
-<neo_in3.png, id=395, 512.91624pt x 221.82875pt>
-File: neo_in3.png Graphic file (type png)
- <use neo_in3.png>
-Package pdftex.def Info: neo_in3.png used on input line 209.
-(pdftex.def)             Requested size: 469.75502pt x 203.16423pt.
-
-<neo_in4.png, id=396, 658.46pt x 422.57875pt>
+<neo_in1.png, id=435, 773.89125pt x 302.12875pt>
+File: neo_in1.png Graphic file (type png)
+ <use neo_in1.png>
+Package pdftex.def Info: neo_in1.png used on input line 223.
+(pdftex.def)             Requested size: 469.75502pt x 183.39468pt.
+ [8 <./neo_in3.png> <./neo_in2.png>] <neo_in4.png, id=442, 658.46pt x 422.57875
+pt>
 File: neo_in4.png Graphic file (type png)
- <use neo_in4.png>
-Package pdftex.def Info: neo_in4.png used on input line 214.
+
+<use neo_in4.png>
+Package pdftex.def Info: neo_in4.png used on input line 247.
 (pdftex.def)             Requested size: 469.75502pt x 301.47736pt.
- [8 <./neo_in1.png> <./neo_in2.png> <./neo_in3.png>] [9 <./neo_in4.png>]
-<neo_in5.png, id=410, 702.625pt x 451.6875pt>
+ [9 <./neo_in1.png>] [10 <./neo_in4.png>]
+<neo_in5.png, id=454, 702.625pt x 451.6875pt>
 File: neo_in5.png Graphic file (type png)
  <use neo_in5.png>
-Package pdftex.def Info: neo_in5.png used on input line 286.
+Package pdftex.def Info: neo_in5.png used on input line 322.
 (pdftex.def)             Requested size: 469.75502pt x 301.99496pt.
- [10 <./neo_in5.png>]
-Chapter 4.
-[11
+ [11 <./neo_in5.png>] [12
 
-] <mongo_ingestion.jpg, id=421, 945.5325pt x 356.33125pt>
+]
+Chapter 4.
+[13] <mongo_ingestion.jpg, id=469, 1557.82pt x 809.0225pt>
 File: mongo_ingestion.jpg Graphic file (type jpg)
 
 <use mongo_ingestion.jpg>
-Package pdftex.def Info: mongo_ingestion.jpg used on input line 411.
-(pdftex.def)             Requested size: 469.75502pt x 177.03424pt.
- [12] [13 <./mongo_ingestion.jpg>]
-<image1.png, id=430, 702.625pt x 451.6875pt>
+Package pdftex.def Info: mongo_ingestion.jpg used on input line 454.
+(pdftex.def)             Requested size: 469.75502pt x 243.95543pt.
+ [14] [15 <./mongo_ingestion.jpg>]
+<image1.png, id=480, 702.625pt x 451.6875pt>
 File: image1.png Graphic file (type png)
  <use image1.png>
-Package pdftex.def Info: image1.png used on input line 431.
+Package pdftex.def Info: image1.png used on input line 474.
 (pdftex.def)             Requested size: 469.75502pt x 301.99496pt.
- [14 <./image1.png>]
+ [16 <./image1.png>]
 Chapter 5.
-[15
-
-] [16]
-Chapter 6.
-LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 613.
 [17
 
-] [18]
-Chapter 7.
-LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
-(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 660.
-[19
+] [18] [19] [20
 
 ]
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 717.
+Chapter 6.
+LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <9> not available
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 687.
+[21] [22]
+Chapter 7.
+LaTeX Font Info:    Font shape `T1/pcr/m/it' in size <9> not available
+(Font)              Font shape `T1/pcr/m/sl' tried instead on input line 735.
+[23
+
+]
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 794.
 
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1pcr.fd
 File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
-) [20]
+) [24]
 Chapter 8.
-[21
+[25
 
-] <example_query.jpg, id=472, 783.92876pt x 452.69125pt>
+] <example_query.jpg, id=529, 783.92876pt x 452.69125pt>
 File: example_query.jpg Graphic file (type jpg)
 
 <use example_query.jpg>
-Package pdftex.def Info: example_query.jpg used on input line 779.
+Package pdftex.def Info: example_query.jpg used on input line 856.
 (pdftex.def)             Requested size: 469.75502pt x 271.27147pt.
 
-Overfull \hbox (70.22037pt too wide) in paragraph at lines 796--796
+Overfull \hbox (70.22037pt too wide) in paragraph at lines 873--873
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 796--796
+Underfull \hbox (badness 10000) in paragraph at lines 873--873
 
  []
 
 
-Overfull \hbox (374.28706pt too wide) in paragraph at lines 808--808
+Overfull \hbox (374.28706pt too wide) in paragraph at lines 885--885
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 808--808
+Underfull \hbox (badness 10000) in paragraph at lines 885--885
 
  []
 
-<example_query_detailed.jpg, id=473, 1388.18625pt x 1010.77625pt>
+<example_query_detailed.jpg, id=530, 1388.18625pt x 1010.77625pt>
 File: example_query_detailed.jpg Graphic file (type jpg)
 
 <use example_query_detailed.jpg>
-Package pdftex.def Info: example_query_detailed.jpg used on input line 823.
+Package pdftex.def Info: example_query_detailed.jpg used on input line 900.
 (pdftex.def)             Requested size: 469.75502pt x 342.03993pt.
- [22 <./example_query.jpg>] [23 <./example_query_detailed.jpg>] [24] [25] [26
+ [26 <./example_query.jpg>] [27 <./example_query_detailed.jpg>] [28] [29] [30
 
 ]
 Chapter 9.
-[27] [28
+[31] [32
 
 ]
 Chapter 10.
-[29] <simple.png, id=508, 702.625pt x 451.6875pt>
+[33] <simple.png, id=566, 702.625pt x 451.6875pt>
 File: simple.png Graphic file (type png)
  <use simple.png>
-Package pdftex.def Info: simple.png used on input line 1037.
+Package pdftex.def Info: simple.png used on input line 1162.
 (pdftex.def)             Requested size: 469.75502pt x 301.99496pt.
- [30 <./simple.png>] <complex.png, id=514, 702.625pt x 451.6875pt>
+ [34 <./simple.png>] [35] <complex.png, id=576, 702.625pt x 451.6875pt>
 File: complex.png Graphic file (type png)
  <use complex.png>
-Package pdftex.def Info: complex.png used on input line 1097.
+Package pdftex.def Info: complex.png used on input line 1223.
 (pdftex.def)             Requested size: 469.75502pt x 301.99496pt.
 
-[31] [32 <./complex.png>]
+[36 <./complex.png>]
 Chapter 11.
-[33
+[37
 
-] <hash1.png, id=530, 1371.1225pt x 770.88pt>
+] <hash1.png, id=588, 1371.1225pt x 770.88pt>
 File: hash1.png Graphic file (type png)
  <use hash1.png>
-Package pdftex.def Info: hash1.png used on input line 1211.
+Package pdftex.def Info: hash1.png used on input line 1337.
 (pdftex.def)             Requested size: 342.77979pt x 192.71953pt.
 
-<hash2.png, id=531, 1371.1225pt x 770.88pt>
+<hash2.png, id=589, 1371.1225pt x 770.88pt>
 File: hash2.png Graphic file (type png)
  <use hash2.png>
-Package pdftex.def Info: hash2.png used on input line 1211.
+Package pdftex.def Info: hash2.png used on input line 1337.
 (pdftex.def)             Requested size: 342.77979pt x 192.71953pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1211--1212
+Underfull \hbox (badness 10000) in paragraph at lines 1337--1338
 [][]
  []
 
-[34] <hash3.png, id=536, 1371.1225pt x 770.88pt>
+[38] <hash3.png, id=594, 1371.1225pt x 770.88pt>
 File: hash3.png Graphic file (type png)
  <use hash3.png>
-Package pdftex.def Info: hash3.png used on input line 1220.
+Package pdftex.def Info: hash3.png used on input line 1346.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [35 <./hash1.png> <./hash2.png>] <hash4.png, id=541, 1371.1225pt x 770.88pt>
+ [39 <./hash1.png> <./hash2.png>] <hash4.png, id=600, 1371.1225pt x 770.88pt>
 File: hash4.png Graphic file (type png)
  <use hash4.png>
-Package pdftex.def Info: hash4.png used on input line 1227.
+Package pdftex.def Info: hash4.png used on input line 1353.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-[36 <./hash3.png> <./hash4.png>] <mongo1.png, id=546, 1371.1225pt x 770.88pt>
+[40 <./hash3.png> <./hash4.png>] <mongo1.png, id=605, 1371.1225pt x 770.88pt>
 File: mongo1.png Graphic file (type png)
 
 <use mongo1.png>
-Package pdftex.def Info: mongo1.png used on input line 1235.
+Package pdftex.def Info: mongo1.png used on input line 1361.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- <neo1.png, id=548, 1371.1225pt x 770.88pt>
+ <neo1.png, id=607, 1371.1225pt x 770.88pt>
 File: neo1.png Graphic file (type png)
  <use neo1.png>
-Package pdftex.def Info: neo1.png used on input line 1248.
+Package pdftex.def Info: neo1.png used on input line 1374.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-[37 <./mongo1.png>] <neo2.png, id=554, 1371.1225pt x 770.88pt>
+[41 <./mongo1.png>] <neo2.png, id=613, 1371.1225pt x 770.88pt>
 File: neo2.png Graphic file (type png)
  <use neo2.png>
-Package pdftex.def Info: neo2.png used on input line 1254.
+Package pdftex.def Info: neo2.png used on input line 1380.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-<neo3.png, id=555, 1371.1225pt x 770.88pt>
+<neo3.png, id=614, 1371.1225pt x 770.88pt>
 File: neo3.png Graphic file (type png)
  <use neo3.png>
-Package pdftex.def Info: neo3.png used on input line 1260.
+Package pdftex.def Info: neo3.png used on input line 1386.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [38 <./neo1.png> <./neo2.png>] <neo4.png, id=560, 1371.1225pt x 770.88pt>
+ [42 <./neo1.png> <./neo2.png>] <neo4.png, id=619, 1371.1225pt x 770.88pt>
 File: neo4.png Graphic file (type png)
  <use neo4.png>
-Package pdftex.def Info: neo4.png used on input line 1266.
+Package pdftex.def Info: neo4.png used on input line 1392.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-<neo5.png, id=561, 1371.1225pt x 770.88pt>
+<neo5.png, id=620, 1371.1225pt x 770.88pt>
 File: neo5.png Graphic file (type png)
  <use neo5.png>
-Package pdftex.def Info: neo5.png used on input line 1272.
+Package pdftex.def Info: neo5.png used on input line 1398.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [39 <./neo3.png> <./neo4.png>] <pp1.png, id=567, 1371.1225pt x 770.88pt>
+ [43 <./neo3.png> <./neo4.png>] <pp1.png, id=625, 1371.1225pt x 770.88pt>
 File: pp1.png Graphic file (type png)
  <use pp1.png>
-Package pdftex.def Info: pp1.png used on input line 1281.
+Package pdftex.def Info: pp1.png used on input line 1407.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-<queries2.png, id=568, 1371.1225pt x 770.88pt>
+<queries2.png, id=626, 1371.1225pt x 770.88pt>
 File: queries2.png Graphic file (type png)
  <use queries2.png>
-Package pdftex.def Info: queries2.png used on input line 1290.
+Package pdftex.def Info: queries2.png used on input line 1416.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [40 <./neo5.png> <./pp1.png>] <dag1.png, id=574, 1371.1225pt x 770.88pt>
+ [44 <./neo5.png> <./pp1.png>] <dag1.png, id=632, 1371.1225pt x 770.88pt>
 File: dag1.png Graphic file (type png)
  <use dag1.png>
-Package pdftex.def Info: dag1.png used on input line 1300.
+Package pdftex.def Info: dag1.png used on input line 1426.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-<dag2.png, id=575, 1371.1225pt x 770.88pt>
+<dag2.png, id=633, 1371.1225pt x 770.88pt>
 File: dag2.png Graphic file (type png)
  <use dag2.png>
-Package pdftex.def Info: dag2.png used on input line 1308.
+Package pdftex.def Info: dag2.png used on input line 1434.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [41 <./queries2.png> <./dag1.png>] <dag3.png, id=580, 1371.1225pt x 770.88pt>
+ [45 <./queries2.png> <./dag1.png>] <dag3.png, id=639, 1371.1225pt x 770.88pt>
 File: dag3.png Graphic file (type png)
  <use dag3.png>
-Package pdftex.def Info: dag3.png used on input line 1312.
+Package pdftex.def Info: dag3.png used on input line 1438.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-<dag5.png, id=581, 1371.1225pt x 770.88pt>
+<dag5.png, id=640, 1371.1225pt x 770.88pt>
 File: dag5.png Graphic file (type png)
  <use dag5.png>
-Package pdftex.def Info: dag5.png used on input line 1316.
+Package pdftex.def Info: dag5.png used on input line 1442.
 (pdftex.def)             Requested size: 342.77979pt x 192.71953pt.
 
-<dag6.png, id=582, 1371.1225pt x 770.88pt>
+<dag6.png, id=641, 1371.1225pt x 770.88pt>
 File: dag6.png Graphic file (type png)
  <use dag6.png>
-Package pdftex.def Info: dag6.png used on input line 1316.
+Package pdftex.def Info: dag6.png used on input line 1442.
 (pdftex.def)             Requested size: 342.77979pt x 192.71953pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 1316--1317
+Underfull \hbox (badness 10000) in paragraph at lines 1442--1443
 [][]
  []
 
-[42 <./dag2.png> <./dag3.png>] <dag7.png, id=588, 1371.1225pt x 770.88pt>
+[46 <./dag2.png> <./dag3.png>] <dag7.png, id=646, 1371.1225pt x 770.88pt>
 File: dag7.png Graphic file (type png)
 
 <use dag7.png>
-Package pdftex.def Info: dag7.png used on input line 1320.
+Package pdftex.def Info: dag7.png used on input line 1446.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [43 <./dag5.png> <./dag6.png>]
-<cm1.png, id=593, 1371.1225pt x 770.88pt>
+ [47 <./dag5.png> <./dag6.png>]
+<cm1.png, id=651, 1371.1225pt x 770.88pt>
 File: cm1.png Graphic file (type png)
  <use cm1.png>
-Package pdftex.def Info: cm1.png used on input line 1327.
+Package pdftex.def Info: cm1.png used on input line 1453.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [44 <./dag7.png> <./cm1.png>] <cm2.png, id=598, 1371.1225pt x 770.88pt>
+ [48 <./dag7.png> <./cm1.png>] <cm2.png, id=656, 1371.1225pt x 770.88pt>
 File: cm2.png Graphic file (type png)
  <use cm2.png>
-Package pdftex.def Info: cm2.png used on input line 1331.
+Package pdftex.def Info: cm2.png used on input line 1457.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
 
-<alerts1.png, id=599, 1371.1225pt x 770.88pt>
+<alerts1.png, id=657, 1371.1225pt x 770.88pt>
 File: alerts1.png Graphic file (type png)
  <use alerts1.png>
-Package pdftex.def Info: alerts1.png used on input line 1338.
+Package pdftex.def Info: alerts1.png used on input line 1464.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [45 <./cm2.png> <./alerts1.png>] <alerts2.png, id=605, 1371.1225pt x 770.88pt>
+ [49 <./cm2.png>] <alerts2.png, id=662, 1371.1225pt x 770.88pt>
 File: alerts2.png Graphic file (type png)
-
-<use alerts2.png>
-Package pdftex.def Info: alerts2.png used on input line 1345.
+ <use alerts2.png>
+Package pdftex.def Info: alerts2.png used on input line 1471.
 (pdftex.def)             Requested size: 548.43929pt x 308.34654pt.
- [46 <./alerts2.png>]
+ [50 <./alerts1.png> <./alerts2.png>]
 Chapter 12.
-[47
+[51
 
-] [48
+] [52
 
 ]
 Chapter 13.
 (./TwitterAnalyticsDocumentation.ind)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1399.
- [49]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1399.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1526.
+ [53]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 1526.
  (./TwitterAnalyticsDocumentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1399.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1399.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1526.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1526.
 
 Package rerunfilecheck Info: File `TwitterAnalyticsDocumentation.out' has not c
 hanged.
-(rerunfilecheck)             Checksum: 59F5F471F01014B2A4396010E9DB6FF7;11682.
+(rerunfilecheck)             Checksum: 0AC7CD1A4660DCB69ED22EE509AD050E;13289.
  ) 
 Here is how much of TeX's memory you used:
- 14191 strings out of 493029
- 196418 string characters out of 6136235
- 357360 words of memory out of 5000000
- 17267 multiletter control sequences out of 15000+600000
- 50591 words of font info for 72 fonts, out of 8000000 for 9000
- 1142 hyphenation exceptions out of 8191
- 37i,12n,49p,1115b,478s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 14266 strings out of 494953
+ 198288 string characters out of 6180977
+ 353834 words of memory out of 5000000
+ 17073 multiletter control sequences out of 15000+600000
+ 53313 words of font info for 74 fonts, out of 8000000 for 9000
+ 15 hyphenation exceptions out of 8191
+ 37i,12n,51p,1115b,498s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/share/texlive/texmf-dist/f
@@ -1467,10 +1470,10 @@ xlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-
 dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utm
 ri8a.pfb>
-Output written on TwitterAnalyticsDocumentation.pdf (53 pages, 4444837 bytes).
+Output written on TwitterAnalyticsDocumentation.pdf (57 pages, 4538184 bytes).
 PDF statistics:
- 694 PDF objects out of 1000 (max. 8388607)
- 574 compressed objects within 6 object streams
- 119 named destinations out of 1000 (max. 500000)
- 711 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 755 PDF objects out of 1000 (max. 8388607)
+ 630 compressed objects within 7 object streams
+ 131 named destinations out of 1000 (max. 500000)
+ 775 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,59 +1,36 @@
+"""
+Module to generate Java code for Flink from the alert specification taken from user on the dashboard. You need to have jinja2 python module and Maven installed.
+"""
+
 from jinja2 import Template
 import shutil, os
 from subprocess import Popen, PIPE
 
-"""
-# example input: USER:123 & (HASHTAG:h1 | HASHTAG:h2) , Precedence order in JAVA: ! && ||
-def get_filter_code(filter_string):
-
-	def convert_term_to_java(term):
-		key_map = {'USER':'user_id.equals', 'HASHTAG':'hashtags.contains', 'URL':'urls.contains', 'MENTION':'mentions.contains'}
-		terms = [x.strip() for x in term.split(':',1)]
-		if len(terms) == 1:
-			raise Exception('Missing ":" in term [%s]'%term)
-		if terms[0].upper() not in key_map:
-			raise Exception('Unknown attribute [%s] in term [%s]'%(terms[0],term))
-		if len(terms[1].split()) > 1:
-			raise Exception('Attribute value contains spaces in term [%s]'%term)
-		attr = key_map[terms[0].upper()]
-		value = terms[1]
-		return '%s(%s)'%(attr,value)
-
-	def check_parenthesis(s):
-		stack = []
-		for c in s:
-			if c=='(': 
-				stack.append('(')
-			elif c==')': 
-				if (len(stack)==0 or stack[-1]!='('):
-					raise Exception('Unmatched parenthesis in [%s]'%s)
-				stack.pop()
-		if len(stack) != 0:
-			raise Exception('Unmatched parenthesis in [%s]'%s)
-
-
-	check_parenthesis(filter_string)
-	ret = ""
-	for i,c in enumerate(filter_string):
-		if c in ['&','|',]
-	return convert_term_to_java(filter_string)
-	# Check format
-"""
 class FlinkCodeGenerator:
-
+	"""
+	Class to translate alert specification given by user to Java code for Flink. It uses a template defined in
+	flink_template.txt. The user provided specification is translated to Java code and placed at appropriate
+	positions inside the template. This renders the complete Java file. The Java project is then created
+	containing this file and compiled using Maven.
+	"""
 	def __init__(self):
-		self.basepath = os.path.abspath(os.path.dirname(__file__))
-		self.template_path = os.path.join(self.basepath,'flink_template.txt')
-		self.BASIC_INDENT = 7
+		self.basepath = os.path.abspath(os.path.dirname(__file__)) # path of this file, basepath of entrire flink code
+		self.template_path = os.path.join(self.basepath,'flink_template.txt') # path of the template file
+		self.BASIC_INDENT = 7 # using tab indentation in Java code; the variable part of template starts at indentation of 7 tabs
 		attr_array_template = Template(''+\
 			'List<String> {{attr}} = new ArrayList<>();\n' + '\t'*self.BASIC_INDENT+\
 			'for (final JsonNode node : jsonNode.get("entities").get("{{attr}}"))\n' + '\t'*self.BASIC_INDENT+\
 			'	{{attr}}.add(node.get("{{field_name}}").asText());\n' + '\t'*self.BASIC_INDENT)
-		self.hashtags_array_code = attr_array_template.render(attr='hashtags',field_name='text')
-		self.urls_array_code = attr_array_template.render(attr='urls',field_name='expanded_url')
-		self.mentions_array_code = attr_array_template.render(attr='user_mentions',field_name='id_str')
+		self.hashtags_array_code = attr_array_template.render(attr='hashtags',field_name='text') # java code for hashtag array from tweet
+		self.urls_array_code = attr_array_template.render(attr='urls',field_name='expanded_url') # java code for urls array from tweet
+		self.mentions_array_code = attr_array_template.render(attr='user_mentions',field_name='id_str') # java code for mentions array from tweet
 
-	# example input: user_id.equals("abc") && (hashtags.contains("h1") || hashtags.contains("h2"))
+	"""
+	Internal function used by the class to translate the "filter" specification to Java code to be placed inside the template.
+
+	:param filter_string: Example -> user_id.equals("abc") && (hashtags.contains("h1") || hashtags.contains("h2"))
+	:returns: Java code, for filtering the tweet stream, to be placed inside the template.
+	"""
 	def _get_filter_code(self, filter_string):
 		ret = ''
 		if ('user_id.equals' in filter_string):
@@ -75,7 +52,16 @@ class FlinkCodeGenerator:
 
 		return ret
 
-	# keys is a list of elements from 'user_id','hashtag','url','user_mention'
+	"""
+	Internal function. A single tweet might belong to multiple groups (sub-streams) after grouping on keys because
+	each key can have multiple values (a list). Ex. If keys = ['hashtag'] and tweet contains hashtags = ['h1','h2'],
+	then this tweet belongs to 2 groups - one group for 'h1' and another for 'h2'. This function duplicates the tweet
+	into multiple instances, each having its group value as the key. In above example, it will duplicate into 2 tweets,
+	with key values as 'h1' and 'h2' respectively.
+
+	:param keys: list of elements from 'user_id','hashtag','url','user_mention'
+	:returns: Java code, for duplicating the tweet stream, to be placed inside the template.
+	"""
 	def _get_duplication_code(self, keys):
 		for key in keys:
 			if key not in ['user_id','hashtag','url','user_mention']:
@@ -118,9 +104,21 @@ class FlinkCodeGenerator:
 			ret += '\n' + '\t'*(self.BASIC_INDENT+num_keys-i-1)+'}'
 		return ret
 
+	"""
+	Internal function.
+
+	:param alert_name: Name of the alert to find base path for.
+	:returns: The base path for tje given alert's flink java project.
+	"""
 	def _get_alert_base_path(self, alert_name):
 		return os.path.join(self.basepath, 'all_alerts', alert_name)
 
+	"""
+	Internal function.
+
+	:param alert_name: Name of the alert to find jar path for.
+	:returns: The path of the jar file, created after compiling, for the given alert.
+	"""
 	def _get_alert_jar_path(self, alert_name):
 		alert_base_path = self._get_alert_base_path(alert_name)
 		orig_jar_path = os.path.join(alert_base_path, 'target', 'quickstart-0.1.jar')
@@ -130,7 +128,17 @@ class FlinkCodeGenerator:
 		shutil.copyfile(orig_jar_path, new_jar_path)
 		return new_jar_path
 
-	# can raise exception like alert already exists
+	"""
+	Generates the java code for the given alert specification and writes tha java project for it in the alert's base path.
+	Note: It can raise exception like alert already exists with the given name.
+
+	:param alert_name: Name of the alert to be created.
+	:param filter_string: Filter specification for the alert. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_filter_code`.
+	:param group_keys: List of keys to group on. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_duplication_code`.
+	:param window_length: Length of window in seconds. The threshold will be looked at each window in each sub-stream.
+	:param window_slide: Number of seconds after which to start each new window.
+	:param threshold: Count threshold for tweets in each window to generate the alert.
+	"""
 	def write_code(self, alert_name, filter_string, group_keys, window_length, window_slide, threshold):
 		try:
 			template_base_path = os.path.join(self.basepath,'quickstart')
@@ -142,7 +150,7 @@ class FlinkCodeGenerator:
 			filter_code = self._get_filter_code(filter_string)
 			duplication_code = self._get_duplication_code(group_keys)
 			template = Template(open(self.template_path,'r').read())
-			java = template.render(filter_code=filter_code, duplication_and_key_generation_code=duplication_code, 
+			java = template.render(filter_code=filter_code, duplication_and_key_generation_code=duplication_code,
 				window_length=window_length, window_slide=window_slide, threshold=threshold)
 			f = open(os.path.join(alert_base_path,'src','main','java','org','myorg','quickstart','StreamingJob.java'),'w')
 			f.write(java)
@@ -150,11 +158,22 @@ class FlinkCodeGenerator:
 		except Exception as e:
 			raise Exception('Failed to write code. Error: %s, %s'%(str(type(e)),str(e)))
 
+	"""
+	Deletes the java project for the given alert name.
+
+	:param alert_name: The name of the alert whose code is to be deleted.
+	"""
 	def delete_code(self, alert_name):
 		alert_base_path = self._get_alert_base_path(alert_name)
 		if os.path.exists(alert_base_path):
 			shutil.rmtree(alert_base_path)
 
+	"""
+	Compiles the java project for the given alert using maven and creates the jar file.
+
+	:param alert_name: The name of the alert whose code is to be compiled.
+	:returns: The path of the jar file resulting from the compilation.
+	"""
 	def compile_code(self, alert_name):
 		alert_base_path = self._get_alert_base_path(alert_name)
 		orig_dir = os.getcwd()
@@ -172,7 +191,7 @@ class FlinkCodeGenerator:
 			raise Exception('Failed to compile code. Error: %s, %s'%(str(type(e)),str(e)))
 		finally:
 			os.chdir(orig_dir)
-	
+
 if __name__ == "__main__":
 	gen = FlinkCodeGenerator()
 	filter_string = 'user_id.equals("i") && (hashtags.contains("h") || urls.contains("u") || user_mentions.contains("m"))'

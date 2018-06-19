@@ -88,20 +88,30 @@
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#naming-entities">Naming entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
 </ul>
 </li>
@@ -201,7 +211,7 @@
 <div class="section" id="setting-up-the-environment">
 <h2>Setting up the environment<a class="headerlink" href="#setting-up-the-environment" title="Permalink to this headline">¶</a></h2>
 <p>We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the <a class="reference external" href="https://conda.io/docs/user-guide/install/download.html">download page</a> itself. After installation of conda, run the following commands:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>// create a new virtual environment
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>// create a new virtual environment
 conda create --name twitter_analytics <span class="nv">python</span><span class="o">==</span><span class="m">3</span>.6
 // clone the repo
 git clone https://github.com/abhi19gupta/TwitterAnalytics.git
@@ -221,7 +231,7 @@ pip install -r requirements.txt
 </div>
 <div class="section" id="running-the-dashboard">
 <h2>Running the dashboard<a class="headerlink" href="#running-the-dashboard" title="Permalink to this headline">¶</a></h2>
-<p>To run the website on a local server on your machine, navigate to Dashboard Website/ and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">runserver</span></code>. Presently the databases will be empty, to insert the new data into the databases see the <a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-data-into-mongodb"><span class="std std-ref">Ingesting data into MongoDB</span></a> and the <a class="reference internal" href="neo4j_data_ingestion.html#ingesting-data-into-neo4j"><span class="std std-ref">Ingesting data into Neo4j</span></a> sections.</p>
+<p>To run the website on a local server on your machine, navigate to Dashboard Website/ and run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">runserver</span></code>. Presently the databases will be empty, to insert the new data into the databases see the <a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-data-into-mongodb"><span class="std std-ref">Ingesting data into MongoDB</span></a> and the <a class="reference internal" href="neo4j_data_ingestion.html#ingesting-data-into-neo4j"><span class="std std-ref">Ingesting data into Neo4j</span></a> sections.</p>
 </div>
 </div>
 
