@@ -82,6 +82,8 @@
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from Twitter API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api">User Timeline API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
@@ -98,6 +100,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
@@ -122,6 +125,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
@@ -140,9 +144,13 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Generating alerts using Apache Flink and Kafka</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generating alerts using Apache Flink and Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#flink-code-documentation">Flink Code Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="benchmarking.html#simple-queries">Simple Queries</a></li>
@@ -244,6 +252,36 @@
 <li>Count = 100</li>
 </ul>
 </div></blockquote>
+<div class="section" id="flink-code-documentation">
+<h2>Flink Code Documentation<a class="headerlink" href="#flink-code-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the flink code generator.</p>
+<span class="target" id="module-flink_code_gen"></span><p>Module to generate Java code for Flink from the alert specification taken from user on the dashboard. You need to have jinja2 python module and Maven installed.</p>
+<dl class="class">
+<dt id="flink_code_gen.FlinkCodeGenerator">
+<em class="property">class </em><code class="descclassname">flink_code_gen.</code><code class="descname">FlinkCodeGenerator</code><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to translate alert specification given by user to Java code for Flink. It uses a template defined in
+flink_template.txt. The user provided specification is translated to Java code and placed at appropriate
+positions inside the template. This renders the complete Java file. The Java project is then created
+containing this file and compiled using Maven.</p>
+<dl class="method">
+<dt id="flink_code_gen.FlinkCodeGenerator.compile_code">
+<code class="descname">compile_code</code><span class="sig-paren">(</span><em>alert_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator.compile_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator.compile_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flink_code_gen.FlinkCodeGenerator.delete_code">
+<code class="descname">delete_code</code><span class="sig-paren">(</span><em>alert_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator.delete_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator.delete_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="flink_code_gen.FlinkCodeGenerator.write_code">
+<code class="descname">write_code</code><span class="sig-paren">(</span><em>alert_name</em>, <em>filter_string</em>, <em>group_keys</em>, <em>window_length</em>, <em>window_slide</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator.write_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator.write_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 

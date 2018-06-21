@@ -98,6 +98,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#running-the-ingestion-script">Running the ingestion script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
@@ -122,6 +123,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
@@ -140,6 +142,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a></li>
@@ -333,6 +336,218 @@
 <h2>Neo4j Ingestion Rates<a class="headerlink" href="#neo4j-ingestion-rates" title="Permalink to this headline">¶</a></h2>
 <img alt="_images/neo_in5.png" src="_images/neo_in5.png" />
 <p>Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size of around 35k. This is mainly due to the limitation of memory size. The authors observe that keeping a larger transaction size leads to lag on the system indicative of use of swap space. Thus, the maximum ingestion rate can be enhanced just by putting in more memory, albeit with decreasing returns.</p>
+</div>
+<div class="section" id="code-documentation-for-neo4j-data-ingestion">
+<h2>Code Documentation for Neo4j data ingestion<a class="headerlink" href="#code-documentation-for-neo4j-data-ingestion" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the code.</p>
+<span class="target" id="module-ingest_neo4j"></span><p>Module to insert data into neo4j database.</p>
+<p>The <a class="reference internal" href="#module-ingest_neo4j" title="ingest_neo4j"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ingest_neo4j</span></code></a> module contains the classes:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#ingest_neo4j.Twitter" title="ingest_neo4j.Twitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ingest_neo4j.Twitter</span></code></a></li>
+</ul>
+<p>One can use the <code class="xref py py-func docutils literal notranslate"><span class="pre">ingest_neo4j.Twitter.ingest_tweet()</span></code> to insert a new tweet into the database.</p>
+<p>An example usage where we want to insert all tweets from all files in a folder tweet_folder:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span><span class="mi">50000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">get_constraints</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">read_tweets</span><span class="p">(</span><span class="o">&lt;</span><span class="n">tweet_folder</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">close_session</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="ingest_neo4j.Twitter">
+<em class="property">class </em><code class="descclassname">ingest_neo4j.</code><code class="descname">Twitter</code><span class="sig-paren">(</span><em>batch_size=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class containing functions to insert tweets into neo4j.
+We open a connection to the neo4j database through py2neo and the official
+neo4j driver. Dealing with transactions is easy in py2neo, so it is used to make and commit transactions. While
+the connection to the neo4j driver is used just in clearing out the graph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>batch_size</strong> – number of tweets to take into transaction before commiting it</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.clear_graph">
+<code class="descname">clear_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.clear_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.clear_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the complete graph. Albiet, keep the indices.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>See if there are some tweets not comitted in the trnx and if yes, commit those.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.close_session">
+<code class="descname">close_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.close_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.close_session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the neo4j driver session</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.create_constraint">
+<code class="descname">create_constraint</code><span class="sig-paren">(</span><em>node</em>, <em>attrib</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.create_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.create_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create constraint on attrib in node node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> – node type on which to create the constraint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parem attrib:</th><td class="field-body">node attibute whose constraint is to be created</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.create_constraints">
+<code class="descname">create_constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.create_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.create_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create uniqueness constraints on the attributes of nodes. Note that ceating a constraint automatically
+creates an index on it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.drop_constraint">
+<code class="descname">drop_constraint</code><span class="sig-paren">(</span><em>node</em>, <em>attrib</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.drop_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.drop_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop constraint on attrib in node node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> – node type on which to delete the constraint</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parem attrib:</th><td class="field-body">node attibute whose constraint is to be deleted</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.get_constraints">
+<code class="descname">get_constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.get_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.get_constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the constrainsts on different types of nodes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.get_profile">
+<code class="descname">get_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.get_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.get_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of total, user, tweet, hashtag nodes in the graph</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j.Twitter.insert_tweet">
+<code class="descname">insert_tweet</code><span class="sig-paren">(</span><em>tweet</em>, <em>favourited_by=None</em>, <em>fav_timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.insert_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.insert_tweet" title="Permalink to this definition">¶</a></dt>
+<dd><p>The main function to insert the tweet. Begin a transaction, when atleast batch_size number of tweets
+are collected, commit the transaction. Start collecting the new tweets after that.</p>
+<p>We have two cases depending if the tweet to be inserted is a
+retweet or not. We mention the steps taken to insert the tweet in the two case:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>The tweet is a retweet</dt>
+<dd><ul class="first last">
+<li>Create a tweet_event under a appropriate frame</li>
+<li>Merge node for this tweet. Maybe the tweet node already partially exists because some other tweet is its reply.</li>
+<li>Create favorite relation if needed</li>
+<li>Proceed only if the tweet was not already created</li>
+<li>Create user and then the relationships</li>
+<li>Find node of original tweet and link</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The tweet is not a retweet</dt>
+<dd><ul class="first last">
+<li>Create a tweet_event under a appropriate frame</li>
+<li>Merge node for this tweet</li>
+<li>Create favorite relation if needed</li>
+<li>Proceed only if the tweet was not already created</li>
+<li>Create user and then the relationships</li>
+<li>Create links to hashtags, mentions, urls</li>
+<li>Create link to quoted tweet in case this tweet quotes another tweet</li>
+<li>Create link to original tweet in case this is a reply tweet</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tweet</strong> – the json of the tweet to be inserted</li>
+<li><strong>favourited_by</strong> – userid of the user who favourited the tweet</li>
+<li><strong>fav_timestamp</strong> – time at which the tweet was favourited</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Currently we are making use of transactions only. We get decent peak ingestion rate of
+around 1000 tweets/sec. But this can be increased by overlapping the collection and ingestion part as
+we do in case of mongoDB. But the same scheme can’t be used here as the transaction created is not
+a native python object and hance can’t be passed between python multiprocessing module processes. So, one
+idea is to create a csv with the tweets, and then call the use_csv function in neo4j to ingest. But this is a
+contrived way of doing this by doing same task twice.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ingest_neo4j.flatten_json">
+<code class="descclassname">ingest_neo4j.</code><code class="descname">flatten_json</code><span class="sig-paren">(</span><em>json_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#flatten_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.flatten_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to flatten the tweet. Used in case we want to store the complete tweet JSON in the TWEET node.
+This is because neo4j doesn’t allow nested jsons to be stored</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ingest_neo4j.getDateFromTimestamp">
+<code class="descclassname">ingest_neo4j.</code><code class="descname">getDateFromTimestamp</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#getDateFromTimestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.getDateFromTimestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ingest_neo4j.getFrameStartEndTime">
+<code class="descclassname">ingest_neo4j.</code><code class="descname">getFrameStartEndTime</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#getFrameStartEndTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.getFrameStartEndTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ingest_neo4j.log">
+<code class="descclassname">ingest_neo4j.</code><code class="descname">log</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ingest_neo4j.read_tweets">
+<code class="descclassname">ingest_neo4j.</code><code class="descname">read_tweets</code><span class="sig-paren">(</span><em>path</em>, <em>twitter</em>, <em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#read_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.read_tweets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read tweets from the directory in path and inert all tweets in all files in the first level of path into
+neo4j.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> – the path of the directory</li>
+<li><strong>twitter</strong> – a Twitter object</li>
+<li><strong>filename</strong> – optional, if want to insert tweets from a single file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 </div>
 

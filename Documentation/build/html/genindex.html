@@ -81,6 +81,8 @@
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from Twitter API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api">User Timeline API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
@@ -97,6 +99,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
@@ -121,6 +124,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
@@ -139,9 +143,13 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="benchmarking.html#simple-queries">Simple Queries</a></li>
@@ -221,7 +229,20 @@
  <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -255,13 +276,235 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="example.html#module-chemistry">chemistry (module)</a>
 </li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.clear_everyting">clear_everyting() (main.UserTimelineAPI method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.clear_graph">clear_graph() (ingest_neo4j.Twitter method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.close">close() (ingest_neo4j.Twitter method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.close_session">close_session() (ingest_neo4j.Twitter method)</a>
+</li>
+      <li><a href="flink.html#flink_code_gen.FlinkCodeGenerator.compile_code">compile_code() (flink_code_gen.FlinkCodeGenerator method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery.conditional_create">conditional_create() (generate_queries.CreateQuery method)</a>
+</li>
+      <li><a href="twitter_stream.html#streaming.Logger.configure_new_file">configure_new_file() (streaming.Logger method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.create_constraint">create_constraint() (ingest_neo4j.Twitter method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.create_constraints">create_constraints() (ingest_neo4j.Twitter method)</a>
+</li>
+      <li><a href="dag.html#module-create_dag">create_dag (module)</a>
+</li>
+      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery.create_query">create_query() (generate_queries.CreateQuery method)</a>
+</li>
+      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery">CreateQuery (class in generate_queries)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dag.html#create_dag.DAG">DAG (class in create_dag)</a>
+</li>
+      <li><a href="twitter_stream.html#main.DateTimeEncoder">DateTimeEncoder (class in main)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.DateTimeEncoder.default">default() (main.DateTimeEncoder method)</a>
+</li>
+      <li><a href="flink.html#flink_code_gen.FlinkCodeGenerator.delete_code">delete_code() (flink_code_gen.FlinkCodeGenerator method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.drop_constraint">drop_constraint() (ingest_neo4j.Twitter method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.DateTimeEncoder.encode">encode() (main.DateTimeEncoder method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.extract_hash_tags">extract_hash_tags() (in module main)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dag.html#create_dag.DAG.feed_forward">feed_forward() (create_dag.DAG method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.fetch_persist_friends_and_followers">fetch_persist_friends_and_followers() (main.UserTimelineAPI method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.fetch_persist_tweets">fetch_persist_tweets() (main.UserTimelineAPI method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.fetch_persist_users">fetch_persist_users() (main.UserTimelineAPI method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#streaming.Logger.finish_current_file">finish_current_file() (streaming.Logger method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.flatten_json">flatten_json() (in module ingest_neo4j)</a>
+</li>
+      <li><a href="flink.html#module-flink_code_gen">flink_code_gen (module)</a>
+</li>
+      <li><a href="flink.html#flink_code_gen.FlinkCodeGenerator">FlinkCodeGenerator (class in flink_code_gen)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dag.html#create_dag.DAG.generate_dag">generate_dag() (create_dag.DAG method)</a>
+</li>
+      <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery.generate_node">generate_node() (generate_queries.CreateQuery method)</a>
+</li>
+      <li><a href="neo4j_query_generation.html#module-generate_queries">generate_queries (module)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.get_constraints">get_constraints() (ingest_neo4j.Twitter method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dag.html#create_dag.DAG.get_drawable_dag">get_drawable_dag() (create_dag.DAG method)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.get_profile">get_profile() (ingest_neo4j.Twitter method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.get_user_screen_names">get_user_screen_names() (in module main)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.getDateFromTimestamp">getDateFromTimestamp() (in module ingest_neo4j)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.getFrameStartEndTime">getFrameStartEndTime() (in module ingest_neo4j)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="neo4j_data_ingestion.html#module-ingest_neo4j">ingest_neo4j (module)</a>
+</li>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.insert_tweet">insert_tweet() (ingest_neo4j.Twitter method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.DateTimeEncoder.item_separator">item_separator (main.DateTimeEncoder attribute)</a>
+</li>
+      <li><a href="twitter_stream.html#main.DateTimeEncoder.iterencode">iterencode() (main.DateTimeEncoder method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.DateTimeEncoder.key_separator">key_separator (main.DateTimeEncoder attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.log">log() (in module ingest_neo4j)</a>
+
+      <ul>
+        <li><a href="twitter_stream.html#streaming.Logger.log">(streaming.Logger method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#streaming.Logger">Logger (class in streaming)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#module-main">main (module)</a>
+</li>
       <li><a href="example.html#chemistry.Molecule">Molecule (class in chemistry)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.my_favourites_fetcher">my_favourites_fetcher() (main.UserTimelineAPI method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.my_followers_fetcher">my_followers_fetcher() (main.UserTimelineAPI method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.my_friends_fetcher">my_friends_fetcher() (main.UserTimelineAPI method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.my_tweet_fetcher">my_tweet_fetcher() (main.UserTimelineAPI method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.my_user_fetcher">my_user_fetcher() (main.UserTimelineAPI method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="dag.html#create_dag.DAG.plot_dag">plot_dag() (create_dag.DAG method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.plot_user_field">plot_user_field() (in module main)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.read_tweets">read_tweets() (in module ingest_neo4j)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#streaming.signal_handler">signal_handler() (in module streaming)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#module-streaming">streaming (module)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter">Twitter (class in ingest_neo4j)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI">UserTimelineAPI (class in main)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.wait_for_rate_limit">wait_for_rate_limit() (main.UserTimelineAPI method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="flink.html#flink_code_gen.FlinkCodeGenerator.write_code">write_code() (flink_code_gen.FlinkCodeGenerator method)</a>
+</li>
+      <li><a href="twitter_stream.html#streaming.Logger.write_tweet">write_tweet() (streaming.Logger method)</a>
 </li>
   </ul></td>
 </tr></table>

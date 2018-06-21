@@ -14,10 +14,14 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../Dashboard Website/myapp'))
-sys.path.insert(0, os.path.abspath('../../Dashboard Website/myapp/neo4j'))
+sys.path.insert(0, os.path.abspath('../../Dashboard_Website/myapp'))
+sys.path.insert(0, os.path.abspath('../../Dashboard_Website/myapp/neo4j'))
 sys.path.insert(0, os.path.abspath('../../Ingestion/MongoDB'))
 sys.path.insert(0, os.path.abspath('../../Ingestion/Neo4j'))
+sys.path.insert(0, os.path.abspath('../../Read Twitter Stream'))
+sys.path.insert(0, os.path.abspath('../../Dashboard_Website/myapp/flink'))
+
+sys.path.insert(0, os.path.abspath('../../Dashboard_Website/myapp/dag'))
 
 
 # -- Project information -----------------------------------------------------

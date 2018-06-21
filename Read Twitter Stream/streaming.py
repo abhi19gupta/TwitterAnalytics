@@ -109,15 +109,15 @@ file_tweet_count = 500000 # max no of tweets to write in 1 file
 logger = Logger(batch_size, file_tweet_count)
 
 # TWITTER API RELATED SETUP
-f = open('SECRETS','r')
-secrets = f.read().split()
-f.close()
-ACCESS_TOKEN = secrets[0]
-ACCESS_SECRET = secrets[1]
-CONSUMER_KEY = secrets[2]
-CONSUMER_SECRET = secrets[3]
-oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-twitter = Twitter(auth=oauth)
+# f = open('SECRETS','r')
+# secrets = f.read().split()
+# f.close()
+# ACCESS_TOKEN = secrets[0]
+# ACCESS_SECRET = secrets[1]
+# CONSUMER_KEY = secrets[2]
+# CONSUMER_SECRET = secrets[3]
+# oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+# twitter = Twitter(auth=oauth)
 
 def signal_handler(signal, frame):
 		logger.log('You pressed Ctrl+C! Number of tweets read = %s'%str(num_read))
@@ -126,26 +126,27 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 # ------------------------------------------------------ #
 
-num_read = 0
-while(True):
-	twitter_stream = TwitterStream(auth=oauth)
-	iterator = twitter_stream.statuses.sample()
-	for tweet in iterator:
-		# Twitter Python Tool wraps the data returned by Twitter as a TwitterDictResponse object.
-		# We convert it back to the JSON format to print/score
-		try:
-			tweet_str = json.dumps(tweet, indent=4)
-			# print(tweet_str)
-			num_read+=1
-			logger.write_tweet(tweet_str)
-			if num_read % batch_size == 0:
-				logger.log("Number of tweets read = %s"%str(num_read))
-			if num_read == tweet_count:
-				break
-		except Exception as e:
-			logger.log("Exception occured: %s"%str(e))
-			time.sleep(5)
-			continue
-	logger.log('Need to create another connection!')
-	if num_read == tweet_count:
-		break
+if __name__ == '__main__':
+	num_read = 0
+	while(True):
+		twitter_stream = TwitterStream(auth=oauth)
+		iterator = twitter_stream.statuses.sample()
+		for tweet in iterator:
+			# Twitter Python Tool wraps the data returned by Twitter as a TwitterDictResponse object.
+			# We convert it back to the JSON format to print/score
+			try:
+				tweet_str = json.dumps(tweet, indent=4)
+				# print(tweet_str)
+				num_read+=1
+				logger.write_tweet(tweet_str)
+				if num_read % batch_size == 0:
+					logger.log("Number of tweets read = %s"%str(num_read))
+				if num_read == tweet_count:
+					break
+			except Exception as e:
+				logger.log("Exception occured: %s"%str(e))
+				time.sleep(5)
+				continue
+		logger.log('Need to create another connection!')
+		if num_read == tweet_count:
+			break

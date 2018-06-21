@@ -8,7 +8,7 @@ There are a couple of ways to read data from the Twitter APIs:
 
 If you wish to gather data of a specific set of users, then you have to use the User Timeline API, otherwise for live stream use the Stream Sample API. We experimented with both the techniques.
 
-To have access to Twitter APIs, you need to create an app on apps.twitter.com and use their OAuth based authorization system. Details for the same can be found on this `link <https://developer.twitter.com/en/docs/basics/getting-started>`_. We made use of Python Twitter Tools library which exposes Python functions which make the API call for us based on the parameters. 
+To have access to Twitter APIs, you need to create an app on apps.twitter.com and use their OAuth based authorization system. Details for the same can be found on this `link <https://developer.twitter.com/en/docs/basics/getting-started>`_. We made use of Python Twitter Tools library which exposes Python functions which make the API call for us based on the parameters.
 
 
 User Timeline API
@@ -34,24 +34,24 @@ The end-point GET statuses/sample is free, however it returns only about 1% of t
 
 Refer to the file 'Read Twitter Stream/streaming.py' for the code. The code will write the data in the same directory, flushing the data periodically to a file. After a threshold number of tweets have been written to the current output file, it generates a new file and starts flushing the tweets to it. This will prevent a single file from becoming too big in size.
 
-.. User Timeline API Code Documentation
-.. -------------------------------------
+User Timeline API Code Documentation
+-------------------------------------
 
-.. Here we provide a documentation of the code.
+Here we provide a documentation of the code.
 
-.. .. automodule:: main
-..     :members:
-..     :undoc-members:
-..     :inherited-members:
-..     :show-inheritance:
+.. automodule:: main
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
 
-.. Stream Sample API Code Documentation
-.. -------------------------------------
+Stream Sample API Code Documentation
+-------------------------------------
 
-.. Here we provide a documentation of the code.
+Here we provide a documentation of the code.
 
-.. .. automodule:: streaming
-..     :members:
-..     :undoc-members:
-..     :inherited-members:
-..     :show-inheritance:
+.. automodule:: streaming
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

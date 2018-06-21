@@ -91,13 +91,13 @@ Finally, to create the query the user need to specify the query name and the ret
 
 It is to be noted here, that we don't do any kind of checking if the constraints specified by the user to build the query are valid. Checking this in a generic manner without executing the query is difficult. So, this is delegated to the neo4j query engine itself and the user will get empty result in case the constrains are invalid.
 
-.. Code Documentation
-.. ----------------------
+Code Documentation for Neo4j query generation
+-----------------------------------------------
 
-.. Here we provide a documentation of the code.
+Here we provide a documentation of the code.
 
-.. .. automodule:: generate_queries
-..     :members:
-..     :undoc-members:
-..     :inherited-members:
-..     :show-inheritance:
+.. automodule:: generate_queries
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

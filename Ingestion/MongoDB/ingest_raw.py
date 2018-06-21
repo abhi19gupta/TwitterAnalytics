@@ -92,17 +92,17 @@ class Ingest():
 
 		self.current = int(time.time())
 		self.lock = threading.Lock()
-		
+
 
 		self.q = Queue()
 		self.proc = Process(target = self.worker,args=(self.q,))
 		# self.proc1 = Process(target = self.worker,args=(self.q,))
 		# self.proc.daemon = True
 		self.proc.start()
-	
+
 	def exit(self):
 		self.proc.join()
-		
+
 	def worker(self,q):
 		#open connection to mongoDB
 		client = MongoClient('mongodb://localhost:27017/')
@@ -208,7 +208,7 @@ def read_tweets(path,filename):
 		count+=1
 	ll = []
 	print(count)
-	print("Ingestion process is done")        
+	print("Ingestion process is done")
 
 if __name__=="__main__":
 	##to simulate the process of periodic commit

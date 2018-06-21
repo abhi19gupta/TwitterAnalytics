@@ -1,3 +1,42 @@
+"""
+Module to generate and store the DAG created by the user. Constains functions to generate DAG for the airflow
+dashboard also.
+
+The :mod:`create_dag` module contains the classes:
+
+- :class:`create_dag.DAG`
+
+When we instantiate an object of the class, the network source of the DAG is parsed to get parameters.
+One can use the function :func:`create_dag.DAG.feed_forward` to execute the networkx DAG and the
+function :func:`create_dag.DAG.generate_dag` to generate an airflow DAG.
+
+Example illustrating how to create a DAG  in which no input to no query is constant:
+
+>>> queries = {"q1":["query 1",["inp1","inp2"],["out1","out2"]],
+			"q2":["query 2",["inp1"],["out1","out2"]],
+			"q3":["query 3",["inp1","inp2","inp3"],["out1"]]}
+>>> types = {"q1":"mongoDB","q2":"PostProcesing","q3":"neo4j"}
+>>> constants = {}
+>>> # input_graph.txt contains the network of the DAG. For format see the documentation
+>>> dag = DAG(open("input_graph.txt","r").read(),queries,types,constants)
+
+Example of a query in which we use constants:
+
+>>> # queries and types as before
+>>> constants = {"q1":{"inp1":3}}
+>>> # input_graph.txt contains the network of the DAG. For format see the documentation
+>>> dag = DAG(open("input_graph.txt","r").read(),queries,types,constants)
+
+Now to execute the graph provide a function which can execute the queries.
+
+>>> dag.feed_forward(<execute>)
+
+Create a DAG in airflow, get the plotly div for the DAG to be displayed on the dashboard
+
+>>> dag.generate_dag(<dag_name>)
+>>> dag.plot_dag()
+
+"""
 from __future__ import print_function
 import os, time
 import numpy as np
@@ -127,11 +166,31 @@ def execute_query(node_name,**context):
 	print("========================================")
 	return ret
 """
-# if(query_type=="mongoDB"):
-# 		if(query_code=="mp_ht_in_total"):
-# 			print(inputs["num"])
-# 			ret = mongoQuery.mp_ht_in_total(limit=inputs["num"])
+
 class DAG:
+	"""
+	This class contains the functions to deal with the abstraction of DAG in our system. Some of the functions
+	to this end, some of the functions are in the views.py file also.
+
+	The __init__ is called to initilaize a DAG object. It reads the source of the DAG network file passed to it as a string. It
+	parses the string and extracts te nodes, connections, inputs and returns from the file.
+
+	:param network_file_source: a string contains the network specificaion of the DAG
+	:param queries: a dictionary of queries with keys as the query names/postprocessing function names
+	:param types: a dictionary containing the types of different queries
+	:param constants: a dictionary of constant inputs to a query
+
+	For the queries parameter, the expectation depends on the type of query:
+
+		* For neo4j queries it will be the query code, input, output list
+		* For mongoDB queries it will be the partially formatted query specification, input, output list
+		* For post processing functions it will be the function_definition, input, output list
+
+	.. note:: The constants dictionary will contain only the mongoDB queries in current format
+
+	.. note:: We don't do very comprehensive checking if the network is valid.
+		In case it is not a DAG, the user is notified of it. Other than that, there will be some python errors if some other issue is there.
+	"""
 	def __init__(self,network_file_source,queries,types,constants):
 		self.queries = queries
 		self.types = types
@@ -221,7 +280,10 @@ class DAG:
 
 	def feed_forward(self,execute):
 		"""
-		Do a topological sort and then do a bfs
+		Do a topological sort and then do a BFS of the DAG to execute all the queries.
+		Expect that there is a function to evaluate a query given its inputs(as a dictionary) and returns a dictionary of outputs
+
+		:param execute: a function to execute the queries
 		"""
 		# outputs_dict = {}
 		ts = nx.topological_sort(self.graph)
@@ -244,6 +306,15 @@ class DAG:
 		return self.outputs_dict
 
 	def generate_dag(self,dag_name):
+		"""
+		Create a python file for the DAG in the dags directory of AIRFLOW_HOME. Generate the airflow code for
+		the dag in the file. The templates used in the function are taken in the :mod:`create_dag` module.
+
+		:param dag_name: the name of the dag to be generated
+
+		.. note:: Currently it has the relative address of the folder as being contained in the myapp folder. Change it appropriately if you decide to
+			change the airflow home
+		"""
 		print(os.getcwd())
 		fout = open("myapp/airflow/dags/"+dag_name+".py","w")
 
@@ -287,6 +358,15 @@ class DAG:
 		fout.close()
 
 	def get_drawable_dag(self,G,queries,types,edges):
+		"""
+		Helper function for :func:`create_dag.DAG.plot_dag`. It gets the locations of the various figures
+		in the plotly plot of the DAG.
+
+		:param queries: the queries in the DAG
+		:param types: the types of queris. Not used, but can choose to get different colored rectangles for different query types
+		:param edges: the edges in the DAG
+		:returns: a directed graph with the connections between inputs and outputs, the locations of bounding rectangles for the queries
+		"""
 		ts = nx.topological_sort(G)
 		dis = nx.DiGraph()
 		rectangle = []
@@ -311,6 +391,11 @@ class DAG:
 
 
 	def plot_dag(self):
+		"""
+		Get the plotly div for the DAG. Get the locations using the helper function and then just plot those and return the html div for the plot
+
+		:returns: the html div of the DAG plotly plot
+		"""
 		G ,rect= self.get_drawable_dag(self.graph,self.queries,self.types,self.edges)
 		print(G.nodes(data=True))
 		edge_trace = Scatter(

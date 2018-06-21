@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>create_dag &mdash; Twitter Analytics 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/jquery-ui/jquery-ui.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/t3more.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+  <script src="../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        <ul class="sidebartop">
+
+          <li class="docsite">
+            <a href="https://docs.typo3.org"><img src="../_static/img/typo3-documentation.png" class="logo" /></a>
+          </li>
+
+          <li class="project">
+            <a href="../index.html">
+              Twitter Analytics<br>0.1</a>
+          </li><li class="nolink search">
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search this project" id="searchinput" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div></li>
+
+        </ul>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to twitter analytics system</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter_stream.html">Read data from Twitter API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#user-timeline-api">User Timeline API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#improving-ingestion-rate-using-transaction">Improving ingestion rate using transaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing">Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_data_ingestion.html#improving-ingestion-rate-using-transactions">Improving ingestion rate using transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_data_ingestion.html#improving-ingestion-rate-using-parallel-multiple-process">Improving ingestion rate using parallel multiple process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#naming-entities">Naming entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#returns">Returns</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About Post processing functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dag.html">Composing multiple queries : DAG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#basic-terminology">Basic terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#dag-in-airflow">DAG in airflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking the query answering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#simple-queries">Simple Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#complex-queries">Complex Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#hashtags">Hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#mentions">Mentions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#urls">URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#alerts">Alerts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#dag">DAG</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dashboard_website.html#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#viewing-top-10-popular-hashtags">Viewing top 10 popular hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#viewing-usage-history-of-hashtag">Viewing usage history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#viewing-sentiment-history-of-hashtag">Viewing sentiment history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#creating-a-mongodb-query">Creating a mongoDB query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#creating-neo4j-queries">Creating neo4j queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-post-processing-function">Create Post processing function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#view-queries">View Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-dag">Create DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#view-dags">View DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-custom-metric">Create Custom metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-alert">Create Alert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#view-alerts">View Alerts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../running.html">Getting the system running</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#setting-up-the-environment">Setting up the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#running-the-dashboard">Running the dashboard</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Twitter Analytics</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+    <li>create_dag</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody" class="toBeIndexed">
+            
+  <h1>Source code for create_dag</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to generate and store the DAG created by the user. Constains functions to generate DAG for the airflow</span>
+<span class="sd">dashboard also.</span>
+
+<span class="sd">The :mod:`create_dag` module contains the classes:</span>
+
+<span class="sd">- :class:`create_dag.DAG`</span>
+
+<span class="sd">When we instantiate an object of the class, the network source of the DAG is parsed to get parameters.</span>
+<span class="sd">One can use the function :func:`create_dag.DAG.feed_forward` to execute the networkx DAG and the</span>
+<span class="sd">function :func:`create_dag.DAG.generate_dag` to generate an airflow DAG.</span>
+
+<span class="sd">Example illustrating how to create a DAG  in which no input to no query is constant:</span>
+
+<span class="sd">&gt;&gt;&gt; queries = {&quot;q1&quot;:[&quot;query 1&quot;,[&quot;inp1&quot;,&quot;inp2&quot;],[&quot;out1&quot;,&quot;out2&quot;]],</span>
+<span class="sd">			&quot;q2&quot;:[&quot;query 2&quot;,[&quot;inp1&quot;],[&quot;out1&quot;,&quot;out2&quot;]],</span>
+<span class="sd">			&quot;q3&quot;:[&quot;query 3&quot;,[&quot;inp1&quot;,&quot;inp2&quot;,&quot;inp3&quot;],[&quot;out1&quot;]]}</span>
+<span class="sd">&gt;&gt;&gt; types = {&quot;q1&quot;:&quot;mongoDB&quot;,&quot;q2&quot;:&quot;PostProcesing&quot;,&quot;q3&quot;:&quot;neo4j&quot;}</span>
+<span class="sd">&gt;&gt;&gt; constants = {}</span>
+<span class="sd">&gt;&gt;&gt; # input_graph.txt contains the network of the DAG. For format see the documentation</span>
+<span class="sd">&gt;&gt;&gt; dag = DAG(open(&quot;input_graph.txt&quot;,&quot;r&quot;).read(),queries,types,constants)</span>
+
+<span class="sd">Example of a query in which we use constants:</span>
+
+<span class="sd">&gt;&gt;&gt; # queries and types as before</span>
+<span class="sd">&gt;&gt;&gt; constants = {&quot;q1&quot;:{&quot;inp1&quot;:3}}</span>
+<span class="sd">&gt;&gt;&gt; # input_graph.txt contains the network of the DAG. For format see the documentation</span>
+<span class="sd">&gt;&gt;&gt; dag = DAG(open(&quot;input_graph.txt&quot;,&quot;r&quot;).read(),queries,types,constants)</span>
+
+<span class="sd">Now to execute the graph provide a function which can execute the queries.</span>
+
+<span class="sd">&gt;&gt;&gt; dag.feed_forward(&lt;execute&gt;)</span>
+
+<span class="sd">Create a DAG in airflow, get the plotly div for the DAG to be displayed on the dashboard</span>
+
+<span class="sd">&gt;&gt;&gt; dag.generate_dag(&lt;dag_name&gt;)</span>
+<span class="sd">&gt;&gt;&gt; dag.plot_dag()</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">jinja2</span> <span class="k">as</span> <span class="nn">jj</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objs</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">from</span> <span class="nn">plotly.graph_objs</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">plotly.offline</span> <span class="k">import</span> <span class="n">plot</span>
+<span class="c1">##expect a dictionary of queries with keys as the query names/postprocessing function names</span>
+<span class="c1">## for neo4j queries it will be the query code, input, output list</span>
+<span class="c1">## for mongoDB queries it will be the partially formatted query specification, input, output list</span>
+<span class="c1">## for post processing functions it will be the function_definition, input, output list</span>
+<span class="c1"># queries = {&quot;q1&quot;:[],&quot;q2&quot;:[],...}</span>
+<span class="c1"># types = {&quot;q1&quot;:&quot;neo4j&quot;,&quot;q2&quot;:&quot;mongoDB&quot;,&quot;q3&quot;:&quot;PostProcesing&quot;,....}</span>
+
+<span class="c1">#Expect that there is a function to evaluate a query given its inputs(as a dictionary) and returns a dictionary of outputs</span>
+
+<span class="n">imports</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;from __future__ import print_function</span>
+<span class="s2">from airflow.operators import PythonOperator</span>
+<span class="s2">from airflow.models import DAG</span>
+<span class="s2">from datetime import datetime</span>
+<span class="s2">import sys</span>
+<span class="s2">import sqlite3</span>
+<span class="s2">import copy</span>
+<span class="s2">import os</span>
+<span class="s2">from pprint import *</span>
+<span class="s2">from neo4j.v1 import GraphDatabase, basic_auth, types</span>
+
+<span class="s2">sys.path.append(&quot;/home/db1/Documents/TwitterAnalytics/Dashboard_Website/myapp/mongo&quot;)</span>
+<span class="s2">from ingest_raw import MongoQuery</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="c1">## task is (number, associated_query, inputs(a string whose eval will give you a dictionay))</span>
+<span class="n">task_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">task_{{t[0]}} = PythonOperator(</span>
+<span class="s2">		task_id=&#39;node_</span><span class="si">{}</span><span class="s2">&#39;.format(&quot;{{t[1]}}&quot;),</span>
+<span class="s2">		python_callable=execute_query,</span>
+<span class="s2">		op_kwargs={&#39;node_name&#39;:&quot;{{t[1]}}&quot;},</span>
+<span class="s2">		provide_context = True,</span>
+<span class="s2">		dag=dag)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">queries</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;queries = {{queries}}&quot;&quot;&quot;</span>
+<span class="n">types</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;types = {{types}}&quot;&quot;&quot;</span>
+<span class="n">provided_inputs</span> <span class="o">=</span> <span class="s2">&quot;provided_inputs = {{provided_inputs}}&quot;</span>
+
+<span class="n">dag_defn</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;args = {</span>
+<span class="s2">	&#39;owner&#39;: &#39;airflow&#39;,</span>
+<span class="s2">	&#39;start_date&#39;: datetime.now(),</span>
+<span class="s2">}</span>
+
+<span class="s2">dag = DAG(dag_id=&#39;{{dag_name}}&#39;, default_args=args,schedule_interval=None)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">helper_fns</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def get_task_from_node(node):</span>
+<span class="s2">	return &quot;node_&quot;+node</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">execute_fn</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def execute_query(node_name,**context):</span>
+<span class="s2">	query_to_node = {v:k for k,v in node_to_query.items()}</span>
+<span class="s2">	query_name = node_to_query[node_name]</span>
+<span class="s2">	mongoQuery = MongoQuery()</span>
+
+<span class="s2">	query_code  = queries[query_name][0]</span>
+<span class="s2">	input_vars = queries[query_name][1]</span>
+<span class="s2">	constant_vars = list(provided_inputs[query_to_node[query_name]].keys())</span>
+<span class="s2">	output_vars = queries[query_name][2]</span>
+<span class="s2">	query_type = types[query_name]</span>
+<span class="s2">	ret = {out:[] for out in output_vars}</span>
+
+<span class="s2">	inputs = </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">	for x in set(input_vars+constant_vars):</span>
+<span class="s2">		if(x not in mapping[node_name] or mapping[node_name][x]==&quot;-&quot;):</span>
+<span class="s2">			inputs[x] = provided_inputs[node_name][x]</span>
+<span class="s2">		else:</span>
+<span class="s2">			mapp = mapping[node_name][x]</span>
+<span class="s2">			inp = context[&#39;task_instance&#39;].xcom_pull(task_ids=get_task_from_node(mapp[0]),dag_id = &quot;{{dag_name}}&quot;,key=mapp[1])</span>
+<span class="s2">			print(inp)</span>
+<span class="s2">			inputs[x] = inp</span>
+<span class="s2">	print(&quot;========================================&quot;)</span>
+<span class="s2">	print(&quot;Executing query &quot;,query_name)</span>
+<span class="s2">	pprint(inputs)</span>
+<span class="s2">	if(query_type==&#39;neo4j&#39;):</span>
+<span class="s2">		driver = GraphDatabase.driver(&quot;bolt://localhost:7687&quot;, auth=basic_auth(&quot;neo4j&quot;, &quot;password&quot;))</span>
+<span class="s2">		session = driver.session()</span>
+<span class="s2">		result = session.run(query_code,inputs)</span>
+<span class="s2">		# ret = {x:[] for x in outputs}</span>
+<span class="s2">		try:</span>
+<span class="s2">			for record in result:</span>
+<span class="s2">				print(record)</span>
+<span class="s2">				for out in output_vars:</span>
+<span class="s2">					if(isinstance(record[out],bytes)):</span>
+<span class="s2">						ret[out].append(record[out].decode(&quot;utf-8&quot;))</span>
+<span class="s2">					else:</span>
+<span class="s2">						ret[out].append(record[out])</span>
+<span class="s2">		except:</span>
+<span class="s2">			print(&quot;Came into except &quot;)</span>
+<span class="s2">	elif(query_type==&quot;mongoDB&quot;):</span>
+<span class="s2">		temp = inputs</span>
+<span class="s2">		if(query_code==&quot;mp_ht_in_total&quot;):</span>
+<span class="s2">			ret = mongoQuery.mp_ht_in_total(**temp)</span>
+<span class="s2">		elif(query_code==&quot;mp_ht_in_interval&quot;):</span>
+<span class="s2">			ret = mongoQuery.mp_ht_in_interval(**temp)</span>
+<span class="s2">		elif(query_code==&quot;ht_in_interval&quot;):</span>
+<span class="s2">			ret = mongoQuery.ht_in_interval(**temp)</span>
+<span class="s2">		elif(query_code==&quot;ht_with_sentiment&quot;):</span>
+<span class="s2">			ret = mongoQuery.ht_with_sentiment(**temp)</span>
+<span class="s2">		elif(query_code==&quot;mp_um_in_total&quot;):</span>
+<span class="s2">			ret = mongoQuery.mp_um_in_total(**temp)</span>
+
+<span class="s2">	elif(query_type==&quot;postProcessing&quot;):</span>
+<span class="s2">		context = {&quot;inputs&quot;:copy.deepcopy(inputs)}</span>
+<span class="s2">		try:</span>
+<span class="s2">			compile(q.query,&#39;&#39;,&#39;exec&#39;)</span>
+<span class="s2">			exec(q.query + &quot;</span><span class="se">\\</span><span class="s2">n&quot; + &quot;ret = func(inputs)&quot;, context)</span>
+<span class="s2">			for out in outputs:</span>
+<span class="s2">				ret[out] = context[out]</span>
+<span class="s2">		except Exception as e:</span>
+<span class="s2">			print(&quot;Exeption while executing Post proc function: </span><span class="si">%s</span><span class="s2">, </span><span class="si">%s</span><span class="s2">&quot;%(type(e),e))</span>
+
+<span class="s2">	print(ret)</span>
+<span class="s2">	for k,v in ret.items():</span>
+<span class="s2">		context[&#39;task_instance&#39;].xcom_push(k,v)</span>
+<span class="s2">	print(&quot;========================================&quot;)</span>
+<span class="s2">	return ret</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DAG"><a class="viewcode-back" href="../dag.html#create_dag.DAG">[docs]</a><span class="k">class</span> <span class="nc">DAG</span><span class="p">:</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	This class contains the functions to deal with the abstraction of DAG in our system. Some of the functions</span>
+<span class="sd">	to this end, some of the functions are in the views.py file also.</span>
+
+<span class="sd">	The __init__ is called to initilaize a DAG object. It reads the source of the DAG network file passed to it as a string. It</span>
+<span class="sd">	parses the string and extracts te nodes, connections, inputs and returns from the file.</span>
+
+<span class="sd">	:param network_file_source: a string contains the network specificaion of the DAG</span>
+<span class="sd">	:param queries: a dictionary of queries with keys as the query names/postprocessing function names</span>
+<span class="sd">	:param types: a dictionary containing the types of different queries</span>
+<span class="sd">	:param constants: a dictionary of constant inputs to a query</span>
+
+<span class="sd">	For the queries parameter, the expectation depends on the type of query:</span>
+
+<span class="sd">		* For neo4j queries it will be the query code, input, output list</span>
+<span class="sd">		* For mongoDB queries it will be the partially formatted query specification, input, output list</span>
+<span class="sd">		* For post processing functions it will be the function_definition, input, output list</span>
+
+<span class="sd">	.. note:: The constants dictionary will contain only the mongoDB queries in current format</span>
+
+<span class="sd">	.. note:: We don&#39;t do very comprehensive checking if the network is valid.</span>
+<span class="sd">		In case it is not a DAG, the user is notified of it. Other than that, there will be some python errors if some other issue is there.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">network_file_source</span><span class="p">,</span><span class="n">queries</span><span class="p">,</span><span class="n">types</span><span class="p">,</span><span class="n">constants</span><span class="p">):</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">queries</span> <span class="o">=</span> <span class="n">queries</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">types</span> <span class="o">=</span> <span class="n">types</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;the queries and types are &quot;</span><span class="p">)</span>
+		<span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="p">)</span>
+		<span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">outputs_dict</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="n">queries</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">outputs_dict</span><span class="p">[</span><span class="n">q</span><span class="p">]</span> <span class="o">=</span><span class="p">{}</span>
+			<span class="k">for</span> <span class="n">out</span> <span class="ow">in</span> <span class="n">queries</span><span class="p">[</span><span class="n">q</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">outputs_dict</span><span class="p">[</span><span class="n">q</span><span class="p">][</span><span class="n">out</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">node_to_query</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">returns</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">connections</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">taking_inputs</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">giving_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="n">s</span> <span class="o">=</span> <span class="n">network_file_source</span>
+		<span class="k">if</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="nb">bytes</span><span class="p">)):</span>
+			<span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+		<span class="n">cond</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+		<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+		<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">):</span>
+			<span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">==</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+				<span class="k">continue</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">count</span><span class="o">==</span><span class="mi">1</span><span class="p">):</span>
+				<span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+				<span class="c1"># self.num_edges = int(l[1])</span>
+			<span class="k">elif</span><span class="p">(</span><span class="n">count</span><span class="o">&lt;=</span><span class="mi">1</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">):</span>
+				<span class="n">node_name</span><span class="p">,</span> <span class="n">query_name</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node_name</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">query_name</span><span class="p">],</span>
+					<span class="n">query_name</span> <span class="o">=</span> <span class="n">query_name</span><span class="p">,</span><span class="n">query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="p">[</span><span class="n">query_name</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">node_to_query</span><span class="p">[</span><span class="n">node_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">query_name</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">node_name</span><span class="p">]</span>  <span class="o">=</span><span class="p">{}</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">node_name</span><span class="p">]</span>  <span class="o">=</span><span class="p">{}</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">==</span><span class="s2">&quot;CONNECTIONS:&quot;</span><span class="p">):</span>
+					<span class="n">cond</span> <span class="o">=</span> <span class="mi">1</span>
+					<span class="k">continue</span>
+				<span class="k">elif</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">==</span><span class="s2">&quot;INPUTS:&quot;</span><span class="p">):</span>
+					<span class="n">cond</span> <span class="o">=</span> <span class="mi">0</span>
+					<span class="k">continue</span>
+				<span class="k">elif</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">==</span><span class="s2">&quot;RETURNS:&quot;</span><span class="p">):</span>
+					<span class="n">cond</span> <span class="o">=</span> <span class="mi">2</span>
+					<span class="k">continue</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">cond</span><span class="o">==</span><span class="mi">1</span><span class="p">):</span>
+					<span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+					<span class="n">ind1</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+					<span class="n">ind2</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+					<span class="n">u</span><span class="p">,</span><span class="n">outp</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="n">ind1</span><span class="p">],</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">ind1</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+					<span class="n">v</span><span class="p">,</span><span class="n">inp</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">][:</span><span class="n">ind2</span><span class="p">],</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">ind2</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+					<span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">outp</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">inp</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">mapping</span><span class="o">=</span><span class="p">(</span><span class="n">outp</span><span class="p">,</span><span class="n">inp</span><span class="p">))</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">inp</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">outp</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="s2">&quot;query_name&quot;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="n">outp</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="s2">&quot;query_name&quot;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="n">inp</span><span class="p">))</span>
+				<span class="k">elif</span><span class="p">(</span><span class="n">cond</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+					<span class="n">l</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+					<span class="n">ind</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+					<span class="n">node_name</span><span class="p">,</span><span class="n">var_name</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="n">ind</span><span class="p">],</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">taking_inputs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">node_name</span><span class="p">][</span><span class="s2">&quot;query_name&quot;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">node_name</span><span class="p">][</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">[</span><span class="n">node_name</span><span class="p">][</span><span class="n">var_name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span>
+				<span class="k">elif</span><span class="p">(</span><span class="n">cond</span><span class="o">==</span><span class="mi">2</span><span class="p">):</span>
+					<span class="n">s</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+					<span class="n">ind</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+					<span class="n">node_name</span><span class="p">,</span><span class="n">var_name</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span><span class="n">ind</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">giving_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">node_name</span><span class="p">][</span><span class="s2">&quot;query_name&quot;</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="n">var_name</span><span class="p">)</span>
+					<span class="bp">self</span><span class="o">.</span><span class="n">returns</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node_name</span><span class="p">,</span><span class="n">var_name</span><span class="p">))</span>
+
+		<span class="n">is_dag</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">is_directed_acyclic_graph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+		<span class="k">if</span><span class="p">(</span><span class="ow">not</span><span class="p">(</span><span class="n">is_dag</span><span class="p">)):</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The input file doesn&#39;t specify a DAG. Please Check!!&quot;</span><span class="p">)</span>
+		<span class="c1">#Treating mongoDB constants as provided inputs in DAG</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">query_to_node</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_to_query</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+		<span class="k">for</span> <span class="n">q</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">constants</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+			<span class="c1"># print(q,v)</span>
+			<span class="k">for</span> <span class="n">var</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">query_to_node</span><span class="p">[</span><span class="n">q</span><span class="p">]][</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----------&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DAG.feed_forward"><a class="viewcode-back" href="../dag.html#create_dag.DAG.feed_forward">[docs]</a>	<span class="k">def</span> <span class="nf">feed_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">execute</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Do a topological sort and then do a BFS of the DAG to execute all the queries.</span>
+<span class="sd">		Expect that there is a function to evaluate a query given its inputs(as a dictionary) and returns a dictionary of outputs</span>
+
+<span class="sd">		:param execute: a function to execute the queries</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="c1"># outputs_dict = {}</span>
+		<span class="n">ts</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+			<span class="n">query_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;query_name&quot;</span><span class="p">]</span>
+			<span class="n">inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+			<span class="k">for</span> <span class="n">inp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="p">[</span><span class="n">query_name</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+				<span class="k">if</span> <span class="n">inp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">inputs</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+					<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Node not getting all inputs&quot;</span><span class="p">)</span>
+					<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+			<span class="n">outputs</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="n">query_name</span><span class="p">,</span><span class="n">inputs</span><span class="p">)</span>
+			<span class="bp">self</span><span class="o">.</span><span class="n">outputs_dict</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputs</span>
+			<span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+				<span class="n">outp</span><span class="p">,</span> <span class="n">inp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edge</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="n">nbr</span><span class="p">][</span><span class="s2">&quot;mapping&quot;</span><span class="p">]</span>
+				<span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">[</span><span class="n">nbr</span><span class="p">][</span><span class="n">inp</span><span class="p">]</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="n">outp</span><span class="p">]</span>
+		<span class="c1"># rets= {}</span>
+		<span class="c1"># for ret in self.returns:</span>
+		<span class="c1"># 	rets[ret] = self.outputs_dict[ret[0]][ret[1]]</span>
+		<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs_dict</span></div>
+
+<div class="viewcode-block" id="DAG.generate_dag"><a class="viewcode-back" href="../dag.html#create_dag.DAG.generate_dag">[docs]</a>	<span class="k">def</span> <span class="nf">generate_dag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">dag_name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Create a python file for the DAG in the dags directory of AIRFLOW_HOME. Generate the airflow code for</span>
+<span class="sd">		the dag in the file. The templates used in the function are taken in the :mod:`create_dag` module.</span>
+
+<span class="sd">		:param dag_name: the name of the dag to be generated</span>
+
+<span class="sd">		.. note:: Currently it has the relative address of the folder as being contained in the myapp folder. Change it appropriately if you decide to</span>
+<span class="sd">			change the airflow home</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+		<span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myapp/airflow/dags/&quot;</span><span class="o">+</span><span class="n">dag_name</span><span class="o">+</span><span class="s2">&quot;.py&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="n">imports</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;queries = </span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+		<span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="p">,</span><span class="n">fout</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;types = </span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+		<span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">,</span><span class="n">fout</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;provided_inputs = </span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+		<span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span><span class="p">,</span><span class="n">fout</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mapping = </span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+		<span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">,</span><span class="n">fout</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;node_to_query = </span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+		<span class="n">pprint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_to_query</span><span class="p">,</span><span class="n">fout</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">helper_fns</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+
+		<span class="n">dd</span>  <span class="o">=</span><span class="n">jj</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">dag_defn</span><span class="p">)</span>
+		<span class="n">dd_c</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">dag_name</span><span class="o">=</span><span class="n">dag_name</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">dd_c</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+
+		<span class="n">ef</span>  <span class="o">=</span><span class="n">jj</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">execute_fn</span><span class="p">)</span>
+		<span class="n">ef_c</span> <span class="o">=</span> <span class="n">ef</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">dag_name</span><span class="o">=</span><span class="n">dag_name</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">ef_c</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+
+		<span class="n">node_to_task</span> <span class="o">=</span> <span class="p">{}</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_to_query</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+			<span class="n">tt</span> <span class="o">=</span> <span class="n">jj</span><span class="o">.</span><span class="n">Template</span><span class="p">(</span><span class="n">task_template</span><span class="p">)</span>
+			<span class="n">t_c</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">node</span><span class="p">))</span>
+			<span class="n">node_to_task</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;task_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">t_c</span><span class="p">,</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+			<span class="nb">print</span><span class="p">(</span><span class="n">node_to_task</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot; &gt;&gt; &quot;</span> <span class="o">+</span> <span class="n">node_to_task</span><span class="p">[</span><span class="n">v</span><span class="p">],</span><span class="n">file</span><span class="o">=</span><span class="n">fout</span><span class="p">)</span>
+		<span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DAG.get_drawable_dag"><a class="viewcode-back" href="../dag.html#create_dag.DAG.get_drawable_dag">[docs]</a>	<span class="k">def</span> <span class="nf">get_drawable_dag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">queries</span><span class="p">,</span><span class="n">types</span><span class="p">,</span><span class="n">edges</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Helper function for :func:`create_dag.DAG.plot_dag`. It gets the locations of the various figures</span>
+<span class="sd">		in the plotly plot of the DAG.</span>
+
+<span class="sd">		:param queries: the queries in the DAG</span>
+<span class="sd">		:param types: the types of queris. Not used, but can choose to get different colored rectangles for different query types</span>
+<span class="sd">		:param edges: the edges in the DAG</span>
+<span class="sd">		:returns: a directed graph with the connections between inputs and outputs, the locations of bounding rectangles for the queries</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">ts</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">topological_sort</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+		<span class="n">dis</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+		<span class="n">rectangle</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+			<span class="n">query_name</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;query_name&quot;</span><span class="p">]</span>
+			<span class="n">inputs</span> <span class="o">=</span> <span class="n">queries</span><span class="p">[</span><span class="n">query_name</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+			<span class="n">outputs</span> <span class="o">=</span> <span class="n">queries</span><span class="p">[</span><span class="n">query_name</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+			<span class="n">inputs</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+			<span class="n">outputs</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+			<span class="n">length</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+			<span class="n">inputs_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">length</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span>
+			<span class="n">outputs_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">length</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">))</span>
+
+			<span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">inp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+				<span class="n">dis</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">query_name</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="n">inp</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">inputs_y</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+			<span class="k">for</span> <span class="n">j</span><span class="p">,</span><span class="n">out</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outputs</span><span class="p">):</span>
+				<span class="n">dis</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">query_name</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="n">out</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mf">0.25</span><span class="p">,</span><span class="n">outputs_y</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+			<span class="n">rectangle</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">length</span><span class="p">))</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">o</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">:</span>
+			<span class="n">dis</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">o</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">dis</span><span class="p">,</span><span class="n">rectangle</span></div>
+
+
+<div class="viewcode-block" id="DAG.plot_dag"><a class="viewcode-back" href="../dag.html#create_dag.DAG.plot_dag">[docs]</a>	<span class="k">def</span> <span class="nf">plot_dag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Get the plotly div for the DAG. Get the locations using the helper function and then just plot those and return the html div for the plot</span>
+
+<span class="sd">		:returns: the html div of the DAG plotly plot</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="n">G</span> <span class="p">,</span><span class="n">rect</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_drawable_dag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">types</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+		<span class="n">edge_trace</span> <span class="o">=</span> <span class="n">Scatter</span><span class="p">(</span>
+			<span class="n">x</span><span class="o">=</span><span class="p">[],</span>
+			<span class="n">y</span><span class="o">=</span><span class="p">[],</span>
+			<span class="n">line</span><span class="o">=</span><span class="n">Line</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">),</span>
+			<span class="n">hoverinfo</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+			<span class="n">mode</span><span class="o">=</span><span class="s1">&#39;arrows&#39;</span><span class="p">)</span>
+
+		<span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+			<span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+			<span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+			<span class="n">edge_trace</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+			<span class="n">edge_trace</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="p">[</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+		<span class="n">node_trace</span> <span class="o">=</span> <span class="n">Scatter</span><span class="p">(</span>
+			<span class="n">x</span><span class="o">=</span><span class="p">[],</span>
+			<span class="n">y</span><span class="o">=</span><span class="p">[],</span>
+			<span class="n">text</span><span class="o">=</span><span class="p">[],</span>
+			<span class="n">mode</span><span class="o">=</span><span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+			<span class="n">hoverinfo</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">,</span>
+			<span class="n">marker</span><span class="o">=</span><span class="n">Marker</span><span class="p">(</span>
+				<span class="n">color</span> <span class="o">=</span> <span class="p">[],</span>
+				<span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+				<span class="p">))</span>
+
+		<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+			<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;pos&#39;</span><span class="p">]</span>
+			<span class="n">node_trace</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+			<span class="n">node_trace</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+			<span class="n">outs</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">q</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+				<span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">queries</span><span class="p">[</span><span class="n">q</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>
+					<span class="n">outs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="o">+</span><span class="s2">&quot;.&quot;</span><span class="o">+</span><span class="n">o</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">node</span> <span class="ow">in</span> <span class="n">outs</span><span class="p">):</span>
+				<span class="n">ind</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+				<span class="n">q</span><span class="p">,</span><span class="n">val</span> <span class="o">=</span> <span class="n">node</span><span class="p">[:</span><span class="n">ind</span><span class="p">],</span><span class="n">node</span><span class="p">[</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+				<span class="n">node_trace</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">+</span><span class="s2">&quot;&lt;&lt;&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs_dict</span><span class="p">[</span><span class="n">q</span><span class="p">][</span><span class="n">val</span><span class="p">]))</span>
+				<span class="n">node_trace</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
+			<span class="k">elif</span><span class="p">(</span><span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">taking_inputs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+				<span class="n">node_trace</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="o">+</span><span class="s2">&quot;&gt;&gt;&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taking_inputs</span><span class="p">[</span><span class="n">node</span><span class="p">]))</span>
+				<span class="n">node_trace</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">node_trace</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+				<span class="n">node_trace</span><span class="p">[</span><span class="s2">&quot;marker&quot;</span><span class="p">][</span><span class="s2">&quot;color&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+
+		<span class="n">xmargin</span> <span class="o">=</span> <span class="mf">0.15</span>
+		<span class="n">ymargin</span> <span class="o">=</span> <span class="mf">0.4</span>
+		<span class="n">fig</span> <span class="o">=</span> <span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">Data</span><span class="p">([</span><span class="n">edge_trace</span><span class="p">,</span> <span class="n">node_trace</span><span class="p">]),</span>
+					 <span class="n">layout</span><span class="o">=</span><span class="n">Layout</span><span class="p">(</span>
+					 	<span class="n">autosize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    					<span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    					<span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+						<span class="n">title</span><span class="o">=</span><span class="s1">&#39;&lt;br&gt;Your Query DAG&#39;</span><span class="p">,</span>
+						<span class="c1"># titlefont=dict(size=16),</span>
+						<span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+						<span class="n">hovermode</span><span class="o">=</span><span class="s1">&#39;closest&#39;</span><span class="p">,</span>
+						<span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">l</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="mi">40</span><span class="p">),</span>
+						<span class="n">xaxis</span><span class="o">=</span><span class="n">XAxis</span><span class="p">(</span><span class="n">showgrid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">zeroline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">showticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+						<span class="n">yaxis</span><span class="o">=</span><span class="n">YAxis</span><span class="p">(</span><span class="n">showgrid</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">zeroline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">range</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">showticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+						<span class="n">shapes</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;rect&#39;</span><span class="p">,</span><span class="s1">&#39;x0&#39;</span><span class="p">:</span> <span class="n">i</span><span class="o">-</span><span class="n">xmargin</span><span class="p">,</span><span class="s1">&#39;y0&#39;</span><span class="p">:</span> <span class="o">-</span><span class="n">ymargin</span><span class="p">,</span><span class="s1">&#39;x1&#39;</span><span class="p">:</span> <span class="n">i</span><span class="o">+</span><span class="mf">0.25</span><span class="o">+</span><span class="n">xmargin</span><span class="p">,</span><span class="s1">&#39;y1&#39;</span><span class="p">:</span> <span class="n">j</span><span class="o">+</span><span class="n">ymargin</span><span class="p">,</span><span class="s1">&#39;line&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,}}</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">rect</span><span class="p">]</span>
+						<span class="p">))</span>
+
+		<span class="c1"># plot(fig, auto_open=False, filename=&#39;networkx.html&#39;)</span>
+		<span class="n">div</span> <span class="o">=</span> <span class="n">plot</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">auto_open</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;div&#39;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">div</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">div</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="n">queries</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q1&quot;</span><span class="p">:[</span><span class="s2">&quot;query 1&quot;</span><span class="p">,[</span><span class="s2">&quot;inp1&quot;</span><span class="p">,</span><span class="s2">&quot;inp2&quot;</span><span class="p">],[</span><span class="s2">&quot;out1&quot;</span><span class="p">,</span><span class="s2">&quot;out2&quot;</span><span class="p">]],</span>
+			<span class="s2">&quot;q2&quot;</span><span class="p">:[</span><span class="s2">&quot;query 2&quot;</span><span class="p">,[</span><span class="s2">&quot;inp1&quot;</span><span class="p">],[</span><span class="s2">&quot;out1&quot;</span><span class="p">,</span><span class="s2">&quot;out2&quot;</span><span class="p">]],</span>
+			<span class="s2">&quot;q3&quot;</span><span class="p">:[</span><span class="s2">&quot;query 3&quot;</span><span class="p">,[</span><span class="s2">&quot;inp1&quot;</span><span class="p">,</span><span class="s2">&quot;inp2&quot;</span><span class="p">,</span><span class="s2">&quot;inp3&quot;</span><span class="p">],[</span><span class="s2">&quot;out1&quot;</span><span class="p">]]}</span>
+	<span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q1&quot;</span><span class="p">:</span><span class="s2">&quot;mongoDB&quot;</span><span class="p">,</span><span class="s2">&quot;q2&quot;</span><span class="p">:</span><span class="s2">&quot;PostProcesing&quot;</span><span class="p">,</span><span class="s2">&quot;q3&quot;</span><span class="p">:</span><span class="s2">&quot;neo4j&quot;</span><span class="p">}</span>
+	<span class="n">dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;input_graph.txt&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">),</span><span class="n">queries</span><span class="p">,</span><span class="n">types</span><span class="p">)</span>
+	<span class="n">dag</span><span class="o">.</span><span class="n">generate_dag</span><span class="p">(</span><span class="s2">&quot;my_dag&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div><!-- /.toBeIndexed -->
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo" class="contentinfo">
+      <p class="show_copyright">
+            &copy; Copyright 2018, Deepak Saini, Abhishek Gupta
+      </p>
+      <p class="show_sphinx">
+        Built with <a href="http://sphinx-doc.org/" target="_blank">Sphinx</a> and
+        <a href="https://github.com/TYPO3-Documentation/t3SphinxThemeRtd" target="_blank">t3SphinxThemeRtd.</a>
+        Report theme issues <a href="https://github.com/TYPO3-Documentation/t3SphinxThemeRtd/issues" target="_blank">here.</a>
+      </p>
+      <p class="show_legalinfo">
+        <a href="https://typo3.org/legal-info/" rel="nofollow">
+          <span class="fa fa-legal"></span>&#32;Legal Info
+        </a>
+      </p>
+
+
+
+
+  </div>
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/jquery-ui/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="../_static/js/theme.js"></script>
+      <script type="text/javascript" src="../_static/js/t3autocomplete.js"></script>
+
+  
+
+  
+   
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   <script type="text/javascript" id="idPiwikScriptPlaceholder"></script></body>
+</html>

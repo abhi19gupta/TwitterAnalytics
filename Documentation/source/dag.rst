@@ -154,3 +154,13 @@ To display the custom metric, the DAG is executed to feed data into the post pro
     * Table : The values are displayed in table format again using an Ajax call.
 
 An example of creating a custom metric will be provided in the :ref:`Dashboard Website` section.
+
+Code Documentation for DAG abstraction
+--------------------------------------------
+Here we provide a documentation of the code used to generate, execute the DAG.
+
+.. automodule:: create_dag
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

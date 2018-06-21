@@ -82,26 +82,36 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Read data from Twitter API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#user-timeline-api">User Timeline API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#improving-ingestion-rate-using-transaction">Improving ingestion rate using transaction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-transactions">Improving ingestion rate using transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-parallel-multiple-process">Improving ingestion rate using parallel multiple process</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
 </ul>
@@ -111,13 +121,18 @@
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#naming-entities">Naming entities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#returns">Returns</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
@@ -129,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a></li>
@@ -236,6 +252,230 @@
 <h2>Stream Sample API<a class="headerlink" href="#stream-sample-api" title="Permalink to this headline">¶</a></h2>
 <p>The end-point GET statuses/sample is free, however it returns only about 1% of the actual stream. You can buy the enterprise version called Decahose to have access to 10% of the stream.</p>
 <p>Refer to the file ‘Read Twitter Stream/streaming.py’ for the code. The code will write the data in the same directory, flushing the data periodically to a file. After a threshold number of tweets have been written to the current output file, it generates a new file and starts flushing the tweets to it. This will prevent a single file from becoming too big in size.</p>
+</div>
+<div class="section" id="user-timeline-api-code-documentation">
+<h2>User Timeline API Code Documentation<a class="headerlink" href="#user-timeline-api-code-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the code.</p>
+<span class="target" id="module-main"></span><p>Module to fetch data of a specified list of users. Data includes user’s profile information, all tweets on
+user’s timeline till now and list of ids of user’s followers and friends. The main function expects a file containing
+a list of user screen names separated by new lines. It generates a folder named ‘data’ in the same directory.
+Each time you run the file, it accumulates the new data in this directory.</p>
+<p>Create a file named SECRETS which contains your Twitter OAuth related keys in the following order, separated by new lines:
+&lt;ACCESS_TOKEN&gt;
+&lt;ACCESS_SECRET&gt;
+&lt;CONSUMER_KEY&gt;
+&lt;CONSUMER_SECRET&gt;</p>
+<p><strong>Running the code</strong>:</p>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
+<li>First ensure Python Twitter Tools is installed. (<a class="reference external" href="https://github.com/sixohsix/twitter">https://github.com/sixohsix/twitter</a>)</li>
+<li>Before running, you may want to change the name of the file (containing the user screen names)
+in the main function. That file should contain one screen name in each line.</li>
+</ul>
+</div></blockquote>
+<p><em>Command to run</em>:
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">main.py</span></code></p>
+</div></blockquote>
+<dl class="class">
+<dt id="main.DateTimeEncoder">
+<em class="property">class </em><code class="descclassname">main.</code><code class="descname">DateTimeEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#DateTimeEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.DateTimeEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">json.encoder.JSONEncoder</span></code></p>
+<dl class="method">
+<dt id="main.DateTimeEncoder.default">
+<code class="descname">default</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#DateTimeEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.DateTimeEncoder.default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement this method in a subclass such that it returns
+a serializable object for <code class="docutils literal notranslate"><span class="pre">o</span></code>, or calls the base implementation
+(to raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>).</p>
+<p>For example, to support arbitrary iterators, you could
+implement default like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">iterable</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
+    <span class="c1"># Let the base class default method raise the TypeError</span>
+    <span class="k">return</span> <span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="main.DateTimeEncoder.encode">
+<code class="descname">encode</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="headerlink" href="#main.DateTimeEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a JSON string representation of a Python data structure.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">json.encoder</span> <span class="k">import</span> <span class="n">JSONEncoder</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;baz&quot;</span><span class="p">]})</span>
+<span class="go">&#39;{&quot;foo&quot;: [&quot;bar&quot;, &quot;baz&quot;]}&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.DateTimeEncoder.item_separator">
+<code class="descname">item_separator</code><em class="property"> = ', '</em><a class="headerlink" href="#main.DateTimeEncoder.item_separator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.DateTimeEncoder.iterencode">
+<code class="descname">iterencode</code><span class="sig-paren">(</span><em>o</em>, <em>_one_shot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#main.DateTimeEncoder.iterencode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Encode the given object and yield each string
+representation as available.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">bigobject</span><span class="p">):</span>
+    <span class="n">mysocket</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="main.DateTimeEncoder.key_separator">
+<code class="descname">key_separator</code><em class="property"> = ': '</em><a class="headerlink" href="#main.DateTimeEncoder.key_separator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="main.UserTimelineAPI">
+<em class="property">class </em><code class="descclassname">main.</code><code class="descname">UserTimelineAPI</code><a class="reference internal" href="_modules/main.html#UserTimelineAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to fetch data of a specified list of users.</p>
+<dl class="method">
+<dt id="main.UserTimelineAPI.clear_everyting">
+<code class="descname">clear_everyting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.clear_everyting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.clear_everyting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.fetch_persist_friends_and_followers">
+<code class="descname">fetch_persist_friends_and_followers</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_friends_and_followers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_friends_and_followers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.fetch_persist_tweets">
+<code class="descname">fetch_persist_tweets</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em>, <em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_tweets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.fetch_persist_users">
+<code class="descname">fetch_persist_users</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_users" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.my_favourites_fetcher">
+<code class="descname">my_favourites_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_favourites_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_favourites_fetcher" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.my_followers_fetcher">
+<code class="descname">my_followers_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_followers_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_followers_fetcher" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.my_friends_fetcher">
+<code class="descname">my_friends_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_friends_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_friends_fetcher" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.my_tweet_fetcher">
+<code class="descname">my_tweet_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_tweet_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_tweet_fetcher" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.my_user_fetcher">
+<code class="descname">my_user_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_user_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_user_fetcher" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="main.UserTimelineAPI.wait_for_rate_limit">
+<code class="descname">wait_for_rate_limit</code><span class="sig-paren">(</span><em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.wait_for_rate_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.wait_for_rate_limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="main.extract_hash_tags">
+<code class="descclassname">main.</code><code class="descname">extract_hash_tags</code><span class="sig-paren">(</span><em>screen_name</em>, <em>date_start</em>, <em>date_end</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#extract_hash_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.extract_hash_tags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.get_user_screen_names">
+<code class="descclassname">main.</code><code class="descname">get_user_screen_names</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#get_user_screen_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.get_user_screen_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="main.plot_user_field">
+<code class="descclassname">main.</code><code class="descname">plot_user_field</code><span class="sig-paren">(</span><em>screen_name</em>, <em>date_start</em>, <em>date_end</em>, <em>field_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#plot_user_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.plot_user_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="stream-sample-api-code-documentation">
+<h2>Stream Sample API Code Documentation<a class="headerlink" href="#stream-sample-api-code-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the code.</p>
+<span class="target" id="module-streaming"></span><p>Module to stream 1% sample of tweets using Twitter’s Streaming API. The code will write the data in the same directory.</p>
+<p>Create a file named SECRETS which contains your Twitter OAuth related keys in the following order, separated by new lines:
+&lt;ACCESS_TOKEN&gt;
+&lt;ACCESS_SECRET&gt;
+&lt;CONSUMER_KEY&gt;
+&lt;CONSUMER_SECRET&gt;</p>
+<p><strong>Running the code</strong>:</p>
+<blockquote>
+<div><blockquote>
+<div><ul>
+<li><p class="first">First ensure Python Twitter Tools is installed. (<a class="reference external" href="https://github.com/sixohsix/twitter">https://github.com/sixohsix/twitter</a>)</p>
+</li>
+<li><p class="first">Before running, you may set the following parameters inside the file:</p>
+<blockquote>
+<div><ul class="simple">
+<li>tweet_count = 1000000000 # total number of tweets to read</li>
+<li>batch_size = 10000 # how many tweets to write together in 1 go</li>
+<li>file_tweet_count = 500000 # max no of tweets to write in 1 file</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p><em>Command to run</em>:
+<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">streaming.py</span></code></p>
+</div></blockquote>
+<dl class="class">
+<dt id="streaming.Logger">
+<em class="property">class </em><code class="descclassname">streaming.</code><code class="descname">Logger</code><span class="sig-paren">(</span><em>batch_size</em>, <em>file_tweet_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to periodically write tweets to files and to log anything (automatically timestamped).
+The function write_tweet will keep buffering tweets till batch_size is reached. Once the batch size
+is reached, it flushes all the buffered tweets to the current tweet_file_name. Additionally, it keeps
+track of number of tweets written to the current file and once it exceeds the threshold file_tweet_count,
+it starts with a new tweet_file and starts flushing to it. This will prevent a single file from becoming
+too big in size.</p>
+<dl class="method">
+<dt id="streaming.Logger.configure_new_file">
+<code class="descname">configure_new_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.configure_new_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.configure_new_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="streaming.Logger.finish_current_file">
+<code class="descname">finish_current_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.finish_current_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.finish_current_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="streaming.Logger.log">
+<code class="descname">log</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="streaming.Logger.write_tweet">
+<code class="descname">write_tweet</code><span class="sig-paren">(</span><em>tweet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.write_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.write_tweet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="streaming.signal_handler">
+<code class="descclassname">streaming.</code><code class="descname">signal_handler</code><span class="sig-paren">(</span><em>signal</em>, <em>frame</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#signal_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.signal_handler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 

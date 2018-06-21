@@ -26,13 +26,13 @@ Example: Let us consider an example where we wish to be notified an alert if any
    * Count = 100
 
 
-.. Flink Code Documentation
-.. -------------------------------------
+Flink Code Documentation
+-------------------------------------
 
-.. Here we provide a documentation of the flink code generator.
+Here we provide a documentation of the flink code generator.
 
-.. .. automodule:: flink_code_gen
-..     :members:
-..     :undoc-members:
-..     :inherited-members:
-..     :show-inheritance:
+.. automodule:: flink_code_gen
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

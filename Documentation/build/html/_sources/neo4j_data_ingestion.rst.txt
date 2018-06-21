@@ -95,6 +95,13 @@ Neo4j Ingestion Rates
 
 Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size of around 35k. This is mainly due to the limitation of memory size. The authors observe that keeping a larger transaction size leads to lag on the system indicative of use of swap space. Thus, the maximum ingestion rate can be enhanced just by putting in more memory, albeit with decreasing returns.
 
-.. Code Documentation for neo4j data ingestion
-.. --------------------------------------------
+Code Documentation for Neo4j data ingestion
+--------------------------------------------
+Here we provide a documentation of the code.
+
+.. automodule:: ingest_neo4j
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
 

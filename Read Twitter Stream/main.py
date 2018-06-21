@@ -74,15 +74,15 @@ from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 # db=client.twitter # db name
 
 # TWITTER API RELATED SETUP
-f = open('SECRETS','r')
-secrets = f.read().split()
-f.close()
-ACCESS_TOKEN = secrets[0]
-ACCESS_SECRET = secrets[1]
-CONSUMER_KEY = secrets[2]
-CONSUMER_SECRET = secrets[3]
-oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-twitter = Twitter(auth=oauth)
+# f = open('SECRETS','r')
+# secrets = f.read().split()
+# f.close()
+# ACCESS_TOKEN = secrets[0]
+# ACCESS_SECRET = secrets[1]
+# CONSUMER_KEY = secrets[2]
+# CONSUMER_SECRET = secrets[3]
+# oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+# twitter = Twitter(auth=oauth)
 
 # DATABASE SCHEMA: (Not used anymore)
 
@@ -521,20 +521,21 @@ def extract_hash_tags(screen_name,date_start,date_end):
 
 ################### MAIN FUNCTION BEGINS HERE ####################
 
-api = UserTimelineAPI()
-now = datetime.datetime.now()
+if __name__ == '__main__':
+	api = UserTimelineAPI()
+	now = datetime.datetime.now()
 
-api.clear_everyting()
-with open('data/timestamps.txt','a') as f: # to keep track of timestamps when this script is run, to read back later
-	f.write(str(now).replace(":","-")+'\n')
+	api.clear_everyting()
+	with open('data/timestamps.txt','a') as f: # to keep track of timestamps when this script is run, to read back later
+		f.write(str(now).replace(":","-")+'\n')
 
-# user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
-user_screen_names = get_user_screen_names('users1.txt')
-# api.fetch_persist_users(user_screen_names,now)
-# api.fetch_persist_tweets(user_screen_names,now,'tweets')
-# api.fetch_persist_tweets(user_screen_names,now,'favourites')
-api.fetch_persist_friends_and_followers(user_screen_names,now)
+	# user_screen_names = ['elonmusk','narendramodi','BillGates','iamsrk','imVkohli']
+	user_screen_names = get_user_screen_names('users1.txt')
+	# api.fetch_persist_users(user_screen_names,now)
+	# api.fetch_persist_tweets(user_screen_names,now,'tweets')
+	# api.fetch_persist_tweets(user_screen_names,now,'favourites')
+	api.fetch_persist_friends_and_followers(user_screen_names,now)
 
-# plot_user_field('narendramodi',now-datetime.timedelta(days=1),now,
-# 	['favourites_count','followers_count','friends_count','statuses_count'])
-# extract_hash_tags('iamsrk',now-datetime.timedelta(days=100),now)
+	# plot_user_field('narendramodi',now-datetime.timedelta(days=1),now,
+	# 	['favourites_count','followers_count','friends_count','statuses_count'])
+	# extract_hash_tags('iamsrk',now-datetime.timedelta(days=100),now)
