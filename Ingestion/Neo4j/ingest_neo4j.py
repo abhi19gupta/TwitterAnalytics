@@ -135,7 +135,7 @@ class Twitter:
 				"    (frame_fav) -[:HAS_FAV]-> (fe:FAV_EVENT {timestamp:{fav_timestamp}}),"
 				"    (fe) -[:FAV_USER]-> (fav_user),"
 				"    (fe) -[:FAV_TWEET]-> (tweet) )"
-				"WITH tweet "
+				"WITH frame, tweet "
 				# Proceed only if the tweet was not already created
 				"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
 				# Create user and then the relationships
@@ -181,7 +181,7 @@ class Twitter:
 				"    (frame_fav) -[:HAS_FAV]-> (fe:FAV_EVENT {timestamp:{fav_timestamp}}),"
 				"    (fe) -[:FAV_USER]-> (fav_user),"
 				"    (fe) -[:FAV_TWEET]-> (tweet) )"
-				"WITH tweet "
+				"WITH frame, tweet "
 				# Proceed only if the tweet was not already created
 				"MATCH (tweet) WHERE NOT (tweet) -[:INFO]-> () "
 				# Create user and then the relationships

@@ -1,0 +1,11 @@
+3
+n1 most_popular_hashtags_3
+n2 most_popular_mentions_3
+n3 active_users
+INPUTS:
+CONNECTIONS:
+n1.hashtag n3.hashtag
+n2.userId n3.um_id
+RETURNS:
+n3.userid
+n3.count

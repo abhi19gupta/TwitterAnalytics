@@ -1,0 +1,629 @@
+{% load static %}
+<div>
+{% include "myapp/theme.html" %}
+</div>
+
+{% load crispy_forms_tags %}
+
+{% include 'material/includes/material_css.html' %}
+<script src="{% static 'material/js/jquery.js' %}"></script>
+{% include 'material/includes/material_js.html' %}
+{% load material_form %}
+
+{% block head %}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Create Queries</title>
+
+	<style type="text/css">
+	  html, body {
+		  background: #eee;
+		  height: 100%;
+	  }
+	</style>
+
+	<style type="text/css">
+	.legend { list-style: none; }
+	.legend li { float: left; margin-right: 10px; }
+	.legend span { border: 1px solid #ccc; float: left; width: 12px; height: 12px; margin: 2px; }
+	/* your colors */
+	.legend .mongo { background-color: #ffb380; }
+	.legend .postproc { background-color: #b3ffb3; }
+	.legend .neo { background-color: #80aaff; }
+	</style>
+	<style type="text/css">
+	.heading {
+		 width: 100%;
+		 text-align: center;
+		 border-bottom: 1px solid #000;
+		 line-height: 0.1em;
+		 margin: 10px 0 20px;
+	}
+
+	.heading span {
+			background:#fff;
+			padding:0 10px;
+	}
+	</style>
+</head>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+	<ul class="nav nav-tabs">
+	  <li class="active"><a data-toggle="tab" href="#create_neo4j_query">Create Neo4j Query</a></li>
+	  <li><a data-toggle="tab" href="#create_mongo_query">Create MongoDB Query</a></li>
+	  <li><a data-toggle="tab" href="#create_postprocessing">Create Post-Processing Function</a></li>
+	  <li><a data-toggle="tab" href="#view_queries">All Queries</a></li>
+	  <li><a data-toggle="tab" href="#createDAGTab">Create DAG</a></li>
+	  <li><a data-toggle="tab" href="#viewDAGTab">View DAG</a></li>
+	  <li><a data-toggle="tab" href="#create_custom_metric">Create Custom Metric</a></li>
+	</ul>
+
+	<div class="tab-content">
+
+		<div id="create_neo4j_query" class="tab-pane fade in active">
+			<h5>Create Neo4j custom query</h5>
+			<br>
+			<form  method='post' action="/create_query/delete_all_variables_handler/">{% csrf_token %}
+			<center>
+				<input class="btn btn-success btn-sm" type="submit" name="clear" value="Delete All Variables" />
+			</center>
+			</form>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+						<th rowspan="2" style="text-align: center;">User Variable Name</th>
+						<th rowspan="2" colspan="2" style="text-align: center;">User Id</th>
+						<th rowspan="2" colspan="4" style="text-align: center;">User Name</th>
+
+					  </tr>
+					</thead>
+					<tbody>
+						{% for u in user_list %}
+						<tr>
+							<td style="text-align: center;">{{u.Variable_Name}}</td>
+							<td colspan="2" style="text-align: center;">{{u.UserId}}</td>
+							<td colspan="4" style="text-align: center;">{{u.UserName}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Users</span></h5>
+								{% form form=uform %}{% endform %}
+								<p class="bs-component">
+								<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b1" value="Make User" />
+								</center>
+								</p>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+						<th rowspan="2" style="text-align: center;">Tweet Variable Name</th>
+						<th rowspan="2" style="text-align: center;">Contains Hashtag</th>
+						<th rowspan="2" style="text-align: center;">Retweet Of</th>
+						<th rowspan="2" style="text-align: center;">Reply Of</th>
+						<th rowspan="2" style="text-align: center;">Has Quoted</th>
+						<th rowspan="2" style="text-align: center;">Has Mentioned</th>
+
+
+					  </tr>
+					</thead>
+					<tbody>
+						{% for t in tweet_list %}
+						<tr>
+							<td style="text-align: center;">{{t.Variable_Name}}</td>
+							<td style="text-align: center;">{{t.Hashtag}}</td>
+							<td style="text-align: center;">{{t.Retweet_Of}}</td>
+							<td style="text-align: center;">{{t.Reply_Of}}</td>
+							<td style="text-align: center;">{{t.Quoted}}</td>
+							<td style="text-align: center;">{{t.Has_Mentioned}}</td>
+
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Tweets</span></h5>
+								{% form form=tform %}{% endform %}
+								<p class="bs-component">
+								<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b2" value="Make Tweet" />
+								</center>
+								</p>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+						<th rowspan="2" style="text-align: center;">Source</th>
+						<th rowspan="2" style="text-align: center;">Relationship</th>
+						<th rowspan="2" style="text-align: center;">Destination</th>
+						<th rowspan="2" style="text-align: center;">Begin Time</th>
+						<th rowspan="2" style="text-align: center;">End Time</th>
+
+
+					  </tr>
+					</thead>
+					<tbody>
+						{% for r in relation_list %}
+						<tr>
+							<td style="text-align: center;">{{r.Source}}</td>
+							<td style="text-align: center;">{{r.Relation_Ship}}</td>
+							<td style="text-align: center;">{{r.Destination}}</td>
+							<td style="text-align: center;">{{r.Begin}}</td>
+							<td style="text-align: center;">{{r.End}}</td>
+
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
+							<h5 class="heading"><span>Relations</span></h5>
+							{% form form=rform %}{% endform %}
+
+							<p class="bs-component">
+								<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b3" value="Introduce Relation" />
+								</center>
+							</p>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form  method='post' action="/create_query/create_neo4j_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Create Query</span></h5>
+								{% form form=eform %}{% endform %}
+								<p class="bs-component">
+								<center>
+									<input class="btn btn-success btn-sm" type="submit" name="submit" value="Create Query" />
+								</center>
+								</p>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div id="create_mongo_query" class="tab-pane fade">
+			<h5>Create MongoDB custom query</h5>
+
+			<div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Most Popular hashtags</span></h5>
+								<!-- <h5>Give the most popular hashtags in total</h5> -->
+								{% form form=create_mongo_form_1 %}{% endform %}
+								<p class="bs-component">
+									<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b1" value="Create" />
+									</center>
+								</p>
+							</form>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Most popular hashtags in interval</span></h5>
+								<!-- <h5>Give the most popular hashtags in the time interval &ltBegin Time&gt and &ltEnd Time&gt</h5> -->
+								{% form form=create_mongo_form_2 %}{% endform %}
+								<p class="bs-component">
+									<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b2" value="Create" />
+									</center>
+								</p>
+							</form>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Usage of hashtag</span></h5>
+								{% form form=create_mongo_form_3 %}{% endform %}
+								<p class="bs-component">
+									<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b3" value="Create" />
+									</center>
+								</p>
+							</form>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Usage and Sentiment of hashtag</span></h5>
+								{% form form=create_mongo_form_4 %}{% endform %}
+								<p class="bs-component">
+									<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b4" value="Create" />
+									</center>
+								</p>
+							</form>
+							<p>&nbsp;</p>
+							<p>&nbsp;</p>
+
+							<form  method='post' action="/create_query/create_mongo_query_handler/">{% csrf_token %}
+								<h5 class="heading"><span>Most Popular users</span></h5>
+								{% form form=create_mongo_form_5 %}{% endform %}
+								<p class="bs-component">
+									<center>
+										<input class="btn btn-success btn-sm" type="submit" name="b5" value="Create" />
+									</center>
+								</p>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="create_postprocessing" class="tab-pane fade">
+			<h5>Create custom post-processing function</h5>
+			 <div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form id="createpostprocform" method="post" action="/create_query/create_postprocessing_handler/" enctype="multipart/form-data">{% csrf_token %}
+								{% form form=createpostprocform %}{% endform %}
+								<br>
+								<center>
+								<button type="submit" class="btn btn-primary">Submit!</button>
+								</center>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="view_queries" class="tab-pane fade">
+			<h5>All the Queris and Post processing functions created by you</h5>
+			<br>
+			<div>
+			<ul class="legend">
+				<li><span class="neo"></span> Neo4j Queries </li>
+				<li><span class="mongo"></span> MongoDB Queries</li>
+				<li><span class="postproc"></span> Post Processing Functions</li>
+			</ul>
+			</div>
+			<br>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+						<th rowspan="2" style="text-align: center;">Query Name</th>
+						<th rowspan="2" colspan="3" style="text-align: center;">Code</th>
+						<th rowspan="2"  style="text-align: center;">Inputs</th>
+						<th rowspan="2" style="text-align: center;">Outputs</th>
+						<th rowspan="2" style="text-align: center;">Actions</th>
+
+					  </tr>
+					</thead>
+					<tbody>
+						{% for q in queries %}
+						{% if q.query_type == 'neo4j' %}
+						<tr style="background-color: #80aaff;">
+						{% elif q.query_type == "mongoDB" %}
+						<tr style="background-color: #ffb380;">
+						{% else %}
+						<tr style="background-color: #b3ffb3;">
+						{% endif %}
+							<td style="text-align: center;">{{q.name}}</td>
+							<td colspan="3"><pre>{{q.code}}</pre></td>
+							<td>
+								{% for i in q.inputs%}
+									<li>{{i}}</li>
+								{% endfor %}
+							</td>
+							<td>
+								{% for o in q.outputs%}
+									<li>{{o}}</li>
+								{% endfor %}
+							</td>
+							<td style="text-align: center;">
+								<form method="POST" action={% url 'delete_query_handler' query=q.name %}>
+								{% csrf_token %}
+								<button type="submit" name="submit" class="btn">Delete</button>
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div id="createDAGTab" class="tab-pane fade">
+			<h5>Create a new DAG</h5>
+			<div class="valign-wrapper2">
+				<div class="container expand-on-small-only">
+					<div class="row valign change-form">
+						<div class="col s12 m8 offset-m2 l8 offset-l2">
+							<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;padding-top:45px;">
+							<form id="uploadfileform" method="post" action="/create_query/create_dag_handler/" enctype="multipart/form-data">{% csrf_token %}
+								{% form form=createdagform %}{% endform %}
+								<br>
+								<button type="submit" class="btn btn-primary">Submit!</button>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="viewDAGTab" class="tab-pane fade">
+			<h5>Select a DAG and the action you want to apply on the DAG</h5>
+			<br>
+			<center>
+				<a class="btn btn-info" target="_blank" href="/" onclick="javascript:event.target.port=8080">Open in Airflow</a>
+			</center>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+					  <tr style="background: #2C2B2A; color: white">
+						<th rowspan="2" style="text-align: center;">DAG Name</th>
+						<th rowspan="2" colspan="4" style="text-align: center;">DAG Description</th>
+						<th rowspan="2" colspan="2" style="text-align: center;">Actions</th>
+
+					  </tr>
+					</thead>
+					<tbody>
+						{% for d in dags %}
+						<tr>
+							<td style="text-align: center;">{{d.dag_name}}</td>
+							<td colspan="4" style="text-align: center;">{{d.description}}</td>
+							<td style="text-align: center;">
+								<div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+								<form id="deletedagform" method="post" action={% url 'delete_dag_handler' dag_name=d.dag_name %} enctype="multipart/form-data">
+								{% csrf_token %}
+									<button type="submit" name="delete" class="btn btn-primary">Delete</button>
+								</form>
+								<span style="display:inline-block; width: 15;"></span>
+								<form id="viewdagform" method="post" target="_blank"  action={% url 'view_dag_handler' dag_name=d.dag_name %} enctype="multipart/form-data">
+								{% csrf_token %}
+									<button type="submit" name="view" class="btn btn-primary">View</button>
+								</form>
+								</div>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div id="create_custom_metric" class="tab-pane fade">
+			<h5>Create Custom Metric here to plot the graphs</h5>
+			<div class="valign-wrapper2">
+			<div class="container expand-on-small-only">
+				<div class="row valign change-form">
+					<div class="col s12 m8 offset-m2 l8 offset-l2">
+						<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;">
+						<form id="custommetricid" method="post" action="/create_query/view_custom_metric_handler/">{% csrf_token %}
+							{% form form=createcmform %}{% endform %}
+							<br>
+							<button type="submit" class="btn btn-primary">Fetch Data!</button>
+						</form>
+						<br>
+						<button id="plot_graph" class="btn btn-success">Plot Graph!</button>
+						<button id="create_table" class="btn btn-success">Create Table!</button>
+						<br><br>
+						<div id="custom_metric_space"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+
+
+		</div>
+
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$("#hashtags_tab").removeClass("active");
+		$("#mentions_tab").removeClass("active");
+		$("#urls_tab").removeClass("active");
+		// $("#custom_metrics_tab").removeClass("active");
+		$("#alerts_tab").removeClass("active");
+		$("#create_query_tab").addClass("active");
+	});
+	var x_vals = [];
+	var y_vals = [];
+	var metric_name = "";
+</script>
+
+
+<!-- Plotting and creating table -->
+<script type="text/javascript">
+	function plot(x_, y_,title_,x_label,y_label,div_id) {
+		var data = [{
+			x: x_,
+			y: y_,
+			type: 'line'
+		}];
+		var layout = {
+			title: title_,
+			xaxis: {
+				title: x_label,
+				// showgrid: false,
+				zeroline: false
+			},
+			yaxis: {
+				title: y_label,
+				// showline: false
+			}
+		};
+
+		$("#"+div_id).html("");
+		Plotly.newPlot(div_id, data, layout);
+	}
+
+	function create_table(x_,y_,div_id) {
+		trHTML = '<div"><ul class="list-group">';
+		$.each(x_, function (i, item) {
+			trHTML += '<li class="list-group-item">' + x_[i] + '<span class="badge" style="color:white">' + y_[i].toString() + '</span></li>';
+		});
+		trHTML += '</ul></div>';
+		$("#"+div_id).html(trHTML);
+	}
+</script>
+
+<!-- On click kind of functions -->
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		var frm = $('#custommetricid');
+		frm.submit(function() {
+			$.ajax({
+				type: frm.attr('method'),
+				url: frm.attr('action'),
+				data: frm.serialize(),
+				success: function (data) {
+					console.log(data);
+					x_vals = data.x;
+					y_vals = data.y;
+					// metric_name = $("#id_metric :selected").text();
+					plot(x_vals, y_vals,'Result for metric: '+metric_name,'','','custom_metric_space');
+				},
+				error: function(data) {
+					$("#custom_metric_space").html("Something went wrong!");
+				}
+			});
+			return false;
+		});
+
+		$("#plot_graph").click(function(){
+			plot(x_vals, y_vals,'Result for metric: '+metric_name,'','','custom_metric_space');
+		});
+
+		$("#create_table").click(function(){
+			create_table(x_vals, y_vals,'custom_metric_space');
+		});
+
+		$("#view_query_link").on('click', function(){
+			var newWindow = window.open();
+			query_ = $("#id_query :selected").text();
+			$.ajax({
+				type: "post",
+				url: "/view_query_handler/",
+				data: {query:query_},
+				success: function (data) {
+					console.log(data);
+					newWindow.document.write("<pre>"+data.query+"</pre>");
+				},
+				error: function(data) {
+					newWindow.document.write("Something went wrong!");
+				}
+			});
+			return true;
+		});
+
+		$("#delete_query_link").on('click', function(){
+			query_ = $("#id_query :selected").text();
+			$.post("/delete_query_handler/",
+				{query:query_},
+				function(data) {
+					console.log(data);
+					window.location.replace(data.url);
+				}
+			);
+			return true;
+		});
+
+		$("#view_post_proc_link").on('click', function(){
+			var newWindow = window.open();
+			post_proc_ = $("#id_post_processing_function :selected").text();
+			$.ajax({
+				type: "post",
+				url: "/view_post_proc_handler/",
+				data: {post_proc:post_proc_},
+				success: function (data) {
+					console.log(data);
+					newWindow.document.write("<pre>"+data.post_proc+"</pre>");
+				},
+				error: function(data) {
+					newWindow.document.write("Something went wrong!");
+				}
+			});
+			return true;
+		});
+
+		$("#delete_post_proc_link").on('click', function(){
+			post_proc_ = $("#id_post_processing_function :selected").text();
+			$.post("/delete_post_proc_handler/",
+				{post_proc:post_proc_},
+				function(data) {
+					console.log(data);
+					window.location.replace(data.url);
+				});
+			return true;
+		});
+
+	});
+</script>
+
+{% endblock %}

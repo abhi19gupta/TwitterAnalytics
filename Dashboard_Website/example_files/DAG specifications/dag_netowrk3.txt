@@ -1,0 +1,10 @@
+2
+n1 q6
+n2 q4
+INPUTS:
+n1.num 5
+CONNECTIONS:
+n1._id n2.hash
+RETURNS:
+n2.u.id
+n2.count(t1)

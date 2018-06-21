@@ -1,0 +1,212 @@
+{% load static %}
+{% load render_table from django_tables2 %}
+
+{% load crispy_forms_tags %}
+
+{% include 'material/includes/material_css.html' %}
+<script src="{% static 'material/js/jquery.js' %}"></script>
+{% include 'material/includes/material_js.html' %}
+{% load material_form %}
+
+{% block head %}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Create Queries</title>
+
+	<style type="text/css">
+		html, body {
+			background: #eee;
+			height: 100%;
+		}
+	</style>
+</head>
+
+{% endblock %}
+
+
+{% block body %}
+
+<style type="text/css">
+h4 {
+	 width: 100%;
+	 text-align: center;
+	 border-bottom: 1px solid #000;
+	 line-height: 0.1em;
+	 margin: 10px 0 20px;
+}
+
+h4 span {
+		background:#fff;
+		padding:0 10px;
+}
+
+
+</style>
+
+
+<div>
+{% block utab %}
+				<link rel="stylesheet" href="{% static 'myapp/css/screen.css' %}">
+{% render_table user_list %}
+{% endblock %}
+</div>
+<p>&nbsp;</p>
+
+<div>
+{% block ttab %}
+				<link rel="stylesheet" href="{% static 'myapp/css/screen.css' %}">
+{% render_table tweet_list %}
+{% endblock %}
+</div>
+<p>&nbsp;</p>
+
+<div>
+{% block rtab %}
+				<link rel="stylesheet" href="{% static 'myapp/css/screen.css' %}">
+{% render_table relation_list %}
+{% endblock %}
+</div>
+<p>&nbsp;</p>
+
+<!-- <div class="container">
+<div class="row">
+<div class="jumbotron">
+ -->
+<div class="valign-wrapper2">
+	<div class="container expand-on-small-only">
+		<div class="row valign change-form">
+			<div class="col s12 m8 offset-m2 l8 offset-l2">
+						<div class="card" style="width:100%;padding-left:45px;padding-right:45px;padding-bottom:45px;">
+							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+									<h4><span>Users</span></h4>
+									{{ uform|crispy }}
+									<p class="bs-component">
+											<center>
+													<input class="btn btn-success btn-sm" type="submit" name="b1" value="Make User" />
+											</center>
+									</p>
+							</form>
+							<p>&nbsp;</p>
+
+							<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+									<h4><span>Tweets</span></h4>
+									{{ tform|crispy }}
+									<p class="bs-component">
+											<center>
+													<input class="btn btn-success btn-sm" type="submit" name="b2" value="Make Tweet" />
+											</center>
+									</p>
+							</form>
+							<p>&nbsp;</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+		<h4><span>Relations</span></h4>
+		<!-- {% crispy rform %} -->
+		<div class="container">
+		<!-- <div class="row" margin-bottom: 100em;> -->
+			<div class="col-sm-12">
+				<b>{{ rform.Source.label_tag }}</b> - {{ rform.Source }}
+			</div>
+
+		<p>&nbsp;</p>
+
+			<div class="col-sm-6">
+				<b>User Relation</b> -<br> {{ rform.URelationShip }}
+			</div>
+			<div class="col-sm-6">
+				<b>User Dest</b> -<br> {{ rform.UDestination }}
+			</div>
+		<p>&nbsp;</p>
+
+		<div class="col-sm-6">
+				<b>Start Date</b> - {{ rform.Ut1 }}
+			</div>
+			<!-- <div class="col-sm-6">
+				<b>Start Time</b> - {{ rform.Ut1m }}
+			</div> -->
+		<!-- <p>&nbsp;</p> -->
+
+			<div class="col-sm-6">
+				<b>End Date</b> - {{ rform.Ut2 }}
+			</div>
+			<!-- <div class="col-sm-6">
+				<b>End Time</b> - {{ rform.Ut2m }}
+			</div> -->
+
+		<!-- </div> -->
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<div>
+			<div class="col-sm-6">
+				<b>Tweet Relation</b> -<br> {{ rform.TRelationShip }}
+			</div>
+			<div class="col-sm-6">
+				<b>Tweet Dest</b> -<br> {{ rform.TDestination }}
+			</div>
+		</div>
+		<p>&nbsp;</p>
+		<!-- <p>&nbsp;</p> -->
+
+
+			<div class="col-sm-6">
+				<b>Start Date</b> - {{ rform.Tt1 }}
+			</div>
+<!--       <div class="col-sm-6">
+				<b>Start Time</b> - {{ rform.Tt1m }}
+			</div> -->
+		<!-- <p>&nbsp;</p> -->
+
+			<div class="col-sm-6">
+				<b>End Date</b> - {{ rform.Tt2 }}
+			</div>
+			<!-- <div class="col-sm-6">
+				<b>End Time</b> - {{ rform.Tt2m }}
+			</div> -->
+	<p>&nbsp;</p>
+
+	</div>
+		<p class="bs-component">
+				<center>
+						<input class="btn btn-success btn-sm" type="submit" name="b3" value="Introduce Relation" />
+				</center>
+		</p>
+</form>
+<p>&nbsp;</p>
+
+<form  method='post' action="/create_neo4j_query_handler/">{% csrf_token %}
+		<h4><span>Evaluate Query</span></h4>
+		{{ eform|crispy }}
+		<p class="bs-component">
+				<center>
+						<input class="btn btn-success btn-sm" type="submit" name="submit" value="Create Query" />
+				</center>
+		</p>
+</form>
+<p>&nbsp;</p>
+
+		<!-- <div>
+		<h4><span>Query Executed in Cypher</span></h4>
+		<pre><code>{{query_s}}</code></pre>
+		</div>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+
+		<div>
+		<h4><span>Query Output</span></h4>
+		{{output_s|linebreaksbr}}
+		</div>
+	 <p>&nbsp;</p>
+		<p>&nbsp;</p> -->
+
+<!-- </div>
+</div>
+</div> -->
+{% endblock %}
+

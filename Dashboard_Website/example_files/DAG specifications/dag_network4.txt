@@ -1,0 +1,11 @@
+3
+n1 q6
+n2 q4
+n3 q7
+INPUTS:
+n1.num 5
+CONNECTIONS:
+n1._id n2.hash
+n2.u.id n3.xid
+RETURNS:
+n3.h.text
