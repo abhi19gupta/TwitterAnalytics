@@ -113,6 +113,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -128,7 +129,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About Post processing functions</a><ul>
@@ -157,6 +161,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
@@ -299,16 +304,17 @@
 <span class="c1"># client = MongoClient(port=27017)</span>
 <span class="c1"># db=client.twitter # db name</span>
 
-<span class="c1"># TWITTER API RELATED SETUP</span>
-<span class="c1"># f = open(&#39;SECRETS&#39;,&#39;r&#39;)</span>
-<span class="c1"># secrets = f.read().split()</span>
-<span class="c1"># f.close()</span>
-<span class="c1"># ACCESS_TOKEN = secrets[0]</span>
-<span class="c1"># ACCESS_SECRET = secrets[1]</span>
-<span class="c1"># CONSUMER_KEY = secrets[2]</span>
-<span class="c1"># CONSUMER_SECRET = secrets[3]</span>
-<span class="c1"># oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)</span>
-<span class="c1"># twitter = Twitter(auth=oauth)</span>
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="c1"># TWITTER API RELATED SETUP</span>
+	<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;SECRETS&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+	<span class="n">secrets</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="n">ACCESS_TOKEN</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">ACCESS_SECRET</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+	<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+	<span class="n">oauth</span> <span class="o">=</span> <span class="n">OAuth</span><span class="p">(</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span> <span class="n">ACCESS_SECRET</span><span class="p">,</span> <span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
+	<span class="n">twitter</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">oauth</span><span class="p">)</span>
 
 <span class="c1"># DATABASE SCHEMA: (Not used anymore)</span>
 
@@ -348,10 +354,11 @@
 			<span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">prefix</span><span class="o">+</span><span class="n">dir_</span><span class="p">)):</span>
 				<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">prefix</span><span class="o">+</span><span class="n">dir_</span><span class="p">)</span>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Clears the data folder</span>
-<span class="sd">	&#39;&#39;&#39;</span>
+
 <div class="viewcode-block" id="UserTimelineAPI.clear_everyting"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.clear_everyting">[docs]</a>	<span class="k">def</span> <span class="nf">clear_everyting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Clears the data folder</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="k">def</span> <span class="nf">clear_folder</span><span class="p">(</span><span class="n">folder_name</span><span class="p">):</span>
 			<span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)):</span>
 				<span class="k">for</span> <span class="n">the_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">):</span>
@@ -372,15 +379,16 @@
 
 	<span class="c1">################### TWITTER API FUNCTIONS HERE ####################</span>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.</span>
-<span class="sd">	For each request of each API call, it checks the corresponding array in COUNTS_DICT, deletes entries older than</span>
-<span class="sd">	WINDOW_LEN minutes and keeps checking the total no of requests in past WINDOW_LEN minutes until it is less</span>
-<span class="sd">	than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.</span>
 
-<span class="sd">	:param type_: The type of API call. One of &#39;USERS_LOOKUP&#39;, &#39;TWEETS&#39;, &#39;FOLLOWERS&#39;, &#39;FRIENDS&#39;, &#39;FAVOURITES&#39;.</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="UserTimelineAPI.wait_for_rate_limit"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.wait_for_rate_limit">[docs]</a>	<span class="k">def</span> <span class="nf">wait_for_rate_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.</span>
+<span class="sd">		For each request of each API call, it checks the corresponding array in COUNTS_DICT, deletes entries older than</span>
+<span class="sd">		WINDOW_LEN minutes and keeps checking the total no of requests in past WINDOW_LEN minutes until it is less</span>
+<span class="sd">		than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.</span>
+
+<span class="sd">		:param type_: The type of API call. One of &#39;USERS_LOOKUP&#39;, &#39;TWEETS&#39;, &#39;FOLLOWERS&#39;, &#39;FRIENDS&#39;, &#39;FAVOURITES&#39;.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="n">COUNTS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COUNTS_DICT</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
 		<span class="n">LIMIT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COUNTS_LIMIT</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
 		<span class="k">while</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
@@ -396,15 +404,16 @@
 		<span class="k">else</span><span class="p">:</span>
 			<span class="n">COUNTS</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">curr_minute</span><span class="p">))</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Waits until rate limit is clear and then calls the Twitter API to fetch the given users&#39; info.</span>
-<span class="sd">	Retries 3 times in case of exceptions.</span>
 
-<span class="sd">	:param retry_no: Number of retries done till now in case of exceptions</span>
-<span class="sd">	:param **kwargs: Contains screen_name which is comma separated list of screen names</span>
-<span class="sd">	:returns: A list of user info dictionaries</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="UserTimelineAPI.my_user_fetcher"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.my_user_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_user_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch the given users&#39; info.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name which is comma separated list of screen names</span>
+<span class="sd">		:returns: A list of user info dictionaries</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;USERS_LOOKUP&#39;</span><span class="p">)</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -416,15 +425,16 @@
 				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_user_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s tweets.</span>
-<span class="sd">	Retries 3 times in case of exceptions.</span>
 
-<span class="sd">	:param retry_no: Number of retries done till now in case of exceptions</span>
-<span class="sd">	:param **kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</span>
-<span class="sd">	:returns: A list of tweet dictionaries</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="UserTimelineAPI.my_tweet_fetcher"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.my_tweet_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_tweet_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s tweets.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</span>
+<span class="sd">		:returns: A list of tweet dictionaries</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;TWEETS&#39;</span><span class="p">)</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">user_timeline</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -436,15 +446,16 @@
 				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_tweet_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s followers&#39; ids.</span>
-<span class="sd">	Retries 3 times in case of exceptions.</span>
 
-<span class="sd">	:param retry_no: Number of retries done till now in case of exceptions</span>
-<span class="sd">	:param **kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</span>
-<span class="sd">	:returns: A dictionary containing &#39;ids&#39; (ids of followers) and &#39;next_cursor&#39; (cursor of next batch)</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="UserTimelineAPI.my_followers_fetcher"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.my_followers_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_followers_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s followers&#39; ids.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</span>
+<span class="sd">		:returns: A dictionary containing &#39;ids&#39; (ids of followers) and &#39;next_cursor&#39; (cursor of next batch)</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;FOLLOWERS&#39;</span><span class="p">)</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">followers</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -456,15 +467,16 @@
 				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_followers_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s friends&#39; ids.</span>
-<span class="sd">	Retries 3 times in case of exceptions.</span>
 
-<span class="sd">	:param retry_no: Number of retries done till now in case of exceptions</span>
-<span class="sd">	:param **kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</span>
-<span class="sd">	:returns: A dictionary containing &#39;ids&#39; (ids of friends) and &#39;next_cursor&#39; (cursor of next batch)</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="UserTimelineAPI.my_friends_fetcher"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.my_friends_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_friends_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s friends&#39; ids.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</span>
+<span class="sd">		:returns: A dictionary containing &#39;ids&#39; (ids of friends) and &#39;next_cursor&#39; (cursor of next batch)</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;FRIENDS&#39;</span><span class="p">)</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">friends</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -476,15 +488,17 @@
 				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_friends_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s favorited tweets.</span>
-<span class="sd">	Retries 3 times in case of exceptions.</span>
 
-<span class="sd">	:param retry_no: Number of retries done till now in case of exceptions</span>
-<span class="sd">	:param **kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</span>
-<span class="sd">	:returns: A list of tweet dictionaries</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="UserTimelineAPI.my_favourites_fetcher"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.my_favourites_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_favourites_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s favorited tweets.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</span>
+<span class="sd">		:returns: A list of tweet dictionaries</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;FAVOURITES&#39;</span><span class="p">)</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -498,14 +512,15 @@
 
 	<span class="c1"># ************************************************</span>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)</span>
 
-<span class="sd">	:param user_screen_names: list of screen names of users</span>
-<span class="sd">	:param time: wall clock time when this file started running</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 	<span class="c1"># 300 requests per 15 min, 100 users per request = 30,000 per 15 min</span>
 <div class="viewcode-block" id="UserTimelineAPI.fetch_persist_users"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.fetch_persist_users">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_persist_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_screen_names</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)</span>
+
+<span class="sd">		:param user_screen_names: list of screen names of users</span>
+<span class="sd">		:param time: wall clock time when this file started running</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 
 		<span class="c1"># def get_data_to_persist(user_info,time):</span>
 		<span class="c1"># 	ret = user_info</span>
@@ -533,15 +548,16 @@
 				<span class="c1"># db.users.insert_one(user_info_to_persist)</span>
 		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done with user info&quot;</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Fetches and persists tweets (excluding tweets already persisted)</span>
 
-<span class="sd">	:param user_screen_names: list of screen names of users</span>
-<span class="sd">	:param time: wall clock time when this file started running</span>
-<span class="sd">	:param type_: one of &#39;tweets&#39; or &#39;favourites&#39; to fetch user&#39;s own tweets or favorited tweets respectively</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 	<span class="c1"># 1500 requests per 15 min, 200 tweets returned per request = 3,00,000 per 15 min, 3200 per user</span>
 <div class="viewcode-block" id="UserTimelineAPI.fetch_persist_tweets"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.fetch_persist_tweets">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_persist_tweets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_screen_names</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">type_</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Fetches and persists tweets (excluding tweets already persisted)</span>
+
+<span class="sd">		:param user_screen_names: list of screen names of users</span>
+<span class="sd">		:param time: wall clock time when this file started running</span>
+<span class="sd">		:param type_: one of &#39;tweets&#39; or &#39;favourites&#39; to fetch user&#39;s own tweets or favorited tweets respectively</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 
 		<span class="k">assert</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;tweets&#39;</span> <span class="ow">or</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;favourites&#39;</span><span class="p">)</span>
 		<span class="k">if</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;tweets&#39;</span><span class="p">):</span>
@@ -627,15 +643,15 @@
 			<span class="c1"># f1.close()</span>
 		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">type_</span><span class="p">))</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Fetches and persists users&#39; friends and followers</span>
 
-<span class="sd">	:param user_screen_names: list of screen names of users</span>
-<span class="sd">	:param time: wall clock time when this file started running</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 	<span class="c1"># followers: 15 requests per 15 min, 5000 followers returned per request (same for friends); 75000 per 15 min</span>
 <div class="viewcode-block" id="UserTimelineAPI.fetch_persist_friends_and_followers"><a class="viewcode-back" href="../twitter_stream.html#main.UserTimelineAPI.fetch_persist_friends_and_followers">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_persist_friends_and_followers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_screen_names</span><span class="p">,</span><span class="n">time</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Fetches and persists users&#39; friends and followers</span>
 
+<span class="sd">		:param user_screen_names: list of screen names of users</span>
+<span class="sd">		:param time: wall clock time when this file started running</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="k">def</span> <span class="nf">get_existing</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
 			<span class="k">assert</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;followers&#39;</span> <span class="ow">or</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;friends&#39;</span><span class="p">)</span>
 			<span class="n">folder_name</span> <span class="o">=</span> <span class="s1">&#39;data/user_followers&#39;</span> <span class="k">if</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;followers&#39;</span> <span class="k">else</span> <span class="s1">&#39;data/user_friends&#39;</span>

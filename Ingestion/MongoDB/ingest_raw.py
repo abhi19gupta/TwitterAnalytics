@@ -1,3 +1,18 @@
+"""
+Module to ingest data into MongoDB. We try to overlay the collection and ingestion of tweets while ingeting data. For more details, see the documenation.
+
+The :mod:`ingest_raw` module contains the classes:
+
+- :class:`ingest_raw.Ingest`
+
+One can use the :func:`ingest_raw.Ingest.insert_tweet` to insert a new tweet into the database.
+
+An example usage where we want to insert all tweets from all files in a folder tweet_folder:
+
+>>> i = Ingest(10)
+>>> i.clear_db()
+>>> read_tweets(i, <tweet_folder>)
+"""
 from __future__ import print_function
 import threading
 import pymongo
@@ -63,18 +78,31 @@ class Timer(Process):
 				self.current_iteration += 1
 		self.finished.set()
 
-# @nb.jit(nb.types.Tuple((nb.int64, nb.int64))(nb.int64[:],nb.int64[:],nb.int64[:]),nopython=True,cache=True)
+@nb.jit(nb.types.Tuple((nb.int64, nb.int64))(nb.int64[:],nb.int64[:],nb.int64[:]),nopython=True,cache=True)
 def calculate_sentiment(positive_words,negative_words,tweet_text):
-		pos = 0
-		neg = 0
-		for x in tweet_text:
-			if np.any(positive_words==x):
-				pos+=1
-			elif np.any(negative_words==x):
-				neg+=1
-		return(pos,neg)
+	"""
+	Function to calculate sentiment of a tweet. Just calculate the number of positive and negative words,
+	matching against a pre-curated list.
+
+	:param positive_words: the list of positive sentiment words
+	:param negative_words: the list of negative sentiment words
+	:param tweet_text: the raw test of the tweet splitted tokenized, hashtags and user-mentions removed
+	"""
+	pos = 0
+	neg = 0
+	for x in tweet_text:
+		if np.any(positive_words==x):
+			pos+=1
+		elif np.any(negative_words==x):
+			neg+=1
+	return(pos,neg)
 
 class Ingest():
+	"""
+	Class to insert tweets into mongoDB.
+
+	:param interval: time interval after which to generate interupt for starting ingestion of tweets
+	"""
 	def __init__(self, interval):
 		self.interval = interval
 		self.tweets = []
@@ -101,9 +129,19 @@ class Ingest():
 		self.proc.start()
 
 	def exit(self):
+		"""
+		Join the worker process
+		"""
 		self.proc.join()
 
 	def worker(self,q):
+		"""
+		The function called inside he ingestor(worker) process. This function is alled after every <interval>
+		seconds. It loops to look for inputs from the pipe end. Once inputs are there, it opens connection to
+		database and commits the batch recieved from the pipe to the on-disk database.
+
+		:param q: the inter-process communication pipe
+		"""
 		#open connection to mongoDB
 		client = MongoClient('mongodb://localhost:27017/')
 		db = client['regular_interval']
@@ -139,7 +177,8 @@ class Ingest():
 
 	def populate(self):
 		"""
-		write to the mongoDB
+		The code executed by the collector process. After each interupt it spawns a new timer thread to generate the
+		new interupt. Also, it puts the collected tweets into the IPC pipe and starts collecting new tweets.
 		"""
 		#some issue of thread safety here.
 		global count
@@ -161,13 +200,22 @@ class Ingest():
 		thread.start()
 
 	def aggregate(self):
+		"""
+		The function to be called in case, we choose to aggregate the counts at a larger inteeval.
+
+		.. note:: interval1>>interval. interval is like order of seconds and interal1 is like order of hours.
+		"""
 		self.q1.put("signal")
 		thread1 = threading.Timer(self.interval1, self.aggregate,[],{})
 		thread1.start()
 
 	def insert_tweet(self,tweet):
 		"""
-		update the in memory dictionaries
+		Function to collect incoming real time tweets. Update the in memory dictionaries.
+
+		:param tweet: the json of the tweet.
+
+		..note:: If we choose to keep new information about the tweets, we need to modify this, along with :func:`ingest_raw.Ingest.worker`.
 		"""
 		l = np.array([hash(x.lower()) for x in tweet["text"].split() if (x[0]!="#" and x[0]!="@")],dtype=np.int64)
 		pos,neg = calculate_sentiment(self.positive_words,self.negative_words,l)
@@ -180,9 +228,29 @@ class Ingest():
 			"user_mentions":[x["id_str"] for x in tweet["entities"]["user_mentions"]],
 			"sentiment_pos":pos,"sentiment_neg":neg})
 
-def read_tweets(path,filename):
+	def clear_db(self):
+		"""
+		Delete all the collections
+		"""
+		print("Clearing out the complete mongoDB....")
+		client = MongoClient('mongodb://localhost:27017/')
+		db = client['regular_interval']
+		db.ht_collection.remove({})
+		db.url_collection.remove({})
+		db.um_collection.remove({})
+		print("mongoDB deleted")
+
+def read_tweets(ingest,path,filename=""):
+	"""
+	Read tweets from the directory in path and inert all tweets in all files in the first level of path into
+	neo4j.
+
+	:param path: the path of the directory
+	:param twitter: a Twitter object
+	:param filename: optional, if want to insert tweets from a single file
+	"""
 	global count
-	ingest= Ingest(10)
+
 	ll = []
 	# fout = open("ll.txt","w")
 	for file in os.listdir(path):
@@ -211,7 +279,8 @@ def read_tweets(path,filename):
 	print("Ingestion process is done")
 
 if __name__=="__main__":
-	##to simulate the process of periodic commit
+
+	## To simulate the process of periodic commit
 	# i= Ingest(10)
 	# i.populate()
 	# print("------------")
@@ -224,15 +293,10 @@ if __name__=="__main__":
 	# time.sleep(12)
 	# i.insert_tweet(tweet1)
 
-	q = MongoQuery()
-	# q.clear_db()
+	## Ingest data into mongoDB
+	ingest= Ingest(10)
+	ingest.clear_db()
 	t1 = time.time()
-	# read_tweets("/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets")
-	# read_tweets("/home/db1/Documents/data_collection/data", "stream_out_2018-05-08 20-55-45.867977.txt")
+	# read_tweets(ingest, "/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets")
+	read_tweets(ingest, "/home/db1/Documents/data_collection/data", "stream_out_2018-05-08 20-55-45.867977.txt")
 	print("Done in time ",time.time()-t1)
-	print(q.mp_ht_in_total(limit=10))
-	print(q.mp_um_in_total())
-
-	# print(q.mp_ht_in_interval(1500486521,1501496521))
-	# print(q.ht_in_interval(1500486521,1501496521,"baystars"))
-	# print(q.ht_with_sentiment(1500486521,1501496521,"baystars"))

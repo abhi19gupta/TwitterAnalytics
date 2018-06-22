@@ -47,11 +47,12 @@ class Logger:
 		self.unwritten_tweets = []
 		self.configure_new_file()
 
-	'''
-	Changes the configuration to start logging and writing tweets to new files (filenames will contain timestamp).
-	Also puts a '[' at the beginning of the tweet file to start a new list.
-	'''
+
 	def configure_new_file(self):
+		'''
+		Changes the configuration to start logging and writing tweets to new files (filenames will contain timestamp).
+		Also puts a '[' at the beginning of the tweet file to start a new list.
+		'''
 		now = str(datetime.now())
 		self.tweet_file_name = ('stream_out_%s.txt'%(now)).replace(':','-')
 		self.log_file_name = ('log_%s.txt'%(now)).replace(':','-')
@@ -59,31 +60,34 @@ class Logger:
 		with open(self.tweet_file_name, 'a') as f:
 			f.write('[\n')
 
-	'''
-	Finshes the current tweet file by ending the list with a ']'.
-	'''
+
 	def finish_current_file(self):
+		'''
+		Finshes the current tweet file by ending the list with a ']'.
+		'''
 		with open(self.tweet_file_name, 'a') as f:
 			f.write('\n]')
 
-	'''
-	Logs the string supplied as argument to the current log file.
 
-	:param s: The string to log
-	'''
 	def log(self, s):
+		'''
+		Logs the string supplied as argument to the current log file.
+
+		:param s: The string to log
+		'''
 		to_log = str(datetime.now()) + " | " + s + '\n'
 		print(to_log)
 		with open(self.log_file_name, 'a') as f:
 			f.write(to_log)
 
-	'''
-	Adds the tweet to the buffer. If buffer is filled, then flushes the buffer to the current tweet file.
-	If the current tweet file exceeds the tweet count threshold, finishes the current file and a configures a new one.
 
-	:param tweet: The tweet to write to file
-	'''
 	def write_tweet(self, tweet):
+		'''
+		Adds the tweet to the buffer. If buffer is filled, then flushes the buffer to the current tweet file.
+		If the current tweet file exceeds the tweet count threshold, finishes the current file and a configures a new one.
+
+		:param tweet: The tweet to write to file
+		'''
 		self.unwritten_tweets.append(tweet)
 		if len(self.unwritten_tweets) < self.batch_size:
 			return
@@ -108,16 +112,17 @@ batch_size = 10000 # how many tweets to write together in 1 go
 file_tweet_count = 500000 # max no of tweets to write in 1 file
 logger = Logger(batch_size, file_tweet_count)
 
-# TWITTER API RELATED SETUP
-# f = open('SECRETS','r')
-# secrets = f.read().split()
-# f.close()
-# ACCESS_TOKEN = secrets[0]
-# ACCESS_SECRET = secrets[1]
-# CONSUMER_KEY = secrets[2]
-# CONSUMER_SECRET = secrets[3]
-# oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-# twitter = Twitter(auth=oauth)
+if __name__=="__main__":
+	# TWITTER API RELATED SETUP
+	f = open('SECRETS','r')
+	secrets = f.read().split()
+	f.close()
+	ACCESS_TOKEN = secrets[0]
+	ACCESS_SECRET = secrets[1]
+	CONSUMER_KEY = secrets[2]
+	CONSUMER_SECRET = secrets[3]
+	oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+	twitter = Twitter(auth=oauth)
 
 def signal_handler(signal, frame):
 		logger.log('You pressed Ctrl+C! Number of tweets read = %s'%str(num_read))

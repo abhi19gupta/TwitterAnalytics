@@ -49,6 +49,9 @@ def flatten_json(json_obj):
 	json_obj["json_fields"] = json_fields # while fetching convert these fields back to jsons
 
 def log(text):
+	"""
+	Why use this when we can use logging? There is a peculiar bug when open neo4j bolt server with logging
+	"""
 	f = open(log_file,'a')
 	f.write(text)
 	f.write('\n')

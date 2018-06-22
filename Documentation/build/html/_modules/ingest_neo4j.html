@@ -113,6 +113,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -128,7 +129,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About Post processing functions</a><ul>
@@ -157,6 +161,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
@@ -275,6 +280,9 @@
 	<span class="n">json_obj</span><span class="p">[</span><span class="s2">&quot;json_fields&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json_fields</span> <span class="c1"># while fetching convert these fields back to jsons</span></div>
 
 <div class="viewcode-block" id="log"><a class="viewcode-back" href="../neo4j_data_ingestion.html#ingest_neo4j.log">[docs]</a><span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Why use this when we can use logging? There is a peculiar bug when open neo4j bolt server with logging</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">log_file</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
 	<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 	<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>

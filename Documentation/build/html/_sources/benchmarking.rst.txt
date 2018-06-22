@@ -85,7 +85,7 @@ The cypher code of these queries is as follows.
     # Find the users which follow a user u and tweeted t(which mentions same u) b/w t1 and t2
     q7="""
     MATCH (run:RUN) -[:HAS_FRAME]-> (frame1:FRAME)
-    WHERE  frame1.end_t >= {{t1}} AND frame1.start_t <= {{t2}} 
+    WHERE  frame1.end_t >= {{t1}} AND frame1.start_t <= {{t2}}
     MATCH (frame1) -[:HAS_TWEET]-> (event1 :TWEET_EVENT), (event1) -[:TE_USER]-> (x :USER {}), (event1) -[:TE_TWEET]-> (t :TWEET {}), (x :USER {}) -[:FOLLOWS]-> (u :USER {id:{{u}}}), (t) -[:HAS_MENTION]-> (u :USER {id:{{u}}})
     RETURN  COUNT(x)
     """
@@ -93,7 +93,7 @@ The cypher code of these queries is as follows.
     # Find users which have tweeted tweet t1(retweet of another tweet t containing hashtag hash AND such that t1 itself contains the same hashtag hash) b/w time1 and time2 and follows u
     q8 = """
     MATCH (run:RUN) -[:HAS_FRAME]-> (frame1:FRAME)
-    WHERE  frame1.end_t >= {{time1}} AND frame1.start_t <= {{time2}} 
+    WHERE  frame1.end_t >= {{time1}} AND frame1.start_t <= {{time2}}
     MATCH (frame1) -[:HAS_TWEET]-> (event1 :TWEET_EVENT), (event1) -[:TE_USER]-> (x :USER {}), (event1) -[:TE_TWEET]-> (t1 :TWEET {}), (x :USER {}) -[:FOLLOWS]-> (u :USER {id:{{u}}}), (t :TWEET {}) -[:HAS_HASHTAG]-> (:HASHTAG {text:'{{hash}}'}), (t1 :TWEET {}) -[:HAS_HASHTAG]-> (:HASHTAG {text:'{{hash}}'}), (t1) -[:RETWEET_OF]-> (t)
     RETURN  COUNT(x)
     """
@@ -101,7 +101,7 @@ The cypher code of these queries is as follows.
     # Find users which follow user with id u1 and follow user u which tweeted b/w t1 and t2 containing hashtag hash
     q9 = """
     MATCH (run:RUN) -[:HAS_FRAME]-> (frame1:FRAME)
-    WHERE  frame1.end_t >= {{t1}} AND frame1.start_t <= {{t2}} 
+    WHERE  frame1.end_t >= {{t1}} AND frame1.start_t <= {{t2}}
     MATCH (frame1) -[:HAS_TWEET]-> (event1 :TWEET_EVENT), (event1) -[:TE_USER]-> (u :USER {}), (event1) -[:TE_TWEET]-> (t :TWEET {}), (x :USER {}) -[:FOLLOWS]-> (u1 :USER {id:{{u1}}}), (x) -[:FOLLOWS]-> (u), (t :TWEET {}) -[:HAS_HASHTAG]-> (:HASHTAG {text:'{{hash}}'})
     RETURN  COUNT(x)
     """
@@ -112,8 +112,19 @@ Using these templated queries we generate the list of complex queries to be fire
 
 As we obtain the best query rate is obtained on opening 10 parallel sessions of about 65 queries/second in answering of complex queries.
 
-Further observe that the peak performance in query answering is obtained at lesser number of parallel connections as compared to the compex case. This is because there is overhead in maintaining parallel connections in neo4j, which involves maintaining the sesions and delegating the queries to the database. This overhead is much more prominent in case when the queries itself take much less time in answering them as compared to the complex case where the overhead gets ammortised better. 
+Further observe that the peak performance in query answering is obtained at lesser number of parallel connections as compared to the compex case. This is because there is overhead in maintaining parallel connections in neo4j, which involves maintaining the sesions and delegating the queries to the database. This overhead is much more prominent in case when the queries itself take much less time in answering them as compared to the complex case where the overhead gets ammortised better.
 
 MongoDB queries
 -----------------
 MongoDB queries are generally answered very fast in comparison to the neo4j queries, which is owing to the intended schemas of the two databases. Thus, no further observations were made in mongoDB query answering apart from observing that all the queries are answered in mili second scale.
+
+
+Code Documentation for benchmarking
+--------------------------------------------
+Here we provide a documentation of the code used in this sections functionality.
+
+.. automodule:: query_answering
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

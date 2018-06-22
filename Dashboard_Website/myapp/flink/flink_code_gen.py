@@ -25,13 +25,14 @@ class FlinkCodeGenerator:
 		self.urls_array_code = attr_array_template.render(attr='urls',field_name='expanded_url') # java code for urls array from tweet
 		self.mentions_array_code = attr_array_template.render(attr='user_mentions',field_name='id_str') # java code for mentions array from tweet
 
-	"""
-	Internal function used by the class to translate the "filter" specification to Java code to be placed inside the template.
 
-	:param filter_string: Example -> user_id.equals("abc") && (hashtags.contains("h1") || hashtags.contains("h2"))
-	:returns: Java code, for filtering the tweet stream, to be placed inside the template.
-	"""
 	def _get_filter_code(self, filter_string):
+		"""
+		Internal function used by the class to translate the "filter" specification to Java code to be placed inside the template.
+
+		:param filter_string: Example -> user_id.equals("abc") && (hashtags.contains("h1") || hashtags.contains("h2"))
+		:returns: Java code, for filtering the tweet stream, to be placed inside the template.
+		"""
 		ret = ''
 		if ('user_id.equals' in filter_string):
 			ret += 'String user_id = jsonNode.get("user").get("id_str").asText();\n' + '\t'*self.BASIC_INDENT
@@ -52,17 +53,18 @@ class FlinkCodeGenerator:
 
 		return ret
 
-	"""
-	Internal function. A single tweet might belong to multiple groups (sub-streams) after grouping on keys because
-	each key can have multiple values (a list). Ex. If keys = ['hashtag'] and tweet contains hashtags = ['h1','h2'],
-	then this tweet belongs to 2 groups - one group for 'h1' and another for 'h2'. This function duplicates the tweet
-	into multiple instances, each having its group value as the key. In above example, it will duplicate into 2 tweets,
-	with key values as 'h1' and 'h2' respectively.
 
-	:param keys: list of elements from 'user_id','hashtag','url','user_mention'
-	:returns: Java code, for duplicating the tweet stream, to be placed inside the template.
-	"""
 	def _get_duplication_code(self, keys):
+		"""
+		Internal function. A single tweet might belong to multiple groups (sub-streams) after grouping on keys because
+		each key can have multiple values (a list). Ex. If keys = ['hashtag'] and tweet contains hashtags = ['h1','h2'],
+		then this tweet belongs to 2 groups - one group for 'h1' and another for 'h2'. This function duplicates the tweet
+		into multiple instances, each having its group value as the key. In above example, it will duplicate into 2 tweets,
+		with key values as 'h1' and 'h2' respectively.
+
+		:param keys: list of elements from 'user_id','hashtag','url','user_mention'
+		:returns: Java code, for duplicating the tweet stream, to be placed inside the template.
+		"""
 		for key in keys:
 			if key not in ['user_id','hashtag','url','user_mention']:
 				raise Exception('Invalid keys: %s'%str(keys))
@@ -104,22 +106,24 @@ class FlinkCodeGenerator:
 			ret += '\n' + '\t'*(self.BASIC_INDENT+num_keys-i-1)+'}'
 		return ret
 
-	"""
-	Internal function.
 
-	:param alert_name: Name of the alert to find base path for.
-	:returns: The base path for tje given alert's flink java project.
-	"""
 	def _get_alert_base_path(self, alert_name):
+		"""
+		Internal function.
+
+		:param alert_name: Name of the alert to find base path for.
+		:returns: The base path for tje given alert's flink java project.
+		"""
 		return os.path.join(self.basepath, 'all_alerts', alert_name)
 
-	"""
-	Internal function.
 
-	:param alert_name: Name of the alert to find jar path for.
-	:returns: The path of the jar file, created after compiling, for the given alert.
-	"""
 	def _get_alert_jar_path(self, alert_name):
+		"""
+		Internal function.
+
+		:param alert_name: Name of the alert to find jar path for.
+		:returns: The path of the jar file, created after compiling, for the given alert.
+		"""
 		alert_base_path = self._get_alert_base_path(alert_name)
 		orig_jar_path = os.path.join(alert_base_path, 'target', 'quickstart-0.1.jar')
 		if (not os.path.isfile(orig_jar_path)):
@@ -128,18 +132,19 @@ class FlinkCodeGenerator:
 		shutil.copyfile(orig_jar_path, new_jar_path)
 		return new_jar_path
 
-	"""
-	Generates the java code for the given alert specification and writes tha java project for it in the alert's base path.
-	Note: It can raise exception like alert already exists with the given name.
 
-	:param alert_name: Name of the alert to be created.
-	:param filter_string: Filter specification for the alert. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_filter_code`.
-	:param group_keys: List of keys to group on. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_duplication_code`.
-	:param window_length: Length of window in seconds. The threshold will be looked at each window in each sub-stream.
-	:param window_slide: Number of seconds after which to start each new window.
-	:param threshold: Count threshold for tweets in each window to generate the alert.
-	"""
 	def write_code(self, alert_name, filter_string, group_keys, window_length, window_slide, threshold):
+		"""
+		Generates the java code for the given alert specification and writes tha java project for it in the alert's base path.
+		Note: It can raise exception like alert already exists with the given name.
+
+		:param alert_name: Name of the alert to be created.
+		:param filter_string: Filter specification for the alert. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_filter_code`.
+		:param group_keys: List of keys to group on. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_duplication_code`.
+		:param window_length: Length of window in seconds. The threshold will be looked at each window in each sub-stream.
+		:param window_slide: Number of seconds after which to start each new window.
+		:param threshold: Count threshold for tweets in each window to generate the alert.
+		"""
 		try:
 			template_base_path = os.path.join(self.basepath,'quickstart')
 			alert_base_path = self._get_alert_base_path(alert_name)
@@ -158,23 +163,25 @@ class FlinkCodeGenerator:
 		except Exception as e:
 			raise Exception('Failed to write code. Error: %s, %s'%(str(type(e)),str(e)))
 
-	"""
-	Deletes the java project for the given alert name.
 
-	:param alert_name: The name of the alert whose code is to be deleted.
-	"""
 	def delete_code(self, alert_name):
+		"""
+		Deletes the java project for the given alert name.
+
+		:param alert_name: The name of the alert whose code is to be deleted.
+		"""
 		alert_base_path = self._get_alert_base_path(alert_name)
 		if os.path.exists(alert_base_path):
 			shutil.rmtree(alert_base_path)
 
-	"""
-	Compiles the java project for the given alert using maven and creates the jar file.
 
-	:param alert_name: The name of the alert whose code is to be compiled.
-	:returns: The path of the jar file resulting from the compilation.
-	"""
 	def compile_code(self, alert_name):
+		"""
+		Compiles the java project for the given alert using maven and creates the jar file.
+
+		:param alert_name: The name of the alert whose code is to be compiled.
+		:returns: The path of the jar file resulting from the compilation.
+		"""
 		alert_base_path = self._get_alert_base_path(alert_name)
 		orig_dir = os.getcwd()
 		os.chdir(alert_base_path)

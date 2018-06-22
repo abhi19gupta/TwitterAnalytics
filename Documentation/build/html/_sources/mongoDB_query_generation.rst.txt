@@ -37,3 +37,13 @@ As can be seen the query answering has three parts :
     * Unzipping the result based on the output variables name input by the user: Again, fixed code and thus easily generated.
 
 Along with the reasons mentioned above regarding the non requirement of generic monogDB query creator, another reason is that to generate the queries, would invariably require generation of python code, something like the above snippet and then modifying a file with a new function to connect to the database and execute the python code. This would further require modifying the source code in the dashboard website and the DAG execution python functions as well to register the new function, opening several fronts from which bugs can creep in.
+
+MongoDB query execution code documentation
+--------------------------------------------
+Here we provide a documentation of the code used for this functionality.
+
+.. automodule:: execute_queries
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

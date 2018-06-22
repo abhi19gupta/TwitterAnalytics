@@ -73,16 +73,17 @@ from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 # client = MongoClient(port=27017)
 # db=client.twitter # db name
 
-# TWITTER API RELATED SETUP
-# f = open('SECRETS','r')
-# secrets = f.read().split()
-# f.close()
-# ACCESS_TOKEN = secrets[0]
-# ACCESS_SECRET = secrets[1]
-# CONSUMER_KEY = secrets[2]
-# CONSUMER_SECRET = secrets[3]
-# oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-# twitter = Twitter(auth=oauth)
+if __name__=="__main__":
+	# TWITTER API RELATED SETUP
+	f = open('SECRETS','r')
+	secrets = f.read().split()
+	f.close()
+	ACCESS_TOKEN = secrets[0]
+	ACCESS_SECRET = secrets[1]
+	CONSUMER_KEY = secrets[2]
+	CONSUMER_SECRET = secrets[3]
+	oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+	twitter = Twitter(auth=oauth)
 
 # DATABASE SCHEMA: (Not used anymore)
 
@@ -122,10 +123,11 @@ class UserTimelineAPI:
 			if (not os.path.exists(prefix+dir_)):
 				os.makedirs(prefix+dir_)
 
-	'''
-	Clears the data folder
-	'''
+
 	def clear_everyting(self):
+		'''
+		Clears the data folder
+		'''
 		def clear_folder(folder_name):
 			if (os.path.isdir(folder_name)):
 				for the_file in os.listdir(folder_name):
@@ -146,15 +148,16 @@ class UserTimelineAPI:
 
 	################### TWITTER API FUNCTIONS HERE ####################
 
-	'''
-	Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.
-	For each request of each API call, it checks the corresponding array in COUNTS_DICT, deletes entries older than
-	WINDOW_LEN minutes and keeps checking the total no of requests in past WINDOW_LEN minutes until it is less
-	than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.
 
-	:param type_: The type of API call. One of 'USERS_LOOKUP', 'TWEETS', 'FOLLOWERS', 'FRIENDS', 'FAVOURITES'.
-	'''
 	def wait_for_rate_limit(self, type_):
+		'''
+		Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.
+		For each request of each API call, it checks the corresponding array in COUNTS_DICT, deletes entries older than
+		WINDOW_LEN minutes and keeps checking the total no of requests in past WINDOW_LEN minutes until it is less
+		than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.
+
+		:param type_: The type of API call. One of 'USERS_LOOKUP', 'TWEETS', 'FOLLOWERS', 'FRIENDS', 'FAVOURITES'.
+		'''
 		COUNTS = self.COUNTS_DICT[type_]
 		LIMIT = self.COUNTS_LIMIT[type_]
 		while(True):
@@ -170,15 +173,16 @@ class UserTimelineAPI:
 		else:
 			COUNTS.append((1,curr_minute))
 
-	'''
-	Waits until rate limit is clear and then calls the Twitter API to fetch the given users' info.
-	Retries 3 times in case of exceptions.
 
-	:param retry_no: Number of retries done till now in case of exceptions
-	:param **kwargs: Contains screen_name which is comma separated list of screen names
-	:returns: A list of user info dictionaries
-	'''
 	def my_user_fetcher(self, retry_no=0, **kwargs):
+		'''
+		Waits until rate limit is clear and then calls the Twitter API to fetch the given users' info.
+		Retries 3 times in case of exceptions.
+
+		:param retry_no: Number of retries done till now in case of exceptions
+		:param kwargs: Contains screen_name which is comma separated list of screen names
+		:returns: A list of user info dictionaries
+		'''
 		self.wait_for_rate_limit('USERS_LOOKUP')
 		try:
 			return twitter.users.lookup(**kwargs)
@@ -190,15 +194,16 @@ class UserTimelineAPI:
 				time.sleep(1)
 				return self.my_user_fetcher(retry_no+1,**kwargs)
 
-	'''
-	Waits until rate limit is clear and then calls the Twitter API to fetch user's tweets.
-	Retries 3 times in case of exceptions.
 
-	:param retry_no: Number of retries done till now in case of exceptions
-	:param **kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)
-	:returns: A list of tweet dictionaries
-	'''
 	def my_tweet_fetcher(self, retry_no=0, **kwargs):
+		'''
+		Waits until rate limit is clear and then calls the Twitter API to fetch user's tweets.
+		Retries 3 times in case of exceptions.
+
+		:param retry_no: Number of retries done till now in case of exceptions
+		:param kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)
+		:returns: A list of tweet dictionaries
+		'''
 		self.wait_for_rate_limit('TWEETS')
 		try:
 			return twitter.statuses.user_timeline(**kwargs)
@@ -210,15 +215,16 @@ class UserTimelineAPI:
 				time.sleep(1)
 				return self.my_tweet_fetcher(retry_no+1,**kwargs)
 
-	'''
-	Waits until rate limit is clear and then calls the Twitter API to fetch user's followers' ids.
-	Retries 3 times in case of exceptions.
 
-	:param retry_no: Number of retries done till now in case of exceptions
-	:param **kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)
-	:returns: A dictionary containing 'ids' (ids of followers) and 'next_cursor' (cursor of next batch)
-	'''
 	def my_followers_fetcher(self, retry_no=0, **kwargs):
+		'''
+		Waits until rate limit is clear and then calls the Twitter API to fetch user's followers' ids.
+		Retries 3 times in case of exceptions.
+
+		:param retry_no: Number of retries done till now in case of exceptions
+		:param kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)
+		:returns: A dictionary containing 'ids' (ids of followers) and 'next_cursor' (cursor of next batch)
+		'''
 		self.wait_for_rate_limit('FOLLOWERS')
 		try:
 			return twitter.followers.ids(**kwargs)
@@ -230,15 +236,16 @@ class UserTimelineAPI:
 				time.sleep(1)
 				return self.my_followers_fetcher(retry_no+1,**kwargs)
 
-	'''
-	Waits until rate limit is clear and then calls the Twitter API to fetch user's friends' ids.
-	Retries 3 times in case of exceptions.
 
-	:param retry_no: Number of retries done till now in case of exceptions
-	:param **kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)
-	:returns: A dictionary containing 'ids' (ids of friends) and 'next_cursor' (cursor of next batch)
-	'''
 	def my_friends_fetcher(self, retry_no=0, **kwargs):
+		'''
+		Waits until rate limit is clear and then calls the Twitter API to fetch user's friends' ids.
+		Retries 3 times in case of exceptions.
+
+		:param retry_no: Number of retries done till now in case of exceptions
+		:param kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)
+		:returns: A dictionary containing 'ids' (ids of friends) and 'next_cursor' (cursor of next batch)
+		'''
 		self.wait_for_rate_limit('FRIENDS')
 		try:
 			return twitter.friends.ids(**kwargs)
@@ -250,15 +257,17 @@ class UserTimelineAPI:
 				time.sleep(1)
 				return self.my_friends_fetcher(retry_no+1,**kwargs)
 
-	'''
-	Waits until rate limit is clear and then calls the Twitter API to fetch user's favorited tweets.
-	Retries 3 times in case of exceptions.
 
-	:param retry_no: Number of retries done till now in case of exceptions
-	:param **kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)
-	:returns: A list of tweet dictionaries
-	'''
 	def my_favourites_fetcher(self, retry_no=0, **kwargs):
+		"""
+		Waits until rate limit is clear and then calls the Twitter API to fetch user's favorited tweets.
+		Retries 3 times in case of exceptions.
+
+		:param retry_no: Number of retries done till now in case of exceptions
+		:param kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)
+		:returns: A list of tweet dictionaries
+
+		"""
 		self.wait_for_rate_limit('FAVOURITES')
 		try:
 			return twitter.favorites.list(**kwargs)
@@ -272,14 +281,15 @@ class UserTimelineAPI:
 
 	# ************************************************
 
-	'''
-	Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)
 
-	:param user_screen_names: list of screen names of users
-	:param time: wall clock time when this file started running
-	'''
 	# 300 requests per 15 min, 100 users per request = 30,000 per 15 min
 	def fetch_persist_users(self, user_screen_names, time):
+		'''
+		Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)
+
+		:param user_screen_names: list of screen names of users
+		:param time: wall clock time when this file started running
+		'''
 
 		# def get_data_to_persist(user_info,time):
 		# 	ret = user_info
@@ -307,15 +317,16 @@ class UserTimelineAPI:
 				# db.users.insert_one(user_info_to_persist)
 		print("Done with user info")
 
-	'''
-	Fetches and persists tweets (excluding tweets already persisted)
 
-	:param user_screen_names: list of screen names of users
-	:param time: wall clock time when this file started running
-	:param type_: one of 'tweets' or 'favourites' to fetch user's own tweets or favorited tweets respectively
-	'''
 	# 1500 requests per 15 min, 200 tweets returned per request = 3,00,000 per 15 min, 3200 per user
 	def fetch_persist_tweets(self, user_screen_names,time,type_):
+		'''
+		Fetches and persists tweets (excluding tweets already persisted)
+
+		:param user_screen_names: list of screen names of users
+		:param time: wall clock time when this file started running
+		:param type_: one of 'tweets' or 'favourites' to fetch user's own tweets or favorited tweets respectively
+		'''
 
 		assert(type_=='tweets' or type_=='favourites')
 		if(type_=='tweets'):
@@ -401,15 +412,15 @@ class UserTimelineAPI:
 			# f1.close()
 		print("Done with %s"%(type_))
 
-	'''
-	Fetches and persists users' friends and followers
 
-	:param user_screen_names: list of screen names of users
-	:param time: wall clock time when this file started running
-	'''
 	# followers: 15 requests per 15 min, 5000 followers returned per request (same for friends); 75000 per 15 min
 	def fetch_persist_friends_and_followers(self, user_screen_names,time):
+		'''
+		Fetches and persists users' friends and followers
 
+		:param user_screen_names: list of screen names of users
+		:param time: wall clock time when this file started running
+		'''
 		def get_existing(screen_name, type_):
 			assert(type_=='followers' or type_=='friends')
 			folder_name = 'data/user_followers' if type_=='followers' else 'data/user_friends'

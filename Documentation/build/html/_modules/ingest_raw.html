@@ -78,31 +78,64 @@
 <li class="toctree-l2"><a class="reference internal" href="../introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../twitter_stream.html">Read data from twitter streaming API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter_stream.html">Read data from Twitter API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#user-timeline-api">User Timeline API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#user-network">User network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingesting-the-data-into-database">Ingesting the data into database</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingestion-rates">Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#improving-ingestion-rate-using-transaction">Improving ingestion rate using transaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing">Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb">Ingesting the data into mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_data_ingestion.html#improving-ingestion-rate-using-transactions">Improving ingestion rate using transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_data_ingestion.html#improving-ingestion-rate-using-parallel-multiple-process">Improving ingestion rate using parallel multiple process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#naming-entities">Naming entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#returns">Returns</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About postprocessing functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About Post processing functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
@@ -114,10 +147,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../flink.html">Generating alerts using flink and kafka</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking the query answering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking the query answering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#simple-queries">Simple Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#complex-queries">Complex Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#hashtags">Hashtags</a></li>
@@ -145,8 +191,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../running.html">Getting the system running</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../running.html#setting-up-the-environement">Setting up the environement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../running.html#running-the-dashboards">Running the dashboards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#setting-up-the-environment">Setting up the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#running-the-dashboard">Running the dashboard</a></li>
 </ul>
 </li>
 </ul>
@@ -183,7 +229,22 @@
            <div itemprop="articleBody" class="toBeIndexed">
             
   <h1>Source code for ingest_raw</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to ingest data into MongoDB. We try to overlay the collection and ingestion of tweets while ingeting data. For more details, see the documenation.</span>
+
+<span class="sd">The :mod:`ingest_raw` module contains the classes:</span>
+
+<span class="sd">- :class:`ingest_raw.Ingest`</span>
+
+<span class="sd">One can use the :func:`ingest_raw.Ingest.insert_tweet` to insert a new tweet into the database.</span>
+
+<span class="sd">An example usage where we want to insert all tweets from all files in a folder tweet_folder:</span>
+
+<span class="sd">&gt;&gt;&gt; i = Ingest(10)</span>
+<span class="sd">&gt;&gt;&gt; i.clear_db()</span>
+<span class="sd">&gt;&gt;&gt; read_tweets(i, &lt;tweet_folder&gt;)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">pymongo</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="k">import</span> <span class="n">MongoClient</span>
@@ -248,18 +309,31 @@
 				<span class="bp">self</span><span class="o">.</span><span class="n">current_iteration</span> <span class="o">+=</span> <span class="mi">1</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">finished</span><span class="o">.</span><span class="n">set</span><span class="p">()</span></div></div>
 
-<span class="c1"># @nb.jit(nb.types.Tuple((nb.int64, nb.int64))(nb.int64[:],nb.int64[:],nb.int64[:]),nopython=True,cache=True)</span>
-<div class="viewcode-block" id="calculate_sentiment"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.calculate_sentiment">[docs]</a><span class="k">def</span> <span class="nf">calculate_sentiment</span><span class="p">(</span><span class="n">positive_words</span><span class="p">,</span><span class="n">negative_words</span><span class="p">,</span><span class="n">tweet_text</span><span class="p">):</span>
-		<span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
-		<span class="n">neg</span> <span class="o">=</span> <span class="mi">0</span>
-		<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tweet_text</span><span class="p">:</span>
-			<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">positive_words</span><span class="o">==</span><span class="n">x</span><span class="p">):</span>
-				<span class="n">pos</span><span class="o">+=</span><span class="mi">1</span>
-			<span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">negative_words</span><span class="o">==</span><span class="n">x</span><span class="p">):</span>
-				<span class="n">neg</span><span class="o">+=</span><span class="mi">1</span>
-		<span class="k">return</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">neg</span><span class="p">)</span></div>
+<div class="viewcode-block" id="calculate_sentiment"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.calculate_sentiment">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">nb</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">Tuple</span><span class="p">((</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span> <span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">))(</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:],</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:],</span><span class="n">nb</span><span class="o">.</span><span class="n">int64</span><span class="p">[:]),</span><span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">calculate_sentiment</span><span class="p">(</span><span class="n">positive_words</span><span class="p">,</span><span class="n">negative_words</span><span class="p">,</span><span class="n">tweet_text</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Function to calculate sentiment of a tweet. Just calculate the number of positive and negative words,</span>
+<span class="sd">	matching against a pre-curated list.</span>
+
+<span class="sd">	:param positive_words: the list of positive sentiment words</span>
+<span class="sd">	:param negative_words: the list of negative sentiment words</span>
+<span class="sd">	:param tweet_text: the raw test of the tweet splitted tokenized, hashtags and user-mentions removed</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="n">neg</span> <span class="o">=</span> <span class="mi">0</span>
+	<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tweet_text</span><span class="p">:</span>
+		<span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">positive_words</span><span class="o">==</span><span class="n">x</span><span class="p">):</span>
+			<span class="n">pos</span><span class="o">+=</span><span class="mi">1</span>
+		<span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">negative_words</span><span class="o">==</span><span class="n">x</span><span class="p">):</span>
+			<span class="n">neg</span><span class="o">+=</span><span class="mi">1</span>
+	<span class="k">return</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="n">neg</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Ingest"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.Ingest">[docs]</a><span class="k">class</span> <span class="nc">Ingest</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Class to insert tweets into mongoDB.</span>
+
+<span class="sd">	:param interval: time interval after which to generate interupt for starting ingestion of tweets</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">interval</span><span class="p">):</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">interval</span> <span class="o">=</span> <span class="n">interval</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">tweets</span> <span class="o">=</span> <span class="p">[]</span>
@@ -277,18 +351,28 @@
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-		
+
 
 		<span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,))</span>
 		<span class="c1"># self.proc1 = Process(target = self.worker,args=(self.q,))</span>
 		<span class="c1"># self.proc.daemon = True</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-	
+
 <div class="viewcode-block" id="Ingest.exit"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.Ingest.exit">[docs]</a>	<span class="k">def</span> <span class="nf">exit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Join the worker process</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
-		
+
 <div class="viewcode-block" id="Ingest.worker"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.Ingest.worker">[docs]</a>	<span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">q</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The function called inside he ingestor(worker) process. This function is alled after every &lt;interval&gt;</span>
+<span class="sd">		seconds. It loops to look for inputs from the pipe end. Once inputs are there, it opens connection to</span>
+<span class="sd">		database and commits the batch recieved from the pipe to the on-disk database.</span>
+
+<span class="sd">		:param q: the inter-process communication pipe</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1">#open connection to mongoDB</span>
 		<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;mongodb://localhost:27017/&#39;</span><span class="p">)</span>
 		<span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">[</span><span class="s1">&#39;regular_interval&#39;</span><span class="p">]</span>
@@ -324,7 +408,8 @@
 
 <div class="viewcode-block" id="Ingest.populate"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.Ingest.populate">[docs]</a>	<span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		write to the mongoDB</span>
+<span class="sd">		The code executed by the collector process. After each interupt it spawns a new timer thread to generate the</span>
+<span class="sd">		new interupt. Also, it puts the collected tweets into the IPC pipe and starts collecting new tweets.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="c1">#some issue of thread safety here.</span>
 		<span class="k">global</span> <span class="n">count</span>
@@ -346,13 +431,22 @@
 		<span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Ingest.aggregate"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.Ingest.aggregate">[docs]</a>	<span class="k">def</span> <span class="nf">aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		The function to be called in case, we choose to aggregate the counts at a larger inteeval.</span>
+
+<span class="sd">		.. note:: interval1&gt;&gt;interval. interval is like order of seconds and interal1 is like order of hours.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">q1</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;signal&quot;</span><span class="p">)</span>
 		<span class="n">thread1</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interval1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">aggregate</span><span class="p">,[],{})</span>
 		<span class="n">thread1</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Ingest.insert_tweet"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.Ingest.insert_tweet">[docs]</a>	<span class="k">def</span> <span class="nf">insert_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tweet</span><span class="p">):</span>
 		<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">		update the in memory dictionaries</span>
+<span class="sd">		Function to collect incoming real time tweets. Update the in memory dictionaries.</span>
+
+<span class="sd">		:param tweet: the json of the tweet.</span>
+
+<span class="sd">		..note:: If we choose to keep new information about the tweets, we need to modify this, along with :func:`ingest_raw.Ingest.worker`.</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">hash</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tweet</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s2">&quot;#&quot;</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">!=</span><span class="s2">&quot;@&quot;</span><span class="p">)],</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 		<span class="n">pos</span><span class="p">,</span><span class="n">neg</span> <span class="o">=</span> <span class="n">calculate_sentiment</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positive_words</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">negative_words</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
@@ -363,11 +457,31 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:</span><span class="n">posix</span><span class="p">,</span><span class="s2">&quot;hashtags&quot;</span><span class="p">:[</span><span class="nb">str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tweet</span><span class="p">[</span><span class="s2">&quot;entities&quot;</span><span class="p">][</span><span class="s2">&quot;hashtags&quot;</span><span class="p">]],</span>
 			<span class="s2">&quot;urls&quot;</span><span class="p">:[</span><span class="nb">str</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tweet</span><span class="p">[</span><span class="s2">&quot;entities&quot;</span><span class="p">][</span><span class="s2">&quot;urls&quot;</span><span class="p">]],</span>
 			<span class="s2">&quot;user_mentions&quot;</span><span class="p">:[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;id_str&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tweet</span><span class="p">[</span><span class="s2">&quot;entities&quot;</span><span class="p">][</span><span class="s2">&quot;user_mentions&quot;</span><span class="p">]],</span>
-			<span class="s2">&quot;sentiment_pos&quot;</span><span class="p">:</span><span class="n">pos</span><span class="p">,</span><span class="s2">&quot;sentiment_neg&quot;</span><span class="p">:</span><span class="n">neg</span><span class="p">})</span></div></div>
+			<span class="s2">&quot;sentiment_pos&quot;</span><span class="p">:</span><span class="n">pos</span><span class="p">,</span><span class="s2">&quot;sentiment_neg&quot;</span><span class="p">:</span><span class="n">neg</span><span class="p">})</span></div>
 
-<div class="viewcode-block" id="read_tweets"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.read_tweets">[docs]</a><span class="k">def</span> <span class="nf">read_tweets</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Ingest.clear_db"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.Ingest.clear_db">[docs]</a>	<span class="k">def</span> <span class="nf">clear_db</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Delete all the collections</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clearing out the complete mongoDB....&quot;</span><span class="p">)</span>
+		<span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;mongodb://localhost:27017/&#39;</span><span class="p">)</span>
+		<span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">[</span><span class="s1">&#39;regular_interval&#39;</span><span class="p">]</span>
+		<span class="n">db</span><span class="o">.</span><span class="n">ht_collection</span><span class="o">.</span><span class="n">remove</span><span class="p">({})</span>
+		<span class="n">db</span><span class="o">.</span><span class="n">url_collection</span><span class="o">.</span><span class="n">remove</span><span class="p">({})</span>
+		<span class="n">db</span><span class="o">.</span><span class="n">um_collection</span><span class="o">.</span><span class="n">remove</span><span class="p">({})</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mongoDB deleted&quot;</span><span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="read_tweets"><a class="viewcode-back" href="../mongoDB_data_ingestion.html#ingest_raw.read_tweets">[docs]</a><span class="k">def</span> <span class="nf">read_tweets</span><span class="p">(</span><span class="n">ingest</span><span class="p">,</span><span class="n">path</span><span class="p">,</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Read tweets from the directory in path and inert all tweets in all files in the first level of path into</span>
+<span class="sd">	neo4j.</span>
+
+<span class="sd">	:param path: the path of the directory</span>
+<span class="sd">	:param twitter: a Twitter object</span>
+<span class="sd">	:param filename: optional, if want to insert tweets from a single file</span>
+<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">global</span> <span class="n">count</span>
-	<span class="n">ingest</span><span class="o">=</span> <span class="n">Ingest</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
 	<span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
 	<span class="c1"># fout = open(&quot;ll.txt&quot;,&quot;w&quot;)</span>
 	<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
@@ -393,10 +507,11 @@
 		<span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
 	<span class="n">ll</span> <span class="o">=</span> <span class="p">[]</span>
 	<span class="nb">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
-	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ingestion process is done&quot;</span><span class="p">)</span>        </div>
+	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ingestion process is done&quot;</span><span class="p">)</span></div>
 
 <span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-	<span class="c1">##to simulate the process of periodic commit</span>
+
+	<span class="c1">## To simulate the process of periodic commit</span>
 	<span class="c1"># i= Ingest(10)</span>
 	<span class="c1"># i.populate()</span>
 	<span class="c1"># print(&quot;------------&quot;)</span>
@@ -409,18 +524,13 @@
 	<span class="c1"># time.sleep(12)</span>
 	<span class="c1"># i.insert_tweet(tweet1)</span>
 
-	<span class="n">q</span> <span class="o">=</span> <span class="n">MongoQuery</span><span class="p">()</span>
-	<span class="c1"># q.clear_db()</span>
+	<span class="c1">## Ingest data into mongoDB</span>
+	<span class="n">ingest</span><span class="o">=</span> <span class="n">Ingest</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+	<span class="n">ingest</span><span class="o">.</span><span class="n">clear_db</span><span class="p">()</span>
 	<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-	<span class="c1"># read_tweets(&quot;/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets&quot;)</span>
-	<span class="c1"># read_tweets(&quot;/home/db1/Documents/data_collection/data&quot;, &quot;stream_out_2018-05-08 20-55-45.867977.txt&quot;)</span>
+	<span class="c1"># read_tweets(ingest, &quot;/home/db1/Desktop/AbhishekBackup/TwitterAnalytics/data/tweets&quot;)</span>
+	<span class="n">read_tweets</span><span class="p">(</span><span class="n">ingest</span><span class="p">,</span> <span class="s2">&quot;/home/db1/Documents/data_collection/data&quot;</span><span class="p">,</span> <span class="s2">&quot;stream_out_2018-05-08 20-55-45.867977.txt&quot;</span><span class="p">)</span>
 	<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done in time &quot;</span><span class="p">,</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t1</span><span class="p">)</span>
-	<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">mp_ht_in_total</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
-	<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">mp_um_in_total</span><span class="p">())</span>
-
-	<span class="c1"># print(q.mp_ht_in_interval(1500486521,1501496521))</span>
-	<span class="c1"># print(q.ht_in_interval(1500486521,1501496521,&quot;baystars&quot;))</span>
-	<span class="c1"># print(q.ht_with_sentiment(1500486521,1501496521,&quot;baystars&quot;))</span>
 </pre></div>
 
            </div><!-- /.toBeIndexed -->

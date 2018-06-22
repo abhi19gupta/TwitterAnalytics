@@ -97,11 +97,11 @@ Clearly the ingestion rate depends on the time after which the interrupt to star
 Finally we get an ingestion rate of around 7k-12k(around x10 of that of neo4j) tweets/second on average, depending on T.
 
 
-.. Code Documentation for this section
-.. -------------------------------------
+Code Documentation for mongoDB ingestion
+------------------------------------------
 
-.. .. automodule:: ingest_raw
-..     :members:
-..     :undoc-members:
-..     :inherited-members:
-..     :show-inheritance:
+.. automodule:: ingest_raw
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:

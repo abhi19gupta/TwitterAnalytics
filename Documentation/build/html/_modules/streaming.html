@@ -113,6 +113,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -128,7 +129,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About Post processing functions</a><ul>
@@ -157,6 +161,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
@@ -273,11 +278,12 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">unwritten_tweets</span> <span class="o">=</span> <span class="p">[]</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">configure_new_file</span><span class="p">()</span>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Changes the configuration to start logging and writing tweets to new files (filenames will contain timestamp).</span>
-<span class="sd">	Also puts a &#39;[&#39; at the beginning of the tweet file to start a new list.</span>
-<span class="sd">	&#39;&#39;&#39;</span>
+
 <div class="viewcode-block" id="Logger.configure_new_file"><a class="viewcode-back" href="../twitter_stream.html#streaming.Logger.configure_new_file">[docs]</a>	<span class="k">def</span> <span class="nf">configure_new_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Changes the configuration to start logging and writing tweets to new files (filenames will contain timestamp).</span>
+<span class="sd">		Also puts a &#39;[&#39; at the beginning of the tweet file to start a new list.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="n">now</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">tweet_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;stream_out_</span><span class="si">%s</span><span class="s1">.txt&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">now</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">log_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;log_</span><span class="si">%s</span><span class="s1">.txt&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">now</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
@@ -285,31 +291,34 @@
 		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tweet_file_name</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;[</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Finshes the current tweet file by ending the list with a &#39;]&#39;.</span>
-<span class="sd">	&#39;&#39;&#39;</span>
+
 <div class="viewcode-block" id="Logger.finish_current_file"><a class="viewcode-back" href="../twitter_stream.html#streaming.Logger.finish_current_file">[docs]</a>	<span class="k">def</span> <span class="nf">finish_current_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Finshes the current tweet file by ending the list with a &#39;]&#39;.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tweet_file_name</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">]&#39;</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Logs the string supplied as argument to the current log file.</span>
 
-<span class="sd">	:param s: The string to log</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="Logger.log"><a class="viewcode-back" href="../twitter_stream.html#streaming.Logger.log">[docs]</a>	<span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Logs the string supplied as argument to the current log file.</span>
+
+<span class="sd">		:param s: The string to log</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="n">to_log</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; | &quot;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
 		<span class="nb">print</span><span class="p">(</span><span class="n">to_log</span><span class="p">)</span>
 		<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file_name</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">to_log</span><span class="p">)</span></div>
 
-	<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">	Adds the tweet to the buffer. If buffer is filled, then flushes the buffer to the current tweet file.</span>
-<span class="sd">	If the current tweet file exceeds the tweet count threshold, finishes the current file and a configures a new one.</span>
 
-<span class="sd">	:param tweet: The tweet to write to file</span>
-<span class="sd">	&#39;&#39;&#39;</span>
 <div class="viewcode-block" id="Logger.write_tweet"><a class="viewcode-back" href="../twitter_stream.html#streaming.Logger.write_tweet">[docs]</a>	<span class="k">def</span> <span class="nf">write_tweet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tweet</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Adds the tweet to the buffer. If buffer is filled, then flushes the buffer to the current tweet file.</span>
+<span class="sd">		If the current tweet file exceeds the tweet count threshold, finishes the current file and a configures a new one.</span>
+
+<span class="sd">		:param tweet: The tweet to write to file</span>
+<span class="sd">		&#39;&#39;&#39;</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">unwritten_tweets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tweet</span><span class="p">)</span>
 		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unwritten_tweets</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">:</span>
 			<span class="k">return</span>
@@ -334,16 +343,17 @@
 <span class="n">file_tweet_count</span> <span class="o">=</span> <span class="mi">500000</span> <span class="c1"># max no of tweets to write in 1 file</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">Logger</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">file_tweet_count</span><span class="p">)</span>
 
-<span class="c1"># TWITTER API RELATED SETUP</span>
-<span class="c1"># f = open(&#39;SECRETS&#39;,&#39;r&#39;)</span>
-<span class="c1"># secrets = f.read().split()</span>
-<span class="c1"># f.close()</span>
-<span class="c1"># ACCESS_TOKEN = secrets[0]</span>
-<span class="c1"># ACCESS_SECRET = secrets[1]</span>
-<span class="c1"># CONSUMER_KEY = secrets[2]</span>
-<span class="c1"># CONSUMER_SECRET = secrets[3]</span>
-<span class="c1"># oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)</span>
-<span class="c1"># twitter = Twitter(auth=oauth)</span>
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="c1"># TWITTER API RELATED SETUP</span>
+	<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;SECRETS&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+	<span class="n">secrets</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="n">ACCESS_TOKEN</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">ACCESS_SECRET</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+	<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+	<span class="n">oauth</span> <span class="o">=</span> <span class="n">OAuth</span><span class="p">(</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span> <span class="n">ACCESS_SECRET</span><span class="p">,</span> <span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
+	<span class="n">twitter</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">oauth</span><span class="p">)</span>
 
 <div class="viewcode-block" id="signal_handler"><a class="viewcode-back" href="../twitter_stream.html#streaming.signal_handler">[docs]</a><span class="k">def</span> <span class="nf">signal_handler</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
 		<span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;You pressed Ctrl+C! Number of tweets read = </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="nb">str</span><span class="p">(</span><span class="n">num_read</span><span class="p">))</span>

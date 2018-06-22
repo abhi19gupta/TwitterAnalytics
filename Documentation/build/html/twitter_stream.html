@@ -129,7 +129,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
@@ -147,7 +150,10 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="benchmarking.html#simple-queries">Simple Queries</a></li>
@@ -155,6 +161,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
@@ -345,52 +352,190 @@ representation as available.</p>
 <dl class="method">
 <dt id="main.UserTimelineAPI.clear_everyting">
 <code class="descname">clear_everyting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.clear_everyting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.clear_everyting" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Clears the data folder</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.fetch_persist_friends_and_followers">
 <code class="descname">fetch_persist_friends_and_followers</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_friends_and_followers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_friends_and_followers" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fetches and persists users’ friends and followers</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user_screen_names</strong> – list of screen names of users</li>
+<li><strong>time</strong> – wall clock time when this file started running</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.fetch_persist_tweets">
 <code class="descname">fetch_persist_tweets</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em>, <em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_tweets" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fetches and persists tweets (excluding tweets already persisted)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user_screen_names</strong> – list of screen names of users</li>
+<li><strong>time</strong> – wall clock time when this file started running</li>
+<li><strong>type</strong> – one of ‘tweets’ or ‘favourites’ to fetch user’s own tweets or favorited tweets respectively</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.fetch_persist_users">
 <code class="descname">fetch_persist_users</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_users" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user_screen_names</strong> – list of screen names of users</li>
+<li><strong>time</strong> – wall clock time when this file started running</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.my_favourites_fetcher">
 <code class="descname">my_favourites_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_favourites_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_favourites_fetcher" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s favorited tweets.
+Retries 3 times in case of exceptions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>retry_no</strong> – Number of retries done till now in case of exceptions</li>
+<li><strong>kwargs</strong> – Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of tweet dictionaries</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.my_followers_fetcher">
 <code class="descname">my_followers_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_followers_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_followers_fetcher" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s followers’ ids.
+Retries 3 times in case of exceptions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>retry_no</strong> – Number of retries done till now in case of exceptions</li>
+<li><strong>kwargs</strong> – Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary containing ‘ids’ (ids of followers) and ‘next_cursor’ (cursor of next batch)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.my_friends_fetcher">
 <code class="descname">my_friends_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_friends_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_friends_fetcher" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s friends’ ids.
+Retries 3 times in case of exceptions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>retry_no</strong> – Number of retries done till now in case of exceptions</li>
+<li><strong>kwargs</strong> – Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A dictionary containing ‘ids’ (ids of friends) and ‘next_cursor’ (cursor of next batch)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.my_tweet_fetcher">
 <code class="descname">my_tweet_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_tweet_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_tweet_fetcher" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s tweets.
+Retries 3 times in case of exceptions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>retry_no</strong> – Number of retries done till now in case of exceptions</li>
+<li><strong>kwargs</strong> – Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of tweet dictionaries</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.my_user_fetcher">
 <code class="descname">my_user_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_user_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_user_fetcher" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch the given users’ info.
+Retries 3 times in case of exceptions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>retry_no</strong> – Number of retries done till now in case of exceptions</li>
+<li><strong>kwargs</strong> – Contains screen_name which is comma separated list of screen names</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of user info dictionaries</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="main.UserTimelineAPI.wait_for_rate_limit">
 <code class="descname">wait_for_rate_limit</code><span class="sig-paren">(</span><em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.wait_for_rate_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.wait_for_rate_limit" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.
+For each request of each API call, it checks the corresponding array in COUNTS_DICT, deletes entries older than
+WINDOW_LEN minutes and keeps checking the total no of requests in past WINDOW_LEN minutes until it is less
+than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>type</strong> – The type of API call. One of ‘USERS_LOOKUP’, ‘TWEETS’, ‘FOLLOWERS’, ‘FRIENDS’, ‘FAVOURITES’.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -452,22 +597,44 @@ too big in size.</p>
 <dl class="method">
 <dt id="streaming.Logger.configure_new_file">
 <code class="descname">configure_new_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.configure_new_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.configure_new_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Changes the configuration to start logging and writing tweets to new files (filenames will contain timestamp).
+Also puts a ‘[‘ at the beginning of the tweet file to start a new list.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="streaming.Logger.finish_current_file">
 <code class="descname">finish_current_file</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.finish_current_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.finish_current_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Finshes the current tweet file by ending the list with a ‘]’.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="streaming.Logger.log">
 <code class="descname">log</code><span class="sig-paren">(</span><em>s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.log" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Logs the string supplied as argument to the current log file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>s</strong> – The string to log</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="streaming.Logger.write_tweet">
 <code class="descname">write_tweet</code><span class="sig-paren">(</span><em>tweet</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger.write_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger.write_tweet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adds the tweet to the buffer. If buffer is filled, then flushes the buffer to the current tweet file.
+If the current tweet file exceeds the tweet count threshold, finishes the current file and a configures a new one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tweet</strong> – The tweet to write to file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

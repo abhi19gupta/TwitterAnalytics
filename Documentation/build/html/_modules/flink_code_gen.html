@@ -113,6 +113,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -128,7 +129,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About Post processing functions</a><ul>
@@ -157,6 +161,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
@@ -251,13 +256,14 @@
 		<span class="bp">self</span><span class="o">.</span><span class="n">urls_array_code</span> <span class="o">=</span> <span class="n">attr_array_template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="s1">&#39;urls&#39;</span><span class="p">,</span><span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;expanded_url&#39;</span><span class="p">)</span> <span class="c1"># java code for urls array from tweet</span>
 		<span class="bp">self</span><span class="o">.</span><span class="n">mentions_array_code</span> <span class="o">=</span> <span class="n">attr_array_template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">attr</span><span class="o">=</span><span class="s1">&#39;user_mentions&#39;</span><span class="p">,</span><span class="n">field_name</span><span class="o">=</span><span class="s1">&#39;id_str&#39;</span><span class="p">)</span> <span class="c1"># java code for mentions array from tweet</span>
 
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Internal function used by the class to translate the &quot;filter&quot; specification to Java code to be placed inside the template.</span>
 
-<span class="sd">	:param filter_string: Example -&gt; user_id.equals(&quot;abc&quot;) &amp;&amp; (hashtags.contains(&quot;h1&quot;) || hashtags.contains(&quot;h2&quot;))</span>
-<span class="sd">	:returns: Java code, for filtering the tweet stream, to be placed inside the template.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">_get_filter_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filter_string</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Internal function used by the class to translate the &quot;filter&quot; specification to Java code to be placed inside the template.</span>
+
+<span class="sd">		:param filter_string: Example -&gt; user_id.equals(&quot;abc&quot;) &amp;&amp; (hashtags.contains(&quot;h1&quot;) || hashtags.contains(&quot;h2&quot;))</span>
+<span class="sd">		:returns: Java code, for filtering the tweet stream, to be placed inside the template.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">ret</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 		<span class="k">if</span> <span class="p">(</span><span class="s1">&#39;user_id.equals&#39;</span> <span class="ow">in</span> <span class="n">filter_string</span><span class="p">):</span>
 			<span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39;String user_id = jsonNode.get(&quot;user&quot;).get(&quot;id_str&quot;).asText();</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">BASIC_INDENT</span>
@@ -278,17 +284,18 @@
 
 		<span class="k">return</span> <span class="n">ret</span>
 
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Internal function. A single tweet might belong to multiple groups (sub-streams) after grouping on keys because</span>
-<span class="sd">	each key can have multiple values (a list). Ex. If keys = [&#39;hashtag&#39;] and tweet contains hashtags = [&#39;h1&#39;,&#39;h2&#39;],</span>
-<span class="sd">	then this tweet belongs to 2 groups - one group for &#39;h1&#39; and another for &#39;h2&#39;. This function duplicates the tweet</span>
-<span class="sd">	into multiple instances, each having its group value as the key. In above example, it will duplicate into 2 tweets,</span>
-<span class="sd">	with key values as &#39;h1&#39; and &#39;h2&#39; respectively.</span>
 
-<span class="sd">	:param keys: list of elements from &#39;user_id&#39;,&#39;hashtag&#39;,&#39;url&#39;,&#39;user_mention&#39;</span>
-<span class="sd">	:returns: Java code, for duplicating the tweet stream, to be placed inside the template.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">_get_duplication_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Internal function. A single tweet might belong to multiple groups (sub-streams) after grouping on keys because</span>
+<span class="sd">		each key can have multiple values (a list). Ex. If keys = [&#39;hashtag&#39;] and tweet contains hashtags = [&#39;h1&#39;,&#39;h2&#39;],</span>
+<span class="sd">		then this tweet belongs to 2 groups - one group for &#39;h1&#39; and another for &#39;h2&#39;. This function duplicates the tweet</span>
+<span class="sd">		into multiple instances, each having its group value as the key. In above example, it will duplicate into 2 tweets,</span>
+<span class="sd">		with key values as &#39;h1&#39; and &#39;h2&#39; respectively.</span>
+
+<span class="sd">		:param keys: list of elements from &#39;user_id&#39;,&#39;hashtag&#39;,&#39;url&#39;,&#39;user_mention&#39;</span>
+<span class="sd">		:returns: Java code, for duplicating the tweet stream, to be placed inside the template.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
 			<span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;user_id&#39;</span><span class="p">,</span><span class="s1">&#39;hashtag&#39;</span><span class="p">,</span><span class="s1">&#39;url&#39;</span><span class="p">,</span><span class="s1">&#39;user_mention&#39;</span><span class="p">]:</span>
 				<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Invalid keys: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="nb">str</span><span class="p">(</span><span class="n">keys</span><span class="p">))</span>
@@ -330,22 +337,24 @@
 			<span class="n">ret</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BASIC_INDENT</span><span class="o">+</span><span class="n">num_keys</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;}&#39;</span>
 		<span class="k">return</span> <span class="n">ret</span>
 
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Internal function.</span>
 
-<span class="sd">	:param alert_name: Name of the alert to find base path for.</span>
-<span class="sd">	:returns: The base path for tje given alert&#39;s flink java project.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">_get_alert_base_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alert_name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Internal function.</span>
+
+<span class="sd">		:param alert_name: Name of the alert to find base path for.</span>
+<span class="sd">		:returns: The base path for tje given alert&#39;s flink java project.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basepath</span><span class="p">,</span> <span class="s1">&#39;all_alerts&#39;</span><span class="p">,</span> <span class="n">alert_name</span><span class="p">)</span>
 
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Internal function.</span>
 
-<span class="sd">	:param alert_name: Name of the alert to find jar path for.</span>
-<span class="sd">	:returns: The path of the jar file, created after compiling, for the given alert.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
 	<span class="k">def</span> <span class="nf">_get_alert_jar_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alert_name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Internal function.</span>
+
+<span class="sd">		:param alert_name: Name of the alert to find jar path for.</span>
+<span class="sd">		:returns: The path of the jar file, created after compiling, for the given alert.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">alert_base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_alert_base_path</span><span class="p">(</span><span class="n">alert_name</span><span class="p">)</span>
 		<span class="n">orig_jar_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">alert_base_path</span><span class="p">,</span> <span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="s1">&#39;quickstart-0.1.jar&#39;</span><span class="p">)</span>
 		<span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">orig_jar_path</span><span class="p">)):</span>
@@ -354,18 +363,19 @@
 		<span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">orig_jar_path</span><span class="p">,</span> <span class="n">new_jar_path</span><span class="p">)</span>
 		<span class="k">return</span> <span class="n">new_jar_path</span>
 
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Generates the java code for the given alert specification and writes tha java project for it in the alert&#39;s base path.</span>
-<span class="sd">	Note: It can raise exception like alert already exists with the given name.</span>
 
-<span class="sd">	:param alert_name: Name of the alert to be created.</span>
-<span class="sd">	:param filter_string: Filter specification for the alert. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_filter_code`.</span>
-<span class="sd">	:param group_keys: List of keys to group on. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_duplication_code`.</span>
-<span class="sd">	:param window_length: Length of window in seconds. The threshold will be looked at each window in each sub-stream.</span>
-<span class="sd">	:param window_slide: Number of seconds after which to start each new window.</span>
-<span class="sd">	:param threshold: Count threshold for tweets in each window to generate the alert.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="FlinkCodeGenerator.write_code"><a class="viewcode-back" href="../flink.html#flink_code_gen.FlinkCodeGenerator.write_code">[docs]</a>	<span class="k">def</span> <span class="nf">write_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alert_name</span><span class="p">,</span> <span class="n">filter_string</span><span class="p">,</span> <span class="n">group_keys</span><span class="p">,</span> <span class="n">window_length</span><span class="p">,</span> <span class="n">window_slide</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Generates the java code for the given alert specification and writes tha java project for it in the alert&#39;s base path.</span>
+<span class="sd">		Note: It can raise exception like alert already exists with the given name.</span>
+
+<span class="sd">		:param alert_name: Name of the alert to be created.</span>
+<span class="sd">		:param filter_string: Filter specification for the alert. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_filter_code`.</span>
+<span class="sd">		:param group_keys: List of keys to group on. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_duplication_code`.</span>
+<span class="sd">		:param window_length: Length of window in seconds. The threshold will be looked at each window in each sub-stream.</span>
+<span class="sd">		:param window_slide: Number of seconds after which to start each new window.</span>
+<span class="sd">		:param threshold: Count threshold for tweets in each window to generate the alert.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="k">try</span><span class="p">:</span>
 			<span class="n">template_base_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basepath</span><span class="p">,</span><span class="s1">&#39;quickstart&#39;</span><span class="p">)</span>
 			<span class="n">alert_base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_alert_base_path</span><span class="p">(</span><span class="n">alert_name</span><span class="p">)</span>
@@ -384,23 +394,25 @@
 		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 			<span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Failed to write code. Error: </span><span class="si">%s</span><span class="s1">, </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)),</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span></div>
 
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Deletes the java project for the given alert name.</span>
 
-<span class="sd">	:param alert_name: The name of the alert whose code is to be deleted.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="FlinkCodeGenerator.delete_code"><a class="viewcode-back" href="../flink.html#flink_code_gen.FlinkCodeGenerator.delete_code">[docs]</a>	<span class="k">def</span> <span class="nf">delete_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alert_name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Deletes the java project for the given alert name.</span>
+
+<span class="sd">		:param alert_name: The name of the alert whose code is to be deleted.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">alert_base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_alert_base_path</span><span class="p">(</span><span class="n">alert_name</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">alert_base_path</span><span class="p">):</span>
 			<span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">alert_base_path</span><span class="p">)</span></div>
 
-	<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	Compiles the java project for the given alert using maven and creates the jar file.</span>
 
-<span class="sd">	:param alert_name: The name of the alert whose code is to be compiled.</span>
-<span class="sd">	:returns: The path of the jar file resulting from the compilation.</span>
-<span class="sd">	&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="FlinkCodeGenerator.compile_code"><a class="viewcode-back" href="../flink.html#flink_code_gen.FlinkCodeGenerator.compile_code">[docs]</a>	<span class="k">def</span> <span class="nf">compile_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alert_name</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Compiles the java project for the given alert using maven and creates the jar file.</span>
+
+<span class="sd">		:param alert_name: The name of the alert whose code is to be compiled.</span>
+<span class="sd">		:returns: The path of the jar file resulting from the compilation.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">alert_base_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_alert_base_path</span><span class="p">(</span><span class="n">alert_name</span><span class="p">)</span>
 		<span class="n">orig_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
 		<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">alert_base_path</span><span class="p">)</span>

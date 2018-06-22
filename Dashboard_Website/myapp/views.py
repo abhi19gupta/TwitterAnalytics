@@ -15,7 +15,7 @@ from myapp.dag.create_dag import DAG
 from myapp.flink.flink_code_gen import FlinkCodeGenerator
 from myapp.flink.flink_api import FlinkAPI
 from myapp.neo4j.generate_queries import *
-from myapp.mongo.ingest_raw import MongoQuery
+from myapp.mongo.execute_queries import MongoQuery
 from myapp.mongo_alert import MongoAlert
 
 from datetime import datetime

@@ -267,17 +267,55 @@ containing this file and compiled using Maven.</p>
 <dl class="method">
 <dt id="flink_code_gen.FlinkCodeGenerator.compile_code">
 <code class="descname">compile_code</code><span class="sig-paren">(</span><em>alert_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator.compile_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator.compile_code" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compiles the java project for the given alert using maven and creates the jar file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>alert_name</strong> – The name of the alert whose code is to be compiled.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The path of the jar file resulting from the compilation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="flink_code_gen.FlinkCodeGenerator.delete_code">
 <code class="descname">delete_code</code><span class="sig-paren">(</span><em>alert_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator.delete_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator.delete_code" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Deletes the java project for the given alert name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>alert_name</strong> – The name of the alert whose code is to be deleted.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="flink_code_gen.FlinkCodeGenerator.write_code">
 <code class="descname">write_code</code><span class="sig-paren">(</span><em>alert_name</em>, <em>filter_string</em>, <em>group_keys</em>, <em>window_length</em>, <em>window_slide</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator.write_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator.write_code" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generates the java code for the given alert specification and writes tha java project for it in the alert’s base path.
+Note: It can raise exception like alert already exists with the given name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>alert_name</strong> – Name of the alert to be created.</li>
+<li><strong>filter_string</strong> – Filter specification for the alert. Refer to <code class="xref py py-meth docutils literal notranslate"><span class="pre">flink_code_gen.FlinkCodeGenerator._get_filter_code()</span></code>.</li>
+<li><strong>group_keys</strong> – List of keys to group on. Refer to <code class="xref py py-meth docutils literal notranslate"><span class="pre">flink_code_gen.FlinkCodeGenerator._get_duplication_code()</span></code>.</li>
+<li><strong>window_length</strong> – Length of window in seconds. The threshold will be looked at each window in each sub-stream.</li>
+<li><strong>window_slide</strong> – Number of seconds after which to start each new window.</li>
+<li><strong>threshold</strong> – Count threshold for tweets in each window to generate the alert.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

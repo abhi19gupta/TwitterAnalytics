@@ -113,6 +113,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -128,7 +129,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
@@ -157,6 +161,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
@@ -233,11 +238,15 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -250,11 +259,21 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="example.html#chemistry.Molecule.add_atom">add_atom() (chemistry.Molecule method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="example.html#chemistry.Molecule.add_bond">add_bond() (chemistry.Molecule method)</a>
 </li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.aggregate">aggregate() (ingest_raw.Ingest method)</a>
+</li>
+      <li><a href="benchmarking.html#query_answering.answer_queries">answer_queries() (in module query_answering)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="benchmarking.html#query_answering.answer_queries_par">answer_queries_par() (in module query_answering)</a>
+</li>
+      <li><a href="benchmarking.html#query_answering.answer_query">answer_query() (in module query_answering)</a>
+</li>
       <li><a href="example.html#chemistry.Atom">Atom (class in chemistry)</a>
+</li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.authkey">authkey (ingest_raw.Timer attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -274,20 +293,30 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.calculate_sentiment">calculate_sentiment (in module ingest_raw)</a>
+</li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.cancel">cancel() (ingest_raw.Timer method)</a>
+</li>
       <li><a href="example.html#module-chemistry">chemistry (module)</a>
 </li>
+      <li><a href="mongoDB_query_generation.html#execute_queries.MongoQuery.clear_db">clear_db() (execute_queries.MongoQuery method)</a>
+
+      <ul>
+        <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.clear_db">(ingest_raw.Ingest method)</a>
+</li>
+      </ul></li>
       <li><a href="twitter_stream.html#main.UserTimelineAPI.clear_everyting">clear_everyting() (main.UserTimelineAPI method)</a>
 </li>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.clear_graph">clear_graph() (ingest_neo4j.Twitter method)</a>
 </li>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.close">close() (ingest_neo4j.Twitter method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.close_session">close_session() (ingest_neo4j.Twitter method)</a>
 </li>
       <li><a href="flink.html#flink_code_gen.FlinkCodeGenerator.compile_code">compile_code() (flink_code_gen.FlinkCodeGenerator method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="neo4j_query_generation.html#generate_queries.CreateQuery.conditional_create">conditional_create() (generate_queries.CreateQuery method)</a>
 </li>
       <li><a href="twitter_stream.html#streaming.Logger.configure_new_file">configure_new_file() (streaming.Logger method)</a>
@@ -308,6 +337,8 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.daemon">daemon (ingest_raw.Timer attribute)</a>
+</li>
       <li><a href="dag.html#create_dag.DAG">DAG (class in create_dag)</a>
 </li>
       <li><a href="twitter_stream.html#main.DateTimeEncoder">DateTimeEncoder (class in main)</a>
@@ -328,8 +359,14 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="twitter_stream.html#main.DateTimeEncoder.encode">encode() (main.DateTimeEncoder method)</a>
 </li>
+      <li><a href="mongoDB_query_generation.html#module-execute_queries">execute_queries (module)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.exit">exit() (ingest_raw.Ingest method)</a>
+</li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.exitcode">exitcode (ingest_raw.Timer attribute)</a>
+</li>
       <li><a href="twitter_stream.html#main.extract_hash_tags">extract_hash_tags() (in module main)</a>
 </li>
   </ul></td>
@@ -368,6 +405,8 @@
 </li>
       <li><a href="neo4j_query_generation.html#module-generate_queries">generate_queries (module)</a>
 </li>
+      <li><a href="benchmarking.html#query_answering.generate_random_queries">generate_random_queries() (in module query_answering)</a>
+</li>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.get_constraints">get_constraints() (ingest_neo4j.Twitter method)</a>
 </li>
   </ul></td>
@@ -379,8 +418,24 @@
       <li><a href="twitter_stream.html#main.get_user_screen_names">get_user_screen_names() (in module main)</a>
 </li>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.getDateFromTimestamp">getDateFromTimestamp() (in module ingest_neo4j)</a>
+
+      <ul>
+        <li><a href="mongoDB_data_ingestion.html#ingest_raw.getDateFromTimestamp">(in module ingest_raw)</a>
 </li>
+      </ul></li>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.getFrameStartEndTime">getFrameStartEndTime() (in module ingest_neo4j)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_query_generation.html#execute_queries.MongoQuery.ht_in_interval">ht_in_interval() (execute_queries.MongoQuery method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_query_generation.html#execute_queries.MongoQuery.ht_with_sentiment">ht_with_sentiment() (execute_queries.MongoQuery method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -388,15 +443,35 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.ident">ident (ingest_raw.Timer attribute)</a>
+</li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest">Ingest (class in ingest_raw)</a>
+</li>
       <li><a href="neo4j_data_ingestion.html#module-ingest_neo4j">ingest_neo4j (module)</a>
 </li>
-      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.insert_tweet">insert_tweet() (ingest_neo4j.Twitter method)</a>
+      <li><a href="mongoDB_data_ingestion.html#module-ingest_raw">ingest_raw (module)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter.insert_tweet">insert_tweet() (ingest_neo4j.Twitter method)</a>
+
+      <ul>
+        <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.insert_tweet">(ingest_raw.Ingest method)</a>
+</li>
+      </ul></li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.is_alive">is_alive() (ingest_raw.Timer method)</a>
+</li>
       <li><a href="twitter_stream.html#main.DateTimeEncoder.item_separator">item_separator (main.DateTimeEncoder attribute)</a>
 </li>
       <li><a href="twitter_stream.html#main.DateTimeEncoder.iterencode">iterencode() (main.DateTimeEncoder method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.join">join() (ingest_raw.Timer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -432,10 +507,18 @@
 </li>
       <li><a href="example.html#chemistry.Molecule">Molecule (class in chemistry)</a>
 </li>
-      <li><a href="twitter_stream.html#main.UserTimelineAPI.my_favourites_fetcher">my_favourites_fetcher() (main.UserTimelineAPI method)</a>
+      <li><a href="mongoDB_query_generation.html#execute_queries.MongoQuery">MongoQuery (class in execute_queries)</a>
+</li>
+      <li><a href="mongoDB_query_generation.html#execute_queries.MongoQuery.mp_ht_in_interval">mp_ht_in_interval() (execute_queries.MongoQuery method)</a>
+</li>
+      <li><a href="mongoDB_query_generation.html#execute_queries.MongoQuery.mp_ht_in_total">mp_ht_in_total() (execute_queries.MongoQuery method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_query_generation.html#execute_queries.MongoQuery.mp_um_in_total">mp_um_in_total() (execute_queries.MongoQuery method)</a>
+</li>
+      <li><a href="twitter_stream.html#main.UserTimelineAPI.my_favourites_fetcher">my_favourites_fetcher() (main.UserTimelineAPI method)</a>
+</li>
       <li><a href="twitter_stream.html#main.UserTimelineAPI.my_followers_fetcher">my_followers_fetcher() (main.UserTimelineAPI method)</a>
 </li>
       <li><a href="twitter_stream.html#main.UserTimelineAPI.my_friends_fetcher">my_friends_fetcher() (main.UserTimelineAPI method)</a>
@@ -447,14 +530,34 @@
   </ul></td>
 </tr></table>
 
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.name">name (ingest_raw.Timer attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.pid">pid (ingest_raw.Timer attribute)</a>
+</li>
       <li><a href="dag.html#create_dag.DAG.plot_dag">plot_dag() (create_dag.DAG method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="twitter_stream.html#main.plot_user_field">plot_user_field() (in module main)</a>
+</li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.populate">populate() (ingest_raw.Ingest method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="benchmarking.html#module-query_answering">query_answering (module)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -463,6 +566,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.read_tweets">read_tweets() (in module ingest_neo4j)</a>
+
+      <ul>
+        <li><a href="mongoDB_data_ingestion.html#ingest_raw.read_tweets">(in module ingest_raw)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.run">run() (ingest_raw.Timer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -470,10 +581,14 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.sentinel">sentinel (ingest_raw.Timer attribute)</a>
+</li>
       <li><a href="twitter_stream.html#streaming.signal_handler">signal_handler() (in module streaming)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.start">start() (ingest_raw.Timer method)</a>
+</li>
       <li><a href="twitter_stream.html#module-streaming">streaming (module)</a>
 </li>
   </ul></td>
@@ -482,6 +597,14 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer.terminate">terminate() (ingest_raw.Timer method)</a>
+</li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.threaded">threaded() (in module ingest_raw)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Timer">Timer (class in ingest_raw)</a>
+</li>
       <li><a href="neo4j_data_ingestion.html#ingest_neo4j.Twitter">Twitter (class in ingest_neo4j)</a>
 </li>
   </ul></td>
@@ -499,6 +622,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="twitter_stream.html#main.UserTimelineAPI.wait_for_rate_limit">wait_for_rate_limit() (main.UserTimelineAPI method)</a>
+</li>
+      <li><a href="mongoDB_data_ingestion.html#ingest_raw.Ingest.worker">worker() (ingest_raw.Ingest method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
