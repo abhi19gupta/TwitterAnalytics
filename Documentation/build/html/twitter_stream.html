@@ -32,7 +32,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
-        <link rel="next" title="Ingesting data into Neo4j" href="neo4j_data_ingestion.html"/>
+        <link rel="next" title="Putting tweets to Kafka" href="kafka.html"/>
         <link rel="prev" title="Introduction to twitter analytics system" href="introduction.html"/> 
   <script src="_static/js/modernizr.min.js"></script>
 </head>
@@ -86,6 +86,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
@@ -98,7 +102,11 @@
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
@@ -114,6 +122,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -150,8 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-alerts-consumer">Flink Alerts Consumer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
@@ -240,7 +254,7 @@
 </ul>
 </div></blockquote>
 <p>If you wish to gather data of a specific set of users, then you have to use the User Timeline API, otherwise for live stream use the Stream Sample API. We experimented with both the techniques.</p>
-<p>To have access to Twitter APIs, you need to create an app on apps.twitter.com and use their OAuth based authorization system. Details for the same can be found on this <a class="reference external" href="https://developer.twitter.com/en/docs/basics/getting-started">link</a>. We made use of Python Twitter Tools library which exposes Python functions which make the API call for us based on the parameters.</p>
+<p>To have access to Twitter APIs, you need to create an account on apps.twitter.com to use their OAuth based authorization system. Details for the same can be found on this <a class="reference external" href="https://developer.twitter.com/en/docs/basics/getting-started">link</a>. This will generate a unique set of Access Token, Access Secret, Consumer Key and Consumer Secret for you, which need to be used while making the API calls. We made use of Python Twitter Tools library which exposes Python functions which make the API call for us based on the parameters.</p>
 <div class="section" id="user-timeline-api">
 <h2>User Timeline API<a class="headerlink" href="#user-timeline-api" title="Permalink to this headline">¶</a></h2>
 <p>For a given user, you can find the following:</p>
@@ -251,21 +265,23 @@
 <li>All friends and followers of that user at that point of time.</li>
 </ul>
 </div></blockquote>
-<p>Rate Limit: Each API call has its own rate limit which limits the number of calls you can make to the Twitter API. The rate limit can be checked <a class="reference external" href="https://developer.twitter.com/en/docs/basics/rate-limits">here</a>. You need to adhere to these rate limits, else your account may be blacklisted.</p>
-<p>You may need to periodically make calls to the Twitter API to get the new tweets that were tweeted by the users since the last time you called the API. Twitter provides a mechanism to do this by using the parameter “since_id” in the statuses/user_timeline API call. The API returns tweets that have an id &gt; since_id. Thus you can keep store of the maximum tweet id that you have seen for each user and make the next API call using that as the value of since_id to get the new tweets.</p>
-<p>Refer to the file: ‘Read Twitter Stream/main.py’ for the code. The main function expects a file containing a list of user screen names separated by new lines. It generates a folder named ‘data’ in the same directory. Each time you run the file, it accumulates the new data in this directory.</p>
+<p>Rate Limit: Each API endpoint has its own rate limit which limits the number of calls you can make to Twitter for that API in a period of 15 minutes. The rate limit can be checked <a class="reference external" href="https://developer.twitter.com/en/docs/basics/rate-limits">here</a>. You need to adhere to these rate limits, else your account may be blacklisted. We do this in our application as follows: For each API endpoint, we maintain an array which keeps the history of number of calls made in each minute in the past 15 minutes. For each request of an API call, we check the array, delete entries older than 15 minutes and keep checking the total number of requests in past 15 minutes until it is less than the rate limit threshold. Only then we make the API call.</p>
+<p>Incremental data: You may need to periodically make calls to the Twitter API to get the new tweets that were tweeted by the users since the last time you called the API. Twitter provides a mechanism to do this by using the parameter “since_id” in the statuses/user_timeline API call. The API returns tweets that have an id &gt; since_id. Thus you can keep store of the maximum tweet id that you have seen for each user and make the next API call using that as the value of since_id to get the new tweets.</p>
+<p>Refer to the file: ‘Read Twitter Stream/main.py’ for the code. The main function expects a file containing a list of user screen names separated by new lines. It generates a folder the data as mentioned in the main function. Each time you run the file, it accumulates the new data in this directory.</p>
 </div>
 <div class="section" id="stream-sample-api">
 <h2>Stream Sample API<a class="headerlink" href="#stream-sample-api" title="Permalink to this headline">¶</a></h2>
 <p>The end-point GET statuses/sample is free, however it returns only about 1% of the actual stream. You can buy the enterprise version called Decahose to have access to 10% of the stream.</p>
+<p>Batch writes: In order to speed up the process of persisting the tweets from memory to disk, we make use of batch writes. Our streaming application will keep buffering tweets till the batch size is reached. Once the the batch size is reached, it flushes all the buffered tweets to the current tweet file. Additionally, it keeps track of number of tweets written to the current tweet file and once it exceeds a threshold, it starts with a new file and starts flushing to it. This will prevent a single file from becoming too big in size.</p>
 <p>Refer to the file ‘Read Twitter Stream/streaming.py’ for the code. The code will write the data in the same directory, flushing the data periodically to a file. After a threshold number of tweets have been written to the current output file, it generates a new file and starts flushing the tweets to it. This will prevent a single file from becoming too big in size.</p>
 </div>
 <div class="section" id="user-timeline-api-code-documentation">
 <h2>User Timeline API Code Documentation<a class="headerlink" href="#user-timeline-api-code-documentation" title="Permalink to this headline">¶</a></h2>
 <p>Here we provide a documentation of the code.</p>
-<span class="target" id="module-main"></span><p>Module to fetch data of a specified list of users. Data includes user’s profile information, all tweets on
-user’s timeline till now and list of ids of user’s followers and friends. The main function expects a file containing
-a list of user screen names separated by new lines. It generates a folder named ‘data’ in the same directory.
+<span class="target" id="module-userstimeline"></span><p>Module to fetch data of a specified list of users. Data includes user’s profile information, all tweets on
+user’s timeline till now and list of ids of user’s followers and friends.</p>
+<p>In the main function, configure the path of the directory of the data folder to be created and the path of a file containing
+a list of user screen names separated by new lines. It generates a folder for the data as specified in the main function.
 Each time you run the file, it accumulates the new data in this directory.</p>
 <p>Create a file named SECRETS which contains your Twitter OAuth related keys in the following order, separated by new lines:
 &lt;ACCESS_TOKEN&gt;
@@ -282,38 +298,22 @@ in the main function. That file should contain one screen name in each line.</li
 </ul>
 </div></blockquote>
 <p><em>Command to run</em>:
-<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">main.py</span></code></p>
+<code class="docutils literal"><span class="pre">python</span> <span class="pre">main.py</span></code></p>
 </div></blockquote>
 <dl class="class">
-<dt id="main.DateTimeEncoder">
-<em class="property">class </em><code class="descclassname">main.</code><code class="descname">DateTimeEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#DateTimeEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.DateTimeEncoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">json.encoder.JSONEncoder</span></code></p>
+<dt id="userstimeline.DateTimeEncoder">
+<em class="property">class </em><code class="descclassname">userstimeline.</code><code class="descname">DateTimeEncoder</code><span class="sig-paren">(</span><em>*</em>, <em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#DateTimeEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.DateTimeEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">json.encoder.JSONEncoder</span></code></p>
 <dl class="method">
-<dt id="main.DateTimeEncoder.default">
-<code class="descname">default</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#DateTimeEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.DateTimeEncoder.default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Implement this method in a subclass such that it returns
-a serializable object for <code class="docutils literal notranslate"><span class="pre">o</span></code>, or calls the base implementation
-(to raise a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>).</p>
-<p>For example, to support arbitrary iterators, you could
-implement default like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">iterable</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">iterable</span><span class="p">)</span>
-    <span class="c1"># Let the base class default method raise the TypeError</span>
-    <span class="k">return</span> <span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
+<dt id="userstimeline.DateTimeEncoder.default">
+<code class="descname">default</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#DateTimeEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.DateTimeEncoder.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
-<dt id="main.DateTimeEncoder.encode">
-<code class="descname">encode</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="headerlink" href="#main.DateTimeEncoder.encode" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.DateTimeEncoder.encode">
+<code class="descname">encode</code><span class="sig-paren">(</span><em>o</em><span class="sig-paren">)</span><a class="headerlink" href="#userstimeline.DateTimeEncoder.encode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a JSON string representation of a Python data structure.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">json.encoder</span> <span class="k">import</span> <span class="n">JSONEncoder</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">json.encoder</span> <span class="k">import</span> <span class="n">JSONEncoder</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">({</span><span class="s2">&quot;foo&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;baz&quot;</span><span class="p">]})</span>
 <span class="go">&#39;{&quot;foo&quot;: [&quot;bar&quot;, &quot;baz&quot;]}&#39;</span>
 </pre></div>
@@ -321,43 +321,43 @@ implement default like this:</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="main.DateTimeEncoder.item_separator">
-<code class="descname">item_separator</code><em class="property"> = ', '</em><a class="headerlink" href="#main.DateTimeEncoder.item_separator" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.DateTimeEncoder.item_separator">
+<code class="descname">item_separator</code><em class="property"> = ', '</em><a class="headerlink" href="#userstimeline.DateTimeEncoder.item_separator" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="main.DateTimeEncoder.iterencode">
-<code class="descname">iterencode</code><span class="sig-paren">(</span><em>o</em>, <em>_one_shot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#main.DateTimeEncoder.iterencode" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.DateTimeEncoder.iterencode">
+<code class="descname">iterencode</code><span class="sig-paren">(</span><em>o</em>, <em>_one_shot=False</em><span class="sig-paren">)</span><a class="headerlink" href="#userstimeline.DateTimeEncoder.iterencode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encode the given object and yield each string
 representation as available.</p>
 <p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">bigobject</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">iterencode</span><span class="p">(</span><span class="n">bigobject</span><span class="p">):</span>
     <span class="n">mysocket</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="main.DateTimeEncoder.key_separator">
-<code class="descname">key_separator</code><em class="property"> = ': '</em><a class="headerlink" href="#main.DateTimeEncoder.key_separator" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.DateTimeEncoder.key_separator">
+<code class="descname">key_separator</code><em class="property"> = ': '</em><a class="headerlink" href="#userstimeline.DateTimeEncoder.key_separator" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="main.UserTimelineAPI">
-<em class="property">class </em><code class="descclassname">main.</code><code class="descname">UserTimelineAPI</code><a class="reference internal" href="_modules/main.html#UserTimelineAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dt id="userstimeline.UserTimelineAPI">
+<em class="property">class </em><code class="descclassname">userstimeline.</code><code class="descname">UserTimelineAPI</code><span class="sig-paren">(</span><em>data_directory</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class to fetch data of a specified list of users.</p>
 <dl class="method">
-<dt id="main.UserTimelineAPI.clear_everyting">
-<code class="descname">clear_everyting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.clear_everyting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.clear_everyting" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.clear_everyting">
+<code class="descname">clear_everyting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.clear_everyting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.clear_everyting" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clears the data folder</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.fetch_persist_friends_and_followers">
-<code class="descname">fetch_persist_friends_and_followers</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_friends_and_followers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_friends_and_followers" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.fetch_persist_friends_and_followers">
+<code class="descname">fetch_persist_friends_and_followers</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.fetch_persist_friends_and_followers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.fetch_persist_friends_and_followers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetches and persists users’ friends and followers</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -374,8 +374,8 @@ representation as available.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.fetch_persist_tweets">
-<code class="descname">fetch_persist_tweets</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em>, <em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_tweets" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.fetch_persist_tweets">
+<code class="descname">fetch_persist_tweets</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em>, <em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.fetch_persist_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.fetch_persist_tweets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetches and persists tweets (excluding tweets already persisted)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -393,8 +393,8 @@ representation as available.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.fetch_persist_users">
-<code class="descname">fetch_persist_users</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.fetch_persist_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.fetch_persist_users" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.fetch_persist_users">
+<code class="descname">fetch_persist_users</code><span class="sig-paren">(</span><em>user_screen_names</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.fetch_persist_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.fetch_persist_users" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -411,8 +411,8 @@ representation as available.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.my_favourites_fetcher">
-<code class="descname">my_favourites_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_favourites_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_favourites_fetcher" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.my_favourites_fetcher">
+<code class="descname">my_favourites_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.my_favourites_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.my_favourites_fetcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s favorited tweets.
 Retries 3 times in case of exceptions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -433,8 +433,8 @@ Retries 3 times in case of exceptions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.my_followers_fetcher">
-<code class="descname">my_followers_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_followers_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_followers_fetcher" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.my_followers_fetcher">
+<code class="descname">my_followers_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.my_followers_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.my_followers_fetcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s followers’ ids.
 Retries 3 times in case of exceptions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -455,8 +455,8 @@ Retries 3 times in case of exceptions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.my_friends_fetcher">
-<code class="descname">my_friends_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_friends_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_friends_fetcher" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.my_friends_fetcher">
+<code class="descname">my_friends_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.my_friends_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.my_friends_fetcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s friends’ ids.
 Retries 3 times in case of exceptions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -477,8 +477,8 @@ Retries 3 times in case of exceptions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.my_tweet_fetcher">
-<code class="descname">my_tweet_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_tweet_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_tweet_fetcher" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.my_tweet_fetcher">
+<code class="descname">my_tweet_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.my_tweet_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.my_tweet_fetcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch user’s tweets.
 Retries 3 times in case of exceptions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -499,8 +499,8 @@ Retries 3 times in case of exceptions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.my_user_fetcher">
-<code class="descname">my_user_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.my_user_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.my_user_fetcher" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.my_user_fetcher">
+<code class="descname">my_user_fetcher</code><span class="sig-paren">(</span><em>retry_no=0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.my_user_fetcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.my_user_fetcher" title="Permalink to this definition">¶</a></dt>
 <dd><p>Waits until rate limit is clear and then calls the Twitter API to fetch the given users’ info.
 Retries 3 times in case of exceptions.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -521,8 +521,8 @@ Retries 3 times in case of exceptions.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="main.UserTimelineAPI.wait_for_rate_limit">
-<code class="descname">wait_for_rate_limit</code><span class="sig-paren">(</span><em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#UserTimelineAPI.wait_for_rate_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.UserTimelineAPI.wait_for_rate_limit" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.UserTimelineAPI.wait_for_rate_limit">
+<code class="descname">wait_for_rate_limit</code><span class="sig-paren">(</span><em>type_</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#UserTimelineAPI.wait_for_rate_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.UserTimelineAPI.wait_for_rate_limit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.
 For each request of each API call, it checks the corresponding array in COUNTS_DICT, deletes entries older than
 WINDOW_LEN minutes and keeps checking the total no of requests in past WINDOW_LEN minutes until it is less
@@ -540,18 +540,18 @@ than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="main.extract_hash_tags">
-<code class="descclassname">main.</code><code class="descname">extract_hash_tags</code><span class="sig-paren">(</span><em>screen_name</em>, <em>date_start</em>, <em>date_end</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#extract_hash_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.extract_hash_tags" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.extract_hash_tags">
+<code class="descclassname">userstimeline.</code><code class="descname">extract_hash_tags</code><span class="sig-paren">(</span><em>screen_name</em>, <em>date_start</em>, <em>date_end</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#extract_hash_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.extract_hash_tags" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="main.get_user_screen_names">
-<code class="descclassname">main.</code><code class="descname">get_user_screen_names</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#get_user_screen_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.get_user_screen_names" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.get_user_screen_names">
+<code class="descclassname">userstimeline.</code><code class="descname">get_user_screen_names</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#get_user_screen_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.get_user_screen_names" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="main.plot_user_field">
-<code class="descclassname">main.</code><code class="descname">plot_user_field</code><span class="sig-paren">(</span><em>screen_name</em>, <em>date_start</em>, <em>date_end</em>, <em>field_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#plot_user_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.plot_user_field" title="Permalink to this definition">¶</a></dt>
+<dt id="userstimeline.plot_user_field">
+<code class="descclassname">userstimeline.</code><code class="descname">plot_user_field</code><span class="sig-paren">(</span><em>screen_name</em>, <em>date_start</em>, <em>date_end</em>, <em>field_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/userstimeline.html#plot_user_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#userstimeline.plot_user_field" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -582,12 +582,12 @@ than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.</p>
 </ul>
 </div></blockquote>
 <p><em>Command to run</em>:
-<code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">streaming.py</span></code></p>
+<code class="docutils literal"><span class="pre">python</span> <span class="pre">streaming.py</span></code></p>
 </div></blockquote>
 <dl class="class">
 <dt id="streaming.Logger">
 <em class="property">class </em><code class="descclassname">streaming.</code><code class="descname">Logger</code><span class="sig-paren">(</span><em>batch_size</em>, <em>file_tweet_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/streaming.html#Logger"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#streaming.Logger" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class to periodically write tweets to files and to log anything (automatically timestamped).
 The function write_tweet will keep buffering tweets till batch_size is reached. Once the batch size
 is reached, it flushes all the buffered tweets to the current tweet_file_name. Additionally, it keeps
@@ -653,7 +653,7 @@ If the current tweet file exceeds the tweet count threshold, finishes the curren
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="neo4j_data_ingestion.html" class="btn btn-neutral float-right" title="Accesskey Alt(+Shift)+n" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="kafka.html" class="btn btn-neutral float-right" title="Accesskey Alt(+Shift)+n" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="introduction.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

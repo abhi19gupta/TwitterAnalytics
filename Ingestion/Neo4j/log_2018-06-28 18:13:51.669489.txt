@@ -1,0 +1,21 @@
+Starting: 1530189833.030858
+Size of map 5
+Starting for 2017-09-17 00-05-15.191513
+	elonmusk : Profile 3.511572
+	narendramodi : Profile 0.109472
+	BillGates : Profile 0.136577
+	iamsrk : Profile 0.084003
+	imVkohli : Profile 0.107300
+Starting for 2017-09-17 12-01-13.478717
+	elonmusk : Profile 0.184807
+	narendramodi : Profile 0.080514
+	BillGates : Profile 0.065983
+	iamsrk : Profile 0.057701
+	imVkohli : Profile 0.068349
+Starting for 2017-09-18 00-22-11.498182
+	elonmusk : Profile 0.070888
+	narendramodi : Profile 0.060745
+	BillGates : Profile 0.057777
+	iamsrk : Profile 0.054234
+	imVkohli : Profile 0.043933
+Starting for 2017-09-17 00-05-15.191513

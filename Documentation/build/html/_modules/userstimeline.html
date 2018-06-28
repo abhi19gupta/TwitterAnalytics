@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>userstimeline &mdash; Twitter Analytics 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/jquery-ui/jquery-ui.min.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/css/t3more.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+  <script src="../_static/js/modernizr.min.js"></script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        <ul class="sidebartop">
+
+          <li class="docsite">
+            <a href="https://docs.typo3.org"><img src="../_static/img/typo3-documentation.png" class="logo" /></a>
+          </li>
+
+          <li class="project">
+            <a href="../index.html">
+              Twitter Analytics<br>0.1</a>
+          </li><li class="nolink search">
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search this project" id="searchinput" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div></li>
+
+        </ul>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction to twitter analytics system</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../introduction.html#major-parts-of-the-system">Major parts of the system</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../twitter_stream.html">Read data from Twitter API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#user-timeline-api">User Timeline API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#improving-ingestion-rate-using-transaction">Improving ingestion rate using transaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#indexing">Indexing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_data_ingestion.html#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_data_ingestion.html#improving-ingestion-rate-using-transactions">Improving ingestion rate using transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_data_ingestion.html#improving-ingestion-rate-using-parallel-multiple-process">Improving ingestion rate using parallel multiple process</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#template-of-a-general-query">Template of a general query</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#naming-entities">Naming entities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../neo4j_query_generation.html#returns">Returns</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../postprocessing.html">About Post processing functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dag.html">Composing multiple queries : DAG</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#basic-terminology">Basic terminology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#idea-behind-a-dag">Idea behind a DAG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#dag-in-airflow">DAG in airflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flink.html">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../flink.html#flink-alerts-consumer">Flink Alerts Consumer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking the query answering</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#simple-queries">Simple Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../benchmarking.html#complex-queries">Complex Queries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dashboard_website.html">Dashboard Website</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dashboard_website.html#major-parts-of-the-dashboard-website">Major parts of the dashboard website</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#hashtags">Hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#mentions">Mentions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#urls">URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#alerts">Alerts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#dag">DAG</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dashboard_website.html#use-cases">Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#viewing-top-10-popular-hashtags">Viewing top 10 popular hashtags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#viewing-usage-history-of-hashtag">Viewing usage history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#viewing-sentiment-history-of-hashtag">Viewing sentiment history of  hashtag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#creating-a-mongodb-query">Creating a mongoDB query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#creating-neo4j-queries">Creating neo4j queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-post-processing-function">Create Post processing function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#view-queries">View Queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-dag">Create DAG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#view-dags">View DAGs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-custom-metric">Create Custom metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#create-alert">Create Alert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dashboard_website.html#view-alerts">View Alerts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../running.html">Getting the system running</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#setting-up-the-environment">Setting up the environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../running.html#running-the-system">Running the system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../running.html#collecting-data">Collecting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../running.html#ingesting-data">Ingesting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../running.html#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../running.html#running-flink-and-kafka">Running Flink and Kafka</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Twitter Analytics</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+    <li>userstimeline</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody" class="toBeIndexed">
+            
+  <h1>Source code for userstimeline</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module to fetch data of a specified list of users. Data includes user&#39;s profile information, all tweets on</span>
+<span class="sd">user&#39;s timeline till now and list of ids of user&#39;s followers and friends. </span>
+
+<span class="sd">In the main function, configure the path of the directory of the data folder to be created and the path of a file containing</span>
+<span class="sd">a list of user screen names separated by new lines. It generates a folder for the data as specified in the main function.</span>
+<span class="sd">Each time you run the file, it accumulates the new data in this directory.</span>
+
+<span class="sd">Create a file named SECRETS which contains your Twitter OAuth related keys in the following order, separated by new lines:</span>
+<span class="sd">&lt;ACCESS_TOKEN&gt;</span>
+<span class="sd">&lt;ACCESS_SECRET&gt;</span>
+<span class="sd">&lt;CONSUMER_KEY&gt;</span>
+<span class="sd">&lt;CONSUMER_SECRET&gt;</span>
+
+<span class="sd">**Running the code**:</span>
+
+<span class="sd">    * First ensure Python Twitter Tools is installed. (https://github.com/sixohsix/twitter)</span>
+<span class="sd">    * Before running, you may want to change the name of the file (containing the user screen names)</span>
+<span class="sd">      in the main function. That file should contain one screen name in each line.</span>
+
+<span class="sd">  *Command to run*:</span>
+<span class="sd">  ``python main.py``</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+
+<span class="c1"># MongoDB cheat sheet</span>
+
+<span class="c1"># Before running on windows, run the following:</span>
+<span class="c1"># set http_proxy=proxy62.iitd.ac.in:3128</span>
+<span class="c1"># set https_proxy=proxy62.iitd.ac.in:3128</span>
+
+<span class="c1"># Starting mongo process</span>
+<span class="c1"># 	mongod --dbpath &quot;C:\mymongodata&quot;</span>
+
+<span class="c1"># To connect to this process</span>
+<span class="c1"># 	mongo</span>
+<span class="c1"># 	show dbs</span>
+<span class="c1"># 	use twitter</span>
+<span class="c1"># 	db.tweets.count()</span>
+<span class="c1"># 	https://docs.mongodb.com/manual/reference/mongo-shell/</span>
+
+<span class="c1">#### CREATE #####</span>
+<span class="c1"># business = {</span>
+<span class="c1">#     &#39;name&#39; : &#39;QD&#39;,</span>
+<span class="c1">#     &#39;rating&#39; : 10,</span>
+<span class="c1">#     &#39;cuisine&#39; : &#39;Italian&#39;</span>
+<span class="c1"># }</span>
+<span class="c1"># result=db.reviews.insert_one(business)</span>
+
+<span class="c1">#### RETRIEVE ####</span>
+<span class="c1"># db.reviews.find_one({&#39;rating&#39;: 5})</span>
+<span class="c1"># db.reviews.count()</span>
+<span class="c1"># db.reviews.find({&#39;rating&#39;: 5}).count()</span>
+<span class="c1"># for post in posts.find({&quot;date&quot;: {&quot;$lt&quot;: datetime.datetime(2009, 11, 12, 12)}}).sort(&quot;author&quot;):</span>
+<span class="c1"># for review in review.find():</span>
+
+<span class="c1">#### UPDATE ####</span>
+<span class="c1"># db.reviews.update_one({&#39;_id&#39; : ASingleReview.get(&#39;_id&#39;) }, {&#39;$inc&#39;: {&#39;likes&#39;: 1}}) # If &#39;likes is not there originally, it will be added</span>
+
+<span class="c1">#### DELETE ####</span>
+<span class="c1"># db.restaurants.delete_many({“category”: “Bar Food“})</span>
+
+<span class="c1">#### Indexing ####</span>
+<span class="c1"># db.profiles.create_index([(&#39;user_id&#39;, pymongo.ASCENDING)], unique=True)</span>
+
+
+<span class="kn">import</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">datetime</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">shutil</span><span class="o">,</span> <span class="nn">operator</span><span class="o">,</span> <span class="nn">time</span>
+<span class="c1"># import matplotlib.pyplot as plt</span>
+<span class="kn">from</span> <span class="nn">twitter</span> <span class="k">import</span> <span class="n">Twitter</span><span class="p">,</span> <span class="n">OAuth</span><span class="p">,</span> <span class="n">TwitterHTTPError</span><span class="p">,</span> <span class="n">TwitterStream</span>
+<span class="c1"># import pymongo</span>
+<span class="c1"># from pymongo import MongoClient</span>
+
+
+<span class="c1"># DATABASE RELATED SETUP (Not storing into database anymore; writing to files as files are easier to move between systems)</span>
+<span class="c1"># client = MongoClient(port=27017)</span>
+<span class="c1"># db=client.twitter # db name</span>
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+	<span class="c1"># TWITTER API RELATED SETUP</span>
+	<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;SECRETS&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+	<span class="n">secrets</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+	<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="n">ACCESS_TOKEN</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">ACCESS_SECRET</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+	<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="n">secrets</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+	<span class="n">oauth</span> <span class="o">=</span> <span class="n">OAuth</span><span class="p">(</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span> <span class="n">ACCESS_SECRET</span><span class="p">,</span> <span class="n">CONSUMER_KEY</span><span class="p">,</span> <span class="n">CONSUMER_SECRET</span><span class="p">)</span>
+	<span class="n">twitter</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span><span class="n">auth</span><span class="o">=</span><span class="n">oauth</span><span class="p">)</span>
+
+<span class="c1"># DATABASE SCHEMA: (Not used anymore)</span>
+
+<span class="c1"># user_fields = [&#39;created_at&#39;,&#39;description&#39;,&#39;entities&#39;,&#39;favourites_count&#39;,&#39;followers_count&#39;,&#39;friends_count&#39;,&#39;id&#39;,&#39;id_str&#39;,</span>
+<span class="c1"># &#39;listed_count&#39;,&#39;location&#39;,&#39;name&#39;,&#39;profile_image_url&#39;,&#39;protected&#39;,&#39;screen_name&#39;,&#39;statuses_count&#39;,&#39;time_zone&#39;,&#39;url&#39;,</span>
+<span class="c1"># &#39;verified&#39;,&#39;withheld_in_countries&#39;,&#39;withheld_scope&#39;]</span>
+
+<span class="c1"># tweet_fields = [&#39;coordinates&#39;,&#39;created_at&#39;,&#39;entities&#39;,&#39;favorite_count&#39;,&#39;id&#39;,&#39;id_str&#39;,&#39;place&#39;,&#39;possibly_sensitive&#39;,</span>
+<span class="c1"># &#39;retweet_count&#39;,&#39;retweeted_status&#39;,&#39;text&#39;,&#39;user&#39;,&#39;in_reply_to_screen_name&#39;,&#39;in_reply_to_status_id_str&#39;,</span>
+<span class="c1"># &#39;in_reply_to_user_id_str&#39;,&#39;withheld_copyright&#39;,&#39;withheld_in_countries&#39;,&#39;withheld_scope&#39;]</span>
+
+<span class="c1"># Default json encoder is not able to serialize datetime</span>
+<div class="viewcode-block" id="DateTimeEncoder"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.DateTimeEncoder">[docs]</a><span class="k">class</span> <span class="nc">DateTimeEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+<div class="viewcode-block" id="DateTimeEncoder.default"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.DateTimeEncoder.default">[docs]</a>	<span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+		<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">):</span>
+			<span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+
+		<span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="UserTimelineAPI"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI">[docs]</a><span class="k">class</span> <span class="nc">UserTimelineAPI</span><span class="p">:</span>
+	<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Class to fetch data of a specified list of users.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_directory</span><span class="p">):</span>
+		<span class="c1"># The following variables are used for rate limit checks</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">WINDOW_LEN</span> <span class="o">=</span> <span class="mi">17</span> <span class="c1"># window of 15 minutes as in Twitter rate limiting; using 17 here for safety</span>
+		<span class="c1"># each element of each list is a pair containing (number of requests made in that 1-minute window, xth minute)</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">COUNTS_DICT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;USERS_LOOKUP&#39;</span><span class="p">:[],</span> <span class="s1">&#39;TWEETS&#39;</span><span class="p">:[],</span> <span class="s1">&#39;FOLLOWERS&#39;</span><span class="p">:[],</span> <span class="s1">&#39;FRIENDS&#39;</span><span class="p">:[],</span> <span class="s1">&#39;FAVOURITES&#39;</span><span class="p">:[]}</span>
+		<span class="c1"># rate limits - max requests in 15 minutes as given on Twitter API website</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">COUNTS_LIMIT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;USERS_LOOKUP&#39;</span><span class="p">:</span><span class="mi">300</span><span class="p">,</span> <span class="s1">&#39;TWEETS&#39;</span><span class="p">:</span><span class="mi">1500</span><span class="p">,</span> <span class="s1">&#39;FOLLOWERS&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;FRIENDS&#39;</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;FAVOURITES&#39;</span><span class="p">:</span><span class="mi">75</span><span class="p">}</span>
+
+		<span class="c1"># Just creating the data directories</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span> <span class="o">=</span> <span class="n">data_directory</span>
+		<span class="n">dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;user_info/&#39;</span><span class="p">,</span><span class="s1">&#39;tweet_max_ids/&#39;</span><span class="p">,</span><span class="s1">&#39;tweets/&#39;</span><span class="p">,</span><span class="s1">&#39;user_followers/&#39;</span><span class="p">,</span><span class="s1">&#39;user_friends/&#39;</span><span class="p">,</span><span class="s1">&#39;fav_max_ids/&#39;</span><span class="p">,</span><span class="s1">&#39;favourites/&#39;</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">dir_</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+			<span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_directory</span><span class="o">+</span><span class="n">dir_</span><span class="p">)):</span>
+				<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">data_directory</span><span class="o">+</span><span class="n">dir_</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="UserTimelineAPI.clear_everyting"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.clear_everyting">[docs]</a>	<span class="k">def</span> <span class="nf">clear_everyting</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Clears the data folder</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">def</span> <span class="nf">clear_folder</span><span class="p">(</span><span class="n">folder_name</span><span class="p">):</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)):</span>
+				<span class="k">for</span> <span class="n">the_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">):</span>
+					<span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_name</span><span class="p">,</span> <span class="n">the_file</span><span class="p">)</span>
+					<span class="k">try</span><span class="p">:</span>
+						<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+							<span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+					<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+						<span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+		<span class="c1"># db.users.drop()</span>
+		<span class="c1"># db.tweets.drop()</span>
+		<span class="c1"># db.max_ids.drop()</span>
+		<span class="n">folders</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tweet_max_ids&#39;</span><span class="p">,</span><span class="s1">&#39;tweets&#39;</span><span class="p">,</span><span class="s1">&#39;tweets_persisted&#39;</span><span class="p">,</span><span class="s1">&#39;user_followers&#39;</span><span class="p">,</span><span class="s1">&#39;user_friends&#39;</span><span class="p">,</span>
+		<span class="s1">&#39;user_info&#39;</span><span class="p">,</span><span class="s1">&#39;user_info_persisted&#39;</span><span class="p">,</span><span class="s1">&#39;fav_max_ids&#39;</span><span class="p">,</span><span class="s1">&#39;favourites&#39;</span><span class="p">]</span>
+		<span class="n">folders</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="n">dir_</span> <span class="k">for</span> <span class="n">dir_</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">]</span>
+		<span class="k">for</span> <span class="n">folder_name</span> <span class="ow">in</span> <span class="n">folders</span><span class="p">:</span>
+			<span class="n">clear_folder</span><span class="p">(</span><span class="n">folder_name</span><span class="p">)</span></div>
+
+	<span class="c1">################### TWITTER API FUNCTIONS HERE ####################</span>
+
+
+<div class="viewcode-block" id="UserTimelineAPI.wait_for_rate_limit"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.wait_for_rate_limit">[docs]</a>	<span class="k">def</span> <span class="nf">wait_for_rate_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.</span>
+<span class="sd">		For each request of each API call, it checks the corresponding array in COUNTS_DICT, deletes entries older than</span>
+<span class="sd">		WINDOW_LEN minutes and keeps checking the total no of requests in past WINDOW_LEN minutes until it is less</span>
+<span class="sd">		than the rate limit threshold set in COUNTS_LIMIT. Sleeps in between.</span>
+
+<span class="sd">		:param type_: The type of API call. One of &#39;USERS_LOOKUP&#39;, &#39;TWEETS&#39;, &#39;FOLLOWERS&#39;, &#39;FRIENDS&#39;, &#39;FAVOURITES&#39;.</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="n">COUNTS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COUNTS_DICT</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
+		<span class="n">LIMIT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">COUNTS_LIMIT</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
+		<span class="k">while</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+			<span class="n">curr_minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span><span class="o">//</span><span class="mi">60</span>
+			<span class="k">while</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">COUNTS</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">COUNTS</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">curr_minute</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">WINDOW_LEN</span> <span class="p">):</span>
+				<span class="k">del</span><span class="p">(</span><span class="n">COUNTS</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+			<span class="n">cnts</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">COUNTS</span><span class="p">])</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">cnts</span> <span class="o">&lt;</span> <span class="n">LIMIT</span><span class="p">):</span>
+				<span class="k">break</span>
+			<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># sleep for 10 seconds</span>
+		<span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">COUNTS</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span> <span class="ow">and</span> <span class="n">COUNTS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">curr_minute</span><span class="p">):</span>
+			<span class="n">COUNTS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">COUNTS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">COUNTS</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">COUNTS</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="n">curr_minute</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="UserTimelineAPI.my_user_fetcher"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.my_user_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_user_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch the given users&#39; info.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name which is comma separated list of screen names</span>
+<span class="sd">		:returns: A list of user info dictionaries</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;USERS_LOOKUP&#39;</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">retry_no</span><span class="o">&gt;=</span><span class="mi">3</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="n">e</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_user_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserTimelineAPI.my_tweet_fetcher"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.my_tweet_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_tweet_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s tweets.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</span>
+<span class="sd">		:returns: A list of tweet dictionaries</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;TWEETS&#39;</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">statuses</span><span class="o">.</span><span class="n">user_timeline</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">retry_no</span><span class="o">&gt;=</span><span class="mi">3</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="n">e</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_tweet_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserTimelineAPI.my_followers_fetcher"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.my_followers_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_followers_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s followers&#39; ids.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</span>
+<span class="sd">		:returns: A dictionary containing &#39;ids&#39; (ids of followers) and &#39;next_cursor&#39; (cursor of next batch)</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;FOLLOWERS&#39;</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">followers</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">retry_no</span><span class="o">&gt;=</span><span class="mi">3</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="n">e</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_followers_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserTimelineAPI.my_friends_fetcher"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.my_friends_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_friends_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s friends&#39; ids.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, cursor (used for paginated results, -1 to fetch the latest batch)</span>
+<span class="sd">		:returns: A dictionary containing &#39;ids&#39; (ids of friends) and &#39;next_cursor&#39; (cursor of next batch)</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;FRIENDS&#39;</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">friends</span><span class="o">.</span><span class="n">ids</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">retry_no</span><span class="o">&gt;=</span><span class="mi">3</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="n">e</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_friends_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="UserTimelineAPI.my_favourites_fetcher"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.my_favourites_fetcher">[docs]</a>	<span class="k">def</span> <span class="nf">my_favourites_fetcher</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">retry_no</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+		<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">		Waits until rate limit is clear and then calls the Twitter API to fetch user&#39;s favorited tweets.</span>
+<span class="sd">		Retries 3 times in case of exceptions.</span>
+
+<span class="sd">		:param retry_no: Number of retries done till now in case of exceptions</span>
+<span class="sd">		:param kwargs: Contains screen_name, count (maximum 200 allowed), since_id (minimum id of tweet to look for), max_id (maximum id of tweet to look for)</span>
+<span class="sd">		:returns: A list of tweet dictionaries</span>
+
+<span class="sd">		&quot;&quot;&quot;</span>
+		<span class="bp">self</span><span class="o">.</span><span class="n">wait_for_rate_limit</span><span class="p">(</span><span class="s1">&#39;FAVOURITES&#39;</span><span class="p">)</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">return</span> <span class="n">twitter</span><span class="o">.</span><span class="n">favorites</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+		<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">e</span><span class="p">)</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">retry_no</span><span class="o">&gt;=</span><span class="mi">3</span><span class="p">):</span>
+				<span class="k">raise</span> <span class="n">e</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_favourites_fetcher</span><span class="p">(</span><span class="n">retry_no</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+	<span class="c1"># ************************************************</span>
+
+
+	<span class="c1"># 300 requests per 15 min, 100 users per request = 30,000 per 15 min</span>
+<div class="viewcode-block" id="UserTimelineAPI.fetch_persist_users"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.fetch_persist_users">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_persist_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_screen_names</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)</span>
+
+<span class="sd">		:param user_screen_names: list of screen names of users</span>
+<span class="sd">		:param time: wall clock time when this file started running</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+
+		<span class="c1"># def get_data_to_persist(user_info,time):</span>
+		<span class="c1"># 	ret = user_info</span>
+		<span class="c1"># 	# ret = {k:user_info.get(k,None) for k in user_fields}</span>
+		<span class="c1"># 	ret[&#39;record_creation_date&#39;] = time</span>
+		<span class="c1"># 	# if &#39;created_at&#39; in user_fields:</span>
+		<span class="c1"># 	ret[&#39;created_at&#39;] = datetime.datetime.strptime(ret[&#39;created_at&#39;],&#39;%a %b %d %H:%M:%S +0000 %Y&#39;)</span>
+		<span class="c1"># 	return ret</span>
+
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching user info&#39;</span><span class="p">)</span>
+		<span class="n">time_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">user_screen_names</span><span class="p">),</span><span class="mi">100</span><span class="p">):</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Users </span><span class="si">%d</span><span class="s1"> to </span><span class="si">%d</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="nb">min</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">99</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">user_screen_names</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
+			<span class="n">curr_users</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_screen_names</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">100</span><span class="p">])</span> <span class="c1"># atmost 100 users in a request</span>
+			<span class="n">users_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_user_fetcher</span><span class="p">(</span><span class="n">screen_name</span><span class="o">=</span><span class="n">curr_users</span><span class="p">)</span>
+			<span class="k">for</span> <span class="n">user_info</span> <span class="ow">in</span> <span class="n">users_info</span><span class="p">:</span>
+				<span class="n">screen_name</span> <span class="o">=</span> <span class="n">user_info</span><span class="p">[</span><span class="s1">&#39;screen_name&#39;</span><span class="p">]</span>
+				<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;user_info/&#39;</span><span class="o">+</span><span class="n">screen_name</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">time_str</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">user_info</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="bp">cls</span><span class="o">=</span><span class="n">DateTimeEncoder</span><span class="p">))</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+				<span class="c1"># user_info_to_persist = get_data_to_persist(user_info,time)</span>
+				<span class="c1"># f = open(&#39;user_info_persisted/&#39;+screen_name+&quot;_&quot;+time_str+&#39;.txt&#39;, &#39;w&#39;)</span>
+				<span class="c1"># f.write(json.dumps(user_info_to_persist,indent=4,cls=DateTimeEncoder))</span>
+				<span class="c1"># f.close()</span>
+				<span class="c1"># db.users.insert_one(user_info_to_persist)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done with user info&quot;</span><span class="p">)</span></div>
+
+
+	<span class="c1"># 1500 requests per 15 min, 200 tweets returned per request = 3,00,000 per 15 min, 3200 per user</span>
+<div class="viewcode-block" id="UserTimelineAPI.fetch_persist_tweets"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.fetch_persist_tweets">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_persist_tweets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_screen_names</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">type_</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Fetches and persists tweets (excluding tweets already persisted)</span>
+
+<span class="sd">		:param user_screen_names: list of screen names of users</span>
+<span class="sd">		:param time: wall clock time when this file started running</span>
+<span class="sd">		:param type_: one of &#39;tweets&#39; or &#39;favourites&#39; to fetch user&#39;s own tweets or favorited tweets respectively</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+
+		<span class="k">assert</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;tweets&#39;</span> <span class="ow">or</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;favourites&#39;</span><span class="p">)</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;tweets&#39;</span><span class="p">):</span>
+			<span class="n">MAX_IDS_FOLDER</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;tweet_max_ids/&#39;</span>
+			<span class="n">DATA_FOLDER</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;tweets/&#39;</span>
+		<span class="k">else</span><span class="p">:</span>
+			<span class="n">MAX_IDS_FOLDER</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;fav_max_ids/&#39;</span>
+			<span class="n">DATA_FOLDER</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;favourites/&#39;</span>
+
+		<span class="c1"># to modify data slightly before inserting into MongoDB, not used anymore</span>
+		<span class="k">def</span> <span class="nf">get_data_to_persist</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span><span class="n">time</span><span class="p">):</span>
+			<span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
+				<span class="n">tweet_</span> <span class="o">=</span> <span class="n">tweet</span>
+				<span class="c1"># tweet_ = {k:tweet.get(k,None) for k in tweet_fields}</span>
+				<span class="n">tweet_</span><span class="p">[</span><span class="s1">&#39;record_creation_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span>
+				<span class="c1"># if &#39;created_at&#39; in tweet_fields:</span>
+				<span class="n">tweet_</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">tweet_</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">],</span><span class="s1">&#39;%a %b </span><span class="si">%d</span><span class="s1"> %H:%M:%S +0000 %Y&#39;</span><span class="p">)</span>
+				<span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tweet_</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">ret</span>
+
+		<span class="c1"># to get the maximum id of tweets fetched till now for this screen name</span>
+		<span class="k">def</span> <span class="nf">getMaxId</span><span class="p">(</span><span class="n">screen_name</span><span class="p">):</span>
+			<span class="c1"># since_id_query = db.max_ids.find_one({&#39;screen_name&#39;:screen_name})</span>
+			<span class="c1"># since_id = 1 if since_id_query is None else since_id_query[&#39;max_id&#39;]</span>
+			<span class="n">since_id</span> <span class="o">=</span> <span class="mi">1</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="o">+</span> <span class="n">MAX_IDS_FOLDER</span> <span class="o">+</span> <span class="n">screen_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">)):</span>
+				<span class="n">f_max_id</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">MAX_IDS_FOLDER</span> <span class="o">+</span> <span class="n">screen_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+				<span class="n">since_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">f_max_id</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+				<span class="n">f_max_id</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="k">return</span> <span class="n">since_id</span>
+
+		<span class="c1"># to persist this maximum id to a file</span>
+		<span class="k">def</span> <span class="nf">persistMaxId</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span><span class="n">max_id</span><span class="p">):</span>
+			<span class="c1"># db.max_ids.update_one({&#39;screen_name&#39;:screen_name},{&#39;$set&#39;:{&#39;max_id&#39;:next_since_id}},upsert=True)</span>
+			<span class="n">f_max_id</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">MAX_IDS_FOLDER</span> <span class="o">+</span> <span class="n">screen_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+			<span class="n">f_max_id</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">max_id</span><span class="p">))</span>
+			<span class="n">f_max_id</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+		<span class="k">for</span> <span class="n">screen_name</span> <span class="ow">in</span> <span class="n">user_screen_names</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching </span><span class="si">%s</span><span class="s1"> for </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span><span class="n">screen_name</span><span class="p">))</span>
+			<span class="n">time_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+			<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">DATA_FOLDER</span><span class="o">+</span><span class="n">screen_name</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">time_str</span><span class="o">+</span><span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;[</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># creating a list of list</span>
+			<span class="c1"># f1 = open(&#39;tweets_persisted/&#39;+screen_name+&quot;_&quot;+time_str+&quot;.txt&quot;, &#39;w&#39;)</span>
+			<span class="c1"># Find the tweet id beyond which to fetch new tweets</span>
+			<span class="n">since_id</span> <span class="o">=</span> <span class="n">getMaxId</span><span class="p">(</span><span class="n">screen_name</span><span class="p">)</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;tweets&#39;</span><span class="p">):</span>
+					<span class="n">tweets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_tweet_fetcher</span><span class="p">(</span><span class="n">screen_name</span><span class="o">=</span><span class="n">screen_name</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">trim_user</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span>
+						<span class="n">include_rts</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">exclude_replies</span><span class="o">=</span><span class="s1">&#39;false&#39;</span><span class="p">,</span><span class="n">since_id</span><span class="o">=</span><span class="n">since_id</span><span class="p">)</span>
+				<span class="k">else</span><span class="p">:</span>
+					<span class="n">tweets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_favourites_fetcher</span><span class="p">(</span><span class="n">screen_name</span><span class="o">=</span><span class="n">screen_name</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">since_id</span><span class="o">=</span><span class="n">since_id</span><span class="p">)</span>
+			<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+				<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;failed_users.txt&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)),</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+				<span class="k">continue</span>
+			<span class="n">next_since_id</span> <span class="o">=</span> <span class="n">since_id</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tweets</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="k">else</span> <span class="nb">max</span><span class="p">([</span><span class="n">tweet</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">])</span>
+			<span class="n">persistMaxId</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span><span class="n">next_since_id</span><span class="p">)</span>
+			<span class="k">while</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tweets</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">):</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Fetched &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tweets</span><span class="p">)))</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">tweets</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="bp">cls</span><span class="o">=</span><span class="n">DateTimeEncoder</span><span class="p">))</span>
+				<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;,</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+				<span class="c1"># tweets_to_persist = get_data_to_persist(tweets,time)</span>
+				<span class="c1"># f1.write(json.dumps(tweets_to_persist,indent=4,cls=DateTimeEncoder))</span>
+				<span class="c1"># f1.write(&#39;\n&#39;)</span>
+				<span class="n">min_id</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">tweet</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">])</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="k">if</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;tweets&#39;</span><span class="p">):</span>
+						<span class="n">tweets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_tweet_fetcher</span><span class="p">(</span><span class="n">screen_name</span><span class="o">=</span><span class="n">screen_name</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">trim_user</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span>
+							<span class="n">include_rts</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span><span class="n">exclude_replies</span><span class="o">=</span><span class="s1">&#39;false&#39;</span><span class="p">,</span><span class="n">max_id</span><span class="o">=</span><span class="n">min_id</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">since_id</span><span class="o">=</span><span class="n">since_id</span><span class="p">)</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">tweets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_favourites_fetcher</span><span class="p">(</span><span class="n">screen_name</span><span class="o">=</span><span class="n">screen_name</span><span class="p">,</span><span class="n">count</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span><span class="n">max_id</span><span class="o">=</span><span class="n">min_id</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">since_id</span><span class="o">=</span><span class="n">since_id</span><span class="p">)</span>
+				<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+					<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;failed_users.txt&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+					<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)),</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+					<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+					<span class="k">continue</span>
+				<span class="c1"># db.tweets.insert_many(tweets_to_persist)</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;[]]&#39;</span><span class="p">)</span> <span class="c1"># adding an empty list at the end because of the last comma</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="c1"># f1.close()</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done with </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">type_</span><span class="p">))</span></div>
+
+
+	<span class="c1"># followers: 15 requests per 15 min, 5000 followers returned per request (same for friends); 75000 per 15 min</span>
+<div class="viewcode-block" id="UserTimelineAPI.fetch_persist_friends_and_followers"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.UserTimelineAPI.fetch_persist_friends_and_followers">[docs]</a>	<span class="k">def</span> <span class="nf">fetch_persist_friends_and_followers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_screen_names</span><span class="p">,</span><span class="n">time</span><span class="p">):</span>
+		<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">		Fetches and persists users&#39; friends and followers</span>
+
+<span class="sd">		:param user_screen_names: list of screen names of users</span>
+<span class="sd">		:param time: wall clock time when this file started running</span>
+<span class="sd">		&#39;&#39;&#39;</span>
+		<span class="k">def</span> <span class="nf">get_existing</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+			<span class="k">assert</span><span class="p">(</span><span class="n">type_</span><span class="o">==</span><span class="s1">&#39;followers&#39;</span> <span class="ow">or</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;friends&#39;</span><span class="p">)</span>
+			<span class="n">folder_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;user_followers&#39;</span> <span class="k">if</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;followers&#39;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;user_friends&#39;</span>
+			<span class="n">ret</span> <span class="o">=</span> <span class="p">{}</span>
+			<span class="k">for</span> <span class="n">the_file</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folder_name</span><span class="p">):</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">the_file</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">screen_name</span><span class="p">)):</span>
+					<span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder_name</span><span class="p">,</span> <span class="n">the_file</span><span class="p">)</span>
+					<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+					<span class="n">ls</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+					<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
+						<span class="n">ret</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+					<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+			<span class="k">return</span> <span class="n">ret</span>
+
+		<span class="c1"># returns the number of new followers/friends in this batch</span>
+		<span class="k">def</span> <span class="nf">get_new_count</span><span class="p">(</span><span class="n">existing</span><span class="p">,</span> <span class="n">current_batch</span><span class="p">):</span>
+			<span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">current_batch</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span> <span class="k">return</span> <span class="mi">0</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">current_batch</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">existing</span><span class="p">):</span>
+				<span class="k">if</span> <span class="p">(</span><span class="n">current_batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="n">existing</span><span class="p">):</span>
+					<span class="k">return</span> <span class="mi">0</span>
+				<span class="c1"># do binary search (first not in existing, last in existing, point of transition in between)</span>
+				<span class="n">first</span> <span class="o">=</span> <span class="mi">0</span>
+				<span class="n">last</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_batch</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+				<span class="k">while</span> <span class="p">(</span><span class="n">first</span> <span class="o">&lt;</span> <span class="n">last</span><span class="p">):</span> <span class="c1"># (= shall never happen)</span>
+					<span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">first</span><span class="o">+</span><span class="n">last</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+					<span class="k">if</span> <span class="p">(</span><span class="n">mid</span><span class="o">==</span><span class="n">first</span><span class="p">):</span> <span class="c1"># first=last-1</span>
+						<span class="k">return</span> <span class="n">first</span><span class="o">+</span><span class="mi">1</span>
+					<span class="k">elif</span> <span class="p">(</span><span class="n">current_batch</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span> <span class="ow">in</span> <span class="n">existing</span><span class="p">):</span>
+						<span class="n">last</span> <span class="o">=</span> <span class="n">mid</span>
+					<span class="k">else</span><span class="p">:</span>
+						<span class="n">first</span> <span class="o">=</span> <span class="n">mid</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Should not reach here&quot;</span><span class="p">)</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_batch</span><span class="p">)</span>
+
+		<span class="k">def</span> <span class="nf">fetch_and_store</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span> <span class="n">type_</span><span class="p">):</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Fetching </span><span class="si">%s</span><span class="s1"> for </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">screen_name</span><span class="p">))</span>
+			<span class="n">time_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+			<span class="n">existing</span> <span class="o">=</span> <span class="n">get_existing</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span> <span class="n">type_</span><span class="p">)</span>
+			<span class="n">new</span> <span class="o">=</span> <span class="p">[]</span>
+			<span class="n">cursor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+			<span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_followers_fetcher</span> <span class="k">if</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;followers&#39;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">my_friends_fetcher</span>
+			<span class="k">while</span> <span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+				<span class="k">try</span><span class="p">:</span>
+					<span class="n">api_res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">screen_name</span><span class="o">=</span><span class="n">screen_name</span><span class="p">,</span> <span class="n">cursor</span><span class="o">=</span><span class="n">cursor</span><span class="p">)</span>
+				<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+					<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;failed_users.txt&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+					<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)),</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)))</span>
+					<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+					<span class="k">break</span>
+				<span class="n">batch</span> <span class="o">=</span> <span class="n">api_res</span><span class="p">[</span><span class="s1">&#39;ids&#39;</span><span class="p">]</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Batch:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)),</span> <span class="nb">str</span><span class="p">(</span><span class="n">batch</span><span class="p">[:</span><span class="mi">1</span><span class="p">]))</span>
+				<span class="n">cursor</span> <span class="o">=</span> <span class="n">api_res</span><span class="p">[</span><span class="s1">&#39;next_cursor&#39;</span><span class="p">]</span>
+				<span class="n">new_count</span> <span class="o">=</span> <span class="n">get_new_count</span><span class="p">(</span><span class="n">existing</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+				<span class="n">new</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">batch</span><span class="p">[:</span><span class="n">new_count</span><span class="p">])</span>
+				<span class="k">if</span><span class="p">(</span><span class="n">new_count</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span> <span class="ow">or</span> <span class="n">cursor</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+					<span class="k">break</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">Total = &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">new</span><span class="p">)))</span>
+			<span class="n">folder_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;user_followers/&#39;</span> <span class="k">if</span> <span class="n">type_</span><span class="o">==</span><span class="s1">&#39;followers&#39;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;user_friends/&#39;</span>
+			<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">folder_name</span><span class="o">+</span><span class="n">screen_name</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="n">time_str</span><span class="o">+</span><span class="s1">&#39;.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">new</span><span class="p">))</span>
+			<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+		<span class="k">for</span> <span class="n">screen_name</span> <span class="ow">in</span> <span class="n">user_screen_names</span><span class="p">:</span>
+			<span class="n">fetch_and_store</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span> <span class="s1">&#39;followers&#39;</span><span class="p">)</span>
+			<span class="n">fetch_and_store</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span> <span class="s1">&#39;friends&#39;</span><span class="p">)</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done with followers/friends&#39;</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># reads the screen names from a file</span>
+<div class="viewcode-block" id="get_user_screen_names"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.get_user_screen_names">[docs]</a><span class="k">def</span> <span class="nf">get_user_screen_names</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+		<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+		<span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+			<span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+		<span class="k">return</span> <span class="n">ret</span></div>
+
+<span class="c1">################### ANALYTICS PART BEGINS HERE (Not used anymore) ####################</span>
+<div class="viewcode-block" id="plot_user_field"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.plot_user_field">[docs]</a><span class="k">def</span> <span class="nf">plot_user_field</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span><span class="n">date_start</span><span class="p">,</span><span class="n">date_end</span><span class="p">,</span><span class="n">field_names</span><span class="p">):</span>
+	<span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;screen_name&#39;</span><span class="p">:</span><span class="n">screen_name</span><span class="p">,</span> <span class="s1">&#39;record_creation_date&#39;</span><span class="p">:{</span><span class="s1">&#39;$gt&#39;</span><span class="p">:</span><span class="n">date_start</span><span class="p">,</span><span class="s1">&#39;$lt&#39;</span><span class="p">:</span><span class="n">date_end</span><span class="p">}},</span>
+		<span class="n">projection</span><span class="o">=</span><span class="n">field_names</span><span class="o">+</span><span class="p">[</span><span class="s1">&#39;record_creation_date&#39;</span><span class="p">],</span><span class="n">sort</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;record_creation_date&#39;</span><span class="p">,</span> <span class="n">pymongo</span><span class="o">.</span><span class="n">ASCENDING</span><span class="p">)]))</span>
+	<span class="n">xVals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;record_creation_date&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+	<span class="nb">print</span><span class="p">(</span><span class="n">xVals</span><span class="p">)</span>
+	<span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">field_names</span><span class="p">:</span>
+		<span class="n">yVals</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span><span class="p">]</span>
+		<span class="nb">print</span><span class="p">(</span><span class="n">yVals</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xVals</span><span class="p">,</span><span class="n">yVals</span><span class="p">,</span><span class="s1">&#39;bo-&#39;</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;DateTime&#39;</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">date_start</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y %H:%M:%S&quot;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; to &#39;</span><span class="o">+</span><span class="n">date_end</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y %H:%M:%S&quot;</span><span class="p">))</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="c1"># Pad margins so that markers don&#39;t get clipped by the axes</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span> <span class="c1"># Tweak spacing to prevent clipping of tick-labels</span>
+		<span class="c1"># plt.xticks(xVals,xVals,rotation=30)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;plots/&#39;</span><span class="o">+</span><span class="n">screen_name</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">field_name</span><span class="o">+</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+		<span class="c1"># plt.show()</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">clf</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="extract_hash_tags"><a class="viewcode-back" href="../twitter_stream.html#userstimeline.extract_hash_tags">[docs]</a><span class="k">def</span> <span class="nf">extract_hash_tags</span><span class="p">(</span><span class="n">screen_name</span><span class="p">,</span><span class="n">date_start</span><span class="p">,</span><span class="n">date_end</span><span class="p">):</span>
+	<span class="n">id_</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">find_one</span><span class="p">({</span><span class="s1">&#39;screen_name&#39;</span><span class="p">:</span><span class="n">screen_name</span><span class="p">})[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+	<span class="n">query_result</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="nb">filter</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;user.id&#39;</span><span class="p">:</span><span class="n">id_</span><span class="p">,</span> <span class="s1">&#39;created_at&#39;</span><span class="p">:{</span><span class="s1">&#39;$gt&#39;</span><span class="p">:</span><span class="n">date_start</span><span class="p">,</span><span class="s1">&#39;$lt&#39;</span><span class="p">:</span><span class="n">date_end</span><span class="p">}},</span>
+		<span class="n">projection</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;entities.hashtags&#39;</span><span class="p">]))</span>
+	<span class="n">hashtag_counts</span> <span class="o">=</span> <span class="p">{}</span>
+	<span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">query_result</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">hashtag</span> <span class="ow">in</span> <span class="n">tweet</span><span class="p">[</span><span class="s1">&#39;entities&#39;</span><span class="p">][</span><span class="s1">&#39;hashtags&#39;</span><span class="p">]:</span>
+			<span class="n">hashtag</span> <span class="o">=</span> <span class="n">hashtag</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+			<span class="n">hashtag_counts</span><span class="p">[</span><span class="n">hashtag</span><span class="p">]</span> <span class="o">=</span> <span class="n">hashtag_counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">hashtag</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+	<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hashtags used by &#39;</span><span class="o">+</span><span class="n">screen_name</span><span class="p">)</span>
+	<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">hashtag_counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span></div>
+
+<span class="c1">################### MAIN FUNCTION BEGINS HERE ####################</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+	<span class="c1"># Configure the following parameters</span>
+	<span class="c1"># data_directory = os.path.dirname(os.path.realpath(__file__))+&#39;/data/&#39;</span>
+	<span class="n">data_directory</span> <span class="o">=</span> <span class="s1">&#39;../../data/&#39;</span>
+	<span class="n">user_screen_names_file_path</span> <span class="o">=</span> <span class="s1">&#39;../../data/users.txt&#39;</span>
+
+
+	<span class="n">api</span> <span class="o">=</span> <span class="n">UserTimelineAPI</span><span class="p">(</span><span class="n">data_directory</span><span class="p">)</span>
+	<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+	<span class="n">api</span><span class="o">.</span><span class="n">clear_everyting</span><span class="p">()</span>
+	<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_directory</span><span class="o">+</span><span class="s1">&#39;timestamps.txt&#39;</span><span class="p">,</span><span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="c1"># to keep track of timestamps when this script is run, to read back later</span>
+		<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+	<span class="c1"># user_screen_names = [&#39;elonmusk&#39;,&#39;narendramodi&#39;,&#39;BillGates&#39;,&#39;iamsrk&#39;,&#39;imVkohli&#39;]</span>
+	<span class="n">user_screen_names</span> <span class="o">=</span> <span class="n">get_user_screen_names</span><span class="p">(</span><span class="n">user_screen_names_file_path</span><span class="p">)</span>
+	<span class="n">api</span><span class="o">.</span><span class="n">fetch_persist_users</span><span class="p">(</span><span class="n">user_screen_names</span><span class="p">,</span><span class="n">now</span><span class="p">)</span>
+	<span class="n">api</span><span class="o">.</span><span class="n">fetch_persist_tweets</span><span class="p">(</span><span class="n">user_screen_names</span><span class="p">,</span><span class="n">now</span><span class="p">,</span><span class="s1">&#39;tweets&#39;</span><span class="p">)</span>
+	<span class="n">api</span><span class="o">.</span><span class="n">fetch_persist_tweets</span><span class="p">(</span><span class="n">user_screen_names</span><span class="p">,</span><span class="n">now</span><span class="p">,</span><span class="s1">&#39;favourites&#39;</span><span class="p">)</span>
+	<span class="n">api</span><span class="o">.</span><span class="n">fetch_persist_friends_and_followers</span><span class="p">(</span><span class="n">user_screen_names</span><span class="p">,</span><span class="n">now</span><span class="p">)</span>
+
+	<span class="c1"># plot_user_field(&#39;narendramodi&#39;,now-datetime.timedelta(days=1),now,</span>
+	<span class="c1"># 	[&#39;favourites_count&#39;,&#39;followers_count&#39;,&#39;friends_count&#39;,&#39;statuses_count&#39;])</span>
+	<span class="c1"># extract_hash_tags(&#39;iamsrk&#39;,now-datetime.timedelta(days=100),now)</span>
+</pre></div>
+
+           </div><!-- /.toBeIndexed -->
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo" class="contentinfo">
+      <p class="show_copyright">
+            &copy; Copyright 2018, Deepak Saini, Abhishek Gupta
+      </p>
+      <p class="show_sphinx">
+        Built with <a href="http://sphinx-doc.org/" target="_blank">Sphinx</a> and
+        <a href="https://github.com/TYPO3-Documentation/t3SphinxThemeRtd" target="_blank">t3SphinxThemeRtd.</a>
+        Report theme issues <a href="https://github.com/TYPO3-Documentation/t3SphinxThemeRtd/issues" target="_blank">here.</a>
+      </p>
+      <p class="show_legalinfo">
+        <a href="https://typo3.org/legal-info/" rel="nofollow">
+          <span class="fa fa-legal"></span>&#32;Legal Info
+        </a>
+      </p>
+
+
+
+
+  </div>
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/jquery-ui/jquery-ui.min.js"></script>
+      <script type="text/javascript" src="../_static/js/theme.js"></script>
+      <script type="text/javascript" src="../_static/js/t3autocomplete.js"></script>
+
+  
+
+  
+   
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   <script type="text/javascript" id="idPiwikScriptPlaceholder"></script></body>
+</html>

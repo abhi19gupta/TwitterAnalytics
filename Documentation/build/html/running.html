@@ -81,28 +81,47 @@
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from Twitter API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api">User Timeline API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#tweet-network">Tweet network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing-network">Indexing network</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-neo4j-logic">Ingesting the data into neo4j : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#improving-ingestion-rate-using-transaction">Improving ingestion rate using transaction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_data_ingestion.html">Ingesting data into MongoDB</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#why-store-in-mongodb">Why store in MongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#data-format-in-mongodb">Data Format in mongoDB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-v-s-neo4j">mongoDB v/s neo4j</a></li>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-logic">Ingesting the data into mongoDB : Logic</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-transactions">Improving ingestion rate using transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_data_ingestion.html#improving-ingestion-rate-using-parallel-multiple-process">Improving ingestion rate using parallel multiple process</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -110,13 +129,21 @@
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#basic-abstraction">Basic Abstraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#naming-entities">Naming entities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#variable-attributes">Variable attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_query_generation.html#returns">Returns</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#creating-a-custom-query-through-dashboard-api-behind-the-scenes">Creating a custom query through dashboard API : Behind the scenes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_query_generation.html#code-documentation-for-neo4j-query-generation">Code Documentation for Neo4j query generation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a></li>
-<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About postprocessing functions</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#need-of-post-processing-function">Need of post processing function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#format-of-post-processing-functions">Format of post processing functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="postprocessing.html#executing-post-processing-function">Executing post processing function</a></li>
@@ -128,9 +155,18 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#building-a-dag-from-queries">Building a DAG from queries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#dag-in-airflow">DAG in airflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dag.html#creating-custom-metric">Creating custom metric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-alerts-consumer">Flink Alerts Consumer</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="benchmarking.html#simple-queries">Simple Queries</a></li>
@@ -138,6 +174,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
@@ -168,7 +205,13 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Getting the system running</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-environment">Setting up the environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-system">Running the system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#collecting-data">Collecting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ingesting-data">Ingesting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-flink-and-kafka">Running Flink and Kafka</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -211,7 +254,7 @@
 <div class="section" id="setting-up-the-environment">
 <h2>Setting up the environment<a class="headerlink" href="#setting-up-the-environment" title="Permalink to this headline">¶</a></h2>
 <p>We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the <a class="reference external" href="https://conda.io/docs/user-guide/install/download.html">download page</a> itself. After installation of conda, run the following commands:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>// create a new virtual environment
+<div class="highlight-bash"><div class="highlight"><pre><span></span>// create a new virtual environment
 conda create --name twitter_analytics <span class="nv">python</span><span class="o">==</span><span class="m">3</span>.6
 // clone the repo
 git clone https://github.com/abhi19gupta/TwitterAnalytics.git
@@ -227,11 +270,53 @@ pip install -r requirements.txt
 <span class="nb">source</span> deactivate
 </pre></div>
 </div>
-<p>Apart from these, the user also needs to install mongoDB, neo4j databases and The Apache flink-kafka framework. Again instructions on how to install each specific to your system can be seen on their corresponsing documentations.</p>
+<p>The entire system has been designed and tested on Ubuntu 16.04 machine. It may work on Windows with appropriate tweaks.</p>
+<p>Apart from these, the user also needs to install the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>MongoDB: Follow the installation instructions on this <a class="reference external" href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/">MongoDB installation link</a>.</li>
+<li>Neo4j: Follow the installation instructions on this <a class="reference external" href="https://neo4j.com/docs/operations-manual/current/installation/linux/debian/">Neo4j installation link</a>.</li>
+<li>Apache Flink: Download the Flink 1.4.2 binary from this <a class="reference external" href="https://archive.apache.org/dist/flink/flink-1.4.2/">Flink binary link</a>. If this does not work, download the latest version from the <a class="reference external" href="https://flink.apache.org/downloads.html">Flink download page</a>. Once downloaded, simply extract the zip and the installation is complete. You need to use the path of this installation in the shell script as mentioned in <a class="reference internal" href="#running-flink-and-kafka"><span class="std std-ref">Running Flink and Kafka</span></a>.</li>
+<li>Apache Kafka: Download the Kafka 2.11 binary from thie <a class="reference external" href="https://www.apache.org/dyn/closer.cgi?path=/kafka/1.1.0/kafka_2.11-1.1.0.tgz">Kafka binary link</a>. If this does not work, download the latest version from the <a class="reference external" href="https://kafka.apache.org/downloads">Kafka download page</a>. Once downloaded, simply extract the zip and the installation is complete. You need to use the path of this installation in the shell script as mentioned in <a class="reference internal" href="#running-flink-and-kafka"><span class="std std-ref">Running Flink and Kafka</span></a>.</li>
+<li>Apache Airflow: Follow the installation instructions on this <a class="reference external" href="https://airflow.apache.org/installation.html">Airflow installation link</a>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="running-the-system">
+<h2>Running the system<a class="headerlink" href="#running-the-system" title="Permalink to this headline">¶</a></h2>
+<p>To set the system up, the following steps need to be taken.</p>
+<div class="section" id="collecting-data">
+<h3>Collecting data<a class="headerlink" href="#collecting-data" title="Permalink to this headline">¶</a></h3>
+<p>Navigate to ‘Read Twitter Stream’ and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">streaming.py</span></code> to collect streaming data or run <code class="docutils literal"><span class="pre">python</span> <span class="pre">userstimeline.py</span></code> to collect data for a set of users.</p>
+<p>More details can be found here: <a class="reference internal" href="twitter_stream.html#read-data-from-twitter-api"><span class="std std-ref">Read data from Twitter API</span></a>.</p>
+</div>
+<div class="section" id="ingesting-data">
+<h3>Ingesting data<a class="headerlink" href="#ingesting-data" title="Permalink to this headline">¶</a></h3>
+<p>Before proceeding, start the Neo4j and MongoDB servers locally (using service commands in Ubuntu. Eg. <code class="docutils literal"><span class="pre">service</span> <span class="pre">neo4j</span> <span class="pre">start</span></code>, <code class="docutils literal"><span class="pre">service</span> <span class="pre">mongod</span> <span class="pre">start</span></code>).</p>
+<p>Once the data is collected, you can ingest it into the databases as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Neo4j: Navigate to Ingestion/Neo4j/ and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">ingest_neo4j_streaming.py</span></code> to ingest data collected using streaming API or run <code class="docutils literal"><span class="pre">python</span> <span class="pre">ingest_neo4j_user_timeline.py</span></code> to ingest data collected using User Timeline API.</li>
+<li>MongDB: In MongoDB we provide functionality to store only streaming data. Navigate to Ingestion/MongoDB and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">ingest_raw.py</span></code>.</li>
+</ul>
+</div></blockquote>
+<p>More details can be found here: <a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-data-into-mongodb"><span class="std std-ref">Ingesting data into MongoDB</span></a> and <a class="reference internal" href="neo4j_data_ingestion.html#ingesting-data-into-neo4j"><span class="std std-ref">Ingesting data into Neo4j</span></a></p>
 </div>
 <div class="section" id="running-the-dashboard">
-<h2>Running the dashboard<a class="headerlink" href="#running-the-dashboard" title="Permalink to this headline">¶</a></h2>
-<p>To run the website on a local server on your machine, navigate to Dashboard Website/ and run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">runserver</span></code>. Presently the databases will be empty, to insert the new data into the databases see the <a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-data-into-mongodb"><span class="std std-ref">Ingesting data into MongoDB</span></a> and the <a class="reference internal" href="neo4j_data_ingestion.html#ingesting-data-into-neo4j"><span class="std std-ref">Ingesting data into Neo4j</span></a> sections.</p>
+<h3>Running the dashboard<a class="headerlink" href="#running-the-dashboard" title="Permalink to this headline">¶</a></h3>
+<p>To run the website on a local server on your machine, navigate to Dashboard_Website/ and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">manage.py</span> <span class="pre">runserver</span></code>.</p>
+</div>
+<div class="section" id="running-flink-and-kafka">
+<h3>Running Flink and Kafka<a class="headerlink" href="#running-flink-and-kafka" title="Permalink to this headline">¶</a></h3>
+<p>To test the Flink applications generated on the dashboard, you need to do the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Start the Kafka and Flink servers locally using the shell script in ‘Kafka/’ folder. (Configure the path of the Kafka and Flink directories in the shell script).</li>
+<li>You can now create alert specifications on the dashboard.</li>
+<li>Now, to put some tweets on the Kafka topic ‘tweets_topic’. Navigate to ‘Kafka/’ and run <code class="docutils literal"><span class="pre">python</span> <span class="pre">kafka_tweets_producer.py</span></code> after configuring the data directory in its main function.</li>
+</ul>
+</div></blockquote>
+</div>
 </div>
 </div>
 

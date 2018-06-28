@@ -139,8 +139,8 @@ class FlinkCodeGenerator:
 		Note: It can raise exception like alert already exists with the given name.
 
 		:param alert_name: Name of the alert to be created.
-		:param filter_string: Filter specification for the alert. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_filter_code`.
-		:param group_keys: List of keys to group on. Refer to :meth:`flink_code_gen.FlinkCodeGenerator._get_duplication_code`.
+		:param filter_string: Filter specification for the alert. Refer to :func:`flink_code_gen.FlinkCodeGenerator._get_filter_code`.
+		:param group_keys: List of keys to group on. Refer to :func:`flink_code_gen.FlinkCodeGenerator._get_duplication_code`.
 		:param window_length: Length of window in seconds. The threshold will be looked at each window in each sub-stream.
 		:param window_slide: Number of seconds after which to start each new window.
 		:param threshold: Count threshold for tweets in each window to generate the alert.

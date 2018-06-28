@@ -1,5 +1,7 @@
 This is makeindex, version 2.15 [TeX Live 2015] (kpathsea + Thai support).
 Scanning style file ./python.ist.......done (7 attributes redefined, 0 ignored).
-Scanning input file TwitterAnalyticsDocumentation.idx...done (0 entries accepted, 0 rejected).
-Nothing written in TwitterAnalyticsDocumentation.ind.
+Scanning input file TwitterAnalyticsDocumentation.idx....done (128 entries accepted, 0 rejected).
+Sorting entries....done (911 comparisons).
+Generating output file TwitterAnalyticsDocumentation.ind....done (204 lines written, 0 warnings).
+Output written in TwitterAnalyticsDocumentation.ind.
 Transcript written in TwitterAnalyticsDocumentation.ilg.

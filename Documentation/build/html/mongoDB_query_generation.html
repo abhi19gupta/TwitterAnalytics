@@ -152,7 +152,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
@@ -255,7 +259,7 @@
 <div class="section" id="generic-api-for-mongodb-idea">
 <h2>Generic API for mongoDB : Idea<a class="headerlink" href="#generic-api-for-mongodb-idea" title="Permalink to this headline">¶</a></h2>
 <p>For sake of completeness we also provide the way to generate a generic API to get mongoDB queries. For example take at this code to answer the query to get the most popular hashtags in an interval:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:{</span><span class="s2">&quot;$gte&quot;</span><span class="p">:</span><span class="n">t1</span><span class="p">,</span><span class="s2">&quot;$lte&quot;</span><span class="p">:</span><span class="n">t2</span><span class="p">}}},{</span><span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$hashtag&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;timestamp&quot;</span><span class="p">:{</span><span class="s2">&quot;$gte&quot;</span><span class="p">:</span><span class="n">t1</span><span class="p">,</span><span class="s2">&quot;$lte&quot;</span><span class="p">:</span><span class="n">t2</span><span class="p">}}},{</span><span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$hashtag&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
 <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span><span class="n">limit</span><span class="p">}]</span>
 <span class="n">l</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">ht_collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
 <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;hashtag&quot;</span><span class="p">:[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">],</span><span class="s2">&quot;count&quot;</span><span class="p">:[</span><span class="n">x</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]}</span>
@@ -275,13 +279,13 @@
 <p>Here we provide a documentation of the code used for this functionality.</p>
 <span class="target" id="module-execute_queries"></span><p>Module to execute mongoDB queries. The idea is to keep the  mongo interface minimal and easily extensible, and thus
 only pre specified queries can be answered through mongoDB, rather than generic ones.</p>
-<p>The <a class="reference internal" href="#module-execute_queries" title="execute_queries"><code class="xref py py-mod docutils literal notranslate"><span class="pre">execute_queries</span></code></a> module contains the classes:</p>
+<p>The <a class="reference internal" href="#module-execute_queries" title="execute_queries"><code class="xref py py-mod docutils literal"><span class="pre">execute_queries</span></code></a> module contains the classes:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#execute_queries.MongoQuery" title="execute_queries.MongoQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">execute_queries.MongoQuery</span></code></a></li>
+<li><a class="reference internal" href="#execute_queries.MongoQuery" title="execute_queries.MongoQuery"><code class="xref py py-class docutils literal"><span class="pre">execute_queries.MongoQuery</span></code></a></li>
 </ul>
 <p>One can use the different function in the class to execute different queries</p>
 <p>Example illustrating how to answer different queries.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">MongoQuery</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">q</span> <span class="o">=</span> <span class="n">MongoQuery</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">mp_ht_in_total</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span> <span class="c1"># get 10 most popular hashtags</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">mp_um_in_total</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="c1"># get 10 most popular users</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="o">.</span><span class="n">mp_ht_in_interval</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1500486521</span><span class="p">,</span><span class="mi">1501496521</span><span class="p">))</span> <span class="c1"># get 10 most popular hashtags in interval</span>
@@ -292,7 +296,7 @@ only pre specified queries can be answered through mongoDB, rather than generic 
 <dl class="class">
 <dt id="execute_queries.MongoQuery">
 <em class="property">class </em><code class="descclassname">execute_queries.</code><code class="descname">MongoQuery</code><a class="reference internal" href="_modules/execute_queries.html#MongoQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#execute_queries.MongoQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class to answer mongoDB queries. Make connection to the database and keep on answering queris untill the
 object is deleted</p>
 <dl class="method">

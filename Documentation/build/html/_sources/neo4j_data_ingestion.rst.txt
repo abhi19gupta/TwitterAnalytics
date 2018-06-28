@@ -87,7 +87,15 @@ We create uniqueness constraints on the following attributes of these nodes:
 
 Running the ingestion script
 -------------------------------------------------
-To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can't possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file `python ingest_neo4j.py` to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.
+There are 2 applications to ingest data into Neo4j. 
+
+Streaming data
+'''''''''''''''
+If the data has been collected using the Stream Sample API (as explained in :ref:`Stream Sample API`), then this application needs to be used to ingest the tweets into Neo4j. Navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j_streaming.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can't possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the file `python ingest_neo4j_streaming.py` to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.
+
+User Timeline data
+''''''''''''''''''
+If the data has been collected using the User Timeline API (as explained in :ref:`User Timeline API`), then this application needs to be used to ingest the tweets into Neo4j. Navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j_user_timeline.py. This file ingests all the data present in the 'data' folder in the same directory. However, if the data is collected in an incremental fashion (eg. running the data collection application day by day), then this file needs to be changed accordingly to only ingest the data of the new timestamps.
 
 Neo4j Ingestion Rates
 ---------------------------
@@ -97,9 +105,17 @@ Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size o
 
 Code Documentation for Neo4j data ingestion
 --------------------------------------------
-Here we provide a documentation of the code.
+Here we provide a documentation of the code for ingesting tweets collected using Streaming API.
 
-.. automodule:: ingest_neo4j
+.. automodule:: ingest_neo4j_streaming
+    :members:
+    :undoc-members:
+    :inherited-members:
+    :show-inheritance:
+
+Here we provide a documentation of the code for ingesting data collected using User Timeline API.
+
+.. automodule:: ingest_neo4j_user_timeline
     :members:
     :undoc-members:
     :inherited-members:

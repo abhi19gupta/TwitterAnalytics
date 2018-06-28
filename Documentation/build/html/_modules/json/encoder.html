@@ -85,6 +85,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#user-network">User network</a></li>
@@ -97,7 +101,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
@@ -150,8 +158,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flink.html">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-alerts-consumer">Flink Alerts Consumer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../benchmarking.html">Benchmarking the query answering</a><ul>
@@ -192,7 +205,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../running.html">Getting the system running</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../running.html#setting-up-the-environment">Setting up the environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../running.html#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../running.html#running-the-system">Running the system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#collecting-data">Collecting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#ingesting-data">Ingesting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#running-flink-and-kafka">Running Flink and Kafka</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -238,6 +257,10 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">c_encode_basestring_ascii</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">_json</span> <span class="k">import</span> <span class="n">encode_basestring</span> <span class="k">as</span> <span class="n">c_encode_basestring</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">c_encode_basestring</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">_json</span> <span class="k">import</span> <span class="n">make_encoder</span> <span class="k">as</span> <span class="n">c_make_encoder</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">c_make_encoder</span> <span class="o">=</span> <span class="kc">None</span>
@@ -259,15 +282,17 @@
     <span class="c1">#ESCAPE_DCT.setdefault(chr(i), &#39;\\u%04x&#39; % (i,))</span>
 
 <span class="n">INFINITY</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
-<span class="n">FLOAT_REPR</span> <span class="o">=</span> <span class="nb">repr</span>
 
-<span class="k">def</span> <span class="nf">encode_basestring</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">py_encode_basestring</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a JSON representation of a Python string</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">ESCAPE_DCT</span><span class="p">[</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
     <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">ESCAPE</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">replace</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span>
+
+
+<span class="n">encode_basestring</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_encode_basestring</span> <span class="ow">or</span> <span class="n">py_encode_basestring</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">py_encode_basestring_ascii</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
@@ -326,7 +351,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">item_separator</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span>
     <span class="n">key_separator</span> <span class="o">=</span> <span class="s1">&#39;: &#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">skipkeys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">check_circular</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">indent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Constructor for JSONEncoder, with sensible defaults.</span>
@@ -401,7 +426,8 @@
 <span class="sd">                return JSONEncoder.default(self, o)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is not JSON serializable&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Object of type &#39;</span><span class="si">%s</span><span class="s2">&#39; is not JSON serializable&quot;</span> <span class="o">%</span>
+                        <span class="n">o</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a JSON string representation of a Python data structure.</span>
@@ -445,7 +471,7 @@
             <span class="n">_encoder</span> <span class="o">=</span> <span class="n">encode_basestring</span>
 
         <span class="k">def</span> <span class="nf">floatstr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">allow_nan</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allow_nan</span><span class="p">,</span>
-                <span class="n">_repr</span><span class="o">=</span><span class="n">FLOAT_REPR</span><span class="p">,</span> <span class="n">_inf</span><span class="o">=</span><span class="n">INFINITY</span><span class="p">,</span> <span class="n">_neginf</span><span class="o">=-</span><span class="n">INFINITY</span><span class="p">):</span>
+                <span class="n">_repr</span><span class="o">=</span><span class="nb">float</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">,</span> <span class="n">_inf</span><span class="o">=</span><span class="n">INFINITY</span><span class="p">,</span> <span class="n">_neginf</span><span class="o">=-</span><span class="n">INFINITY</span><span class="p">):</span>
             <span class="c1"># Check for specials.  Note that this type of test is processor</span>
             <span class="c1"># and/or platform-specific, so do tests which don&#39;t depend on the</span>
             <span class="c1"># internals.</span>
@@ -492,6 +518,7 @@
         <span class="nb">list</span><span class="o">=</span><span class="nb">list</span><span class="p">,</span>
         <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
         <span class="nb">tuple</span><span class="o">=</span><span class="nb">tuple</span><span class="p">,</span>
+        <span class="n">_intstr</span><span class="o">=</span><span class="nb">int</span><span class="o">.</span><span class="fm">__str__</span><span class="p">,</span>
     <span class="p">):</span>
 
     <span class="k">if</span> <span class="n">_indent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_indent</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
@@ -533,10 +560,10 @@
                 <span class="c1"># Subclasses of int/float may override __str__, but we still</span>
                 <span class="c1"># want to encode them as integers/floats in JSON. One example</span>
                 <span class="c1"># within the standard library is IntEnum.</span>
-                <span class="k">yield</span> <span class="n">buf</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">yield</span> <span class="n">buf</span> <span class="o">+</span> <span class="n">_intstr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                 <span class="c1"># see comment above for int</span>
-                <span class="k">yield</span> <span class="n">buf</span> <span class="o">+</span> <span class="n">_floatstr</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">yield</span> <span class="n">buf</span> <span class="o">+</span> <span class="n">_floatstr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">buf</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
@@ -583,7 +610,7 @@
             <span class="c1"># also allow them.  Many encoders seem to do something like this.</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                 <span class="c1"># see comment for int/float in _make_iterencode</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="n">_floatstr</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">_floatstr</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
             <span class="k">elif</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
@@ -592,7 +619,7 @@
                 <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;null&#39;</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="c1"># see comment for int/float in _make_iterencode</span>
-                <span class="n">key</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">_intstr</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">_skipkeys</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
@@ -613,10 +640,10 @@
                 <span class="k">yield</span> <span class="s1">&#39;false&#39;</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
                 <span class="c1"># see comment for int/float in _make_iterencode</span>
-                <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">yield</span> <span class="n">_intstr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
                 <span class="c1"># see comment for int/float in _make_iterencode</span>
-                <span class="k">yield</span> <span class="n">_floatstr</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+                <span class="k">yield</span> <span class="n">_floatstr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
                     <span class="n">chunks</span> <span class="o">=</span> <span class="n">_iterencode_list</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_current_indent_level</span><span class="p">)</span>
@@ -643,10 +670,10 @@
             <span class="k">yield</span> <span class="s1">&#39;false&#39;</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="c1"># see comment for int/float in _make_iterencode</span>
-            <span class="k">yield</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">_intstr</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
             <span class="c1"># see comment for int/float in _make_iterencode</span>
-            <span class="k">yield</span> <span class="n">_floatstr</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">o</span><span class="p">))</span>
+            <span class="k">yield</span> <span class="n">_floatstr</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">yield from</span> <span class="n">_iterencode_list</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">_current_indent_level</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>

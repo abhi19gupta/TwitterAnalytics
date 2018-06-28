@@ -152,7 +152,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarking the query answering</a><ul>
@@ -257,7 +261,7 @@
 </ul>
 </div></blockquote>
 <p>The cypher code of these queries can also be seen here.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Return count of distinct users who have used a hashtag</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Return count of distinct users who have used a hashtag</span>
 <span class="n">q1</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;match (u:USER)-[:TWEETED]-&gt;(t:TWEET)-[:HAS_HASHTAG]-&gt;(:HASHTAG{text:&quot;{{h}}&quot;})</span>
 <span class="s2">with distinct u as u1 return count(u1)&quot;&quot;&quot;</span>
 
@@ -301,7 +305,7 @@
 </ul>
 </div></blockquote>
 <p>The cypher code of these queries is as follows.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find common followers of two users</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Find common followers of two users</span>
 <span class="n">q6</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">MATCH (u1 :USER {id:{{id1}}}),(u2 :USER {id:{{id2}}}), (user :USER)</span>
 <span class="s2">WHERE (u1) &lt;-[:FOLLOWS]- (user) AND (user) -[:FOLLOWS]-&gt; (u2)</span>

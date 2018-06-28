@@ -82,6 +82,8 @@
 <li class="toctree-l1"><a class="reference internal" href="twitter_stream.html">Read data from Twitter API</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api">User Timeline API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api">Stream Sample API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#user-timeline-api-code-documentation">User Timeline API Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
@@ -112,6 +114,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -127,7 +130,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
@@ -145,7 +151,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#neo4j-queries">Neo4j queries</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="benchmarking.html#simple-queries">Simple Queries</a></li>
@@ -153,6 +166,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
@@ -293,7 +307,7 @@
 <p>The only place where the list input breaks is in case of mongoDB query as they require some basic inputs which can directly be provided as native objects(for example the limit input to the above two mongoDB queries).</p>
 <p>Further we need to specify which outputs of the queries are to be returned.</p>
 <p>The example input file to create the above DAG looks something like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">3</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">3</span>
 <span class="n">n1</span> <span class="n">most_popular_hashtags_20</span>
 <span class="n">n2</span> <span class="n">most_popular_mentions_20</span>
 <span class="n">n3</span> <span class="n">active_users</span>
@@ -311,7 +325,7 @@
 <div><ul class="simple">
 <li>Line 1 contains the number of nodes in the DAG.</li>
 <li>The following number of nodes lines contain the name of the nodes and  each node corresponds to which query.</li>
-<li>Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the <code class="docutils literal notranslate"><span class="pre">n1.hashtag</span></code> variable been taken as an input rather than feeding from the output of an upstream query, it would have been specified as <code class="docutils literal notranslate"><span class="pre">n1.hashtag</span> <span class="pre">[&quot;hash1&quot;,&quot;hash2&quot;]</span></code>.</li>
+<li>Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the <code class="docutils literal"><span class="pre">n1.hashtag</span></code> variable been taken as an input rather than feeding from the output of an upstream query, it would have been specified as <code class="docutils literal"><span class="pre">n1.hashtag</span> <span class="pre">[&quot;hash1&quot;,&quot;hash2&quot;]</span></code>.</li>
 <li>Then a line containing the keyword “CONNECTION:”. Below the connections in the DAG are specified.</li>
 <li>And finally a line contains the keyword “RETURNS:”. Below, we specify the outputs of the queries which are to be returned.</li>
 </ul>
@@ -322,7 +336,7 @@
 <h2>DAG in airflow<a class="headerlink" href="#dag-in-airflow" title="Permalink to this headline">¶</a></h2>
 <p>To create a DAG in airflow, we need to create a file in the dags folder in the AIRFLOW_HOME directory. So, when the user specifies the DAG through out dashboard, we generate a python file in the mentioned folder. The newly created DAG is registered with airflow after sometime(airflow has a heartbeat thread running, which looks for new DAGs in the folder periodically)
 We generate the code to specify the dag in airflow something like this.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">task_0</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">task_0</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
     <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;node_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;n1&quot;</span><span class="p">),</span>
     <span class="n">python_callable</span><span class="o">=</span><span class="n">execute_query</span><span class="p">,</span>
     <span class="n">op_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;node_name&#39;</span><span class="p">:</span><span class="s2">&quot;n1&quot;</span><span class="p">},</span>
@@ -347,13 +361,13 @@ We generate the code to specify the dag in airflow something like this.</p>
 </pre></div>
 </div>
 <p>In the above code, the execute query is the function in which we execute queries and pass on their outputs to XComs to be used by the downstream nodes.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pushing onto XComs</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Pushing onto XComs</span>
 <span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">xcom_push</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span>
 <span class="c1"># Pulling from XComs</span>
 <span class="n">context</span><span class="p">[</span><span class="s1">&#39;task_instance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">xcom_pull</span><span class="p">(</span><span class="n">task_ids</span><span class="o">=</span><span class="n">get_task_from_node</span><span class="p">(</span><span class="n">mapp</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dag_id</span> <span class="o">=</span> <span class="s2">&quot;active_users_dag&quot;</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the <code class="docutils literal notranslate"><span class="pre">start_date</span></code> property is specified as the current time.</p>
+<p>Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the <code class="docutils literal"><span class="pre">start_date</span></code> property is specified as the current time.</p>
 <p>Airflow provides certain other useful properties which may be of interest to the user(when the system becomes huge). For example, the user can set an email-address on which a notification will be sent in case of the success and/or failure of tasks. But, taking all these inputs though our dashboard to generate the DAG, is like create a complete front-end wrapper over the airflow system, which is not out aim. If the user does wish to use the more involved airflow properties, he/she can always edit the source of the generated dag file. Also, if the need arises to provide the user such functionality through our dashboard, then modifying the code to generate an additional line in the dag python file is easy.</p>
 <p>Further on airflow, different views of the DAG can be observed, some of the views which are of particular interest to us are the following :</p>
 <blockquote>
@@ -390,15 +404,15 @@ We generate the code to specify the dag in airflow something like this.</p>
 <p>Here we provide a documentation of the code used to generate, execute the DAG.</p>
 <span class="target" id="module-create_dag"></span><p>Module to generate and store the DAG created by the user. Constains functions to generate DAG for the airflow
 dashboard also.</p>
-<p>The <a class="reference internal" href="#module-create_dag" title="create_dag"><code class="xref py py-mod docutils literal notranslate"><span class="pre">create_dag</span></code></a> module contains the classes:</p>
+<p>The <a class="reference internal" href="#module-create_dag" title="create_dag"><code class="xref py py-mod docutils literal"><span class="pre">create_dag</span></code></a> module contains the classes:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#create_dag.DAG" title="create_dag.DAG"><code class="xref py py-class docutils literal notranslate"><span class="pre">create_dag.DAG</span></code></a></li>
+<li><a class="reference internal" href="#create_dag.DAG" title="create_dag.DAG"><code class="xref py py-class docutils literal"><span class="pre">create_dag.DAG</span></code></a></li>
 </ul>
 <p>When we instantiate an object of the class, the network source of the DAG is parsed to get parameters.
-One can use the function <a class="reference internal" href="#create_dag.DAG.feed_forward" title="create_dag.DAG.feed_forward"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_dag.DAG.feed_forward()</span></code></a> to execute the networkx DAG and the
-function <a class="reference internal" href="#create_dag.DAG.generate_dag" title="create_dag.DAG.generate_dag"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_dag.DAG.generate_dag()</span></code></a> to generate an airflow DAG.</p>
+One can use the function <a class="reference internal" href="#create_dag.DAG.feed_forward" title="create_dag.DAG.feed_forward"><code class="xref py py-func docutils literal"><span class="pre">create_dag.DAG.feed_forward()</span></code></a> to execute the networkx DAG and the
+function <a class="reference internal" href="#create_dag.DAG.generate_dag" title="create_dag.DAG.generate_dag"><code class="xref py py-func docutils literal"><span class="pre">create_dag.DAG.generate_dag()</span></code></a> to generate an airflow DAG.</p>
 <p>Example illustrating how to create a DAG  in which no input to no query is constant:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">queries</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q1&quot;</span><span class="p">:[</span><span class="s2">&quot;query 1&quot;</span><span class="p">,[</span><span class="s2">&quot;inp1&quot;</span><span class="p">,</span><span class="s2">&quot;inp2&quot;</span><span class="p">],[</span><span class="s2">&quot;out1&quot;</span><span class="p">,</span><span class="s2">&quot;out2&quot;</span><span class="p">]],</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">queries</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q1&quot;</span><span class="p">:[</span><span class="s2">&quot;query 1&quot;</span><span class="p">,[</span><span class="s2">&quot;inp1&quot;</span><span class="p">,</span><span class="s2">&quot;inp2&quot;</span><span class="p">],[</span><span class="s2">&quot;out1&quot;</span><span class="p">,</span><span class="s2">&quot;out2&quot;</span><span class="p">]],</span>
 <span class="go">                        &quot;q2&quot;:[&quot;query 2&quot;,[&quot;inp1&quot;],[&quot;out1&quot;,&quot;out2&quot;]],</span>
 <span class="go">                        &quot;q3&quot;:[&quot;query 3&quot;,[&quot;inp1&quot;,&quot;inp2&quot;,&quot;inp3&quot;],[&quot;out1&quot;]]}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q1&quot;</span><span class="p">:</span><span class="s2">&quot;mongoDB&quot;</span><span class="p">,</span><span class="s2">&quot;q2&quot;</span><span class="p">:</span><span class="s2">&quot;PostProcesing&quot;</span><span class="p">,</span><span class="s2">&quot;q3&quot;</span><span class="p">:</span><span class="s2">&quot;neo4j&quot;</span><span class="p">}</span>
@@ -408,25 +422,25 @@ function <a class="reference internal" href="#create_dag.DAG.generate_dag" title
 </pre></div>
 </div>
 <p>Example of a query in which we use constants:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># queries and types as before</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># queries and types as before</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">constants</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q1&quot;</span><span class="p">:{</span><span class="s2">&quot;inp1&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">}}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># input_graph.txt contains the network of the DAG. For format see the documentation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dag</span> <span class="o">=</span> <span class="n">DAG</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;input_graph.txt&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span><span class="n">queries</span><span class="p">,</span><span class="n">types</span><span class="p">,</span><span class="n">constants</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now to execute the graph provide a function which can execute the queries.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dag</span><span class="o">.</span><span class="n">feed_forward</span><span class="p">(</span><span class="o">&lt;</span><span class="n">execute</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dag</span><span class="o">.</span><span class="n">feed_forward</span><span class="p">(</span><span class="o">&lt;</span><span class="n">execute</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Create a DAG in airflow, get the plotly div for the DAG to be displayed on the dashboard</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dag</span><span class="o">.</span><span class="n">generate_dag</span><span class="p">(</span><span class="o">&lt;</span><span class="n">dag_name</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dag</span><span class="o">.</span><span class="n">generate_dag</span><span class="p">(</span><span class="o">&lt;</span><span class="n">dag_name</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dag</span><span class="o">.</span><span class="n">plot_dag</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="class">
 <dt id="create_dag.DAG">
 <em class="property">class </em><code class="descclassname">create_dag.</code><code class="descname">DAG</code><span class="sig-paren">(</span><em>network_file_source</em>, <em>queries</em>, <em>types</em>, <em>constants</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_dag.html#DAG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#create_dag.DAG" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>This class contains the functions to deal with the abstraction of DAG in our system. Some of the functions
 to this end, some of the functions are in the views.py file also.</p>
 <p>The __init__ is called to initilaize a DAG object. It reads the source of the DAG network file passed to it as a string. It
@@ -481,7 +495,7 @@ Expect that there is a function to evaluate a query given its inputs(as a dictio
 <dt id="create_dag.DAG.generate_dag">
 <code class="descname">generate_dag</code><span class="sig-paren">(</span><em>dag_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_dag.html#DAG.generate_dag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#create_dag.DAG.generate_dag" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a python file for the DAG in the dags directory of AIRFLOW_HOME. Generate the airflow code for
-the dag in the file. The templates used in the function are taken in the <a class="reference internal" href="#module-create_dag" title="create_dag"><code class="xref py py-mod docutils literal notranslate"><span class="pre">create_dag</span></code></a> module.</p>
+the dag in the file. The templates used in the function are taken in the <a class="reference internal" href="#module-create_dag" title="create_dag"><code class="xref py py-mod docutils literal"><span class="pre">create_dag</span></code></a> module.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -500,7 +514,7 @@ change the airflow home</p>
 <dl class="method">
 <dt id="create_dag.DAG.get_drawable_dag">
 <code class="descname">get_drawable_dag</code><span class="sig-paren">(</span><em>G</em>, <em>queries</em>, <em>types</em>, <em>edges</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/create_dag.html#DAG.get_drawable_dag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#create_dag.DAG.get_drawable_dag" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper function for <a class="reference internal" href="#create_dag.DAG.plot_dag" title="create_dag.DAG.plot_dag"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_dag.DAG.plot_dag()</span></code></a>. It gets the locations of the various figures
+<dd><p>Helper function for <a class="reference internal" href="#create_dag.DAG.plot_dag" title="create_dag.DAG.plot_dag"><code class="xref py py-func docutils literal"><span class="pre">create_dag.DAG.plot_dag()</span></code></a>. It gets the locations of the various figures
 in the plotly plot of the DAG.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

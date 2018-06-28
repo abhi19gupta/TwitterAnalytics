@@ -22,8 +22,47 @@ We recommend getting conda(or miniconda if you are low on disk space). Installin
     // deactivate the virtual environment
     source deactivate
 
-Apart from these, the user also needs to install mongoDB, neo4j databases and The Apache flink-kafka framework. Again instructions on how to install each specific to your system can be seen on their corresponsing documentations.
+The entire system has been designed and tested on Ubuntu 16.04 machine. It may work on Windows with appropriate tweaks.
+
+Apart from these, the user also needs to install the following:
+
+  * MongoDB: Follow the installation instructions on this `MongoDB installation link <https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/>`_.
+  * Neo4j: Follow the installation instructions on this `Neo4j installation link <https://neo4j.com/docs/operations-manual/current/installation/linux/debian/>`_.
+  * Apache Flink: Download the Flink 1.4.2 binary from this `Flink binary link <https://archive.apache.org/dist/flink/flink-1.4.2/>`_. If this does not work, download the latest version from the `Flink download page <https://flink.apache.org/downloads.html>`_. Once downloaded, simply extract the zip and the installation is complete. You need to use the path of this installation in the shell script as mentioned in :ref:`Running Flink and Kafka`.
+  * Apache Kafka: Download the Kafka 2.11 binary from thie `Kafka binary link <https://www.apache.org/dyn/closer.cgi?path=/kafka/1.1.0/kafka_2.11-1.1.0.tgz>`_. If this does not work, download the latest version from the `Kafka download page <https://kafka.apache.org/downloads>`_. Once downloaded, simply extract the zip and the installation is complete. You need to use the path of this installation in the shell script as mentioned in :ref:`Running Flink and Kafka`.
+  * Apache Airflow: Follow the installation instructions on this `Airflow installation link <https://airflow.apache.org/installation.html>`_.
+
+
+Running the system
+------------------------
+
+To set the system up, the following steps need to be taken.
+
+Collecting data
+''''''''''''''''
+Navigate to 'Read Twitter Stream' and run ``python streaming.py`` to collect streaming data or run ``python userstimeline.py`` to collect data for a set of users.
+
+More details can be found here: :ref:`Read data from Twitter API`.
+
+Ingesting data
+'''''''''''''''
+Before proceeding, start the Neo4j and MongoDB servers locally (using service commands in Ubuntu. Eg. ``service neo4j start``, ``service mongod start``).
+
+Once the data is collected, you can ingest it into the databases as follows:
+
+  * Neo4j: Navigate to Ingestion/Neo4j/ and run ``python ingest_neo4j_streaming.py`` to ingest data collected using streaming API or run ``python ingest_neo4j_user_timeline.py`` to ingest data collected using User Timeline API.
+  * MongDB: In MongoDB we provide functionality to store only streaming data. Navigate to Ingestion/MongoDB and run ``python ingest_raw.py``.
+
+More details can be found here: :ref:`Ingesting data into MongoDB` and :ref:`Ingesting data into Neo4j`
 
 Running the dashboard
-------------------------
-To run the website on a local server on your machine, navigate to Dashboard Website/ and run ``python manage.py runserver``. Presently the databases will be empty, to insert the new data into the databases see the :ref:`Ingesting data into MongoDB` and the :ref:`Ingesting data into Neo4j` sections.
+'''''''''''''''''''''' 
+To run the website on a local server on your machine, navigate to Dashboard_Website/ and run ``python manage.py runserver``.
+
+Running Flink and Kafka
+''''''''''''''''''''''''
+To test the Flink applications generated on the dashboard, you need to do the following:
+
+  * Start the Kafka and Flink servers locally using the shell script in 'Kafka/' folder. (Configure the path of the Kafka and Flink directories in the shell script).
+  * You can now create alert specifications on the dashboard.
+  * Now, to put some tweets on the Kafka topic 'tweets_topic'. Navigate to 'Kafka/' and run ``python kafka_tweets_producer.py`` after configuring the data directory in its main function.

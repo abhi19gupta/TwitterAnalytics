@@ -12,13 +12,14 @@ class FlinkAPI:
 	def __init__(self, hostname="localhost", port=8081):
 		self.base_url = "http://%s:%d/"%(hostname,port)
 
-	"""
-	Uploads the jar of the alert to the Flink server running locally.
 
-	:param jar_path: Path of the jar file to upload.
-	:returns: The jar_id as returned by Flink server.
-	"""
 	def upload_jar(self, jar_path):
+		"""
+		Uploads the jar of the alert to the Flink server running locally.
+
+		:param jar_path: Path of the jar file to upload.
+		:returns: The jar_id as returned by Flink server.
+		"""
 		try:
 			r = requests.post(
 				self.base_url + "jars/upload",
@@ -38,14 +39,15 @@ class FlinkAPI:
 		except Exception as e:
 			raise Exception('Failed to upload jar. Error: %s, %s'%(str(type(e)),str(e)))
 
-	"""
-	Runs the given jar_id on Flink.
 
-	:param alert_name: Name of the alert to which the jar_id belongs.
-	:param flink_jar_id: jar_id to be run on Flink.
-	:returns: The job_id of the Flink job started as returned by the Flink server.
-	"""
 	def run_jar(self, alert_name, flink_jar_id):
+		"""
+		Runs the given jar_id on Flink.
+
+		:param alert_name: Name of the alert to which the jar_id belongs.
+		:param flink_jar_id: jar_id to be run on Flink.
+		:returns: The job_id of the Flink job started as returned by the Flink server.
+		"""
 		try:
 			r = requests.post(self.base_url + "jars/%s/run?entry-class=%s&program-args=%s"%(flink_jar_id, "org.myorg.quickstart.StreamingJob",alert_name))
 			r.raise_for_status()
@@ -56,12 +58,13 @@ class FlinkAPI:
 		except Exception as e:
 			raise Exception('Failed to run jar. Error: %s, %s'%(str(type(e)),str(e)))
 
-	"""
-	Cancels the Flink job with the given job_id.
 
-	:param job_id: job_id of the Flink job to cancel.
-	"""
 	def cancel_job(self, job_id):
+		"""
+		Cancels the Flink job with the given job_id.
+
+		:param job_id: job_id of the Flink job to cancel.
+		"""
 		try:
 			r = requests.delete(self.base_url + "jobs/%s/cancel"%job_id)
 			r.raise_for_status()
@@ -71,12 +74,13 @@ class FlinkAPI:
 		except Exception as e:
 			raise Exception('Failed to pause job. Error: %s, %s'%(str(type(e)),str(e)))
 
-	"""
-	Check the status of all jobs run in the past.
 
-	:returns: Dictionary having key as alert_name (which was supplied in run_jar) and value as status of the last job of that alert.
-	"""
 	def check_job_status_all(self):
+		"""
+		Check the status of all jobs run in the past.
+
+		:returns: Dictionary having key as alert_name (which was supplied in run_jar) and value as status of the last job of that alert.
+		"""
 		try:
 			# r = requests.get(self.base_url + "jobs")
 			r = requests.get(self.base_url + "joboverview")

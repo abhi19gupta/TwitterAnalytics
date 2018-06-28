@@ -85,6 +85,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#user-network">User network</a></li>
@@ -97,7 +101,11 @@
 <li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../neo4j_data_ingestion.html#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
@@ -150,8 +158,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flink.html">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../flink.html#flink-alerts-consumer">Flink Alerts Consumer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../benchmarking.html">Benchmarking the query answering</a><ul>
@@ -192,7 +205,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../running.html">Getting the system running</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../running.html#setting-up-the-environment">Setting up the environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../running.html#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../running.html#running-the-system">Running the system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#collecting-data">Collecting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#ingesting-data">Ingesting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../running.html#running-flink-and-kafka">Running Flink and Kafka</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -465,12 +484,7 @@
                 <span class="n">context</span><span class="o">.</span><span class="n">_force_start_method</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_start_method</span><span class="p">)</span>
             <span class="n">_process_counter</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
             <span class="n">_children</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                    <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">)</span>
-                <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-                    <span class="k">pass</span>
+            <span class="n">util</span><span class="o">.</span><span class="n">_close_stdin</span><span class="p">()</span>
             <span class="n">old_process</span> <span class="o">=</span> <span class="n">_current_process</span>
             <span class="n">_current_process</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="k">try</span><span class="p">:</span>

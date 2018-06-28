@@ -33,7 +33,7 @@
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Twitter Analytics 0.1 documentation" href="#"/>
         <link rel="next" title="Ingesting data into MongoDB" href="mongoDB_data_ingestion.html"/>
-        <link rel="prev" title="Read data from Twitter API" href="twitter_stream.html"/> 
+        <link rel="prev" title="Putting tweets to Kafka" href="kafka.html"/> 
   <script src="_static/js/modernizr.min.js"></script>
 </head>
 
@@ -86,6 +86,10 @@
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#data-stored-in-neo4j">Data stored in neo4j</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#user-network">User network</a></li>
@@ -98,7 +102,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
@@ -151,8 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-alerts-consumer">Flink Alerts Consumer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
@@ -340,7 +353,15 @@
 </div>
 <div class="section" id="running-the-ingestion-script">
 <h2>Running the ingestion script<a class="headerlink" href="#running-the-ingestion-script" title="Permalink to this headline">¶</a></h2>
-<p>To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file <cite>python ingest_neo4j.py</cite> to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.</p>
+<p>There are 2 applications to ingest data into Neo4j.</p>
+<div class="section" id="streaming-data">
+<h3>Streaming data<a class="headerlink" href="#streaming-data" title="Permalink to this headline">¶</a></h3>
+<p>If the data has been collected using the Stream Sample API (as explained in <a class="reference internal" href="twitter_stream.html#stream-sample-api"><span class="std std-ref">Stream Sample API</span></a>), then this application needs to be used to ingest the tweets into Neo4j. Navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j_streaming.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the file <cite>python ingest_neo4j_streaming.py</cite> to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.</p>
+</div>
+<div class="section" id="user-timeline-data">
+<h3>User Timeline data<a class="headerlink" href="#user-timeline-data" title="Permalink to this headline">¶</a></h3>
+<p>If the data has been collected using the User Timeline API (as explained in <a class="reference internal" href="twitter_stream.html#user-timeline-api"><span class="std std-ref">User Timeline API</span></a>), then this application needs to be used to ingest the tweets into Neo4j. Navigate to the Ingestion/Neo4j and make changes to the file ingest_neo4j_user_timeline.py. This file ingests all the data present in the ‘data’ folder in the same directory. However, if the data is collected in an incremental fashion (eg. running the data collection application day by day), then this file needs to be changed accordingly to only ingest the data of the new timestamps.</p>
+</div>
 </div>
 <div class="section" id="neo4j-ingestion-rates">
 <h2>Neo4j Ingestion Rates<a class="headerlink" href="#neo4j-ingestion-rates" title="Permalink to this headline">¶</a></h2>
@@ -349,15 +370,15 @@
 </div>
 <div class="section" id="code-documentation-for-neo4j-data-ingestion">
 <h2>Code Documentation for Neo4j data ingestion<a class="headerlink" href="#code-documentation-for-neo4j-data-ingestion" title="Permalink to this headline">¶</a></h2>
-<p>Here we provide a documentation of the code.</p>
-<span class="target" id="module-ingest_neo4j"></span><p>Module to insert data into neo4j database.</p>
-<p>The <a class="reference internal" href="#module-ingest_neo4j" title="ingest_neo4j"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ingest_neo4j</span></code></a> module contains the classes:</p>
+<p>Here we provide a documentation of the code for ingesting tweets collected using Streaming API.</p>
+<span class="target" id="module-ingest_neo4j_streaming"></span><p>Module to insert data, collected using streaming API, into Neo4j database.</p>
+<p>The <a class="reference internal" href="#module-ingest_neo4j_streaming" title="ingest_neo4j_streaming"><code class="xref py py-mod docutils literal"><span class="pre">ingest_neo4j_streaming</span></code></a> module contains the classes:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#ingest_neo4j.Twitter" title="ingest_neo4j.Twitter"><code class="xref py py-class docutils literal notranslate"><span class="pre">ingest_neo4j.Twitter</span></code></a></li>
+<li><a class="reference internal" href="#ingest_neo4j_streaming.Twitter" title="ingest_neo4j_streaming.Twitter"><code class="xref py py-class docutils literal"><span class="pre">ingest_neo4j_streaming.Twitter</span></code></a></li>
 </ul>
-<p>One can use the <code class="xref py py-func docutils literal notranslate"><span class="pre">ingest_neo4j.Twitter.ingest_tweet()</span></code> to insert a new tweet into the database.</p>
+<p>One can use the <code class="xref py py-func docutils literal"><span class="pre">ingest_neo4j_streaming.Twitter.ingest_tweet()</span></code> to insert a new tweet into the database.</p>
 <p>An example usage where we want to insert all tweets from all files in a folder tweet_folder:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span><span class="mi">50000</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">Twitter</span><span class="p">(</span><span class="mi">50000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">get_constraints</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">get_profile</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">read_tweets</span><span class="p">(</span><span class="o">&lt;</span><span class="n">tweet_folder</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
@@ -366,9 +387,9 @@
 </pre></div>
 </div>
 <dl class="class">
-<dt id="ingest_neo4j.Twitter">
-<em class="property">class </em><code class="descclassname">ingest_neo4j.</code><code class="descname">Twitter</code><span class="sig-paren">(</span><em>batch_size=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dt id="ingest_neo4j_streaming.Twitter">
+<em class="property">class </em><code class="descclassname">ingest_neo4j_streaming.</code><code class="descname">Twitter</code><span class="sig-paren">(</span><em>batch_size=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class containing functions to insert tweets into neo4j.
 We open a connection to the neo4j database through py2neo and the official
 neo4j driver. Dealing with transactions is easy in py2neo, so it is used to make and commit transactions. While
@@ -382,26 +403,26 @@ the connection to the neo4j driver is used just in clearing out the graph.</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.clear_graph">
-<code class="descname">clear_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.clear_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.clear_graph" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.clear_graph">
+<code class="descname">clear_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.clear_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.clear_graph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the complete graph. Albiet, keep the indices.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.close">
-<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.close" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>See if there are some tweets not comitted in the trnx and if yes, commit those.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.close_session">
-<code class="descname">close_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.close_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.close_session" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.close_session">
+<code class="descname">close_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.close_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.close_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close the neo4j driver session</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.create_constraint">
-<code class="descname">create_constraint</code><span class="sig-paren">(</span><em>node</em>, <em>attrib</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.create_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.create_constraint" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.create_constraint">
+<code class="descname">create_constraint</code><span class="sig-paren">(</span><em>node</em>, <em>attrib</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.create_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.create_constraint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create constraint on attrib in node node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -416,15 +437,15 @@ the connection to the neo4j driver is used just in clearing out the graph.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.create_constraints">
-<code class="descname">create_constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.create_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.create_constraints" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.create_constraints">
+<code class="descname">create_constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.create_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.create_constraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create uniqueness constraints on the attributes of nodes. Note that ceating a constraint automatically
 creates an index on it</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.drop_constraint">
-<code class="descname">drop_constraint</code><span class="sig-paren">(</span><em>node</em>, <em>attrib</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.drop_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.drop_constraint" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.drop_constraint">
+<code class="descname">drop_constraint</code><span class="sig-paren">(</span><em>node</em>, <em>attrib</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.drop_constraint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.drop_constraint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drop constraint on attrib in node node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -439,20 +460,20 @@ creates an index on it</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.get_constraints">
-<code class="descname">get_constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.get_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.get_constraints" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.get_constraints">
+<code class="descname">get_constraints</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.get_constraints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.get_constraints" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the constrainsts on different types of nodes.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.get_profile">
-<code class="descname">get_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.get_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.get_profile" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.get_profile">
+<code class="descname">get_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.get_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.get_profile" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of total, user, tweet, hashtag nodes in the graph</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ingest_neo4j.Twitter.insert_tweet">
-<code class="descname">insert_tweet</code><span class="sig-paren">(</span><em>tweet</em>, <em>favourited_by=None</em>, <em>fav_timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#Twitter.insert_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.Twitter.insert_tweet" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.Twitter.insert_tweet">
+<code class="descname">insert_tweet</code><span class="sig-paren">(</span><em>tweet</em>, <em>favourited_by=None</em>, <em>fav_timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#Twitter.insert_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.Twitter.insert_tweet" title="Permalink to this definition">¶</a></dt>
 <dd><p>The main function to insert the tweet. Begin a transaction, when atleast batch_size number of tweets
 are collected, commit the transaction. Start collecting the new tweets after that.</p>
 <p>We have two cases depending if the tweet to be inserted is a
@@ -517,31 +538,31 @@ contrived way of doing this by doing same task twice.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ingest_neo4j.flatten_json">
-<code class="descclassname">ingest_neo4j.</code><code class="descname">flatten_json</code><span class="sig-paren">(</span><em>json_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#flatten_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.flatten_json" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.flatten_json">
+<code class="descclassname">ingest_neo4j_streaming.</code><code class="descname">flatten_json</code><span class="sig-paren">(</span><em>json_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#flatten_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.flatten_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to flatten the tweet. Used in case we want to store the complete tweet JSON in the TWEET node.
 This is because neo4j doesn’t allow nested jsons to be stored</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ingest_neo4j.getDateFromTimestamp">
-<code class="descclassname">ingest_neo4j.</code><code class="descname">getDateFromTimestamp</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#getDateFromTimestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.getDateFromTimestamp" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.getDateFromTimestamp">
+<code class="descclassname">ingest_neo4j_streaming.</code><code class="descname">getDateFromTimestamp</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#getDateFromTimestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.getDateFromTimestamp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="ingest_neo4j.getFrameStartEndTime">
-<code class="descclassname">ingest_neo4j.</code><code class="descname">getFrameStartEndTime</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#getFrameStartEndTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.getFrameStartEndTime" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.getFrameStartEndTime">
+<code class="descclassname">ingest_neo4j_streaming.</code><code class="descname">getFrameStartEndTime</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#getFrameStartEndTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.getFrameStartEndTime" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="ingest_neo4j.log">
-<code class="descclassname">ingest_neo4j.</code><code class="descname">log</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.log" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.log">
+<code class="descclassname">ingest_neo4j_streaming.</code><code class="descname">log</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Why use this when we can use logging? There is a peculiar bug when open neo4j bolt server with logging</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ingest_neo4j.read_tweets">
-<code class="descclassname">ingest_neo4j.</code><code class="descname">read_tweets</code><span class="sig-paren">(</span><em>path</em>, <em>twitter</em>, <em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j.html#read_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j.read_tweets" title="Permalink to this definition">¶</a></dt>
+<dt id="ingest_neo4j_streaming.read_tweets">
+<code class="descclassname">ingest_neo4j_streaming.</code><code class="descname">read_tweets</code><span class="sig-paren">(</span><em>path</em>, <em>twitter</em>, <em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_streaming.html#read_tweets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_streaming.read_tweets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read tweets from the directory in path and inert all tweets in all files in the first level of path into
 neo4j.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -559,6 +580,94 @@ neo4j.</p>
 </table>
 </dd></dl>
 
+<p>Here we provide a documentation of the code for ingesting data collected using User Timeline API.</p>
+<span class="target" id="module-ingest_neo4j_user_timeline"></span><p>Module to insert data, collected using user timeline API, into Neo4j database.</p>
+<p>This is the schema of the Neo4j graph:</p>
+<dl class="docutils">
+<dt>USER NETWORK</dt>
+<dd>Node labels - USER(id), USER_INFO(dict)
+Relationships - CURR_STATE(from), INTITIAL_STATE(on), PREV(from,to)</dd>
+<dt>FOLLOWER NETWORK</dt>
+<dd>Node labels -
+Relationships - FOLLOWS(from,to), FOLLOWED(from,to) // FOLLOWS.to will always be the last time data was collected</dd>
+<dt>TWEET NETWORK</dt>
+<dd>Node labels - TWEET(id,created_at,is_active), TWEET_INFO(dict), HASHTAG(text), URL(url,expanded_url), //MEDIA(url, media_url)//, PLACE(id,name,country) -&gt; This is not the location of tweet but the location with which the tweet is tagged (could be about it)
+Relationships - TWEETED(on), LIKES(on), INFO, REPLY_TO(on), RETWEET_OF(on), QUOTED(on), HAS_MENTION(on), HAS_HASHTAG(on), //HAS_MEDIA(on)//, HAS_URL(on), HAS_PLACE(on)</dd>
+<dt>FRAME NETWORK</dt>
+<dd>Node labels - RUN, FRAME(start_t,end_t), TWEET_EVENT(timestamp), FOLLOW_EVENT(timestamp), UNFOLLOW_EVENT(timestamp), FAV_EVENT(timestamp)
+Relationships - HAS_FRAME, HAS_TWEET, TE_USER, TE_TWEET, HAS_FOLLOW, FE_FOLLOWED, FE_FOLLOWS, HAS_UNFOLLOW, UFE_UNFOLLOWED, UFE_UNFOLLOWS, HAS_FAV, FAV_USER, FAV_TWEET</dd>
+</dl>
+<dl class="class">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline">
+<em class="property">class </em><code class="descclassname">ingest_neo4j_user_timeline.</code><code class="descname">Neo4jIngestion_UserTimeline</code><span class="sig-paren">(</span><em>data_directory</em>, <em>user_screen_names_file_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.clear_db">
+<code class="descname">clear_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.clear_db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.clear_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.close_session">
+<code class="descname">close_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.close_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.close_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.create_indexes">
+<code class="descname">create_indexes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.create_indexes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.create_indexes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.create_tweet">
+<code class="descname">create_tweet</code><span class="sig-paren">(</span><em>tweet</em>, <em>favourited_by=None</em>, <em>fav_timestamp=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.create_tweet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.create_tweet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.flatten_json">
+<code class="descname">flatten_json</code><span class="sig-paren">(</span><em>json_obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.flatten_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.flatten_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.getFrameStartEndTime">
+<code class="descname">getFrameStartEndTime</code><span class="sig-paren">(</span><em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.getFrameStartEndTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.getFrameStartEndTime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.readDataAndCreateGraph">
+<code class="descname">readDataAndCreateGraph</code><span class="sig-paren">(</span><em>STAGE_BY_STAGE</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.readDataAndCreateGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.readDataAndCreateGraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.simulateExample">
+<code class="descname">simulateExample</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.simulateExample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.simulateExample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.sync_session">
+<code class="descname">sync_session</code><span class="sig-paren">(</span><em>type_=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.sync_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.sync_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_followers">
+<code class="descname">update_followers</code><span class="sig-paren">(</span><em>user_id</em>, <em>follower_ids</em>, <em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.update_followers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_followers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_friends">
+<code class="descname">update_friends</code><span class="sig-paren">(</span><em>user_id</em>, <em>friend_ids</em>, <em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.update_friends"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_friends" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_user">
+<code class="descname">update_user</code><span class="sig-paren">(</span><em>id</em>, <em>user_info_dict</em>, <em>timestamp</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#Neo4jIngestion_UserTimeline.update_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ingest_neo4j_user_timeline.log">
+<code class="descclassname">ingest_neo4j_user_timeline.</code><code class="descname">log</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ingest_neo4j_user_timeline.html#log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ingest_neo4j_user_timeline.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 
@@ -572,7 +681,7 @@ neo4j.</p>
         <a href="mongoDB_data_ingestion.html" class="btn btn-neutral float-right" title="Accesskey Alt(+Shift)+n" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="twitter_stream.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="kafka.html" class="btn btn-neutral" title="Accesskey Alt(+Shift)+p" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

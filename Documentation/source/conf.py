@@ -19,6 +19,7 @@ sys.path.insert(0, os.path.abspath('../../Dashboard_Website/myapp/neo4j'))
 sys.path.insert(0, os.path.abspath('../../Ingestion/MongoDB'))
 sys.path.insert(0, os.path.abspath('../../Ingestion/Neo4j'))
 sys.path.insert(0, os.path.abspath('../../Benchmarking'))
+sys.path.insert(0, os.path.abspath('../../Kafka'))
 
 sys.path.insert(0, os.path.abspath('../../Read Twitter Stream'))
 sys.path.insert(0, os.path.abspath('../../Dashboard_Website/myapp/flink'))

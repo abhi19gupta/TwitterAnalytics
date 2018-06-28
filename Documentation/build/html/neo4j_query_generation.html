@@ -114,6 +114,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Neo4j: API to generate cypher queries</a><ul>
@@ -151,7 +152,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
@@ -161,6 +166,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
@@ -314,12 +320,12 @@ We first break this into AND of two constraints:</p>
 </div>
 <div class="section" id="variable-attributes">
 <h3>Variable attributes<a class="headerlink" href="#variable-attributes" title="Permalink to this headline">¶</a></h3>
-<p>In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces <code class="docutils literal notranslate"><span class="pre">{}</span></code>. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as <code class="docutils literal notranslate"><span class="pre">{hash1}</span></code>, it means that our query has a variable named “hash1”.</p>
+<p>In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces <code class="docutils literal"><span class="pre">{}</span></code>. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as <code class="docutils literal"><span class="pre">{hash1}</span></code>, it means that our query has a variable named “hash1”.</p>
 </div>
 <div class="section" id="returns">
 <h3>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h3>
-<p>The user can write a comma separated list of entities/attributes to return. An entity can be specified directly by its name. Eg. <code class="docutils literal notranslate"><span class="pre">my_tweet_entity</span></code>. An entity’s attribute can be specified as <code class="docutils literal notranslate"><span class="pre">&lt;entitiy_name&gt;.&lt;attribute&gt;</span></code>. Eg. <code class="docutils literal notranslate"><span class="pre">u.screen_name</span></code>.</p>
-<p>The user can also group on certain entity/attribute by using an aggregate function on some other entity/attribute. Eg. <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">u.id,</span> <span class="pre">count(distinct</span> <span class="pre">h)</span></code> will group on u.id and return count of distinct h among all records returned for each u.id.</p>
+<p>The user can write a comma separated list of entities/attributes to return. An entity can be specified directly by its name. Eg. <code class="docutils literal"><span class="pre">my_tweet_entity</span></code>. An entity’s attribute can be specified as <code class="docutils literal"><span class="pre">&lt;entitiy_name&gt;.&lt;attribute&gt;</span></code>. Eg. <code class="docutils literal"><span class="pre">u.screen_name</span></code>.</p>
+<p>The user can also group on certain entity/attribute by using an aggregate function on some other entity/attribute. Eg. <code class="docutils literal"><span class="pre">return</span> <span class="pre">u.id,</span> <span class="pre">count(distinct</span> <span class="pre">h)</span></code> will group on u.id and return count of distinct h among all records returned for each u.id.</p>
 </div>
 </div>
 <div class="section" id="creating-a-custom-query-through-dashboard-api-behind-the-scenes">
@@ -347,13 +353,13 @@ when a user provides the inputs to specify the query, the following steps are ex
 <h2>Code Documentation for Neo4j query generation<a class="headerlink" href="#code-documentation-for-neo4j-query-generation" title="Permalink to this headline">¶</a></h2>
 <p>Here we provide a documentation of the code.</p>
 <span class="target" id="module-generate_queries"></span><p>Module to generate cypher code for inputs taken from user though dashboard API.</p>
-<p>The <a class="reference internal" href="#module-generate_queries" title="generate_queries"><code class="xref py py-mod docutils literal notranslate"><span class="pre">generate_queries</span></code></a> module contains the classes:</p>
+<p>The <a class="reference internal" href="#module-generate_queries" title="generate_queries"><code class="xref py py-mod docutils literal"><span class="pre">generate_queries</span></code></a> module contains the classes:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#generate_queries.CreateQuery" title="generate_queries.CreateQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">generate_queries.CreateQuery</span></code></a></li>
+<li><a class="reference internal" href="#generate_queries.CreateQuery" title="generate_queries.CreateQuery"><code class="xref py py-class docutils literal"><span class="pre">generate_queries.CreateQuery</span></code></a></li>
 </ul>
-<p>One can use the <a class="reference internal" href="#generate_queries.CreateQuery.create_query" title="generate_queries.CreateQuery.create_query"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_queries.CreateQuery.create_query()</span></code></a> to build a cypher query.</p>
+<p>One can use the <a class="reference internal" href="#generate_queries.CreateQuery.create_query" title="generate_queries.CreateQuery.create_query"><code class="xref py py-func docutils literal"><span class="pre">generate_queries.CreateQuery.create_query()</span></code></a> to build a cypher query.</p>
 <p>Example illustrating how to create a query which gives the userids and their tweet counts who have used a certian hashtag.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actors</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span><span class="s2">&quot;USER&quot;</span><span class="p">),(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span><span class="s2">&quot;TWEET&quot;</span><span class="p">),(</span><span class="s2">&quot;t1&quot;</span><span class="p">,</span><span class="s2">&quot;TWEET&quot;</span><span class="p">)]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actors</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span><span class="s2">&quot;USER&quot;</span><span class="p">),(</span><span class="s2">&quot;t&quot;</span><span class="p">,</span><span class="s2">&quot;TWEET&quot;</span><span class="p">),(</span><span class="s2">&quot;t1&quot;</span><span class="p">,</span><span class="s2">&quot;TWEET&quot;</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attributes</span><span class="o">=</span><span class="p">[[],[(</span><span class="s2">&quot;hashtag&quot;</span><span class="p">,</span><span class="s2">&quot;</span><span class="si">{hash}</span><span class="s2">&quot;</span><span class="p">)],[]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">relations</span><span class="o">=</span><span class="p">[(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span><span class="s2">&quot;TWEETED&quot;</span><span class="p">,</span><span class="s2">&quot;t&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">),(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span><span class="s2">&quot;TWEETED&quot;</span><span class="p">,</span><span class="s2">&quot;t1&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cq</span> <span class="o">=</span> <span class="n">CreateQuery</span><span class="p">();</span>
@@ -363,7 +369,7 @@ when a user provides the inputs to specify the query, the following steps are ex
 </pre></div>
 </div>
 <p>Example of a query which uses time indexing in a relationship:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actors</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;USER&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;u1&#39;</span><span class="p">,</span> <span class="s1">&#39;USER&#39;</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="s1">&#39;t1&#39;</span><span class="p">,</span> <span class="s1">&#39;TWEET&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;t2&#39;</span><span class="p">,</span> <span class="s1">&#39;TWEET&#39;</span><span class="p">)]</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">actors</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;USER&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;u1&#39;</span><span class="p">,</span> <span class="s1">&#39;USER&#39;</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="s1">&#39;t1&#39;</span><span class="p">,</span> <span class="s1">&#39;TWEET&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;t2&#39;</span><span class="p">,</span> <span class="s1">&#39;TWEET&#39;</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">attributes</span> <span class="o">=</span> <span class="p">[[(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;12&#39;</span><span class="p">)],</span> <span class="p">[(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;24&#39;</span><span class="p">)]]</span><span class="o">+</span><span class="p">[[(</span><span class="s1">&#39;hashtag&#39;</span><span class="p">,</span> <span class="s1">&#39;BLUERISING&#39;</span><span class="p">)],</span> <span class="p">[(</span><span class="s1">&#39;retweet_of&#39;</span><span class="p">,</span> <span class="s1">&#39;t1&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;has_mention&#39;</span><span class="p">,</span> <span class="s1">&#39;u1&#39;</span><span class="p">)]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">relations</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;FOLLOWS&#39;</span><span class="p">,</span> <span class="s1">&#39;u1&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;TWEETED&#39;</span><span class="p">,</span> <span class="s1">&#39;t2&#39;</span><span class="p">,</span> <span class="s1">&#39;24&#39;</span><span class="p">,</span> <span class="s1">&#39;48&#39;</span><span class="p">)]</span>
 </pre></div>
@@ -371,7 +377,7 @@ when a user provides the inputs to specify the query, the following steps are ex
 <dl class="class">
 <dt id="generate_queries.CreateQuery">
 <em class="property">class </em><code class="descclassname">generate_queries.</code><code class="descname">CreateQuery</code><a class="reference internal" href="_modules/generate_queries.html#CreateQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_queries.CreateQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class containing functions to generate query.</p>
 <dl class="method">
 <dt id="generate_queries.CreateQuery.conditional_create">
@@ -430,7 +436,7 @@ store some other default in dashboard database then change this accordingly.</p>
 <dl class="method">
 <dt id="generate_queries.CreateQuery.generate_node">
 <code class="descname">generate_node</code><span class="sig-paren">(</span><em>var</em>, <em>type</em>, <em>props</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/generate_queries.html#CreateQuery.generate_node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#generate_queries.CreateQuery.generate_node" title="Permalink to this definition">¶</a></dt>
-<dd><p>Helper function for <a class="reference internal" href="#generate_queries.CreateQuery.conditional_create" title="generate_queries.CreateQuery.conditional_create"><code class="xref py py-func docutils literal notranslate"><span class="pre">generate_queries.CreateQuery.conditional_create()</span></code></a></p>
+<dd><p>Helper function for <a class="reference internal" href="#generate_queries.CreateQuery.conditional_create" title="generate_queries.CreateQuery.conditional_create"><code class="xref py py-func docutils literal"><span class="pre">generate_queries.CreateQuery.conditional_create()</span></code></a></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

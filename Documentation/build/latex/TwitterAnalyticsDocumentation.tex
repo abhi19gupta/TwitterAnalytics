@@ -5,7 +5,6 @@
    \let\sphinxpxdimen\pdfpxdimen\else\newdimen\sphinxpxdimen
 \fi \sphinxpxdimen=.75bp\relax
 
-\PassOptionsToPackage{warn}{textcomp}
 \usepackage[utf8]{inputenc}
 \ifdefined\DeclareUnicodeCharacter
  \ifdefined\DeclareUnicodeCharacterAsOptional
@@ -30,7 +29,7 @@
 \usepackage{babel}
 \usepackage{times}
 \usepackage[Bjarne]{fncychap}
-\usepackage{sphinx}
+\usepackage[dontkeepoldnames]{sphinx}
 
 \usepackage{geometry}
 
@@ -56,7 +55,7 @@
 
 
 \title{Twitter Analytics Documentation}
-\date{Jun 18, 2018}
+\date{Jun 28, 2018}
 \release{0.1}
 \author{Deepak Saini, Abhishek Gupta}
 \newcommand{\sphinxlogo}{\vbox{}}
@@ -78,7 +77,7 @@ NOTE : For all experiments mentioned in this document, we use a Intel i7 process
 
 
 \chapter{Introduction to twitter analytics system}
-\label{\detokenize{introduction:introduction-to-twitter-analytics-system}}\label{\detokenize{introduction::doc}}
+\label{\detokenize{introduction:welcome-to-twitter-analytics-documentation}}\label{\detokenize{introduction:introduction-to-twitter-analytics-system}}\label{\detokenize{introduction::doc}}
 Nowadays social media generates huge amount of data which can be used to infer a number of trending social events and to understand the connections between different entities. One such useful platform is Twitter where users can follow other users and tweet on any topic, tagging it with hashtags, mentioning other users or using URLs. This data can be spatially represented as a network of entities (like users, tweets, hashtags and URLs) which are interconnected in complex ways. A number of programming tools are often used by developers to perform various tasks on a subset of this data.
 
 However, in reality, this data is not static with time, giving it a temporal dimension as well. The system thus needs to capture both the spatially and temporally evolving aspects of this network in its database schema. The same abstraction also needs to be extended to the query specification process, making it easier to specify queries without writing queries in complex database specific languages. Hence, instead of limiting the users to a limited set of APIs, this system would allow any complex query to be specified.
@@ -123,7 +122,7 @@ Stream Sample: Streaming a random 1\% sample of all live tweets. The Twitter API
 
 If you wish to gather data of a specific set of users, then you have to use the User Timeline API, otherwise for live stream use the Stream Sample API. We experimented with both the techniques.
 
-To have access to Twitter APIs, you need to create an app on apps.twitter.com and use their OAuth based authorization system. Details for the same can be found on this \sphinxhref{https://developer.twitter.com/en/docs/basics/getting-started}{link}. We made use of Python Twitter Tools library which exposes Python functions which make the API call for us based on the parameters.
+To have access to Twitter APIs, you need to create an account on apps.twitter.com to use their OAuth based authorization system. Details for the same can be found on this \sphinxhref{https://developer.twitter.com/en/docs/basics/getting-started}{link}. This will generate a unique set of Access Token, Access Secret, Consumer Key and Consumer Secret for you, which need to be used while making the API calls. We made use of Python Twitter Tools library which exposes Python functions which make the API call for us based on the parameters.
 
 
 \section{User Timeline API}
@@ -141,18 +140,505 @@ All friends and followers of that user at that point of time.
 
 \end{itemize}
 
-Rate Limit: Each API call has its own rate limit which limits the number of calls you can make to the Twitter API. The rate limit can be checked \sphinxhref{https://developer.twitter.com/en/docs/basics/rate-limits}{here}. You need to adhere to these rate limits, else your account may be blacklisted.
+Rate Limit: Each API endpoint has its own rate limit which limits the number of calls you can make to Twitter for that API in a period of 15 minutes. The rate limit can be checked \sphinxhref{https://developer.twitter.com/en/docs/basics/rate-limits}{here}. You need to adhere to these rate limits, else your account may be blacklisted. We do this in our application as follows: For each API endpoint, we maintain an array which keeps the history of number of calls made in each minute in the past 15 minutes. For each request of an API call, we check the array, delete entries older than 15 minutes and keep checking the total number of requests in past 15 minutes until it is less than the rate limit threshold. Only then we make the API call.
 
-You may need to periodically make calls to the Twitter API to get the new tweets that were tweeted by the users since the last time you called the API. Twitter provides a mechanism to do this by using the parameter “since\_id” in the statuses/user\_timeline API call. The API returns tweets that have an id \textgreater{} since\_id. Thus you can keep store of the maximum tweet id that you have seen for each user and make the next API call using that as the value of since\_id to get the new tweets.
+Incremental data: You may need to periodically make calls to the Twitter API to get the new tweets that were tweeted by the users since the last time you called the API. Twitter provides a mechanism to do this by using the parameter “since\_id” in the statuses/user\_timeline API call. The API returns tweets that have an id \textgreater{} since\_id. Thus you can keep store of the maximum tweet id that you have seen for each user and make the next API call using that as the value of since\_id to get the new tweets.
 
-Refer to the file: ‘Read Twitter Stream/main.py’ for the code. The main function expects a file containing a list of user screen names separated by new lines. It generates a folder named ‘data’ in the same directory. Each time you run the file, it accumulates the new data in this directory.
+Refer to the file: ‘Read Twitter Stream/main.py’ for the code. The main function expects a file containing a list of user screen names separated by new lines. It generates a folder the data as mentioned in the main function. Each time you run the file, it accumulates the new data in this directory.
 
 
 \section{Stream Sample API}
 \label{\detokenize{twitter_stream:stream-sample-api}}
 The end-point GET statuses/sample is free, however it returns only about 1\% of the actual stream. You can buy the enterprise version called Decahose to have access to 10\% of the stream.
 
+Batch writes: In order to speed up the process of persisting the tweets from memory to disk, we make use of batch writes. Our streaming application will keep buffering tweets till the batch size is reached. Once the the batch size is reached, it flushes all the buffered tweets to the current tweet file. Additionally, it keeps track of number of tweets written to the current tweet file and once it exceeds a threshold, it starts with a new file and starts flushing to it. This will prevent a single file from becoming too big in size.
+
 Refer to the file ‘Read Twitter Stream/streaming.py’ for the code. The code will write the data in the same directory, flushing the data periodically to a file. After a threshold number of tweets have been written to the current output file, it generates a new file and starts flushing the tweets to it. This will prevent a single file from becoming too big in size.
+
+
+\section{User Timeline API Code Documentation}
+\label{\detokenize{twitter_stream:user-timeline-api-code-documentation}}
+Here we provide a documentation of the code.
+\phantomsection\label{\detokenize{twitter_stream:module-userstimeline}}\index{userstimeline (module)}
+Module to fetch data of a specified list of users. Data includes user’s profile information, all tweets on
+user’s timeline till now and list of ids of user’s followers and friends.
+
+In the main function, configure the path of the directory of the data folder to be created and the path of a file containing
+a list of user screen names separated by new lines. It generates a folder for the data as specified in the main function.
+Each time you run the file, it accumulates the new data in this directory.
+
+Create a file named SECRETS which contains your Twitter OAuth related keys in the following order, separated by new lines:
+\textless{}ACCESS\_TOKEN\textgreater{}
+\textless{}ACCESS\_SECRET\textgreater{}
+\textless{}CONSUMER\_KEY\textgreater{}
+\textless{}CONSUMER\_SECRET\textgreater{}
+
+\sphinxstylestrong{Running the code}:
+\begin{quote}
+\begin{itemize}
+\item {} 
+First ensure Python Twitter Tools is installed. (\sphinxurl{https://github.com/sixohsix/twitter})
+
+\item {} 
+Before running, you may want to change the name of the file (containing the user screen names)
+in the main function. That file should contain one screen name in each line.
+
+\end{itemize}
+
+\sphinxstyleemphasis{Command to run}:
+\sphinxcode{python main.py}
+\end{quote}
+\index{DateTimeEncoder (class in userstimeline)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.DateTimeEncoder}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{userstimeline.}\sphinxbfcode{DateTimeEncoder}}{\emph{*}, \emph{skipkeys=False}, \emph{ensure\_ascii=True}, \emph{check\_circular=True}, \emph{allow\_nan=True}, \emph{sort\_keys=False}, \emph{indent=None}, \emph{separators=None}, \emph{default=None}}{}
+Bases: \sphinxcode{json.encoder.JSONEncoder}
+\index{default() (userstimeline.DateTimeEncoder method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.DateTimeEncoder.default}}\pysiglinewithargsret{\sphinxbfcode{default}}{\emph{o}}{}
+\end{fulllineitems}
+
+\index{encode() (userstimeline.DateTimeEncoder method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.DateTimeEncoder.encode}}\pysiglinewithargsret{\sphinxbfcode{encode}}{\emph{o}}{}
+Return a JSON string representation of a Python data structure.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k+kn}{from} \PYG{n+nn}{json}\PYG{n+nn}{.}\PYG{n+nn}{encoder} \PYG{k}{import} \PYG{n}{JSONEncoder}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{JSONEncoder}\PYG{p}{(}\PYG{p}{)}\PYG{o}{.}\PYG{n}{encode}\PYG{p}{(}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{foo}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{bar}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{baz}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{\PYGZcb{}}\PYG{p}{)}
+\PYG{g+go}{\PYGZsq{}\PYGZob{}\PYGZdq{}foo\PYGZdq{}: [\PYGZdq{}bar\PYGZdq{}, \PYGZdq{}baz\PYGZdq{}]\PYGZcb{}\PYGZsq{}}
+\end{sphinxVerbatim}
+
+\end{fulllineitems}
+
+\index{item\_separator (userstimeline.DateTimeEncoder attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.DateTimeEncoder.item_separator}}\pysigline{\sphinxbfcode{item\_separator}\sphinxbfcode{ = ', '}}
+\end{fulllineitems}
+
+\index{iterencode() (userstimeline.DateTimeEncoder method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.DateTimeEncoder.iterencode}}\pysiglinewithargsret{\sphinxbfcode{iterencode}}{\emph{o}, \emph{\_one\_shot=False}}{}
+Encode the given object and yield each string
+representation as available.
+
+For example:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{k}{for} \PYG{n}{chunk} \PYG{o+ow}{in} \PYG{n}{JSONEncoder}\PYG{p}{(}\PYG{p}{)}\PYG{o}{.}\PYG{n}{iterencode}\PYG{p}{(}\PYG{n}{bigobject}\PYG{p}{)}\PYG{p}{:}
+    \PYG{n}{mysocket}\PYG{o}{.}\PYG{n}{write}\PYG{p}{(}\PYG{n}{chunk}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+\end{fulllineitems}
+
+\index{key\_separator (userstimeline.DateTimeEncoder attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.DateTimeEncoder.key_separator}}\pysigline{\sphinxbfcode{key\_separator}\sphinxbfcode{ = ': '}}
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{UserTimelineAPI (class in userstimeline)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{userstimeline.}\sphinxbfcode{UserTimelineAPI}}{\emph{data\_directory}}{}
+Bases: \sphinxcode{object}
+
+Class to fetch data of a specified list of users.
+\index{clear\_everyting() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.clear_everyting}}\pysiglinewithargsret{\sphinxbfcode{clear\_everyting}}{}{}
+Clears the data folder
+
+\end{fulllineitems}
+
+\index{fetch\_persist\_friends\_and\_followers() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.fetch_persist_friends_and_followers}}\pysiglinewithargsret{\sphinxbfcode{fetch\_persist\_friends\_and\_followers}}{\emph{user\_screen\_names}, \emph{time}}{}
+Fetches and persists users’ friends and followers
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{user\_screen\_names} \textendash{} list of screen names of users
+
+\item {} 
+\sphinxstyleliteralstrong{time} \textendash{} wall clock time when this file started running
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{fetch\_persist\_tweets() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.fetch_persist_tweets}}\pysiglinewithargsret{\sphinxbfcode{fetch\_persist\_tweets}}{\emph{user\_screen\_names}, \emph{time}, \emph{type\_}}{}
+Fetches and persists tweets (excluding tweets already persisted)
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{user\_screen\_names} \textendash{} list of screen names of users
+
+\item {} 
+\sphinxstyleliteralstrong{time} \textendash{} wall clock time when this file started running
+
+\item {} 
+\sphinxstyleliteralstrong{type} \textendash{} one of ‘tweets’ or ‘favourites’ to fetch user’s own tweets or favorited tweets respectively
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{fetch\_persist\_users() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.fetch_persist_users}}\pysiglinewithargsret{\sphinxbfcode{fetch\_persist\_users}}{\emph{user\_screen\_names}, \emph{time}}{}
+Fetches and persists user information (calling this multiple times will keep adding new entries so that you can compare over time)
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{user\_screen\_names} \textendash{} list of screen names of users
+
+\item {} 
+\sphinxstyleliteralstrong{time} \textendash{} wall clock time when this file started running
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{my\_favourites\_fetcher() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.my_favourites_fetcher}}\pysiglinewithargsret{\sphinxbfcode{my\_favourites\_fetcher}}{\emph{retry\_no=0}, \emph{**kwargs}}{}
+Waits until rate limit is clear and then calls the Twitter API to fetch user’s favorited tweets.
+Retries 3 times in case of exceptions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{retry\_no} \textendash{} Number of retries done till now in case of exceptions
+
+\item {} 
+\sphinxstyleliteralstrong{kwargs} \textendash{} Contains screen\_name, count (maximum 200 allowed), since\_id (minimum id of tweet to look for), max\_id (maximum id of tweet to look for)
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A list of tweet dictionaries
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{my\_followers\_fetcher() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.my_followers_fetcher}}\pysiglinewithargsret{\sphinxbfcode{my\_followers\_fetcher}}{\emph{retry\_no=0}, \emph{**kwargs}}{}
+Waits until rate limit is clear and then calls the Twitter API to fetch user’s followers’ ids.
+Retries 3 times in case of exceptions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{retry\_no} \textendash{} Number of retries done till now in case of exceptions
+
+\item {} 
+\sphinxstyleliteralstrong{kwargs} \textendash{} Contains screen\_name, cursor (used for paginated results, -1 to fetch the latest batch)
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A dictionary containing ‘ids’ (ids of followers) and ‘next\_cursor’ (cursor of next batch)
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{my\_friends\_fetcher() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.my_friends_fetcher}}\pysiglinewithargsret{\sphinxbfcode{my\_friends\_fetcher}}{\emph{retry\_no=0}, \emph{**kwargs}}{}
+Waits until rate limit is clear and then calls the Twitter API to fetch user’s friends’ ids.
+Retries 3 times in case of exceptions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{retry\_no} \textendash{} Number of retries done till now in case of exceptions
+
+\item {} 
+\sphinxstyleliteralstrong{kwargs} \textendash{} Contains screen\_name, cursor (used for paginated results, -1 to fetch the latest batch)
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A dictionary containing ‘ids’ (ids of friends) and ‘next\_cursor’ (cursor of next batch)
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{my\_tweet\_fetcher() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.my_tweet_fetcher}}\pysiglinewithargsret{\sphinxbfcode{my\_tweet\_fetcher}}{\emph{retry\_no=0}, \emph{**kwargs}}{}
+Waits until rate limit is clear and then calls the Twitter API to fetch user’s tweets.
+Retries 3 times in case of exceptions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{retry\_no} \textendash{} Number of retries done till now in case of exceptions
+
+\item {} 
+\sphinxstyleliteralstrong{kwargs} \textendash{} Contains screen\_name, count (maximum 200 allowed), since\_id (minimum id of tweet to look for), max\_id (maximum id of tweet to look for)
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A list of tweet dictionaries
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{my\_user\_fetcher() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.my_user_fetcher}}\pysiglinewithargsret{\sphinxbfcode{my\_user\_fetcher}}{\emph{retry\_no=0}, \emph{**kwargs}}{}
+Waits until rate limit is clear and then calls the Twitter API to fetch the given users’ info.
+Retries 3 times in case of exceptions.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{retry\_no} \textendash{} Number of retries done till now in case of exceptions
+
+\item {} 
+\sphinxstyleliteralstrong{kwargs} \textendash{} Contains screen\_name which is comma separated list of screen names
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+A list of user info dictionaries
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{wait\_for\_rate\_limit() (userstimeline.UserTimelineAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.UserTimelineAPI.wait_for_rate_limit}}\pysiglinewithargsret{\sphinxbfcode{wait\_for\_rate\_limit}}{\emph{type\_}}{}
+Common function for all API calls that waits (sleeps) until the restriction of rate limiting for that type is clear.
+For each request of each API call, it checks the corresponding array in COUNTS\_DICT, deletes entries older than
+WINDOW\_LEN minutes and keeps checking the total no of requests in past WINDOW\_LEN minutes until it is less
+than the rate limit threshold set in COUNTS\_LIMIT. Sleeps in between.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{type} \textendash{} The type of API call. One of ‘USERS\_LOOKUP’, ‘TWEETS’, ‘FOLLOWERS’, ‘FRIENDS’, ‘FAVOURITES’.
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{extract\_hash\_tags() (in module userstimeline)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.extract_hash_tags}}\pysiglinewithargsret{\sphinxcode{userstimeline.}\sphinxbfcode{extract\_hash\_tags}}{\emph{screen\_name}, \emph{date\_start}, \emph{date\_end}}{}
+\end{fulllineitems}
+
+\index{get\_user\_screen\_names() (in module userstimeline)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.get_user_screen_names}}\pysiglinewithargsret{\sphinxcode{userstimeline.}\sphinxbfcode{get\_user\_screen\_names}}{\emph{filename}}{}
+\end{fulllineitems}
+
+\index{plot\_user\_field() (in module userstimeline)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:userstimeline.plot_user_field}}\pysiglinewithargsret{\sphinxcode{userstimeline.}\sphinxbfcode{plot\_user\_field}}{\emph{screen\_name}, \emph{date\_start}, \emph{date\_end}, \emph{field\_names}}{}
+\end{fulllineitems}
+
+
+
+\section{Stream Sample API Code Documentation}
+\label{\detokenize{twitter_stream:stream-sample-api-code-documentation}}
+Here we provide a documentation of the code.
+\phantomsection\label{\detokenize{twitter_stream:module-streaming}}\index{streaming (module)}
+Module to stream 1\% sample of tweets using Twitter’s Streaming API. The code will write the data in the same directory.
+
+Create a file named SECRETS which contains your Twitter OAuth related keys in the following order, separated by new lines:
+\textless{}ACCESS\_TOKEN\textgreater{}
+\textless{}ACCESS\_SECRET\textgreater{}
+\textless{}CONSUMER\_KEY\textgreater{}
+\textless{}CONSUMER\_SECRET\textgreater{}
+
+\sphinxstylestrong{Running the code}:
+\begin{quote}
+\begin{itemize}
+\item {} 
+First ensure Python Twitter Tools is installed. (\sphinxurl{https://github.com/sixohsix/twitter})
+
+\item {} 
+Before running, you may set the following parameters inside the file:
+\begin{itemize}
+\item {} 
+tweet\_count = 1000000000 \# total number of tweets to read
+
+\item {} 
+batch\_size = 10000 \# how many tweets to write together in 1 go
+
+\item {} 
+file\_tweet\_count = 500000 \# max no of tweets to write in 1 file
+
+\end{itemize}
+
+\end{itemize}
+
+\sphinxstyleemphasis{Command to run}:
+\sphinxcode{python streaming.py}
+\end{quote}
+\index{Logger (class in streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:streaming.Logger}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{streaming.}\sphinxbfcode{Logger}}{\emph{batch\_size}, \emph{file\_tweet\_count}}{}
+Bases: \sphinxcode{object}
+
+Class to periodically write tweets to files and to log anything (automatically timestamped).
+The function write\_tweet will keep buffering tweets till batch\_size is reached. Once the batch size
+is reached, it flushes all the buffered tweets to the current tweet\_file\_name. Additionally, it keeps
+track of number of tweets written to the current file and once it exceeds the threshold file\_tweet\_count,
+it starts with a new tweet\_file and starts flushing to it. This will prevent a single file from becoming
+too big in size.
+\index{configure\_new\_file() (streaming.Logger method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:streaming.Logger.configure_new_file}}\pysiglinewithargsret{\sphinxbfcode{configure\_new\_file}}{}{}
+Changes the configuration to start logging and writing tweets to new files (filenames will contain timestamp).
+Also puts a ‘{[}‘ at the beginning of the tweet file to start a new list.
+
+\end{fulllineitems}
+
+\index{finish\_current\_file() (streaming.Logger method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:streaming.Logger.finish_current_file}}\pysiglinewithargsret{\sphinxbfcode{finish\_current\_file}}{}{}
+Finshes the current tweet file by ending the list with a ‘{]}’.
+
+\end{fulllineitems}
+
+\index{log() (streaming.Logger method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:streaming.Logger.log}}\pysiglinewithargsret{\sphinxbfcode{log}}{\emph{s}}{}
+Logs the string supplied as argument to the current log file.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{s} \textendash{} The string to log
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{write\_tweet() (streaming.Logger method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:streaming.Logger.write_tweet}}\pysiglinewithargsret{\sphinxbfcode{write\_tweet}}{\emph{tweet}}{}
+Adds the tweet to the buffer. If buffer is filled, then flushes the buffer to the current tweet file.
+If the current tweet file exceeds the tweet count threshold, finishes the current file and a configures a new one.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{tweet} \textendash{} The tweet to write to file
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{signal\_handler() (in module streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{twitter_stream:streaming.signal_handler}}\pysiglinewithargsret{\sphinxcode{streaming.}\sphinxbfcode{signal\_handler}}{\emph{signal}, \emph{frame}}{}
+\end{fulllineitems}
+
+
+
+\chapter{Putting tweets to Kafka}
+\label{\detokenize{kafka:putting-tweets-to-kafka}}\label{\detokenize{kafka::doc}}
+The tweets read from the Twitter API are written to files on the disk for any further processing. These tweets are then read from the files and put on a Kafka topic (“tweets\_topic”) for the downstream processes. Ideally, in a running application, the tweets from the API should directly be put on the Kafka topic without writing to the files. However, collecting data once in the files helps in easy testing of different components.
+
+We now provide the documentation for the application that reads tweets from the files and puts them to a Kafka topic.
+
+
+\section{Kafka Tweet Producer Documentation}
+\label{\detokenize{kafka:kafka-tweet-producer-documentation}}
+Here we provide a documentation of the Kafka Tweet Producer.
+\phantomsection\label{\detokenize{kafka:module-kafka_tweets_producer}}\index{kafka\_tweets\_producer (module)}
+Module to read tweets from files and post them to a Kafka topic (currently “tweets\_topic”) for any downstream processes.
+
+\begin{sphinxadmonition}{note}{Note:}
+Currently, only the Flink applications are reading tweets from this Kafka topic.
+In our proposed architecture, MongoDB and Neo4j ingestion applications should also read tweets from this Kafka topic.
+However this is not integrated yet, hence MongoDB and Neo4j applications currenlty read tweets from files themselves.
+This should be integrated as such.
+\end{sphinxadmonition}
+\index{Producer (class in kafka\_tweets\_producer)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{kafka:kafka_tweets_producer.Producer}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{kafka\_tweets\_producer.}\sphinxbfcode{Producer}}{\emph{tweet\_folder\_name}, \emph{max\_q\_size}}{}
+Bases: \sphinxcode{object}
+
+Class that on initialization, spawns 2 threads. One thread keeps reading tweets from the files and puts them to a queue.
+Second thread keeps reading tweets from the queue and puts them to the Kafka topic.
+
+\end{fulllineitems}
+
+\index{ServiceExit}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{kafka:kafka_tweets_producer.ServiceExit}}\pysigline{\sphinxbfcode{exception }\sphinxcode{kafka\_tweets\_producer.}\sphinxbfcode{ServiceExit}}
+Bases: \sphinxcode{Exception}
+
+Custom exception which is used to trigger the clean exit
+of all running threads and the main program.
+\index{args (kafka\_tweets\_producer.ServiceExit attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{kafka:kafka_tweets_producer.ServiceExit.args}}\pysigline{\sphinxbfcode{args}}
+\end{fulllineitems}
+
+\index{with\_traceback() (kafka\_tweets\_producer.ServiceExit method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{kafka:kafka_tweets_producer.ServiceExit.with_traceback}}\pysiglinewithargsret{\sphinxbfcode{with\_traceback}}{}{}
+Exception.with\_traceback(tb) \textendash{}
+set self.\_\_traceback\_\_ to tb and return self.
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{service\_shutdown() (in module kafka\_tweets\_producer)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{kafka:kafka_tweets_producer.service_shutdown}}\pysiglinewithargsret{\sphinxcode{kafka\_tweets\_producer.}\sphinxbfcode{service\_shutdown}}{\emph{signum}, \emph{frame}}{}
+\end{fulllineitems}
+
 
 
 \chapter{Ingesting data into Neo4j}
@@ -276,11 +762,11 @@ We create uniqueness constraints on the following attributes of these nodes:
 \centering
 \begin{tabulary}{\linewidth}[t]{|T|T|}
 \hline
-\sphinxstyletheadfamily 
+\sphinxstylethead{\sphinxstyletheadfamily 
 Node
-&\sphinxstyletheadfamily 
+\unskip}\relax &\sphinxstylethead{\sphinxstyletheadfamily 
 Attribute
-\\
+\unskip}\relax \\
 \hline
 FRAME
 &
@@ -314,7 +800,17 @@ url
 
 \section{Running the ingestion script}
 \label{\detokenize{neo4j_data_ingestion:running-the-ingestion-script}}
-To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to the file ingest\_neo4j.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the we need to run the file \sphinxtitleref{python ingest\_neo4j.py} to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.
+There are 2 applications to ingest data into Neo4j.
+
+
+\subsection{Streaming data}
+\label{\detokenize{neo4j_data_ingestion:streaming-data}}
+If the data has been collected using the Stream Sample API (as explained in {\hyperref[\detokenize{twitter_stream:stream-sample-api}]{\sphinxcrossref{\DUrole{std,std-ref}{Stream Sample API}}}}), then this application needs to be used to ingest the tweets into Neo4j. Navigate to the Ingestion/Neo4j and make changes to the file ingest\_neo4j\_streaming.py. Specifically, provide the folder containing the tweets containing files. We are simulating the twitter stream by reading the tweets from a file on the disk and storing those in memory. This makes sense as we can’t possibly get tweets from the twitter hose at a rate greater than reading from memory, thus this in no way can be a bottleneck to the ingestion rate. Then just run the file \sphinxtitleref{python ingest\_neo4j\_streaming.py} to start ingesting. A logs file will be created which will keep on updating to help the user gauze the ingestion rate.
+
+
+\subsection{User Timeline data}
+\label{\detokenize{neo4j_data_ingestion:user-timeline-data}}
+If the data has been collected using the User Timeline API (as explained in {\hyperref[\detokenize{twitter_stream:user-timeline-api}]{\sphinxcrossref{\DUrole{std,std-ref}{User Timeline API}}}}), then this application needs to be used to ingest the tweets into Neo4j. Navigate to the Ingestion/Neo4j and make changes to the file ingest\_neo4j\_user\_timeline.py. This file ingests all the data present in the ‘data’ folder in the same directory. However, if the data is collected in an incremental fashion (eg. running the data collection application day by day), then this file needs to be changed accordingly to only ingest the data of the new timestamps.
 
 
 \section{Neo4j Ingestion Rates}
@@ -322,6 +818,388 @@ To ingest data into neo4j, navigate to the Ingestion/Neo4j and make changes to t
 \noindent\sphinxincludegraphics{{neo_in5}.png}
 
 Observe that the ingestion rate peaks at 1000 tweets/sec at a transaction size of around 35k. This is mainly due to the limitation of memory size. The authors observe that keeping a larger transaction size leads to lag on the system indicative of use of swap space. Thus, the maximum ingestion rate can be enhanced just by putting in more memory, albeit with decreasing returns.
+
+
+\section{Code Documentation for Neo4j data ingestion}
+\label{\detokenize{neo4j_data_ingestion:code-documentation-for-neo4j-data-ingestion}}
+Here we provide a documentation of the code for ingesting tweets collected using Streaming API.
+\phantomsection\label{\detokenize{neo4j_data_ingestion:module-ingest_neo4j_streaming}}\index{ingest\_neo4j\_streaming (module)}
+Module to insert data, collected using streaming API, into Neo4j database.
+
+The {\hyperref[\detokenize{neo4j_data_ingestion:module-ingest_neo4j_streaming}]{\sphinxcrossref{\sphinxcode{ingest\_neo4j\_streaming}}}} module contains the classes:
+\begin{itemize}
+\item {} 
+{\hyperref[\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter}]{\sphinxcrossref{\sphinxcode{ingest\_neo4j\_streaming.Twitter}}}}
+
+\end{itemize}
+
+One can use the \sphinxcode{ingest\_neo4j\_streaming.Twitter.ingest\_tweet()} to insert a new tweet into the database.
+
+An example usage where we want to insert all tweets from all files in a folder tweet\_folder:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t} \PYG{o}{=} \PYG{n}{Twitter}\PYG{p}{(}\PYG{l+m+mi}{50000}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{get\PYGZus{}constraints}\PYG{p}{(}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{get\PYGZus{}profile}\PYG{p}{(}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{read\PYGZus{}tweets}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{tweet\PYGZus{}folder}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{n}{t}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{get\PYGZus{}profile}\PYG{p}{(}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{close\PYGZus{}session}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+\index{Twitter (class in ingest\_neo4j\_streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{ingest\_neo4j\_streaming.}\sphinxbfcode{Twitter}}{\emph{batch\_size=200}}{}
+Bases: \sphinxcode{object}
+
+Class containing functions to insert tweets into neo4j.
+We open a connection to the neo4j database through py2neo and the official
+neo4j driver. Dealing with transactions is easy in py2neo, so it is used to make and commit transactions. While
+the connection to the neo4j driver is used just in clearing out the graph.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{batch\_size} \textendash{} number of tweets to take into transaction before commiting it
+
+\end{description}\end{quote}
+\index{clear\_graph() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.clear_graph}}\pysiglinewithargsret{\sphinxbfcode{clear\_graph}}{}{}
+Delete the complete graph. Albiet, keep the indices.
+
+\end{fulllineitems}
+
+\index{close() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.close}}\pysiglinewithargsret{\sphinxbfcode{close}}{}{}
+See if there are some tweets not comitted in the trnx and if yes, commit those.
+
+\end{fulllineitems}
+
+\index{close\_session() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.close_session}}\pysiglinewithargsret{\sphinxbfcode{close\_session}}{}{}
+Close the neo4j driver session
+
+\end{fulllineitems}
+
+\index{create\_constraint() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.create_constraint}}\pysiglinewithargsret{\sphinxbfcode{create\_constraint}}{\emph{node}, \emph{attrib}}{}
+Create constraint on attrib in node node
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{node} \textendash{} node type on which to create the constraint
+
+\item[{Parem attrib}] \leavevmode
+node attibute whose constraint is to be created
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{create\_constraints() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.create_constraints}}\pysiglinewithargsret{\sphinxbfcode{create\_constraints}}{}{}
+Create uniqueness constraints on the attributes of nodes. Note that ceating a constraint automatically
+creates an index on it
+
+\end{fulllineitems}
+
+\index{drop\_constraint() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.drop_constraint}}\pysiglinewithargsret{\sphinxbfcode{drop\_constraint}}{\emph{node}, \emph{attrib}}{}
+Drop constraint on attrib in node node
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{node} \textendash{} node type on which to delete the constraint
+
+\item[{Parem attrib}] \leavevmode
+node attibute whose constraint is to be deleted
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{get\_constraints() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.get_constraints}}\pysiglinewithargsret{\sphinxbfcode{get\_constraints}}{}{}
+Get the constrainsts on different types of nodes.
+
+\end{fulllineitems}
+
+\index{get\_profile() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.get_profile}}\pysiglinewithargsret{\sphinxbfcode{get\_profile}}{}{}
+The number of total, user, tweet, hashtag nodes in the graph
+
+\end{fulllineitems}
+
+\index{insert\_tweet() (ingest\_neo4j\_streaming.Twitter method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.Twitter.insert_tweet}}\pysiglinewithargsret{\sphinxbfcode{insert\_tweet}}{\emph{tweet}, \emph{favourited\_by=None}, \emph{fav\_timestamp=None}}{}
+The main function to insert the tweet. Begin a transaction, when atleast batch\_size number of tweets
+are collected, commit the transaction. Start collecting the new tweets after that.
+
+We have two cases depending if the tweet to be inserted is a
+retweet or not. We mention the steps taken to insert the tweet in the two case:
+\begin{itemize}
+\item {} \begin{description}
+\item[{The tweet is a retweet}] \leavevmode\begin{itemize}
+\item {} 
+Create a tweet\_event under a appropriate frame
+
+\item {} 
+Merge node for this tweet. Maybe the tweet node already partially exists because some other tweet is its reply.
+
+\item {} 
+Create favorite relation if needed
+
+\item {} 
+Proceed only if the tweet was not already created
+
+\item {} 
+Create user and then the relationships
+
+\item {} 
+Find node of original tweet and link
+
+\end{itemize}
+
+\end{description}
+
+\item {} \begin{description}
+\item[{The tweet is not a retweet}] \leavevmode\begin{itemize}
+\item {} 
+Create a tweet\_event under a appropriate frame
+
+\item {} 
+Merge node for this tweet
+
+\item {} 
+Create favorite relation if needed
+
+\item {} 
+Proceed only if the tweet was not already created
+
+\item {} 
+Create user and then the relationships
+
+\item {} 
+Create links to hashtags, mentions, urls
+
+\item {} 
+Create link to quoted tweet in case this tweet quotes another tweet
+
+\item {} 
+Create link to original tweet in case this is a reply tweet
+
+\end{itemize}
+
+\end{description}
+
+\end{itemize}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{tweet} \textendash{} the json of the tweet to be inserted
+
+\item {} 
+\sphinxstyleliteralstrong{favourited\_by} \textendash{} userid of the user who favourited the tweet
+
+\item {} 
+\sphinxstyleliteralstrong{fav\_timestamp} \textendash{} time at which the tweet was favourited
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+None
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{note}{Todo:}
+Currently we are making use of transactions only. We get decent peak ingestion rate of
+around 1000 tweets/sec. But this can be increased by overlapping the collection and ingestion part as
+we do in case of mongoDB. But the same scheme can’t be used here as the transaction created is not
+a native python object and hance can’t be passed between python multiprocessing module processes. So, one
+idea is to create a csv with the tweets, and then call the use\_csv function in neo4j to ingest. But this is a
+contrived way of doing this by doing same task twice.
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{flatten\_json() (in module ingest\_neo4j\_streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.flatten_json}}\pysiglinewithargsret{\sphinxcode{ingest\_neo4j\_streaming.}\sphinxbfcode{flatten\_json}}{\emph{json\_obj}}{}
+Function to flatten the tweet. Used in case we want to store the complete tweet JSON in the TWEET node.
+This is because neo4j doesn’t allow nested jsons to be stored
+
+\end{fulllineitems}
+
+\index{getDateFromTimestamp() (in module ingest\_neo4j\_streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.getDateFromTimestamp}}\pysiglinewithargsret{\sphinxcode{ingest\_neo4j\_streaming.}\sphinxbfcode{getDateFromTimestamp}}{\emph{timestamp}}{}
+\end{fulllineitems}
+
+\index{getFrameStartEndTime() (in module ingest\_neo4j\_streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.getFrameStartEndTime}}\pysiglinewithargsret{\sphinxcode{ingest\_neo4j\_streaming.}\sphinxbfcode{getFrameStartEndTime}}{\emph{timestamp}}{}
+\end{fulllineitems}
+
+\index{log() (in module ingest\_neo4j\_streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.log}}\pysiglinewithargsret{\sphinxcode{ingest\_neo4j\_streaming.}\sphinxbfcode{log}}{\emph{text}}{}
+Why use this when we can use logging? There is a peculiar bug when open neo4j bolt server with logging
+
+\end{fulllineitems}
+
+\index{read\_tweets() (in module ingest\_neo4j\_streaming)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_streaming.read_tweets}}\pysiglinewithargsret{\sphinxcode{ingest\_neo4j\_streaming.}\sphinxbfcode{read\_tweets}}{\emph{path}, \emph{twitter}, \emph{filename=''}}{}
+Read tweets from the directory in path and inert all tweets in all files in the first level of path into
+neo4j.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{path} \textendash{} the path of the directory
+
+\item {} 
+\sphinxstyleliteralstrong{twitter} \textendash{} a Twitter object
+
+\item {} 
+\sphinxstyleliteralstrong{filename} \textendash{} optional, if want to insert tweets from a single file
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+Here we provide a documentation of the code for ingesting data collected using User Timeline API.
+\phantomsection\label{\detokenize{neo4j_data_ingestion:module-ingest_neo4j_user_timeline}}\index{ingest\_neo4j\_user\_timeline (module)}
+Module to insert data, collected using user timeline API, into Neo4j database.
+
+This is the schema of the Neo4j graph:
+\begin{description}
+\item[{USER NETWORK}] \leavevmode
+Node labels - USER(id), USER\_INFO(dict)
+Relationships - CURR\_STATE(from), INTITIAL\_STATE(on), PREV(from,to)
+
+\item[{FOLLOWER NETWORK}] \leavevmode
+Node labels -
+Relationships - FOLLOWS(from,to), FOLLOWED(from,to) // FOLLOWS.to will always be the last time data was collected
+
+\item[{TWEET NETWORK}] \leavevmode
+Node labels - TWEET(id,created\_at,is\_active), TWEET\_INFO(dict), HASHTAG(text), URL(url,expanded\_url), //MEDIA(url, media\_url)//, PLACE(id,name,country) -\textgreater{} This is not the location of tweet but the location with which the tweet is tagged (could be about it)
+Relationships - TWEETED(on), LIKES(on), INFO, REPLY\_TO(on), RETWEET\_OF(on), QUOTED(on), HAS\_MENTION(on), HAS\_HASHTAG(on), //HAS\_MEDIA(on)//, HAS\_URL(on), HAS\_PLACE(on)
+
+\item[{FRAME NETWORK}] \leavevmode
+Node labels - RUN, FRAME(start\_t,end\_t), TWEET\_EVENT(timestamp), FOLLOW\_EVENT(timestamp), UNFOLLOW\_EVENT(timestamp), FAV\_EVENT(timestamp)
+Relationships - HAS\_FRAME, HAS\_TWEET, TE\_USER, TE\_TWEET, HAS\_FOLLOW, FE\_FOLLOWED, FE\_FOLLOWS, HAS\_UNFOLLOW, UFE\_UNFOLLOWED, UFE\_UNFOLLOWS, HAS\_FAV, FAV\_USER, FAV\_TWEET
+
+\end{description}
+\index{Neo4jIngestion\_UserTimeline (class in ingest\_neo4j\_user\_timeline)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{ingest\_neo4j\_user\_timeline.}\sphinxbfcode{Neo4jIngestion\_UserTimeline}}{\emph{data\_directory}, \emph{user\_screen\_names\_file\_path}}{}
+Bases: \sphinxcode{object}
+\index{clear\_db() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.clear_db}}\pysiglinewithargsret{\sphinxbfcode{clear\_db}}{}{}
+\end{fulllineitems}
+
+\index{close\_session() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.close_session}}\pysiglinewithargsret{\sphinxbfcode{close\_session}}{}{}
+\end{fulllineitems}
+
+\index{create\_indexes() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.create_indexes}}\pysiglinewithargsret{\sphinxbfcode{create\_indexes}}{}{}
+\end{fulllineitems}
+
+\index{create\_tweet() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.create_tweet}}\pysiglinewithargsret{\sphinxbfcode{create\_tweet}}{\emph{tweet}, \emph{favourited\_by=None}, \emph{fav\_timestamp=None}}{}
+\end{fulllineitems}
+
+\index{flatten\_json() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.flatten_json}}\pysiglinewithargsret{\sphinxbfcode{flatten\_json}}{\emph{json\_obj}}{}
+\end{fulllineitems}
+
+\index{getFrameStartEndTime() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.getFrameStartEndTime}}\pysiglinewithargsret{\sphinxbfcode{getFrameStartEndTime}}{\emph{timestamp}}{}
+\end{fulllineitems}
+
+\index{readDataAndCreateGraph() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.readDataAndCreateGraph}}\pysiglinewithargsret{\sphinxbfcode{readDataAndCreateGraph}}{\emph{STAGE\_BY\_STAGE}}{}
+\end{fulllineitems}
+
+\index{simulateExample() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.simulateExample}}\pysiglinewithargsret{\sphinxbfcode{simulateExample}}{}{}
+\end{fulllineitems}
+
+\index{sync\_session() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.sync_session}}\pysiglinewithargsret{\sphinxbfcode{sync\_session}}{\emph{type\_=None}}{}
+\end{fulllineitems}
+
+\index{update\_followers() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_followers}}\pysiglinewithargsret{\sphinxbfcode{update\_followers}}{\emph{user\_id}, \emph{follower\_ids}, \emph{timestamp}}{}
+\end{fulllineitems}
+
+\index{update\_friends() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_friends}}\pysiglinewithargsret{\sphinxbfcode{update\_friends}}{\emph{user\_id}, \emph{friend\_ids}, \emph{timestamp}}{}
+\end{fulllineitems}
+
+\index{update\_user() (ingest\_neo4j\_user\_timeline.Neo4jIngestion\_UserTimeline method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.Neo4jIngestion_UserTimeline.update_user}}\pysiglinewithargsret{\sphinxbfcode{update\_user}}{\emph{id}, \emph{user\_info\_dict}, \emph{timestamp}}{}
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{log() (in module ingest\_neo4j\_user\_timeline)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_data_ingestion:ingest_neo4j_user_timeline.log}}\pysiglinewithargsret{\sphinxcode{ingest\_neo4j\_user\_timeline.}\sphinxbfcode{log}}{\emph{text}}{}
+\end{fulllineitems}
+
 
 
 \chapter{Ingesting data into MongoDB}
@@ -478,6 +1356,283 @@ Clearly the ingestion rate depends on the time after which the interrupt to star
 Finally we get an ingestion rate of around 7k-12k(around x10 of that of neo4j) tweets/second on average, depending on T.
 
 
+\section{Code Documentation for mongoDB ingestion}
+\label{\detokenize{mongoDB_data_ingestion:module-ingest_raw}}\label{\detokenize{mongoDB_data_ingestion:code-documentation-for-mongodb-ingestion}}\index{ingest\_raw (module)}
+Module to ingest data into MongoDB. We try to overlay the collection and ingestion of tweets while ingeting data. For more details, see the documenation.
+
+The {\hyperref[\detokenize{mongoDB_data_ingestion:module-ingest_raw}]{\sphinxcrossref{\sphinxcode{ingest\_raw}}}} module contains the classes:
+\begin{itemize}
+\item {} 
+{\hyperref[\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest}]{\sphinxcrossref{\sphinxcode{ingest\_raw.Ingest}}}}
+
+\end{itemize}
+
+One can use the {\hyperref[\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.insert_tweet}]{\sphinxcrossref{\sphinxcode{ingest\_raw.Ingest.insert\_tweet()}}}} to insert a new tweet into the database.
+
+An example usage where we want to insert all tweets from all files in a folder tweet\_folder:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{i} \PYG{o}{=} \PYG{n}{Ingest}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{i}\PYG{o}{.}\PYG{n}{clear\PYGZus{}db}\PYG{p}{(}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{read\PYGZus{}tweets}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{o}{\PYGZlt{}}\PYG{n}{tweet\PYGZus{}folder}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+\index{Ingest (class in ingest\_raw)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{ingest\_raw.}\sphinxbfcode{Ingest}}{\emph{interval}}{}
+Bases: \sphinxcode{object}
+
+Class to insert tweets into mongoDB.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{interval} \textendash{} time interval after which to generate interupt for starting ingestion of tweets
+
+\end{description}\end{quote}
+\index{aggregate() (ingest\_raw.Ingest method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.aggregate}}\pysiglinewithargsret{\sphinxbfcode{aggregate}}{}{}
+The function to be called in case, we choose to aggregate the counts at a larger inteeval.
+
+\begin{sphinxadmonition}{note}{Note:}
+interval1\textgreater{}\textgreater{}interval. interval is like order of seconds and interal1 is like order of hours.
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
+\index{clear\_db() (ingest\_raw.Ingest method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.clear_db}}\pysiglinewithargsret{\sphinxbfcode{clear\_db}}{}{}
+Delete all the collections
+
+\end{fulllineitems}
+
+\index{exit() (ingest\_raw.Ingest method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.exit}}\pysiglinewithargsret{\sphinxbfcode{exit}}{}{}
+Join the worker process
+
+\end{fulllineitems}
+
+\index{insert\_tweet() (ingest\_raw.Ingest method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.insert_tweet}}\pysiglinewithargsret{\sphinxbfcode{insert\_tweet}}{\emph{tweet}}{}
+Function to collect incoming real time tweets. Update the in memory dictionaries.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{tweet} \textendash{} the json of the tweet.
+
+\end{description}\end{quote}
+
+..note:: If we choose to keep new information about the tweets, we need to modify this, along with {\hyperref[\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.worker}]{\sphinxcrossref{\sphinxcode{ingest\_raw.Ingest.worker()}}}}.
+
+\end{fulllineitems}
+
+\index{populate() (ingest\_raw.Ingest method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.populate}}\pysiglinewithargsret{\sphinxbfcode{populate}}{}{}
+The code executed by the collector process. After each interupt it spawns a new timer thread to generate the
+new interupt. Also, it puts the collected tweets into the IPC pipe and starts collecting new tweets.
+
+\end{fulllineitems}
+
+\index{worker() (ingest\_raw.Ingest method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Ingest.worker}}\pysiglinewithargsret{\sphinxbfcode{worker}}{\emph{q}}{}
+The function called inside he ingestor(worker) process. This function is alled after every \textless{}interval\textgreater{}
+seconds. It loops to look for inputs from the pipe end. Once inputs are there, it opens connection to
+database and commits the batch recieved from the pipe to the on-disk database.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{q} \textendash{} the inter-process communication pipe
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{Timer (class in ingest\_raw)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{ingest\_raw.}\sphinxbfcode{Timer}}{\emph{interval}, \emph{function}, \emph{args=None}, \emph{kwargs=None}, \emph{iterations=1}, \emph{infinite=False}}{}
+Bases: \sphinxcode{multiprocessing.context.Process}
+
+Calls a function after a specified number of seconds:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t} \PYG{o}{=} \PYG{n}{Timer}\PYG{p}{(}\PYG{l+m+mf}{30.0}\PYG{p}{,} \PYG{n}{f}\PYG{p}{,} \PYG{n}{args}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{kwargs}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{start}\PYG{p}{(}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{t}\PYG{o}{.}\PYG{n}{cancel}\PYG{p}{(}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{}stops the timer if it is still waiting}
+\end{sphinxVerbatim}
+\index{authkey (ingest\_raw.Timer attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.authkey}}\pysigline{\sphinxbfcode{authkey}}
+\end{fulllineitems}
+
+\index{cancel() (ingest\_raw.Timer method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.cancel}}\pysiglinewithargsret{\sphinxbfcode{cancel}}{}{}
+Stop the timer if it hasn’t already finished.
+
+\end{fulllineitems}
+
+\index{daemon (ingest\_raw.Timer attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.daemon}}\pysigline{\sphinxbfcode{daemon}}
+Return whether process is a daemon
+
+\end{fulllineitems}
+
+\index{exitcode (ingest\_raw.Timer attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.exitcode}}\pysigline{\sphinxbfcode{exitcode}}
+Return exit code of process or \sphinxtitleref{None} if it has yet to stop
+
+\end{fulllineitems}
+
+\index{ident (ingest\_raw.Timer attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.ident}}\pysigline{\sphinxbfcode{ident}}
+Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to start
+
+\end{fulllineitems}
+
+\index{is\_alive() (ingest\_raw.Timer method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.is_alive}}\pysiglinewithargsret{\sphinxbfcode{is\_alive}}{}{}
+Return whether process is alive
+
+\end{fulllineitems}
+
+\index{join() (ingest\_raw.Timer method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.join}}\pysiglinewithargsret{\sphinxbfcode{join}}{\emph{timeout=None}}{}
+Wait until child process terminates
+
+\end{fulllineitems}
+
+\index{name (ingest\_raw.Timer attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.name}}\pysigline{\sphinxbfcode{name}}
+\end{fulllineitems}
+
+\index{pid (ingest\_raw.Timer attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.pid}}\pysigline{\sphinxbfcode{pid}}
+Return identifier (PID) of process or \sphinxtitleref{None} if it has yet to start
+
+\end{fulllineitems}
+
+\index{run() (ingest\_raw.Timer method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.run}}\pysiglinewithargsret{\sphinxbfcode{run}}{}{}
+\end{fulllineitems}
+
+\index{sentinel (ingest\_raw.Timer attribute)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.sentinel}}\pysigline{\sphinxbfcode{sentinel}}
+Return a file descriptor (Unix) or handle (Windows) suitable for
+waiting for process termination.
+
+\end{fulllineitems}
+
+\index{start() (ingest\_raw.Timer method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.start}}\pysiglinewithargsret{\sphinxbfcode{start}}{}{}
+Start child process
+
+\end{fulllineitems}
+
+\index{terminate() (ingest\_raw.Timer method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.Timer.terminate}}\pysiglinewithargsret{\sphinxbfcode{terminate}}{}{}
+Terminate process; sends SIGTERM signal or uses TerminateProcess()
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+\index{calculate\_sentiment (in module ingest\_raw)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.calculate_sentiment}}\pysigline{\sphinxcode{ingest\_raw.}\sphinxbfcode{calculate\_sentiment}}
+Function to calculate sentiment of a tweet. Just calculate the number of positive and negative words,
+matching against a pre-curated list.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{positive\_words} \textendash{} the list of positive sentiment words
+
+\item {} 
+\sphinxstyleliteralstrong{negative\_words} \textendash{} the list of negative sentiment words
+
+\item {} 
+\sphinxstyleliteralstrong{tweet\_text} \textendash{} the raw test of the tweet splitted tokenized, hashtags and user-mentions removed
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{getDateFromTimestamp() (in module ingest\_raw)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.getDateFromTimestamp}}\pysiglinewithargsret{\sphinxcode{ingest\_raw.}\sphinxbfcode{getDateFromTimestamp}}{\emph{timestamp}}{}
+\end{fulllineitems}
+
+\index{read\_tweets() (in module ingest\_raw)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.read_tweets}}\pysiglinewithargsret{\sphinxcode{ingest\_raw.}\sphinxbfcode{read\_tweets}}{\emph{ingest}, \emph{path}, \emph{filename=''}}{}
+Read tweets from the directory in path and inert all tweets in all files in the first level of path into
+neo4j.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{path} \textendash{} the path of the directory
+
+\item {} 
+\sphinxstyleliteralstrong{twitter} \textendash{} a Twitter object
+
+\item {} 
+\sphinxstyleliteralstrong{filename} \textendash{} optional, if want to insert tweets from a single file
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{threaded() (in module ingest\_raw)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_data_ingestion:ingest_raw.threaded}}\pysiglinewithargsret{\sphinxcode{ingest\_raw.}\sphinxbfcode{threaded}}{\emph{fn}}{}
+\end{fulllineitems}
+
+
+
 \chapter{Neo4j: API to generate cypher queries}
 \label{\detokenize{neo4j_query_generation:neo4j-api-to-generate-cypher-queries}}\label{\detokenize{neo4j_query_generation::doc}}
 Here we explain the API to generate cypher queries for Neo4j.
@@ -598,14 +1753,14 @@ Relationship - Follows, Attributes - b/w t1,t2
 
 \subsection{Variable attributes}
 \label{\detokenize{neo4j_query_generation:variable-attributes}}
-In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces \sphinxcode{\sphinxupquote{\{\}}}. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as \sphinxcode{\sphinxupquote{\{hash1\}}}, it means that our query has a variable named “hash1”.
+In the example above, we considered a fixed hashtag “h”. But the user can provide a variable attribute to an entity by giving it a name enclosed in curly braces \sphinxcode{\{\}}. In such a case, the attribute is treated as a variable to the query and the name inside the braces is treated as the name of the said variable. For example, had we input the hashtag as \sphinxcode{\{hash1\}}, it means that our query has a variable named “hash1”.
 
 
 \subsection{Returns}
 \label{\detokenize{neo4j_query_generation:returns}}
-The user can write a comma separated list of entities/attributes to return. An entity can be specified directly by its name. Eg. \sphinxcode{\sphinxupquote{my\_tweet\_entity}}. An entity’s attribute can be specified as \sphinxcode{\sphinxupquote{\textless{}entitiy\_name\textgreater{}.\textless{}attribute\textgreater{}}}. Eg. \sphinxcode{\sphinxupquote{u.screen\_name}}.
+The user can write a comma separated list of entities/attributes to return. An entity can be specified directly by its name. Eg. \sphinxcode{my\_tweet\_entity}. An entity’s attribute can be specified as \sphinxcode{\textless{}entitiy\_name\textgreater{}.\textless{}attribute\textgreater{}}. Eg. \sphinxcode{u.screen\_name}.
 
-The user can also group on certain entity/attribute by using an aggregate function on some other entity/attribute. Eg. \sphinxcode{\sphinxupquote{return u.id, count(distinct h)}} will group on u.id and return count of distinct h among all records returned for each u.id.
+The user can also group on certain entity/attribute by using an aggregate function on some other entity/attribute. Eg. \sphinxcode{return u.id, count(distinct h)} will group on u.id and return count of distinct h among all records returned for each u.id.
 
 
 \section{Creating a custom query through dashboard API : Behind the scenes}
@@ -638,6 +1793,136 @@ The return variables specified by the user are just concatenated with a return s
 \end{itemize}
 
 It is to be noted here, that we don’t do any kind of checking if the constraints specified by the user to build the query are valid. Checking this in a generic manner without executing the query is difficult. So, this is delegated to the neo4j query engine itself and the user will get empty result in case the constrains are invalid.
+
+
+\section{Code Documentation for Neo4j query generation}
+\label{\detokenize{neo4j_query_generation:code-documentation-for-neo4j-query-generation}}
+Here we provide a documentation of the code.
+\phantomsection\label{\detokenize{neo4j_query_generation:module-generate_queries}}\index{generate\_queries (module)}
+Module to generate cypher code for inputs taken from user though dashboard API.
+
+The {\hyperref[\detokenize{neo4j_query_generation:module-generate_queries}]{\sphinxcrossref{\sphinxcode{generate\_queries}}}} module contains the classes:
+\begin{itemize}
+\item {} 
+{\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery}]{\sphinxcrossref{\sphinxcode{generate\_queries.CreateQuery}}}}
+
+\end{itemize}
+
+One can use the {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}]{\sphinxcrossref{\sphinxcode{generate\_queries.CreateQuery.create\_query()}}}} to build a cypher query.
+
+Example illustrating how to create a query which gives the userids and their tweet counts who have used a certian hashtag.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{actors}\PYG{o}{=}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{USER}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEET}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEET}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{attributes}\PYG{o}{=}\PYG{p}{[}\PYG{p}{[}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{hashtag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+si}{\PYGZob{}hash\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{p}{]}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{relations}\PYG{o}{=}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEETED}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{TWEETED}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{t1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{cq} \PYG{o}{=} \PYG{n}{CreateQuery}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{return\PYGZus{}values}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{u.id,count(t1)}\PYG{l+s+s2}{\PYGZdq{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{ret\PYGZus{}dict} \PYG{o}{=} \PYG{n}{cq}\PYG{o}{.}\PYG{n}{create\PYGZus{}query}\PYG{p}{(}\PYG{n}{actors}\PYG{p}{,}\PYG{n}{attributes}\PYG{p}{,}\PYG{n}{relations}\PYG{p}{,}\PYG{n}{return\PYGZus{}values}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{pprint}\PYG{p}{(}\PYG{n}{ret\PYGZus{}dict}\PYG{p}{,}\PYG{n}{width}\PYG{o}{=}\PYG{l+m+mi}{150}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+Example of a query which uses time indexing in a relationship:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{actors} \PYG{o}{=} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{x}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{USER}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{USER}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]} \PYG{o}{+} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEET}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t2}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEET}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{attributes} \PYG{o}{=} \PYG{p}{[}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{id}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{12}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{id}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{]}\PYG{o}{+}\PYG{p}{[}\PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{hashtag}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{BLUERISING}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{,} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{retweet\PYGZus{}of}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{has\PYGZus{}mention}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}\PYG{p}{]}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{relations} \PYG{o}{=} \PYG{p}{[}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{x}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{FOLLOWS}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{u1}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{,} \PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{x}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{TWEETED}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{t2}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{24}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{,} \PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{48}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{)}\PYG{p}{]}
+\end{sphinxVerbatim}
+\index{CreateQuery (class in generate\_queries)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery}}\pysigline{\sphinxbfcode{class }\sphinxcode{generate\_queries.}\sphinxbfcode{CreateQuery}}
+Bases: \sphinxcode{object}
+
+Class containing functions to generate query.
+\index{conditional\_create() (generate\_queries.CreateQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}}\pysiglinewithargsret{\sphinxbfcode{conditional\_create}}{\emph{entity}}{}
+Condionally provide the attributes of the node if not already created, else directly use the name of the variable create earlier.
+If already create, pass empty list of properties.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{entity} \textendash{} the entity which to check and create
+
+\item[{Returns}] \leavevmode
+the code for the node as neo4j node enclosed in ()
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{create\_query() (generate\_queries.CreateQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.create_query}}\pysiglinewithargsret{\sphinxbfcode{create\_query}}{\emph{actors}, \emph{attributes}, \emph{relations}, \emph{return\_values}}{}
+Takes a list of attributes and relationships between them and return a cypher code as string.
+For the format of the lists see the examples.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{actors} \textendash{} the variable names, types of the attributes
+
+\item {} 
+\sphinxstyleliteralstrong{attributes} \textendash{} the properties of the actors
+
+\item {} 
+\sphinxstyleliteralstrong{relations} \textendash{} the relations between the entities along with time index for the relations
+
+\item {} 
+\sphinxstyleliteralstrong{return\_values} \textendash{} a direct string containing the return directive.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+index of the bond in the molecule
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{note}{Note:}
+Here we are expecting that if user has not specified the times on the dashboard, then we pass epmty string. If you
+store some other default in dashboard database then change this accordingly.
+\end{sphinxadmonition}
+
+\begin{sphinxadmonition}{note}{Note:}
+The return \_values is directly used as a string in the cypher query, so the user can use AS and other similar cypher directives while specifying the query.
+\end{sphinxadmonition}
+
+\begin{sphinxadmonition}{note}{Todo:}
+Support to compose queries using OR. For example, currently compostion of relationships or attribute properties like all tweets(t) which are retweets of t1 or quoted t2, is not supported. Use cypher union for this.
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
+\index{generate\_node() (generate\_queries.CreateQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{neo4j_query_generation:generate_queries.CreateQuery.generate_node}}\pysiglinewithargsret{\sphinxbfcode{generate\_node}}{\emph{var}, \emph{type}, \emph{props}}{}
+Helper function for {\hyperref[\detokenize{neo4j_query_generation:generate_queries.CreateQuery.conditional_create}]{\sphinxcrossref{\sphinxcode{generate\_queries.CreateQuery.conditional\_create()}}}}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{var} \textendash{} the variable name of the entity
+
+\item {} 
+\sphinxstyleliteralstrong{type} \textendash{} the type of the entity. Observe we pass type as :USER and NOT as USER
+
+\item {} 
+\sphinxstyleliteralstrong{props} \textendash{} the properties of the entity.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+the code for the node as neo4j node enclosed in ()
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
 
 
 \chapter{Generating queries in mongoDB}
@@ -679,7 +1964,6 @@ Similarly, queries analogous to the above can also be answered for urls and user
 \label{\detokenize{mongoDB_query_generation:generic-api-for-mongodb-idea}}
 For sake of completeness we also provide the way to generate a generic API to get mongoDB queries. For example take at this code to answer the query to get the most popular hashtags in an interval:
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{pipeline} \PYG{o}{=} \PYG{p}{[}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}match}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{timestamp}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}gte}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{t1}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}lte}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{t2}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}group}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZus{}id}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}hashtag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}sum}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}
 \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}sort}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}\PYG{p}{,}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZdl{}limit}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{limit}\PYG{p}{\PYGZcb{}}\PYG{p}{]}
@@ -701,6 +1985,145 @@ Unzipping the result based on the output variables name input by the user: Again
 \end{itemize}
 
 Along with the reasons mentioned above regarding the non requirement of generic monogDB query creator, another reason is that to generate the queries, would invariably require generation of python code, something like the above snippet and then modifying a file with a new function to connect to the database and execute the python code. This would further require modifying the source code in the dashboard website and the DAG execution python functions as well to register the new function, opening several fronts from which bugs can creep in.
+
+
+\subsection{MongoDB query execution code documentation}
+\label{\detokenize{mongoDB_query_generation:mongodb-query-execution-code-documentation}}
+Here we provide a documentation of the code used for this functionality.
+\phantomsection\label{\detokenize{mongoDB_query_generation:module-execute_queries}}\index{execute\_queries (module)}
+Module to execute mongoDB queries. The idea is to keep the  mongo interface minimal and easily extensible, and thus
+only pre specified queries can be answered through mongoDB, rather than generic ones.
+
+The {\hyperref[\detokenize{mongoDB_query_generation:module-execute_queries}]{\sphinxcrossref{\sphinxcode{execute\_queries}}}} module contains the classes:
+\begin{itemize}
+\item {} 
+{\hyperref[\detokenize{mongoDB_query_generation:execute_queries.MongoQuery}]{\sphinxcrossref{\sphinxcode{execute\_queries.MongoQuery}}}}
+
+\end{itemize}
+
+One can use the different function in the class to execute different queries
+
+Example illustrating how to answer different queries.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{q} \PYG{o}{=} \PYG{n}{MongoQuery}\PYG{p}{(}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{q}\PYG{o}{.}\PYG{n}{mp\PYGZus{}ht\PYGZus{}in\PYGZus{}total}\PYG{p}{(}\PYG{n}{limit}\PYG{o}{=}\PYG{l+m+mi}{10}\PYG{p}{)}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} get 10 most popular hashtags}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{q}\PYG{o}{.}\PYG{n}{mp\PYGZus{}um\PYGZus{}in\PYGZus{}total}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{)}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} get 10 most popular users}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{q}\PYG{o}{.}\PYG{n}{mp\PYGZus{}ht\PYGZus{}in\PYGZus{}interval}\PYG{p}{(}\PYG{l+m+mi}{10}\PYG{p}{,} \PYG{l+m+mi}{1500486521}\PYG{p}{,}\PYG{l+m+mi}{1501496521}\PYG{p}{)}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} get 10 most popular hashtags in interval}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{q}\PYG{o}{.}\PYG{n}{ht\PYGZus{}in\PYGZus{}interval}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{baystars}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+m+mi}{1500486521}\PYG{p}{,}\PYG{l+m+mi}{1501496521}\PYG{p}{)}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} get the timestamps at which baystars is used in interval}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n+nb}{print}\PYG{p}{(}\PYG{n}{q}\PYG{o}{.}\PYG{n}{ht\PYGZus{}with\PYGZus{}sentiment}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{baystars}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+m+mi}{1500486521}\PYG{p}{,}\PYG{l+m+mi}{1501496521}\PYG{p}{)}\PYG{p}{)} \PYG{c+c1}{\PYGZsh{} get the timestamps and sentiment at which baystars is used in interval}
+\end{sphinxVerbatim}
+\index{MongoQuery (class in execute\_queries)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_query_generation:execute_queries.MongoQuery}}\pysigline{\sphinxbfcode{class }\sphinxcode{execute\_queries.}\sphinxbfcode{MongoQuery}}
+Bases: \sphinxcode{object}
+
+Class to answer mongoDB queries. Make connection to the database and keep on answering queris untill the
+object is deleted
+\index{clear\_db() (execute\_queries.MongoQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_query_generation:execute_queries.MongoQuery.clear_db}}\pysiglinewithargsret{\sphinxbfcode{clear\_db}}{}{}
+Delete all the collections
+
+\end{fulllineitems}
+
+\index{ht\_in\_interval() (execute\_queries.MongoQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_query_generation:execute_queries.MongoQuery.ht_in_interval}}\pysiglinewithargsret{\sphinxbfcode{ht\_in\_interval}}{\emph{hashtag}, \emph{begin}, \emph{end}}{}
+Give the timetamps at which \textless{}hashtag\textgreater{} is used between \textless{}begin\textgreater{} and \textless{}end\textgreater{}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{hashtag} \textendash{} hashtag for the query
+
+\item {} 
+\sphinxstyleliteralstrong{begin} \textendash{} the begining unix time timestamp of the interval
+
+\item {} 
+\sphinxstyleliteralstrong{end} \textendash{} the ending unix time timestamp of the interval
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{ht\_with\_sentiment() (execute\_queries.MongoQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_query_generation:execute_queries.MongoQuery.ht_with_sentiment}}\pysiglinewithargsret{\sphinxbfcode{ht\_with\_sentiment}}{\emph{hashtag}, \emph{begin}, \emph{end}}{}
+Give the timetamps at which \textless{}hashtag\textgreater{} is used and and sentiment of tweet in which \textless{}hashtag\textgreater{} occured between \textless{}begin\textgreater{} and \textless{}end\textgreater{}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{hashtag} \textendash{} hashtag for the query
+
+\item {} 
+\sphinxstyleliteralstrong{begin} \textendash{} the begining unix time timestamp of the interval
+
+\item {} 
+\sphinxstyleliteralstrong{end} \textendash{} the ending unix time timestamp of the interval
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{mp\_ht\_in\_interval() (execute\_queries.MongoQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_query_generation:execute_queries.MongoQuery.mp_ht_in_interval}}\pysiglinewithargsret{\sphinxbfcode{mp\_ht\_in\_interval}}{\emph{limit}, \emph{begin}, \emph{end}}{}
+Function to give the most popular hashtags in the time interval \textless{}begin\textgreater{} and \textless{}end\textgreater{}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{limit} \textendash{} number of records to return
+
+\item {} 
+\sphinxstyleliteralstrong{begin} \textendash{} the begining unix time timestamp of the interval
+
+\item {} 
+\sphinxstyleliteralstrong{end} \textendash{} the ending unix time timestamp of the interval
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{mp\_ht\_in\_total() (execute\_queries.MongoQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_query_generation:execute_queries.MongoQuery.mp_ht_in_total}}\pysiglinewithargsret{\sphinxbfcode{mp\_ht\_in\_total}}{\emph{limit}}{}
+Give \textless{}limit\textgreater{} most popular hashtags in total
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{limit} \textendash{} number of records to return
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{mp\_um\_in\_total() (execute\_queries.MongoQuery method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{mongoDB_query_generation:execute_queries.MongoQuery.mp_um_in_total}}\pysiglinewithargsret{\sphinxbfcode{mp\_um\_in\_total}}{\emph{limit}}{}
+Give \textless{}limit\textgreater{} most popular users(in iterms of mentions) in total
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{limit} \textendash{} number of records to return
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
 
 
 \chapter{About Post processing functions}
@@ -725,11 +2148,10 @@ We treat the post processing functions as queries. The idea behind treating post
 
 Further to support this abstraction, we require the post processing function to accept a dictionary of lists of native python objects(named “inputs”) and return a dictionary(named “ret”) in same format. The function should further be named as “func”. This requires that the user specifies the input and output variable names while creating the post processing function. This will be explained in detail in the DAG section.
 
-Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output variables. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return variables. Its easy in case named variables are returned but the issue is when expressions are returned(for example the code contains \sphinxcode{\sphinxupquote{return l{[}:10{]}}}, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternative.
+Another way(instead of asking the user to explicitly provide the input and output variable names) in which post processing function could have been created is to just take as input the code of the function, parse it to get the number of inputs and their names. This is relatively easy. But, the issue is to get the output variables. This is a difficult problem and exactly this is used to generate automatic documentation of python code. But has been observed, even it misses the names of return variables. Its easy in case named variables are returned but the issue is when expressions are returned(for example the code contains \sphinxcode{return l{[}:10{]}}, its not clear what should be the name of the return variable). Thus, out adopted method of dealing with dictionaries with named variables provides a clean abstraction over the the alternative.
 
 Here is an example of a post processing function to output the union of lists input to it:
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n+nb}{input}\PYG{p}{)}\PYG{p}{:}
     \PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
@@ -752,7 +2174,6 @@ Post processing functions are also used to display custom metric. To view a cust
 
 Here is another example of a post processing function to create a custom metric to plot the users with their number of tweets:
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{k}{def} \PYG{n+nf}{func}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}\PYG{p}{:}
     \PYG{n}{inputs} \PYG{o}{=} \PYG{n+nb}{list}\PYG{p}{(}\PYG{n+nb}{zip}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{userid}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{,} \PYG{n}{inputs}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{count}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{)}\PYG{p}{)}
@@ -787,7 +2208,6 @@ Obtaining the outputs : The output ret dictionary is pushed on the context by th
 
 This can be seen in this code snippet used to execute the post processing functions:
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{context} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{inputs}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{n}{copy}\PYG{o}{.}\PYG{n}{deepcopy}\PYG{p}{(}\PYG{n}{inputs}\PYG{p}{)}\PYG{p}{\PYGZcb{}}
 \PYG{k}{try}\PYG{p}{:}
@@ -907,7 +2327,6 @@ Further we need to specify which outputs of the queries are to be returned.
 
 The example input file to create the above DAG looks something like this:
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{l+m+mi}{3}
 \PYG{n}{n1} \PYG{n}{most\PYGZus{}popular\PYGZus{}hashtags\PYGZus{}20}
@@ -931,7 +2350,7 @@ Line 1 contains the number of nodes in the DAG.
 The following number of nodes lines contain the name of the nodes and  each node corresponds to which query.
 
 \item {} 
-Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the \sphinxcode{\sphinxupquote{n1.hashtag}} variable been taken as an input rather than feeding from the output of an upstream query, it would have been specified as \sphinxcode{\sphinxupquote{n1.hashtag {[}"hash1","hash2"{]}}}.
+Then a line contains the keyword “INPUTS:”. The inputs to the queries in the DAG are specified here. For example, had the \sphinxcode{n1.hashtag} variable been taken as an input rather than feeding from the output of an upstream query, it would have been specified as \sphinxcode{n1.hashtag {[}"hash1","hash2"{]}}.
 
 \item {} 
 Then a line containing the keyword “CONNECTION:”. Below the connections in the DAG are specified.
@@ -949,7 +2368,6 @@ Please note that, all the outputs of all the queries can be seen in XComs in air
 To create a DAG in airflow, we need to create a file in the dags folder in the AIRFLOW\_HOME directory. So, when the user specifies the DAG through out dashboard, we generate a python file in the mentioned folder. The newly created DAG is registered with airflow after sometime(airflow has a heartbeat thread running, which looks for new DAGs in the folder periodically)
 We generate the code to specify the dag in airflow something like this.
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{task\PYGZus{}0} \PYG{o}{=} \PYG{n}{PythonOperator}\PYG{p}{(}
     \PYG{n}{task\PYGZus{}id}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{node\PYGZus{}\PYGZob{}\PYGZcb{}}\PYG{l+s+s1}{\PYGZsq{}}\PYG{o}{.}\PYG{n}{format}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{n1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{p}{,}
@@ -977,7 +2395,6 @@ We generate the code to specify the dag in airflow something like this.
 
 In the above code, the execute query is the function in which we execute queries and pass on their outputs to XComs to be used by the downstream nodes.
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Pushing onto XComs}
 \PYG{n}{context}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{task\PYGZus{}instance}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{xcom\PYGZus{}push}\PYG{p}{(}\PYG{n}{k}\PYG{p}{,}\PYG{n}{v}\PYG{p}{)}
@@ -985,7 +2402,7 @@ In the above code, the execute query is the function in which we execute queries
 \PYG{n}{context}\PYG{p}{[}\PYG{l+s+s1}{\PYGZsq{}}\PYG{l+s+s1}{task\PYGZus{}instance}\PYG{l+s+s1}{\PYGZsq{}}\PYG{p}{]}\PYG{o}{.}\PYG{n}{xcom\PYGZus{}pull}\PYG{p}{(}\PYG{n}{task\PYGZus{}ids}\PYG{o}{=}\PYG{n}{get\PYGZus{}task\PYGZus{}from\PYGZus{}node}\PYG{p}{(}\PYG{n}{mapp}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{p}{)}\PYG{p}{,}\PYG{n}{dag\PYGZus{}id} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{active\PYGZus{}users\PYGZus{}dag}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{key}\PYG{o}{=}\PYG{n}{k}\PYG{p}{)}
 \end{sphinxVerbatim}
 
-Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the \sphinxcode{\sphinxupquote{start\_date}} property is specified as the current time.
+Apart from this, some of the DAG properties which needs to be specified in airflow are generated as the default ones. For example the \sphinxcode{start\_date} property is specified as the current time.
 
 Airflow provides certain other useful properties which may be of interest to the user(when the system becomes huge). For example, the user can set an email-address on which a notification will be sent in case of the success and/or failure of tasks. But, taking all these inputs though our dashboard to generate the DAG, is like create a complete front-end wrapper over the airflow system, which is not out aim. If the user does wish to use the more involved airflow properties, he/she can always edit the source of the generated dag file. Also, if the need arises to provide the user such functionality through our dashboard, then modifying the code to generate an additional line in the dag python file is easy.
 
@@ -1035,13 +2452,194 @@ Table : The values are displayed in table format again using an Ajax call.
 An example of creating a custom metric will be provided in the {\hyperref[\detokenize{dashboard_website:dashboard-website}]{\sphinxcrossref{\DUrole{std,std-ref}{Dashboard Website}}}} section.
 
 
-\chapter{Generating alerts using Apache Flink and Kafka}
-\label{\detokenize{flink:generating-alerts-using-apache-flink-and-kafka}}\label{\detokenize{flink::doc}}
-We leverage a couple of open-source technologies to detect user specified alerts in the Twitter stream. Apache Flink is an open-source, distributed and high performing stream processing tool. Apache Kafka, also open-source, is another streaming tool which can be used as a message queue for communication between programs in a highly available distributed fashion.
+\section{Code Documentation for DAG abstraction}
+\label{\detokenize{dag:code-documentation-for-dag-abstraction}}
+Here we provide a documentation of the code used to generate, execute the DAG.
+\phantomsection\label{\detokenize{dag:module-create_dag}}\index{create\_dag (module)}
+Module to generate and store the DAG created by the user. Constains functions to generate DAG for the airflow
+dashboard also.
+
+The {\hyperref[\detokenize{dag:module-create_dag}]{\sphinxcrossref{\sphinxcode{create\_dag}}}} module contains the classes:
+\begin{itemize}
+\item {} 
+{\hyperref[\detokenize{dag:create_dag.DAG}]{\sphinxcrossref{\sphinxcode{create\_dag.DAG}}}}
+
+\end{itemize}
+
+When we instantiate an object of the class, the network source of the DAG is parsed to get parameters.
+One can use the function {\hyperref[\detokenize{dag:create_dag.DAG.feed_forward}]{\sphinxcrossref{\sphinxcode{create\_dag.DAG.feed\_forward()}}}} to execute the networkx DAG and the
+function {\hyperref[\detokenize{dag:create_dag.DAG.generate_dag}]{\sphinxcrossref{\sphinxcode{create\_dag.DAG.generate\_dag()}}}} to generate an airflow DAG.
+
+Example illustrating how to create a DAG  in which no input to no query is constant:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{queries} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{q1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{query 1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{inp1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{inp2}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{,}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{out1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{out2}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{]}\PYG{p}{]}\PYG{p}{,}
+\PYG{g+go}{                        \PYGZdq{}q2\PYGZdq{}:[\PYGZdq{}query 2\PYGZdq{},[\PYGZdq{}inp1\PYGZdq{}],[\PYGZdq{}out1\PYGZdq{},\PYGZdq{}out2\PYGZdq{}]],}
+\PYG{g+go}{                        \PYGZdq{}q3\PYGZdq{}:[\PYGZdq{}query 3\PYGZdq{},[\PYGZdq{}inp1\PYGZdq{},\PYGZdq{}inp2\PYGZdq{},\PYGZdq{}inp3\PYGZdq{}],[\PYGZdq{}out1\PYGZdq{}]]\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{types} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{q1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{mongoDB}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{q2}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{PostProcesing}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{q3}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{neo4j}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{constants} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} input\PYGZus{}graph.txt contains the network of the DAG. For format see the documentation}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{dag} \PYG{o}{=} \PYG{n}{DAG}\PYG{p}{(}\PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{input\PYGZus{}graph.txt}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{r}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{p}{)}\PYG{p}{,}\PYG{n}{queries}\PYG{p}{,}\PYG{n}{types}\PYG{p}{,}\PYG{n}{constants}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+Example of a query in which we use constants:
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} queries and types as before}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{constants} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{q1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{p}{\PYGZob{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{inp1}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{:}\PYG{l+m+mi}{3}\PYG{p}{\PYGZcb{}}\PYG{p}{\PYGZcb{}}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{c+c1}{\PYGZsh{} input\PYGZus{}graph.txt contains the network of the DAG. For format see the documentation}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{dag} \PYG{o}{=} \PYG{n}{DAG}\PYG{p}{(}\PYG{n+nb}{open}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{input\PYGZus{}graph.txt}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{,}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{r}\PYG{l+s+s2}{\PYGZdq{}}\PYG{p}{)}\PYG{o}{.}\PYG{n}{read}\PYG{p}{(}\PYG{p}{)}\PYG{p}{,}\PYG{n}{queries}\PYG{p}{,}\PYG{n}{types}\PYG{p}{,}\PYG{n}{constants}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+Now to execute the graph provide a function which can execute the queries.
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{dag}\PYG{o}{.}\PYG{n}{feed\PYGZus{}forward}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{execute}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\end{sphinxVerbatim}
+
+Create a DAG in airflow, get the plotly div for the DAG to be displayed on the dashboard
+
+\begin{sphinxVerbatim}[commandchars=\\\{\}]
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{dag}\PYG{o}{.}\PYG{n}{generate\PYGZus{}dag}\PYG{p}{(}\PYG{o}{\PYGZlt{}}\PYG{n}{dag\PYGZus{}name}\PYG{o}{\PYGZgt{}}\PYG{p}{)}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{dag}\PYG{o}{.}\PYG{n}{plot\PYGZus{}dag}\PYG{p}{(}\PYG{p}{)}
+\end{sphinxVerbatim}
+\index{DAG (class in create\_dag)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{dag:create_dag.DAG}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{create\_dag.}\sphinxbfcode{DAG}}{\emph{network\_file\_source}, \emph{queries}, \emph{types}, \emph{constants}}{}
+Bases: \sphinxcode{object}
+
+This class contains the functions to deal with the abstraction of DAG in our system. Some of the functions
+to this end, some of the functions are in the views.py file also.
+
+The \_\_init\_\_ is called to initilaize a DAG object. It reads the source of the DAG network file passed to it as a string. It
+parses the string and extracts te nodes, connections, inputs and returns from the file.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{network\_file\_source} \textendash{} a string contains the network specificaion of the DAG
+
+\item {} 
+\sphinxstyleliteralstrong{queries} \textendash{} a dictionary of queries with keys as the query names/postprocessing function names
+
+\item {} 
+\sphinxstyleliteralstrong{types} \textendash{} a dictionary containing the types of different queries
+
+\item {} 
+\sphinxstyleliteralstrong{constants} \textendash{} a dictionary of constant inputs to a query
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+For the queries parameter, the expectation depends on the type of query:
+\begin{itemize}
+\item {} 
+For neo4j queries it will be the query code, input, output list
+
+\item {} 
+For mongoDB queries it will be the partially formatted query specification, input, output list
+
+\item {} 
+For post processing functions it will be the function\_definition, input, output list
+
+\end{itemize}
+
+\begin{sphinxadmonition}{note}{Note:}
+The constants dictionary will contain only the mongoDB queries in current format
+\end{sphinxadmonition}
+
+\begin{sphinxadmonition}{note}{Note:}
+We don’t do very comprehensive checking if the network is valid.
+In case it is not a DAG, the user is notified of it. Other than that, there will be some python errors if some other issue is there.
+\end{sphinxadmonition}
+\index{feed\_forward() (create\_dag.DAG method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{dag:create_dag.DAG.feed_forward}}\pysiglinewithargsret{\sphinxbfcode{feed\_forward}}{\emph{execute}}{}
+Do a topological sort and then do a BFS of the DAG to execute all the queries.
+Expect that there is a function to evaluate a query given its inputs(as a dictionary) and returns a dictionary of outputs
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{execute} \textendash{} a function to execute the queries
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{generate\_dag() (create\_dag.DAG method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{dag:create_dag.DAG.generate_dag}}\pysiglinewithargsret{\sphinxbfcode{generate\_dag}}{\emph{dag\_name}}{}
+Create a python file for the DAG in the dags directory of AIRFLOW\_HOME. Generate the airflow code for
+the dag in the file. The templates used in the function are taken in the {\hyperref[\detokenize{dag:module-create_dag}]{\sphinxcrossref{\sphinxcode{create\_dag}}}} module.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{dag\_name} \textendash{} the name of the dag to be generated
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{note}{Note:}
+Currently it has the relative address of the folder as being contained in the myapp folder. Change it appropriately if you decide to
+change the airflow home
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
+\index{get\_drawable\_dag() (create\_dag.DAG method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{dag:create_dag.DAG.get_drawable_dag}}\pysiglinewithargsret{\sphinxbfcode{get\_drawable\_dag}}{\emph{G}, \emph{queries}, \emph{types}, \emph{edges}}{}
+Helper function for {\hyperref[\detokenize{dag:create_dag.DAG.plot_dag}]{\sphinxcrossref{\sphinxcode{create\_dag.DAG.plot\_dag()}}}}. It gets the locations of the various figures
+in the plotly plot of the DAG.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{queries} \textendash{} the queries in the DAG
+
+\item {} 
+\sphinxstyleliteralstrong{types} \textendash{} the types of queris. Not used, but can choose to get different colored rectangles for different query types
+
+\item {} 
+\sphinxstyleliteralstrong{edges} \textendash{} the edges in the DAG
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+a directed graph with the connections between inputs and outputs, the locations of bounding rectangles for the queries
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{plot\_dag() (create\_dag.DAG method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{dag:create_dag.DAG.plot_dag}}\pysiglinewithargsret{\sphinxbfcode{plot\_dag}}{}{}
+Get the plotly div for the DAG. Get the locations using the helper function and then just plot those and return the html div for the plot
+\begin{quote}\begin{description}
+\item[{Returns}] \leavevmode
+the html div of the DAG plotly plot
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\chapter{Generating alerts using Apache Flink}
+\label{\detokenize{flink:generating-alerts-using-apache-flink}}\label{\detokenize{flink::doc}}
+Tweets are continuously streamed from Twitter. Our system provides a functionality wherein it can detect certain user specified events in the live tweet stream. For example, user can make a specification to find viral hashtags in the sream. We leverage a couple of open-source technologies to detect user specified alerts in the Twitter stream. Apache Flink is an open-source, distributed and high performing stream processing tool. Apache Kafka, also open-source, is another streaming tool which can be used as a message queue for communication between programs in a highly available distributed fashion.
 
 Tweets are continuously streamed from Twitter using the Twitter Streaming API and pushed to a Kafka topic (“tweets\_topic”) for downstream processes. This tweet stream is processed by Flink programs to detect the specified alerts (one Flink program per alert specification). Alert specifications are given by the user using an abstraction that we describe next.
 
-Our alert specification abstraction is inspired from Flink’s own specification. Each tweet is considered to have 3 attributes - Hashtags, URLs and User mentions. To specify an alert, user needs to specify the following:
+
+\section{Alert Specification Abstraction}
+\label{\detokenize{flink:alert-specification-abstraction}}
+Our alert specification abstraction is inspired from Flink’s own specification. Each tweet is considered to have 4 attributes - UserId, Hashtags, URLs and User mentions. To specify an alert, user needs to specify the following:
 \begin{itemize}
 \item {} 
 Filter - values of 0 or more tweet attributes to filter the tweets relevant for the alert.
@@ -1062,9 +2660,27 @@ Count - threshold of count of tweets in any window.
 
 As soon as the count is reached in any window, an alert is generated.
 
-This abstraction is translated to a Flink Java application, compiled, uploaded and run by Flink server running locally. It continuously streams the tweets, processes them according to the specification and posts any alerts on a different Kafka topic (“alerts\_topic”). There is a simple Python application which continuously polls for alerts on this Kafka topic and persists any found alerts to MongoDB to be displayed by the dashboard.
 
-Example: Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:
+\section{Back-end process}
+\label{\detokenize{flink:back-end-process}}\begin{description}
+\item[{The specification made by the user in our abstraction is processed as follows:}] \leavevmode\begin{itemize}
+\item {} 
+The specification is translated to a Flink Java application, compiled using Maven, uploaded and run by Flink server running locally.
+
+\item {} 
+This Flink Java application continuously streams the tweets from the Kafka topic (“tweets\_topic”), processes them according to the specification and posts any alerts on a different Kafka topic (“alerts\_topic”).
+
+\item {} 
+There is a simple Python application which continuously polls for alerts on this Kafka topic and persists any found alerts to MongoDB to be displayed by the dashboard.
+
+\end{itemize}
+
+\end{description}
+
+
+\section{Example - Finding viral hashtags}
+\label{\detokenize{flink:example-finding-viral-hashtags}}
+Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:
 \begin{itemize}
 \item {} 
 Filter = None; as we need to consider all tweets.
@@ -1082,6 +2698,182 @@ Window slide = 60; say, for non-overlapping windows
 Count = 100
 
 \end{itemize}
+
+
+\section{Flink Code Generator Documentation}
+\label{\detokenize{flink:flink-code-generator-documentation}}
+Here we provide a documentation of the Flink code generator.
+\phantomsection\label{\detokenize{flink:module-flink_code_gen}}\index{flink\_code\_gen (module)}
+Module to generate Java code for Flink from the alert specification taken from user on the dashboard. You need to have jinja2 python module and Maven installed.
+\index{FlinkCodeGenerator (class in flink\_code\_gen)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_code_gen.FlinkCodeGenerator}}\pysigline{\sphinxbfcode{class }\sphinxcode{flink\_code\_gen.}\sphinxbfcode{FlinkCodeGenerator}}
+Bases: \sphinxcode{object}
+
+Class to translate alert specification given by user to Java code for Flink. It uses a template defined in
+flink\_template.txt. The user provided specification is translated to Java code and placed at appropriate
+positions inside the template. This renders the complete Java file. The Java project is then created
+containing this file and compiled using Maven.
+\index{compile\_code() (flink\_code\_gen.FlinkCodeGenerator method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_code_gen.FlinkCodeGenerator.compile_code}}\pysiglinewithargsret{\sphinxbfcode{compile\_code}}{\emph{alert\_name}}{}
+Compiles the java project for the given alert using maven and creates the jar file.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{alert\_name} \textendash{} The name of the alert whose code is to be compiled.
+
+\item[{Returns}] \leavevmode
+The path of the jar file resulting from the compilation.
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{delete\_code() (flink\_code\_gen.FlinkCodeGenerator method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_code_gen.FlinkCodeGenerator.delete_code}}\pysiglinewithargsret{\sphinxbfcode{delete\_code}}{\emph{alert\_name}}{}
+Deletes the java project for the given alert name.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{alert\_name} \textendash{} The name of the alert whose code is to be deleted.
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{write\_code() (flink\_code\_gen.FlinkCodeGenerator method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_code_gen.FlinkCodeGenerator.write_code}}\pysiglinewithargsret{\sphinxbfcode{write\_code}}{\emph{alert\_name}, \emph{filter\_string}, \emph{group\_keys}, \emph{window\_length}, \emph{window\_slide}, \emph{threshold}}{}
+Generates the java code for the given alert specification and writes tha java project for it in the alert’s base path.
+Note: It can raise exception like alert already exists with the given name.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{alert\_name} \textendash{} Name of the alert to be created.
+
+\item {} 
+\sphinxstyleliteralstrong{filter\_string} \textendash{} Filter specification for the alert. Refer to \sphinxcode{flink\_code\_gen.FlinkCodeGenerator.\_get\_filter\_code()}.
+
+\item {} 
+\sphinxstyleliteralstrong{group\_keys} \textendash{} List of keys to group on. Refer to \sphinxcode{flink\_code\_gen.FlinkCodeGenerator.\_get\_duplication\_code()}.
+
+\item {} 
+\sphinxstyleliteralstrong{window\_length} \textendash{} Length of window in seconds. The threshold will be looked at each window in each sub-stream.
+
+\item {} 
+\sphinxstyleliteralstrong{window\_slide} \textendash{} Number of seconds after which to start each new window.
+
+\item {} 
+\sphinxstyleliteralstrong{threshold} \textendash{} Count threshold for tweets in each window to generate the alert.
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\section{Flink API Documentation}
+\label{\detokenize{flink:flink-api-documentation}}
+Here we provide a documentation of the Flink API.
+\phantomsection\label{\detokenize{flink:module-flink_api}}\index{flink\_api (module)}
+Module to communicate with the Flink server running locally to do tasks like uploading an alert’s jar, running the jar as a Flink job,
+cancelling a running job and checking the status of jobs.
+\index{FlinkAPI (class in flink\_api)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_api.FlinkAPI}}\pysiglinewithargsret{\sphinxbfcode{class }\sphinxcode{flink\_api.}\sphinxbfcode{FlinkAPI}}{\emph{hostname='localhost'}, \emph{port=8081}}{}
+Bases: \sphinxcode{object}
+
+Class to communicate with Flink server.
+\index{cancel\_job() (flink\_api.FlinkAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_api.FlinkAPI.cancel_job}}\pysiglinewithargsret{\sphinxbfcode{cancel\_job}}{\emph{job\_id}}{}
+Cancels the Flink job with the given job\_id.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{job\_id} \textendash{} job\_id of the Flink job to cancel.
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{check\_job\_status\_all() (flink\_api.FlinkAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_api.FlinkAPI.check_job_status_all}}\pysiglinewithargsret{\sphinxbfcode{check\_job\_status\_all}}{}{}
+Check the status of all jobs run in the past.
+\begin{quote}\begin{description}
+\item[{Returns}] \leavevmode
+Dictionary having key as alert\_name (which was supplied in run\_jar) and value as status of the last job of that alert.
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{run\_jar() (flink\_api.FlinkAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_api.FlinkAPI.run_jar}}\pysiglinewithargsret{\sphinxbfcode{run\_jar}}{\emph{alert\_name}, \emph{flink\_jar\_id}}{}
+Runs the given jar\_id on Flink.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{alert\_name} \textendash{} Name of the alert to which the jar\_id belongs.
+
+\item {} 
+\sphinxstyleliteralstrong{flink\_jar\_id} \textendash{} jar\_id to be run on Flink.
+
+\end{itemize}
+
+\item[{Returns}] \leavevmode
+The job\_id of the Flink job started as returned by the Flink server.
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{upload\_jar() (flink\_api.FlinkAPI method)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:flink_api.FlinkAPI.upload_jar}}\pysiglinewithargsret{\sphinxbfcode{upload\_jar}}{\emph{jar\_path}}{}
+Uploads the jar of the alert to the Flink server running locally.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{jar\_path} \textendash{} Path of the jar file to upload.
+
+\item[{Returns}] \leavevmode
+The jar\_id as returned by Flink server.
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+
+\end{fulllineitems}
+
+
+
+\section{Flink Alerts Consumer}
+\label{\detokenize{flink:flink-alerts-consumer}}
+Here we provide a documentation of the Kafka consumer (for the topic ‘alerts\_topic”) for Flink alerts.
+\phantomsection\label{\detokenize{flink:module-kafka_flink_alerts_consumer}}\index{kafka\_flink\_alerts\_consumer (module)}
+Module to read alerts from the Kafka topic (“alerts\_topic”) where Flink applications post alerts and then put them in MongoDB.
+\index{insert\_records() (in module kafka\_flink\_alerts\_consumer)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{flink:kafka_flink_alerts_consumer.insert_records}}\pysiglinewithargsret{\sphinxcode{kafka\_flink\_alerts\_consumer.}\sphinxbfcode{insert\_records}}{\emph{records}}{}
+\end{fulllineitems}
+
 
 
 \chapter{Benchmarking the query answering}
@@ -1127,7 +2919,6 @@ Find the count of users who tweeted in a given interval
 
 The cypher code of these queries can also be seen here.
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Return count of distinct users who have used a hashtag}
 \PYG{n}{q1} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}\PYG{l+s+s2}{match (u:USER)\PYGZhy{}[:TWEETED]\PYGZhy{}\PYGZgt{}(t:TWEET)\PYGZhy{}[:HAS\PYGZus{}HASHTAG]\PYGZhy{}\PYGZgt{}(:HASHTAG\PYGZob{}text:}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZob{}\PYGZob{}h\PYGZcb{}\PYGZcb{}}\PYG{l+s+s2}{\PYGZdq{}}\PYG{l+s+s2}{\PYGZcb{})}
@@ -1184,7 +2975,6 @@ Find users which follow user with id u1 and follow user u which tweeted b/w t1 a
 
 The cypher code of these queries is as follows.
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{c+c1}{\PYGZsh{} Find common followers of two users}
 \PYG{n}{q6} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}\PYGZdq{}\PYGZdq{}}
@@ -1230,6 +3020,93 @@ Further observe that the peak performance in query answering is obtained at less
 \section{MongoDB queries}
 \label{\detokenize{benchmarking:mongodb-queries}}
 MongoDB queries are generally answered very fast in comparison to the neo4j queries, which is owing to the intended schemas of the two databases. Thus, no further observations were made in mongoDB query answering apart from observing that all the queries are answered in mili second scale.
+
+
+\section{Code Documentation for benchmarking}
+\label{\detokenize{benchmarking:code-documentation-for-benchmarking}}
+Here we provide a documentation of the code used in this sections functionality.
+\phantomsection\label{\detokenize{benchmarking:module-query_answering}}\index{query\_answering (module)}
+Module to benchmark the query answering rate for neo4j.
+\begin{itemize}
+\item {} 
+Generate a list of queries.
+
+\item {} 
+Open multple neo4j sessions.
+
+\item {} 
+See what is the peak rate.
+
+\end{itemize}
+\index{answer\_queries() (in module query\_answering)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{benchmarking:query_answering.answer_queries}}\pysiglinewithargsret{\sphinxcode{query\_answering.}\sphinxbfcode{answer\_queries}}{\emph{query\_l}}{}
+Function to answer all queries from a list of queries in sequential manner
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{query\_l} \textendash{} the list of cypher queries
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{answer\_queries\_par() (in module query\_answering)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{benchmarking:query_answering.answer_queries_par}}\pysiglinewithargsret{\sphinxcode{query\_answering.}\sphinxbfcode{answer\_queries\_par}}{\emph{query\_l}, \emph{num\_procs}}{}
+Function to answer all queries from a list of queries in concurrent manner. Spawn \textless{}num\_procs\textgreater{} number
+of processes. Each process opens a session and executes a cypher query.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode\begin{itemize}
+\item {} 
+\sphinxstyleliteralstrong{query\_l} \textendash{} the list of cypher queries
+
+\item {} 
+\sphinxstyleliteralstrong{num\_procs} \textendash{} number of processes to create
+
+\end{itemize}
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{note}{Note:}
+There will only be atmost k number of real parallel process in the system, where k is number of cores. This
+number is further limited by the session management of neo4j, which is what we observe in the profile difference between simple and complex queries.
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
+\index{answer\_query() (in module query\_answering)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{benchmarking:query_answering.answer_query}}\pysiglinewithargsret{\sphinxcode{query\_answering.}\sphinxbfcode{answer\_query}}{\emph{query}}{}
+Answer a single cypher query \textless{}query\textgreater{}
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{query} \textendash{} cypher query to be answered
+
+\end{description}\end{quote}
+
+\end{fulllineitems}
+
+\index{generate\_random\_queries() (in module query\_answering)}
+
+\begin{fulllineitems}
+\phantomsection\label{\detokenize{benchmarking:query_answering.generate_random_queries}}\pysiglinewithargsret{\sphinxcode{query\_answering.}\sphinxbfcode{generate\_random\_queries}}{\emph{total}}{}
+Generate a list containing \textless{}total\textgreater{} cypher queries. Consider templated cypher queries and lists of attributes. Randomly put in the attributs into the cypher
+query tempate to get an executable query.
+\begin{quote}\begin{description}
+\item[{Parameters}] \leavevmode
+\sphinxstyleliteralstrong{total} \textendash{} number of queris to generate
+
+\end{description}\end{quote}
+
+\begin{sphinxadmonition}{note}{Note:}
+Obiviously, one need to change the list of attibutes accordingly, if they choose to benchmark on a different dataset.
+\end{sphinxadmonition}
+
+\end{fulllineitems}
+
 
 
 \chapter{Dashboard Website}
@@ -1480,10 +3357,9 @@ In the end, the best way to figure out the system is to get your hands dirty wit
 \label{\detokenize{running:setting-up-the-environment}}
 We recommend getting conda(or miniconda if you are low on disk space). Installing conda is easy, and the installation instructions can be found on the \sphinxhref{https://conda.io/docs/user-guide/install/download.html}{download page} itself. After installation of conda, run the following commands:
 
-\fvset{hllines={, ,}}%
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 // create a new virtual environment
-conda create \PYGZhy{}\PYGZhy{}name twitter\PYGZus{}analytics \PYG{n+nv}{python}\PYG{o}{=}\PYG{o}{=}\PYG{l+m}{3}.6
+conda create \PYGZhy{}\PYGZhy{}name twitter\PYGZus{}analytics \PYG{n+nv}{python}\PYG{o}{=}\PYG{o}{=}\PYG{l+m}{3}.6 \PYGZhy{}\PYGZhy{}file requirements\PYGZus{}conda.txt
 // clone the repo
 git clone https://github.com/abhi19gupta/TwitterAnalytics.git
 // \PYG{n+nb}{cd} into the repo
@@ -1491,19 +3367,85 @@ git clone https://github.com/abhi19gupta/TwitterAnalytics.git
 // activate the virtual envt
 \PYG{n+nb}{source} activate twitter\PYGZus{}analytics
 // install the required modules.
-pip install \PYGZhy{}r requirements.txt
+pip install \PYGZhy{}r requirements\PYGZus{}pip.txt
 .
 .
 // deactivate the virtual environment
 \PYG{n+nb}{source} deactivate
 \end{sphinxVerbatim}
 
-Apart from these, the user also needs to install mongoDB, neo4j databases and The Apache flink-kafka framework. Again instructions on how to install each specific to your system can be seen on their corresponsing documentations.
+Please note that the requirements mentioned above are a superset of system’s actual requirements. It may contain some ML related modules which were used while trying NER on tweets, but are not used in the final system.
+
+The entire system has been designed and tested on Ubuntu 16.04 machine. It may work on Windows with appropriate tweaks.
+
+Apart from these, the user also needs to install the following:
+\begin{itemize}
+\item {} 
+MongoDB: Follow the installation instructions on this \sphinxhref{https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/}{MongoDB installation link}.
+
+\item {} 
+Neo4j: Follow the installation instructions on this \sphinxhref{https://neo4j.com/docs/operations-manual/current/installation/linux/debian/}{Neo4j installation link}.
+
+\item {} 
+Apache Flink: Download the Flink 1.4.2 binary from this \sphinxhref{https://archive.apache.org/dist/flink/flink-1.4.2/}{Flink binary link}. If this does not work, download the latest version from the \sphinxhref{https://flink.apache.org/downloads.html}{Flink download page}. Once downloaded, simply extract the zip and the installation is complete. You need to use the path of this installation in the shell script as mentioned in {\hyperref[\detokenize{running:running-flink-and-kafka}]{\sphinxcrossref{\DUrole{std,std-ref}{Running Flink and Kafka}}}}.
+
+\item {} 
+Apache Kafka: Download the Kafka 2.11 binary from thie \sphinxhref{https://www.apache.org/dyn/closer.cgi?path=/kafka/1.1.0/kafka\_2.11-1.1.0.tgz}{Kafka binary link}. If this does not work, download the latest version from the \sphinxhref{https://kafka.apache.org/downloads}{Kafka download page}. Once downloaded, simply extract the zip and the installation is complete. You need to use the path of this installation in the shell script as mentioned in {\hyperref[\detokenize{running:running-flink-and-kafka}]{\sphinxcrossref{\DUrole{std,std-ref}{Running Flink and Kafka}}}}.
+
+\item {} 
+Apache Airflow: Follow the installation instructions on this \sphinxhref{https://airflow.apache.org/installation.html}{Airflow installation link}.
+
+\end{itemize}
 
 
-\section{Running the dashboard}
+\section{Running the system}
+\label{\detokenize{running:running-the-system}}
+To set the system up, the following steps need to be taken.
+
+
+\subsection{Collecting data}
+\label{\detokenize{running:collecting-data}}
+Navigate to ‘Read Twitter Stream’ and run \sphinxcode{python streaming.py} to collect streaming data or run \sphinxcode{python userstimeline.py} to collect data for a set of users.
+
+More details can be found here: {\hyperref[\detokenize{twitter_stream:read-data-from-twitter-api}]{\sphinxcrossref{\DUrole{std,std-ref}{Read data from Twitter API}}}}.
+
+
+\subsection{Ingesting data}
+\label{\detokenize{running:ingesting-data}}
+Before proceeding, start the Neo4j and MongoDB servers locally (using service commands in Ubuntu. Eg. \sphinxcode{service neo4j start}, \sphinxcode{service mongod start}).
+
+Once the data is collected, you can ingest it into the databases as follows:
+\begin{itemize}
+\item {} 
+Neo4j: Navigate to Ingestion/Neo4j/ and run \sphinxcode{python ingest\_neo4j\_streaming.py} to ingest data collected using streaming API or run \sphinxcode{python ingest\_neo4j\_user\_timeline.py} to ingest data collected using User Timeline API.
+
+\item {} 
+MongDB: In MongoDB we provide functionality to store only streaming data. Navigate to Ingestion/MongoDB and run \sphinxcode{python ingest\_raw.py}.
+
+\end{itemize}
+
+More details can be found here: {\hyperref[\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into MongoDB}}}} and {\hyperref[\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into Neo4j}}}}
+
+
+\subsection{Running the dashboard}
 \label{\detokenize{running:running-the-dashboard}}
-To run the website on a local server on your machine, navigate to Dashboard Website/ and run \sphinxcode{\sphinxupquote{python manage.py runserver}}. Presently the databases will be empty, to insert the new data into the databases see the {\hyperref[\detokenize{mongoDB_data_ingestion:ingesting-data-into-mongodb}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into MongoDB}}}} and the {\hyperref[\detokenize{neo4j_data_ingestion:ingesting-data-into-neo4j}]{\sphinxcrossref{\DUrole{std,std-ref}{Ingesting data into Neo4j}}}} sections.
+To run the website on a local server on your machine, navigate to Dashboard\_Website/ and run \sphinxcode{python manage.py runserver}.
+
+
+\subsection{Running Flink and Kafka}
+\label{\detokenize{running:running-flink-and-kafka}}
+To test the Flink applications generated on the dashboard, you need to do the following:
+\begin{itemize}
+\item {} 
+Start the Kafka and Flink servers locally using the shell script in ‘Kafka/’ folder. (Configure the path of the Kafka and Flink directories in the shell script).
+
+\item {} 
+You can now create alert specifications on the dashboard.
+
+\item {} 
+Now, to put some tweets on the Kafka topic ‘tweets\_topic’. Navigate to ‘Kafka/’ and run \sphinxcode{python kafka\_tweets\_producer.py} after configuring the data directory in its main function.
+
+\end{itemize}
 
 
 \chapter{Indices and tables}
@@ -1520,6 +3462,40 @@ To run the website on a local server on your machine, navigate to Dashboard Webs
 \end{itemize}
 
 
+\renewcommand{\indexname}{Python Module Index}
+\begin{sphinxtheindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+\bigletter{c}
+\item {\sphinxstyleindexentry{create\_dag}}\sphinxstyleindexpageref{dag:\detokenize{module-create_dag}}
+\indexspace
+\bigletter{e}
+\item {\sphinxstyleindexentry{execute\_queries}}\sphinxstyleindexpageref{mongoDB_query_generation:\detokenize{module-execute_queries}}
+\indexspace
+\bigletter{f}
+\item {\sphinxstyleindexentry{flink\_api}}\sphinxstyleindexpageref{flink:\detokenize{module-flink_api}}
+\item {\sphinxstyleindexentry{flink\_code\_gen}}\sphinxstyleindexpageref{flink:\detokenize{module-flink_code_gen}}
+\indexspace
+\bigletter{g}
+\item {\sphinxstyleindexentry{generate\_queries}}\sphinxstyleindexpageref{neo4j_query_generation:\detokenize{module-generate_queries}}
+\indexspace
+\bigletter{i}
+\item {\sphinxstyleindexentry{ingest\_neo4j\_streaming}}\sphinxstyleindexpageref{neo4j_data_ingestion:\detokenize{module-ingest_neo4j_streaming}}
+\item {\sphinxstyleindexentry{ingest\_neo4j\_user\_timeline}}\sphinxstyleindexpageref{neo4j_data_ingestion:\detokenize{module-ingest_neo4j_user_timeline}}
+\item {\sphinxstyleindexentry{ingest\_raw}}\sphinxstyleindexpageref{mongoDB_data_ingestion:\detokenize{module-ingest_raw}}
+\indexspace
+\bigletter{k}
+\item {\sphinxstyleindexentry{kafka\_flink\_alerts\_consumer}}\sphinxstyleindexpageref{flink:\detokenize{module-kafka_flink_alerts_consumer}}
+\item {\sphinxstyleindexentry{kafka\_tweets\_producer}}\sphinxstyleindexpageref{kafka:\detokenize{module-kafka_tweets_producer}}
+\indexspace
+\bigletter{q}
+\item {\sphinxstyleindexentry{query\_answering}}\sphinxstyleindexpageref{benchmarking:\detokenize{module-query_answering}}
+\indexspace
+\bigletter{s}
+\item {\sphinxstyleindexentry{streaming}}\sphinxstyleindexpageref{twitter_stream:\detokenize{module-streaming}}
+\indexspace
+\bigletter{u}
+\item {\sphinxstyleindexentry{userstimeline}}\sphinxstyleindexpageref{twitter_stream:\detokenize{module-userstimeline}}
+\end{sphinxtheindex}
 
 \renewcommand{\indexname}{Index}
 \printindex

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Generating alerts using Apache Flink and Kafka &mdash; Twitter Analytics 0.1 documentation</title>
+  <title>Generating alerts using Apache Flink &mdash; Twitter Analytics 0.1 documentation</title>
   
 
   
@@ -86,6 +86,10 @@
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
@@ -98,7 +102,11 @@
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
@@ -114,6 +122,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#ingesting-the-data-into-mongodb-practical-side">Ingesting the data into mongoDB : Practical side</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#mongodb-ingestion-rates">MongoDB Ingestion Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_data_ingestion.html#module-ingest_raw">Code Documentation for mongoDB ingestion</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_query_generation.html">Neo4j: API to generate cypher queries</a><ul>
@@ -129,7 +138,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="mongoDB_query_generation.html">Generating queries in mongoDB</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mongoDB_query_generation.html#generic-api-for-mongodb-idea">Generic API for mongoDB : Idea</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mongoDB_query_generation.html#mongodb-query-execution-code-documentation">MongoDB query execution code documentation</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="postprocessing.html">About Post processing functions</a><ul>
@@ -147,8 +159,13 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#flink-alerts-consumer">Flink Alerts Consumer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
@@ -158,6 +175,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="benchmarking.html#mongodb-queries">MongoDB queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarking.html#code-documentation-for-benchmarking">Code Documentation for benchmarking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="dashboard_website.html">Dashboard Website</a><ul>
@@ -214,7 +232,7 @@
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
-    <li>Generating alerts using Apache Flink and Kafka</li>
+    <li>Generating alerts using Apache Flink</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/flink.rst.txt" rel="nofollow">
                 <span class="fa fa-binoculars"></span>&#32;View page source
@@ -226,11 +244,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody" class="toBeIndexed">
             
-  <div class="section" id="generating-alerts-using-apache-flink-and-kafka">
-<h1>Generating alerts using Apache Flink and Kafka<a class="headerlink" href="#generating-alerts-using-apache-flink-and-kafka" title="Permalink to this headline">¶</a></h1>
-<p>We leverage a couple of open-source technologies to detect user specified alerts in the Twitter stream. Apache Flink is an open-source, distributed and high performing stream processing tool. Apache Kafka, also open-source, is another streaming tool which can be used as a message queue for communication between programs in a highly available distributed fashion.</p>
+  <div class="section" id="generating-alerts-using-apache-flink">
+<h1>Generating alerts using Apache Flink<a class="headerlink" href="#generating-alerts-using-apache-flink" title="Permalink to this headline">¶</a></h1>
+<p>Tweets are continuously streamed from Twitter. Our system provides a functionality wherein it can detect certain user specified events in the live tweet stream. For example, user can make a specification to find viral hashtags in the sream. We leverage a couple of open-source technologies to detect user specified alerts in the Twitter stream. Apache Flink is an open-source, distributed and high performing stream processing tool. Apache Kafka, also open-source, is another streaming tool which can be used as a message queue for communication between programs in a highly available distributed fashion.</p>
 <p>Tweets are continuously streamed from Twitter using the Twitter Streaming API and pushed to a Kafka topic (“tweets_topic”) for downstream processes. This tweet stream is processed by Flink programs to detect the specified alerts (one Flink program per alert specification). Alert specifications are given by the user using an abstraction that we describe next.</p>
-<p>Our alert specification abstraction is inspired from Flink’s own specification. Each tweet is considered to have 3 attributes - Hashtags, URLs and User mentions. To specify an alert, user needs to specify the following:</p>
+<div class="section" id="alert-specification-abstraction">
+<h2>Alert Specification Abstraction<a class="headerlink" href="#alert-specification-abstraction" title="Permalink to this headline">¶</a></h2>
+<p>Our alert specification abstraction is inspired from Flink’s own specification. Each tweet is considered to have 4 attributes - UserId, Hashtags, URLs and User mentions. To specify an alert, user needs to specify the following:</p>
 <blockquote>
 <div><ul class="simple">
 <li>Filter - values of 0 or more tweet attributes to filter the tweets relevant for the alert.</li>
@@ -241,8 +261,22 @@
 </ul>
 </div></blockquote>
 <p>As soon as the count is reached in any window, an alert is generated.</p>
-<p>This abstraction is translated to a Flink Java application, compiled, uploaded and run by Flink server running locally. It continuously streams the tweets, processes them according to the specification and posts any alerts on a different Kafka topic (“alerts_topic”). There is a simple Python application which continuously polls for alerts on this Kafka topic and persists any found alerts to MongoDB to be displayed by the dashboard.</p>
-<p>Example: Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:</p>
+</div>
+<div class="section" id="back-end-process">
+<h2>Back-end process<a class="headerlink" href="#back-end-process" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>The specification made by the user in our abstraction is processed as follows:</dt>
+<dd><ul class="first last simple">
+<li>The specification is translated to a Flink Java application, compiled using Maven, uploaded and run by Flink server running locally.</li>
+<li>This Flink Java application continuously streams the tweets from the Kafka topic (“tweets_topic”), processes them according to the specification and posts any alerts on a different Kafka topic (“alerts_topic”).</li>
+<li>There is a simple Python application which continuously polls for alerts on this Kafka topic and persists any found alerts to MongoDB to be displayed by the dashboard.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="example-finding-viral-hashtags">
+<h2>Example - Finding viral hashtags<a class="headerlink" href="#example-finding-viral-hashtags" title="Permalink to this headline">¶</a></h2>
+<p>Let us consider an example where we wish to be notified an alert if any hashtag is getting viral in the twitter stream. Suppose we define a hashtag as viral, if it is used more than 100 times in a span of 60 seconds. Now to describe this in our abstraction, we need to specify the following:</p>
 <blockquote>
 <div><ul class="simple">
 <li>Filter = None; as we need to consider all tweets.</li>
@@ -252,14 +286,15 @@
 <li>Count = 100</li>
 </ul>
 </div></blockquote>
-<div class="section" id="flink-code-documentation">
-<h2>Flink Code Documentation<a class="headerlink" href="#flink-code-documentation" title="Permalink to this headline">¶</a></h2>
-<p>Here we provide a documentation of the flink code generator.</p>
+</div>
+<div class="section" id="flink-code-generator-documentation">
+<h2>Flink Code Generator Documentation<a class="headerlink" href="#flink-code-generator-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the Flink code generator.</p>
 <span class="target" id="module-flink_code_gen"></span><p>Module to generate Java code for Flink from the alert specification taken from user on the dashboard. You need to have jinja2 python module and Maven installed.</p>
 <dl class="class">
 <dt id="flink_code_gen.FlinkCodeGenerator">
 <em class="property">class </em><code class="descclassname">flink_code_gen.</code><code class="descname">FlinkCodeGenerator</code><a class="reference internal" href="_modules/flink_code_gen.html#FlinkCodeGenerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_code_gen.FlinkCodeGenerator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Class to translate alert specification given by user to Java code for Flink. It uses a template defined in
 flink_template.txt. The user provided specification is translated to Java code and placed at appropriate
 positions inside the template. This renders the complete Java file. The Java project is then created
@@ -305,8 +340,8 @@ Note: It can raise exception like alert already exists with the given name.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>alert_name</strong> – Name of the alert to be created.</li>
-<li><strong>filter_string</strong> – Filter specification for the alert. Refer to <code class="xref py py-meth docutils literal notranslate"><span class="pre">flink_code_gen.FlinkCodeGenerator._get_filter_code()</span></code>.</li>
-<li><strong>group_keys</strong> – List of keys to group on. Refer to <code class="xref py py-meth docutils literal notranslate"><span class="pre">flink_code_gen.FlinkCodeGenerator._get_duplication_code()</span></code>.</li>
+<li><strong>filter_string</strong> – Filter specification for the alert. Refer to <code class="xref py py-func docutils literal"><span class="pre">flink_code_gen.FlinkCodeGenerator._get_filter_code()</span></code>.</li>
+<li><strong>group_keys</strong> – List of keys to group on. Refer to <code class="xref py py-func docutils literal"><span class="pre">flink_code_gen.FlinkCodeGenerator._get_duplication_code()</span></code>.</li>
 <li><strong>window_length</strong> – Length of window in seconds. The threshold will be looked at each window in each sub-stream.</li>
 <li><strong>window_slide</strong> – Number of seconds after which to start each new window.</li>
 <li><strong>threshold</strong> – Count threshold for tweets in each window to generate the alert.</li>
@@ -318,6 +353,94 @@ Note: It can raise exception like alert already exists with the given name.</p>
 </dd></dl>
 
 </dd></dl>
+
+</div>
+<div class="section" id="flink-api-documentation">
+<h2>Flink API Documentation<a class="headerlink" href="#flink-api-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the Flink API.</p>
+<span class="target" id="module-flink_api"></span><p>Module to communicate with the Flink server running locally to do tasks like uploading an alert’s jar, running the jar as a Flink job,
+cancelling a running job and checking the status of jobs.</p>
+<dl class="class">
+<dt id="flink_api.FlinkAPI">
+<em class="property">class </em><code class="descclassname">flink_api.</code><code class="descname">FlinkAPI</code><span class="sig-paren">(</span><em>hostname='localhost'</em>, <em>port=8081</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_api.html#FlinkAPI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_api.FlinkAPI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class to communicate with Flink server.</p>
+<dl class="method">
+<dt id="flink_api.FlinkAPI.cancel_job">
+<code class="descname">cancel_job</code><span class="sig-paren">(</span><em>job_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_api.html#FlinkAPI.cancel_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_api.FlinkAPI.cancel_job" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels the Flink job with the given job_id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>job_id</strong> – job_id of the Flink job to cancel.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="flink_api.FlinkAPI.check_job_status_all">
+<code class="descname">check_job_status_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_api.html#FlinkAPI.check_job_status_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_api.FlinkAPI.check_job_status_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the status of all jobs run in the past.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Dictionary having key as alert_name (which was supplied in run_jar) and value as status of the last job of that alert.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="flink_api.FlinkAPI.run_jar">
+<code class="descname">run_jar</code><span class="sig-paren">(</span><em>alert_name</em>, <em>flink_jar_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_api.html#FlinkAPI.run_jar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_api.FlinkAPI.run_jar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs the given jar_id on Flink.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>alert_name</strong> – Name of the alert to which the jar_id belongs.</li>
+<li><strong>flink_jar_id</strong> – jar_id to be run on Flink.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The job_id of the Flink job started as returned by the Flink server.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="flink_api.FlinkAPI.upload_jar">
+<code class="descname">upload_jar</code><span class="sig-paren">(</span><em>jar_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flink_api.html#FlinkAPI.upload_jar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#flink_api.FlinkAPI.upload_jar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads the jar of the alert to the Flink server running locally.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>jar_path</strong> – Path of the jar file to upload.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The jar_id as returned by Flink server.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="flink-alerts-consumer">
+<h2>Flink Alerts Consumer<a class="headerlink" href="#flink-alerts-consumer" title="Permalink to this headline">¶</a></h2>
+<p>Here we provide a documentation of the Kafka consumer (for the topic ‘alerts_topic”) for Flink alerts.</p>
+<span class="target" id="module-kafka_flink_alerts_consumer"></span><p>Module to read alerts from the Kafka topic (“alerts_topic”) where Flink applications post alerts and then put them in MongoDB.</p>
+<dl class="function">
+<dt id="kafka_flink_alerts_consumer.insert_records">
+<code class="descclassname">kafka_flink_alerts_consumer.</code><code class="descname">insert_records</code><span class="sig-paren">(</span><em>records</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/kafka_flink_alerts_consumer.html#insert_records"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kafka_flink_alerts_consumer.insert_records" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>

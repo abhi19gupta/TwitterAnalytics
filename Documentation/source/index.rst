@@ -18,6 +18,7 @@ NOTE : For all experiments mentioned in this document, we use a Intel i7 process
 
    introduction.rst
    twitter_stream.rst
+   kafka.rst
    neo4j_data_ingestion.rst
    mongoDB_data_ingestion.rst
    neo4j_query_generation.rst

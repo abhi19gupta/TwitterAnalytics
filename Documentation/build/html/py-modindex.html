@@ -91,6 +91,10 @@
 <li class="toctree-l2"><a class="reference internal" href="twitter_stream.html#stream-sample-api-code-documentation">Stream Sample API Code Documentation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="kafka.html">Putting tweets to Kafka</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kafka.html#kafka-tweet-producer-documentation">Kafka Tweet Producer Documentation</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j_data_ingestion.html">Ingesting data into Neo4j</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#data-stored-in-neo4j">Data stored in neo4j</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-network">User network</a></li>
@@ -103,7 +107,11 @@
 <li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#indexing">Indexing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#running-the-ingestion-script">Running the ingestion script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#streaming-data">Streaming data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neo4j_data_ingestion.html#user-timeline-data">User Timeline data</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#neo4j-ingestion-rates">Neo4j Ingestion Rates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j_data_ingestion.html#code-documentation-for-neo4j-data-ingestion">Code Documentation for Neo4j data ingestion</a></li>
 </ul>
@@ -156,8 +164,13 @@
 <li class="toctree-l2"><a class="reference internal" href="dag.html#code-documentation-for-dag-abstraction">Code Documentation for DAG abstraction</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink and Kafka</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-documentation">Flink Code Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flink.html">Generating alerts using Apache Flink</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#alert-specification-abstraction">Alert Specification Abstraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#back-end-process">Back-end process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#example-finding-viral-hashtags">Example - Finding viral hashtags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-code-generator-documentation">Flink Code Generator Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-api-documentation">Flink API Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flink.html#flink-alerts-consumer">Flink Alerts Consumer</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="benchmarking.html">Benchmarking the query answering</a><ul>
@@ -198,7 +211,13 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="running.html">Getting the system running</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="running.html#setting-up-the-environment">Setting up the environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-system">Running the system</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="running.html#collecting-data">Collecting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="running.html#ingesting-data">Ingesting data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="running.html#running-the-dashboard">Running the dashboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="running.html#running-flink-and-kafka">Running Flink and Kafka</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -242,9 +261,10 @@
    <a href="#cap-f"><strong>f</strong></a> | 
    <a href="#cap-g"><strong>g</strong></a> | 
    <a href="#cap-i"><strong>i</strong></a> | 
-   <a href="#cap-m"><strong>m</strong></a> | 
+   <a href="#cap-k"><strong>k</strong></a> | 
    <a href="#cap-q"><strong>q</strong></a> | 
-   <a href="#cap-s"><strong>s</strong></a>
+   <a href="#cap-s"><strong>s</strong></a> | 
+   <a href="#cap-u"><strong>u</strong></a>
    </div>
 
    <table class="indextable modindextable">
@@ -275,6 +295,11 @@
      <tr>
        <td></td>
        <td>
+       <a href="flink.html#module-flink_api"><code class="xref">flink_api</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
        <a href="flink.html#module-flink_code_gen"><code class="xref">flink_code_gen</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
@@ -291,7 +316,12 @@
      <tr>
        <td></td>
        <td>
-       <a href="neo4j_data_ingestion.html#module-ingest_neo4j"><code class="xref">ingest_neo4j</code></a></td><td>
+       <a href="neo4j_data_ingestion.html#module-ingest_neo4j_streaming"><code class="xref">ingest_neo4j_streaming</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="neo4j_data_ingestion.html#module-ingest_neo4j_user_timeline"><code class="xref">ingest_neo4j_user_timeline</code></a></td><td>
        <em></em></td></tr>
      <tr>
        <td></td>
@@ -299,12 +329,17 @@
        <a href="mongoDB_data_ingestion.html#module-ingest_raw"><code class="xref">ingest_raw</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
-     <tr class="cap" id="cap-m"><td></td><td>
-       <strong>m</strong></td><td></td></tr>
+     <tr class="cap" id="cap-k"><td></td><td>
+       <strong>k</strong></td><td></td></tr>
      <tr>
        <td></td>
        <td>
-       <a href="twitter_stream.html#module-main"><code class="xref">main</code></a></td><td>
+       <a href="flink.html#module-kafka_flink_alerts_consumer"><code class="xref">kafka_flink_alerts_consumer</code></a></td><td>
+       <em></em></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="kafka.html#module-kafka_tweets_producer"><code class="xref">kafka_tweets_producer</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
      <tr class="cap" id="cap-q"><td></td><td>
@@ -321,6 +356,14 @@
        <td></td>
        <td>
        <a href="twitter_stream.html#module-streaming"><code class="xref">streaming</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&#160;</td><td></td></tr>
+     <tr class="cap" id="cap-u"><td></td><td>
+       <strong>u</strong></td><td></td></tr>
+     <tr>
+       <td></td>
+       <td>
+       <a href="twitter_stream.html#module-userstimeline"><code class="xref">userstimeline</code></a></td><td>
        <em></em></td></tr>
    </table>
 
